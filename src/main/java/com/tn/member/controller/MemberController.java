@@ -38,7 +38,7 @@ public class MemberController {
 		String formattedDate = dateFormat.format(date);
 		
 		
-		test.getMember();
+		//test.getMember();
 		
 		model.addAttribute("serverTime", formattedDate );
 		

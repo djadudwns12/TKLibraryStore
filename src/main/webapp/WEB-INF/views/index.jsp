@@ -46,7 +46,7 @@
 	<script src="resources/template/js/owl.carousel.min.js"></script>
 	<script src="resources/template/js/main.js"></script> -->
 	
-	<c:import url="tnFooter.jsp"></c:import>
+	<c:import url="footer.jsp"></c:import>
 	
 	
 </body>
