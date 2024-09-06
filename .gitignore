@@ -155,12 +155,6 @@ $RECYCLE.BIN/
 # csv 파일
 *.csv
 
-# 이미지 파일들 제외
-*.png
-*.jpg
-*.gif
-
-userImg/
 
 # config.properties 제외
 config.properties
