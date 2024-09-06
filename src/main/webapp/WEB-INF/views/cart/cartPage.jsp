@@ -46,7 +46,7 @@ $(function() {
 		<div class="cartTable">
 			<h2 style="text-align: center;">Cart</h2>
 
-			
+			<div class="container">
 			<table class="table table-striped">
 				<thead>
 					
@@ -106,6 +106,8 @@ $(function() {
 			
 			<button type="submit" class="btn btn-primary mt-3"
 						style="width: 90px; height: 30px; font-size: 0.9em" onclick="delete();">선택삭제</button>
+			</div>
+			
 		</div>
 	
 	<c:import url="../footer.jsp"></c:import>
