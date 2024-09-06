@@ -36,7 +36,7 @@
 	
 	<c:import url="header.jsp"></c:import>
 
-	<!-- Js Plugins -->
+	<!-- Js Plugins --> 
 	<!-- <script src="resources/template/js/jquery-3.3.1.min.js"></script>
 	<script src="resources/template/js/bootstrap.min.js"></script>
 	<script src="resources/template/js/jquery.nice-select.min.js"></script>
