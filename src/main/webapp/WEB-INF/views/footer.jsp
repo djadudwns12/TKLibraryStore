@@ -15,16 +15,6 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
 	rel="stylesheet">
-<!-- Css Styles -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/jquery-ui.min.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/owl.carousel.min.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/bootstrap.min.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/font-awesome.min.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/elegant-icons.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/nice-select.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/slicknav.min.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/style.css" type="text/css">
-
 
 </head>
 <body>
@@ -35,7 +25,7 @@
 				<div class="col-lg-3 col-md-6 col-sm-6">
 					<div class="footer__about">
 						<div class="footer__about__logo">
-							<a href="./index.html"><img src="resources/template/img/logo.png" alt=""></a>
+							<a href="./index.html"><img src="${pageContext.request.contextPath}/resources/template/img/logo.png" alt=""></a>
 						</div>
 						<ul>
 							<li>Address: 60-49 Road 11378 New York</li>
@@ -44,7 +34,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+				<div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1"> 
 					<div class="footer__widget">
 						<h6>Useful Links</h6>
 						<ul>
@@ -100,7 +90,7 @@
 							</p>
 						</div>
 						<div class="footer__copyright__payment">
-							<img src="resources/template/img/payment-item.png" alt="">
+							<img src="${pageContext.request.contextPath}/resources/template/img/payment-item.png" alt="">
 						</div>
 					</div>
 				</div>
@@ -108,16 +98,5 @@
 		</div>
 	</footer>
 	<!-- Footer Section End -->
-
-	<!-- Js Plugins -->
-	<!-- <script src="resources/template/js/jquery-3.3.1.min.js"></script>
-	<script src="resources/template/js/bootstrap.min.js"></script>
-	<script src="resources/template/js/jquery.nice-select.min.js"></script>
-	<script src="resources/template/js/jquery-ui.min.js"></script>
-	<script src="resources/template/js/jquery.slicknav.js"></script>
-	<script src="resources/template/js/mixitup.min.js"></script>
-	<script src="resources/template/js/owl.carousel.min.js"></script>
-	<script src="resources/template/js/main.js"></script> -->
-
 </body>
 </html>

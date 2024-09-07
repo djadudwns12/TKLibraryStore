@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,18 +18,14 @@
 	rel="stylesheet">
 
 <!-- Css Styles -->
-<link rel="stylesheet" href="resources/template/css/bootstrap.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="resources/template/css/font-awesome.min.css" type="text/css">
-<link rel="stylesheet" href="resources/template/css/elegant-icons.css"
-	type="text/css">
-<link rel="stylesheet" href="resources/template/css/nice-select.css"
-	type="text/css">
-<link rel="stylesheet" href="resources/template/css/slicknav.min.css"
-	type="text/css">
-<link rel="stylesheet" href="resources/template/css/style.css"
-	type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/jquery-ui.min.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/owl.carousel.min.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/elegant-icons.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/nice-select.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/slicknav.min.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/style.css" type="text/css">
 </head>
 
 <body>
