@@ -8,4 +8,7 @@
   		select * from Member;
   	</select>
   	
+  	<select id="getEditMemberInfo" resultType="com.tn.member.model.vo.MemberVO">
+  		select userPwd, userName, userBirth, phoneNum, email from Member where userId=#{userId}
+  	</select>
   </mapper>
