@@ -36,15 +36,7 @@
 	
 	<c:import url="header.jsp"></c:import>
 
-	<!-- Js Plugins --> 
-	<!-- <script src="resources/template/js/jquery-3.3.1.min.js"></script>
-	<script src="resources/template/js/bootstrap.min.js"></script>
-	<script src="resources/template/js/jquery.nice-select.min.js"></script>
-	<script src="resources/template/js/jquery-ui.min.js"></script>
-	<script src="resources/template/js/jquery.slicknav.js"></script>
-	<script src="resources/template/js/mixitup.min.js"></script>
-	<script src="resources/template/js/owl.carousel.min.js"></script>
-	<script src="resources/template/js/main.js"></script> -->
+
 	
 	<c:import url="footer.jsp"></c:import>
 	
