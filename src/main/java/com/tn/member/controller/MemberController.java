@@ -4,11 +4,15 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -58,7 +62,7 @@ public class MemberController {
 	*/
 	@RequestMapping(value="/edit")
 	public void getEditMemeberInfo(Model model) {
-		String userId = "dooly"; //로그인 기능 구현 이후 세션에서 받아올게요..
+		String userId = "dooly"; // 로그인 기능 구현 이후에.....
 		try {
 			MemberVO editMemberInfo = mService.getEditMemberInfo(userId);
 			System.out.println(editMemberInfo.toString());
@@ -67,6 +71,12 @@ public class MemberController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@RequestMapping(value="/mypage")
+	public void saveEditInfo() {
+		System.out.println("수정내용을 저장해보자");
+
 	}
 	
 }
