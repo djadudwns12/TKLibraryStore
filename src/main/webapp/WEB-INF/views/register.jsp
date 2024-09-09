@@ -50,6 +50,10 @@ body {
     width: calc(100% - 110px); /* 버튼 옆의 필드 크기 */
 }
 
+.button-container input[type="tel"] {
+    width: calc(100% - 110px); /* 버튼 옆의 필드 크기 */
+}
+
 .button-container button {
     width: 100px; /* 버튼 크기 */
     padding: 10px;
@@ -63,6 +67,33 @@ body {
 .button-container button:hover {
     background-color: #45a049;
 }
+
+
+#button-disabled {
+    width: 100px; /* 버튼 크기 */
+    padding: 10px;
+    background-color: gray;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#button-active {
+    width: 100px; /* 버튼 크기 */
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#button-active:hover {
+    background-color: #45a049;
+}
+
+
 
 /* 드래그 앤 드롭 이미지 업로드 */
 #profileImageContainer {
@@ -123,6 +154,13 @@ body {
     top: -10px; /* 위쪽으로 20px 이동 */
 }
 
+#phoneError {
+    color: red;
+    font-size: 12px;
+    position: relative; /* 요소의 위치를 기준으로 상대적인 위치 조정 */
+    top: -10px; /* 위쪽으로 20px 이동 */
+}
+
 </style>
 </head>
 <body>
@@ -150,9 +188,12 @@ body {
         <input type="text" id="userName" name="userName" placeholder="이름을 입력해주세요." required>
     </div>
     
-    <div class="form-group">
+    <div class="form-group button-container">
         <input type="tel" id="phone" name="phone" placeholder="휴대폰 번호 입력" required>
+         <button type="button" id="button-disabled" onclick="sendSMS()">문자 전송</button>
     </div>
+    
+    <div id="phoneError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
     
     <div class="form-group">
         <input type="email" id="email" name="email" placeholder="email@example.com" required>
@@ -167,6 +208,10 @@ body {
         <input type="text" id="zipCode" name="zipCode" placeholder="주소 입력" required>
         <button type="button">주소 검색</button>
     </div>
+    
+    
+    					
+    
     <div class="form-group">
         <input type="text" id="addressDetail" name="addressDetail" placeholder="상세주소" required>
     </div>
@@ -185,7 +230,14 @@ body {
     </div>
 
     <button type="submit" class="submit-btn" id="submitBtn" disabled>가입하기</button>
+    
 </form>
+
+
+
+
+
+
 
 <script>
 
@@ -240,23 +292,6 @@ function clearError(obj) {
 	      }
 	    });
 	  
-	  
-	  
-	  
-	  
-    // userEmail이 focus 되었을 경우
-    $('#userEmail').focus(function () {
-      if($('#emailValid').val() == 'checked') {
-        return;
-      }
-    }); 
-
-    // 이메일 주소 입력을 완료하고 blur 되었을 경우
-    $('#userEmail').blur(function (){
-      emailValid();
-    });
-
-    // 패스워드1을 입력하고 blur 되었을때
     $("#password").on("input", function () {
       let tmpPwd = $("#password").val();
       let passwordRegExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()])[a-zA-Z\d!@#$%^&*()]{8,20}$/;
@@ -277,9 +312,86 @@ function clearError(obj) {
     	  clearError($("#confirmPassword"));
       }
     });
+    
+    
+    $("#phone").on("input", function () {
+        let tmpPhone = $("#phone").val();
+        let phoneRegExp = /^(01[016789]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
+        if (!phoneRegExp.test(tmpPhone)) {
+        	$("#button-disabled").attr("id", "button-disabled");
+			outputError("휴대폰 번호 형식이 아닙니다.", $("#phone"));
+        } else {
+        	 $("#button-disabled").attr("id", "button-active");
+			clearError($("#phone"));
+        }
+      }); 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    $("#email").on("input", function () {
+        let tmpPwd = $("#email").val();
+        let passwordRegExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()])[a-zA-Z\d!@#$%^&*()]{8,20}$/;
+
+        if (!passwordRegExp.test(tmpPwd)) {
+          outputError("영문/숫자/특수문자 조합 (8~20자)으로 입력하세요.", $("#email"));
+        } else {
+      	  clearError($("#password"));
+        }
+      });
+    
+    
+    
+    
 
 
   });
+  
+  
+function sendSMS() {
+
+	let result = false;
+	let tmpUserMobile = $("#mobile").val();
+	let mobileRegExp = /^(01[016789]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
+	if (!mobileRegExp.test(tmpUserMobile)) {
+		outputError("휴대폰 번호 형식이 아닙니다!", $(".mobile"));
+        return;
+        
+	}else{
+		clearError($("#mobile")); 
+	}
+	 
+// 메인 폼의 SMS 관련 필드 값을 가져와 AJAX로 전송
+let mobile = $('#mobile').val();
+//var textValue = document.getElementById('text').value;
+// 최근에는 변수의 스코프와 호이스팅 문제를 방지하기 위해 let과 const를 주로 사용. 
+// let은 재할당이 필요한 변수에, const는 상수나 재할당이 필요 없는 변수에 사용.
+// ES6(ECMAScript 2015)부터 도입되었으며, var 대신 let과 const를 사용하는 것이 권장. 
+// let과 const를 사용하여 변수를 선언할 때, 스코프와 호이스팅 문제를 더 잘 제어할 수 있다.
+
+$.ajax({
+  type: "POST",
+  url: "/coolsms/send-one",
+  data: {
+  	mobile : mobile,
+  },
+  success: function(response) {
+      console.log("문자 전송 성공:", success);
+      alert("문자가 성공적으로 전송되었습니다.");
+  },
+  error: function(error) {
+      console.error("문자 전송 실패:", fail);
+      alert("문자 전송에 실패했습니다.");
+  }
+});
+}
 
   function isValid() {
     // 아래의 조건에 만족할 때 회원가입이 진행 되도록(return true), 만족하지 않으면 회원가입이 되지 않도록 (return false)
@@ -327,119 +439,7 @@ function clearError(obj) {
     return result;
   }
 
-  function emailValid() {
-      // 1) 이메일 주소 형식이면..(정규 표현식을 이용한다)
-      // 2) 이메일 주소 형식이면..인증문자를 이메일로 보내고, 인증문자를 다시 입력받아 검증
-      let result = false;
 
-      let tmpUserEmail = $("#userEmail").val();
-      let emailRegExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
-      if (!emailRegExp.test(tmpUserEmail)) {
-        outputError("이메일 주소 형식이 아닙니다!", $("#userEmail"));
-      } else {
-        // 이메일 주소 형식이다...
-        // 유저가 입력한 이메일 주소로 인증 코드 발송(back end) - timer(3분)
-        // 인증코드를 유저에게 입력 받음
-        // 유저가 입력한 인증코드와 백엔드에서 만든 인증코드가 같은지 비교
-        // 같고, 인증시간 안에 인증 완료 통과...
-
-        if($('#emailValid').val() == 'checked') {
-          result = true;
-        } else {
-          showAuthenticateDiv();  // 인증 코드를 입력하는 div창을 보여주기
-          callSendMail();// 이메일 발송 하고
-          startTimer(); // 타이머 동작 시키기..
-          clearError($("#userEmail"));
-
-          result = true;
-        }           
-        return result;
-      }
-      return result;
-    }
-
-    function callSendMail() {
-      $.ajax({
-            url: "/member/callSendMail", // 데이터가 송수신될 서버의 주소
-            type: "post", // 통신 방식 : GET, POST, PUT, DELETE, PATCH
-            dataType: "text", // 수신 받을 데이터의 타입 (text, xml, json)
-            data: {
-              "tmpUserEmail" : $("#userEmail").val()
-            },
-            success: function (data) {
-              // 비동기 통신에 성공하면 자동으로 호출될 callback function
-              console.log(data);
-              if (data == 'success') {
-                alert("이메일로 인증코드를 발송했습니다.");
-                $('#userAuthCode').focus();
-              }
-            },
-            error: function (data) {
-              console.log(data);
-            },
-          });
-    }
-
-
-    function showAuthenticateDiv() {
-        alert("이메일로 인증코드를 발송했습니다!\n 인증코드를 입력해주세요~");
-        $('#userAuthCode').focus();
-        let authDiv = "<div id='authenticateDiv'>";
-        authDiv += `<input type="text" class="form-control" id="userAuthCode" placeholder="인증코드입력..." />`;
-        authDiv += `<span class='timer'>3:00</span>`;
-        authDiv += `<button type="button" id="authBtn" class="btn btn-primary" onclick="checkAuthCode()">인증</button>`;
-        authDiv += "</div>";
-
-        $(authDiv).insertAfter($("#userEmail"));
-      }
-
-      function checkAuthCode() {
-        let userAuthCode = $("#userAuthCode").val();
-        $.ajax({
-          url: "/member/checkAuthCode", // 데이터가 송수신될 서버의 주소
-          type: "post", // 통신 방식 : GET, POST, PUT, DELETE, PATCH
-          dataType: "text", // 수신 받을 데이터의 타입 (text, xml, json)
-          data: {
-                "tmpUserAuthCode" : userAuthCode
-          },    
-          success: function (data) {
-                // 비동기 통신에 성공하면 자동으로 호출될 callback function
-                console.log(data);
-                if (data == 'success') {
-                  alert("인증 성공!");
-                  $('#userEmail').attr("readonly", true);
-
-                  $('#authenticateDiv').remove();
-
-                  $('#emailValid').val("checked");
-                } else {
-                  alert("인증 실패!");
-                  $('#emailValid').val("");
-                }
-          }
-        });
-      }
-
-  function genderValid() {
-    // 성별을 남성, 여성 중 하나를 반드시 선택해야 한다.
-    let genders = document.getElementsByName("gender");
-    let result = false;
-
-    for (let g of genders) {
-      if (g.checked) {
-        console.log("하나라도 체크 되었음");
-        result = true;
-      }
-    }
-
-    if (!result) {
-      outputError("성별은 필수 입니다!", $(".genderDiv"));
-    } else {
-      clearError($(".genderDiv"));
-    }
-
-    return result;
-  }
 
   function pwdValid() {
     // 비밀번호 : 필수이고, 4~8자, 비밀번호확인과 동일해야 한다.
