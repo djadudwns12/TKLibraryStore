@@ -29,4 +29,14 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getEditMemberInfo(userId);
 	}
 
+	@Override
+	public boolean saveEditInfo(MemberVO editMember) throws Exception {
+		System.out.println("Service : 회원정보수정 저장 >> " + editMember.toString() );
+		boolean result = false;
+		if(dao.updateEditMember(editMember) == 1) {
+			result = true;
+		}		
+		return result;
+	}
+
 }

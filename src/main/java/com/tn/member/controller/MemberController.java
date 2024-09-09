@@ -6,15 +6,18 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tn.member.model.vo.MemberVO;
 import com.tn.member.service.MemberService;
@@ -73,10 +76,27 @@ public class MemberController {
 		}
 	}
 	
+	/**
+	 * @작성자 : 최미설
+	 * @작성일 : 2024. 9. 9.
+	 * @method_name : saveEditInfo
+	 * @param :
+	 * @param :
+	 * @return :
+	 * @throws : 
+	 * @description : 
+	*/
 	@RequestMapping(value="/mypage")
-	public void saveEditInfo() {
-		System.out.println("수정내용을 저장해보자");
-
+	public void saveEditInfo(MemberVO editMember, RedirectAttributes redirectAttributes) {
+		System.out.println("수정내용을 저장");
+		try {
+			mService.saveEditInfo(editMember);
+			redirectAttributes.addAttribute("status", "editSuccess");
+		} catch (Exception e) {
+			e.printStackTrace();
+			redirectAttributes.addAttribute("status", "editFail");
+		}
+		
 	}
 	
 }

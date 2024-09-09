@@ -26,10 +26,16 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public MemberVO getEditMemberInfo(String userId) {
+	public MemberVO getEditMemberInfo(String userId) throws Exception {
 		
 		System.out.println("회원정보수정 : 로그인한 " + userId + "의 정보를 불러오기");
 		return sess.selectOne(NS + ".getEditMemberInfo", userId);
+	}
+
+	@Override
+	public int updateEditMember(MemberVO editMember) throws Exception {
+		
+		return sess.update(NS + ".updateEditMember", editMember);
 	}
 	
 	
