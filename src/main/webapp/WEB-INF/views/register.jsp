@@ -50,7 +50,7 @@ body {
     width: calc(100% - 110px); /* 버튼 옆의 필드 크기 */
 }
 
-.button-container input[type="tel"] {
+.smsButton-container input[type="tel"] {
     width: calc(100% - 110px); /* 버튼 옆의 필드 크기 */
 }
 
@@ -68,8 +68,13 @@ body {
     background-color: #45a049;
 }
 
+.smsButton-container {
+    display: flex;
+    justify-content: space-between;
+}
 
-#button-disabled {
+
+.button-disabled {
     width: 100px; /* 버튼 크기 */
     padding: 10px;
     background-color: gray;
@@ -79,7 +84,7 @@ body {
     cursor: pointer;
 }
 
-#button-active {
+.button-active {
     width: 100px; /* 버튼 크기 */
     padding: 10px;
     background-color: #4CAF50;
@@ -89,7 +94,7 @@ body {
     cursor: pointer;
 }
 
-#button-active:hover {
+.button-active:hover {
     background-color: #45a049;
 }
 
@@ -188,9 +193,9 @@ body {
         <input type="text" id="userName" name="userName" placeholder="이름을 입력해주세요." required>
     </div>
     
-    <div class="form-group button-container">
+    <div class="form-group smsButton-container">
         <input type="tel" id="phone" name="phone" placeholder="휴대폰 번호 입력" required>
-         <button type="button" id="button-disabled" onclick="sendSMS()">문자 전송</button>
+         <button type="button" class="button-disabled"  id="sendSMSButton">문자 전송</button>
     </div>
     
     <div id="phoneError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
@@ -318,11 +323,29 @@ function clearError(obj) {
         let tmpPhone = $("#phone").val();
         let phoneRegExp = /^(01[016789]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
         if (!phoneRegExp.test(tmpPhone)) {
-        	$("#button-disabled").attr("id", "button-disabled");
+        	//$("#button-disabled").attr("cl", "button-disabled");
+        	$(".button-active").removeClass("button-active").addClass("button-disabled");
 			outputError("휴대폰 번호 형식이 아닙니다.", $("#phone"));
+			$("#sendSMSButton").removeAttr("onclick");
         } else {
-        	 $("#button-disabled").attr("id", "button-active");
+        	 //$("#button-disabled").attr("id", "button-active");
+        	 // 순수 JavaScript  : 추가: document.getElementById("element").classList.add("className"); 제거  : .classList.remove 토글 : .classList.toggle
+        	 //클래스가 있으면 제거, 없으면 추가 (toggle 기능) : $("#element").toggleClass("className");
+        	 $(".button-disabled").removeClass("button-disabled").addClass("button-active");
 			clearError($("#phone"));
+			 $("#sendSMSButton").attr("onclick", "sendSMS()");
+			//addEventListener: 이벤트를 추가할 때, 동일한 이벤트에 대해 여러 개의 리스너를 추가할 수 있습니다. 즉, 동일한 이벤트에 대해 여러 개의 핸들러를 등록할 수 있으며, 나중에 필요하면 특정 리스너만 제거할 수도 있습니다.
+			//setAttribute: onclick과 같은 속성에 이벤트를 직접 추가합니다. 이 방법은 한 번에 하나의 이벤트 핸들러만 추가할 수 있습니다. 즉, 만약 동일한 이벤트에 대해 새로운 핸들러를 추가하려면, 이전 핸들러는 덮어쓰여집니다.
+			//document.getElementById("sendSMSButton").setAttribute("onclick", "sendSMS()");
+			//$("#sendSMSButton").attr("onclick", "sendSMS()");
+			//이벤트 리스너 사용
+			//추가
+			//document.getElementById("sendSMSButton").addEventListener("click", sendSMS);
+			//$("#sendSMSButton").attr("onclick", "sendSMS()");
+			//document.getElementById("sendSMSButton").setAttribute("onclick", "sendSMS()");
+			//제거
+			// $("#sendSMSButton").removeAttr("onclick");
+			//document.getElementById("sendSMSButton").removeAttribute("onclick");
         }
       }); 
     
@@ -358,18 +381,11 @@ function clearError(obj) {
 function sendSMS() {
 
 	let result = false;
-	let tmpUserMobile = $("#mobile").val();
-	let mobileRegExp = /^(01[016789]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
-	if (!mobileRegExp.test(tmpUserMobile)) {
-		outputError("휴대폰 번호 형식이 아닙니다!", $(".mobile"));
-        return;
-        
-	}else{
-		clearError($("#mobile")); 
-	}
+	let tmpUserMobile = $("#phone").val();
+
 	 
 // 메인 폼의 SMS 관련 필드 값을 가져와 AJAX로 전송
-let mobile = $('#mobile').val();
+let mobile = $('#phone').val();
 //var textValue = document.getElementById('text').value;
 // 최근에는 변수의 스코프와 호이스팅 문제를 방지하기 위해 let과 const를 주로 사용. 
 // let은 재할당이 필요한 변수에, const는 상수나 재할당이 필요 없는 변수에 사용.
@@ -378,7 +394,7 @@ let mobile = $('#mobile').val();
 
 $.ajax({
   type: "POST",
-  url: "/coolsms/send-one",
+  url: "/member/coolsms/send-one",
   data: {
   	mobile : mobile,
   },
