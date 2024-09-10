@@ -23,7 +23,8 @@ public class CartVO {
 	private String title;
 	private int price;
     private int salePrice;
+    private String thumbNail;
     
     
-    private float cRate;
+    // private float cRate;
 }

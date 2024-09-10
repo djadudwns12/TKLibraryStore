@@ -11,12 +11,9 @@
 
 	<!-- 카트와 해당 멤버 정보와 그 멤버의 누적 결제 금액을 비교해서 할인율을 같이 가져오는 쿼리문 -->
 	<select id="getCartList" resultType="com.tn.cart.model.vo.CartVO">
-		SELECT b.title, b.price, b.salePrice, c.qty, m.userId, d.cRate
+		SELECT b.thumbNail, b.title, b.price, b.salePrice, c.cartId, c.qty
 		FROM Cart c
 		INNER JOIN BookList b ON c.bookNo = b.bookNo
-		INNER JOIN Member m ON c.userId = m.userId
-		INNER JOIN ClassDef d ON m.userTotalPay BETWEEN d.minStandard AND
-		d.maxStandard
-		WHERE c.userId = 'gayoon';
+		WHERE c.userId = #{userId};
 	</select>
 </mapper>

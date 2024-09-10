@@ -4,10 +4,13 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +29,9 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/cart")
 public class CartController {
 	
+	// Log를 남길 수 있도록 하는 객체
+	private static Logger logger = LoggerFactory.getLogger(CartController.class);
+	
 	@Autowired
 	private CartService cService;
 	
@@ -34,41 +40,7 @@ public class CartController {
 		
 	}
 	
-	@PostMapping("/putCart")
-	public ResponseEntity goShoppingList(@RequestBody CartDTO cDto) {
-		System.out.println("CartController - " + cDto + " : 얘네를 장바구니에 넣으러 가자~");
-		
-		ResponseEntity result = null;
-		
-		try {
-			if(cService.putCart(cDto)) {
-				result = new ResponseEntity(MyResponseWithData.success(), HttpStatus.OK);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			
-			result = new ResponseEntity(MyResponseWithData.fail(), HttpStatus.BAD_REQUEST);
-		}
-		
-		return result;
-	}
+
 	
-	@GetMapping(value="/cartPage/{userId}")
-	public ResponseEntity getCartList(@PathVariable("userId") String userId, HttpSession ses) {
-		System.out.println(userId + "의 장바구니 리스트를 봐보자.");
-		
-		ResponseEntity result = null;
-		
-		try {
-			List<CartVO> list = cService.getCartList(userId);
-			
-			result = new ResponseEntity(MyResponseWithData.success(), HttpStatus.OK);
-		} catch (Exception e) {	
-			e.printStackTrace();
-			
-			result = new ResponseEntity(MyResponseWithData.fail(), HttpStatus.BAD_REQUEST);
-		}
-		
-		return result;
-	}
+
 }

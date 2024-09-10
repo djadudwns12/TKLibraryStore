@@ -27,6 +27,8 @@ public class CartDAOImpl implements CartDAO {
 	@Override
 	public List<CartVO> selectCartList(String userId) throws Exception {
 		
+		System.out.println("CartDAOImpl~~ 가지고 온 userId : " + userId);
+		
 		return ses.selectList(NS + ".getCartList", userId);
 	}
 }
