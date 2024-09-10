@@ -18,7 +18,7 @@
 	rel="stylesheet">
 
 <!-- Css Styles -->
-<link rel="stylesheet" href="resources/template/css/bootstrap.min.css"
+<!-- <link rel="stylesheet" href="resources/template/css/bootstrap.min.css"
 	type="text/css">
 <link rel="stylesheet"
 	href="resources/template/css/font-awesome.min.css" type="text/css">
@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="resources/template/css/slicknav.min.css"
 	type="text/css">
 <link rel="stylesheet" href="resources/template/css/style.css"
-	type="text/css">
+	type="text/css"> -->
 </head>
 
 <body>
