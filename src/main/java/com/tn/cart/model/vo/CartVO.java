@@ -17,13 +17,8 @@ import lombok.ToString;
 public class CartVO {
 	private int cartId;
 	private int bookNo;
-	private String userId;
 	private int qty;
-	
-	private String title;
-	private int price;
-    private int salePrice;
-    private String thumbNail;
+	private String userId;
     
     
     // private float cRate;

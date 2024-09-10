@@ -9,6 +9,6 @@ public interface CartDAO {
 
 	int insertCart(CartDTO cDto) throws Exception;
 
-	List<CartVO> selectCartList(String user) throws Exception;
+	List<CartDTO> selectCartList(String userId) throws Exception;
 
 }

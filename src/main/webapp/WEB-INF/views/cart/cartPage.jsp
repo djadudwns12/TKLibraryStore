@@ -27,8 +27,35 @@
 
 </script>
 <body>
-	<div>
+	
 	<c:import url="../header.jsp"></c:import>
+	
+	<div class="container">
+	
+	<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>이미지</th>
+								<th>제목</th>
+								<th>원가</th>
+								<th>판매가</th>
+								<th>수량</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="cart" items="${userCartList}">
+								
+										<tr>
+											<td>${cart.thumbNail}</td>
+											<td>${cart.title}</td>
+											<td>${cart.price}</td>
+											<td>${cart.salePrice}</td>
+											<td>${cart.qty}</td>
+										</tr>
+
+							</c:forEach>
+						</tbody>
+					</table>
 	
 	</div>
 
@@ -37,5 +64,4 @@
 
 
 </body>
-
 </html>

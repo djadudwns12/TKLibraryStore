@@ -15,8 +15,12 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CartDTO {
-	private int cartId;
 	private int bookNo;
-	private int qty;
 	private String userId;
+	private int qty;
+	
+	private String title;
+	private int price;
+    private int salePrice;
+    private String thumbNail;
 }

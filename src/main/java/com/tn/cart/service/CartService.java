@@ -9,7 +9,7 @@ public interface CartService {
 
 	boolean putCart(CartDTO cDto) throws Exception;
 
-	List<CartVO> getCartList(String userId) throws Exception;
+	List<CartDTO> getCartList(String userId) throws Exception;
 
 
 }

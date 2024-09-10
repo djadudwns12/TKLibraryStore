@@ -9,8 +9,8 @@
 		values(#{bookNo}, #{qty}, #{userId})
 	</insert>
 
-	<!-- 카트와 해당 멤버 정보와 그 멤버의 누적 결제 금액을 비교해서 할인율을 같이 가져오는 쿼리문 -->
-	<select id="getCartList" resultType="com.tn.cart.model.vo.CartVO">
+	<!-- 특정 회원의 카트 리스트를 가져오는 쿼리문 -->
+	<select id="getCartList" resultType="com.tn.cart.model.dto.CartDTO">
 		SELECT b.thumbNail, b.title, b.price, b.salePrice, c.cartId, c.qty
 		FROM Cart c
 		INNER JOIN BookList b ON c.bookNo = b.bookNo
