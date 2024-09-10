@@ -17,11 +17,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function(){
+		
+		
 		// 비밀번호 변경을 위해 userPwd에 비밀번호를 입력하고 blur 되었을 때 > 비밀번호 양식 확인
 		$('#userPwd').blur(function() {
 			let tmpPwd = $('#userPwd').val();
 			if(tmpPwd.length < 4 || tmpPwd.length > 8){
 				outputError("비밀번호는 4-8자로 입력하세요", $('#userPwd'));
+				setTimeout(() => {
+		              $(".error").remove();
+		            }, 500);
 			} else {
 				// 에러메시지 사라짐
 				clearError($("#userPwd"));
@@ -41,6 +46,7 @@
 	            $("#pwdValid").val("checked");
 	          }
         });
+		// 생년월일을 입력하고 blur되었을 때
 		$("#userBirth").blur(function birthValid(){
 			let userBirth = new Date($('#userBirth').val());
 			let today = new Date();
@@ -53,9 +59,25 @@
 			} else {
 				return true;
 			}
-		})
+		});
+		// 이메일을 입력하고 blur되었을 때
+  		$("#email").blur(function emailValid(){
+			// 1. 이메일 주소형식 확인
+			let tmpEmail = $('#email').val();
+			let emailFormat = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+			if(!emailFormat.test(tmpEmail)) {
+				outputError("이메일 주소형식이 아닙니다.", $('#email'));
+			} else {
+				// 2. 이메일 인증 : 인증메일을 보내고 문자를 입력받아서 검증한다
+				clearError($('#email')); // 이메일형식 유효성검사후 css원상복구
+				showAuthDiv(); // 이메일 인증코드 입력 태그 생성
+				sendAuthMail(); // 이메일 보내기
+				// 타이머 동작시키기
+				// 코드 확인하기
+				
+			}
+		}); 
 	});
-	
 	// 에러가 난 태그의 선색상을 빨간색으로
 	function outputError(msg, obj) {
         let errorTag = `<div class='error'>\${msg}</div>`;
@@ -74,7 +96,8 @@
 		// 빈칸 없음, 비밀번호 확인, 이메일 변경시 이메일 인증 진행
 		let pwdCheck = pwdValid();
 		let birthCheck = birthValid();
-		if(pwdCheck && birthCheck){
+		let emailCheck = emailValid();
+		if(pwdCheck && birthCheck ){
 			return true;
 		} else {
 			return false;
@@ -87,7 +110,6 @@
 		let today = new Date();
 		if(userBirth>=today){
 			alert('생년월일을 확인해주세요'); 
-			userBirth=''; 
 			userbirth.focus(); 
 			return false; 
 		} else {
@@ -96,12 +118,43 @@
 	}
 	
 	function pwdValid(){
-		if (pwdValid == 'checked') {
+		if ($("#pwdValid").val() == 'checked') {
 			return true;
 		} else {
-			alert("비밀번호를 입력하세요.")
+			alert("비밀번호를 입력하세요.");
 			return false;
 		}
+	}
+	
+	function showAuthDiv() {
+		alert('이메일로 인증코드를 발송했습니다. \n인증코드를 입력해주세요.');
+		authDiv = `<div class='input-group mb-3' id='emailAuth'>`;
+		authDiv += `<label>이메일 인증코드</label>`;
+		authDiv += `<input type="text" class="form-control" id="emailAuthCode" placeholder="인증코드입력..." />`;
+        authDiv += `<span class='timer'>1:00</span>`;
+        authDiv += `<button type="button" id="authBtn" class="btn btn-primary" onclick="checkAuthCode()" style='border-color:#7fad38; background-color:#7fad38;'>인증</button>`;
+        authDiv += `</div>`;
+        
+        $(authDiv).insertAfter($("#email"));
+	}
+	
+	function sendAuthMail() {
+		$.ajax({
+			url: "/member/sendAuthMail", // 데이터가 송수신될 서버의 주소
+            type: "post", // 통신 방식 : GET, POST, PUT, DELETE, PATCH
+            dataType: "text", // 수신 받을 데이터의 타입 (text, xml, json)
+            data: {
+              "tmpEmail" : $("#email").val()
+            },
+            success: function(data) {
+				// 비동기 통신에 성공하면 자동으로 호출될 callback function
+				console.log(data);
+				if (data == 'emailAuthSuccess') {
+					alert("이메일로 인증코드를 발송했습니다..");
+ 					$('#emailAuth').focus();
+				}
+            }
+		});
 	}
 </script>
 
@@ -116,6 +169,14 @@
 .input-group form-check {
 	padding-left : 0px;
 }
+#emailAuth {
+	margin-top:10px;
+}
+#emailAuth span{
+	margin-left:10px;
+	margin-right:10px;
+}
+
 </style>
 
 </head>
@@ -144,20 +205,19 @@
             </div>
 			<div class="input-group mb-3">
 				<label>비밀번호</label>
-				<input type="password" class="form-control " id="userPwd" name="userPwd" placeholder="비밀번호 변경" />
+				<input type="password" class="form-control " id="userPwd" name="userPwd" value="${editMemberInfo.userPwd}" />
             </div>
 			<div class="input-group mb-3">
 				<label>비밀번호확인</label>
-				<input type="password" class="form-control" id="userPwdConfirm" name="userPwdConfirm" placeholder="비밀번호 확인" />
+				<input type="password" class="form-control" id="userPwdConfirm" name="userPwdConfirm" value="${editMemberInfo.userPwd}" />
+            	<input type="hidden" id="pwdValid" value="checked"/>
             </div>
 			<div class="input-group mb-3">
 				<label>이메일</label>
 				<input type="email" class="form-control" id="email" name="email" value="${editMemberInfo.email}" />
+            	<input type="hidden" id="emailValid" value="checked"/>
             </div>
-			<div class="input-group mb-3">
-				<label>이메일 인증번호</label>
-				<input type="text" class="form-control"  name="emailAuth"/>
-            </div>
+
 			<div class="input-group mb-3">
 				<label>핸드폰 번호</label>
 				<input type="text" class="form-control" id="phoneNum" name="phoneNum" value="${editMemberInfo.phoneNum}" />
@@ -172,7 +232,7 @@
             </div>
 
 			<div class="d-grid gap-2" style="text-align:right;">
-					<button type="submit" class="btn btn-primary" onclick="return isValid();" style="border-color:#7fad38; background-color:#7fad38;">수정완료</button>
+					<button type="submit" class="btn btn-primary" onclick="return isValid();" style="border-color:#7fad38; background-color:#7fad38;" >수정완료</button>
 					<button type="reset" class="btn btn-danger">되돌리기</button>
 					
 			</div>
