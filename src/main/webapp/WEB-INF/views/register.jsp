@@ -381,32 +381,44 @@ function clearError(obj) {
 function sendSMS() {
 
 	let result = false;
-	let tmpUserMobile = $("#phone").val();
+
 
 	 
 // 메인 폼의 SMS 관련 필드 값을 가져와 AJAX로 전송
-let mobile = $('#phone').val();
+let phone = $('#phone').val();
 //var textValue = document.getElementById('text').value;
 // 최근에는 변수의 스코프와 호이스팅 문제를 방지하기 위해 let과 const를 주로 사용. 
 // let은 재할당이 필요한 변수에, const는 상수나 재할당이 필요 없는 변수에 사용.
 // ES6(ECMAScript 2015)부터 도입되었으며, var 대신 let과 const를 사용하는 것이 권장. 
 // let과 const를 사용하여 변수를 선언할 때, 스코프와 호이스팅 문제를 더 잘 제어할 수 있다.
 
+
 $.ajax({
-  type: "POST",
-  url: "/member/coolsms/send-one",
-  data: {
-  	mobile : mobile,
-  },
-  success: function(response) {
-      console.log("문자 전송 성공:", success);
-      alert("문자가 성공적으로 전송되었습니다.");
-  },
-  error: function(error) {
-      console.error("문자 전송 실패:", fail);
-      alert("문자 전송에 실패했습니다.");
-  }
-});
+	  type: "POST",
+	  url: "/member/coolsms",
+	  data: {
+		  	phone : phone,
+		  },
+	  success: function(response, textStatus, xhr) {
+	    if (response == -1) {
+	      alert("SMS 전송 실패: 서버 오류 발생");
+	    } else if (response == null) {
+	      alert("SMS 전송 실패: API 서버 문제");
+	    } else {
+	      alert("SMS 전송 성공: 인증 코드 - " + response);
+	    }
+	  },
+	  error: function(error) {
+	    alert("AJAX 요청 실패");
+	    console.error("AJAX 요청 실패:", error);
+	  }
+	});
+
+
+
+
+
+
 }
 
   function isValid() {
