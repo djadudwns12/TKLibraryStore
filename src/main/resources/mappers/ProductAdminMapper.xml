@@ -49,8 +49,7 @@
 			<when test="sortBy == 'pubDate'">
 				order by  pubDate
 			</when>
-			
-		 
+					 
 		</choose>		
 		desc limit #{startRowIndex}, #{viewPostCntPerPage};
 	</select>

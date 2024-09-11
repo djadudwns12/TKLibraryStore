@@ -35,7 +35,6 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 	}
 	@Override
 	public List<ProductVO> getList(PagingInfo pi, String sortBy) {
-		System.out.println("===================이거 돌아가냐==================");
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("sortBy", sortBy);
 		params.put("startRowIndex",pi.getStartRowIndex());

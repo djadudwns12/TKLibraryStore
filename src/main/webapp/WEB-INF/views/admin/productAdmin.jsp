@@ -37,7 +37,7 @@
 				pageNo = parseInt(pageNo);
 			}
 			
-			location.href = '/admin/productAdmin?pagingSize='+ $(this).val() + '&pageNo=' + pageNo + '&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}';
+			location.href = '/admin/productAdmin?pagingSize='+ $(this).val() + '&pageNo=1&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}';
 		});
 		
 		
@@ -188,7 +188,7 @@ body {
 								<option value="inven">재고 많은순</option>
 								<option value="zzim">찜 많은순</option>
 								<option value="reviewCnt">리뷰 많은순</option>
-								<option value="pubDate">리뷰 많은순</option>
+								<option value="pubDate">최신순</option>
 							</select>
 						</div>
 					
@@ -257,7 +257,7 @@ body {
 					<c:if test="${param.pageNo > 1 }">
 						<li class="page-item"><a class="page-link"
 							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo-1}
-						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}">Previous</a></li>
+						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
 					</c:if>
 
 					<c:forEach var="i" begin="${pagingInfo.startPageNoCurBlock }"
@@ -265,18 +265,18 @@ body {
 						<c:choose>
 							<c:when test="${param.pageNo == i }">
 								<li class="page-item active" id="${i}"><a class="page-link"
-									href="/admin/productAdmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}">${i }</a></li>
+									href="/admin/productAdmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item" id="${i}"><a class="page-link"
-									href="/admin/productAdmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}">${i }</a></li>
+									href="/admin/productAdmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 
 					<c:if test="${param.pageNo < pagingInfo.totalPageCnt}">
 						<li class="page-item"><a class="page-link"
-							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo +1}">Next</a></li>
+							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo +1}&ra=${param.ra}">Next</a></li>
 					</c:if>
 				</ul>
 			</div>
