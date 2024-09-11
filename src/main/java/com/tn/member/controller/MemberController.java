@@ -4,7 +4,15 @@ package com.tn.member.controller;
 
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Random;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,10 +64,47 @@ public class MemberController {
 			e.printStackTrace();
 			 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(-1);  // -1로 에러 표시
 		}
-		
-		
-		
 	}
+	
+	
+	
+	@RequestMapping(value="/getAddr") 
+	public void getAddrApi(HttpServletRequest req, HttpServletResponse response){ 
+	    try {
+	        // 요청변수 설정 
+	        String currentPage = "1"; 
+	        String countPerPage = "10"; 
+	        String resultType = "json"; 
+	        String confmKey = PropertiesTask.getPropertiesValue("jusoConfmKey");  // IOException 발생 가능
+	        String keyword = req.getParameter("keyword"); 
+
+	        // API 호출 URL 정보 설정 
+	        String apiUrl = "https://business.juso.go.kr/addrlink/addrLinkApi.do?currentPage=" + currentPage +
+	                        "&countPerPage=" + countPerPage + 
+	                        "&keyword=" + URLEncoder.encode(keyword, "UTF-8") + 
+	                        "&confmKey=" + confmKey + 
+	                        "&resultType=" + resultType; 
+
+	        URL url = new URL(apiUrl);  
+	        BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8")); 
+	        StringBuffer sb = new StringBuffer(); 
+	        String tempStr = null; 
+	        while ((tempStr = br.readLine()) != null) { 
+	            sb.append(tempStr);  // 응답결과 JSON 저장  
+	        } 
+	        br.close(); 
+	        response.setCharacterEncoding("UTF-8"); 
+	        response.setContentType("text/xml"); 
+	        response.getWriter().write(sb.toString()); // 응답결과 반환 
+	    } catch (IOException e) {
+	        e.printStackTrace();  // IOException을 처리
+	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);  // 에러 상태를 반환
+	    }
+	}
+
+	
+	
+	
 		   
 	
 }
