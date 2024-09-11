@@ -141,8 +141,9 @@ body {
 [id$="Error"] {
     color: red;
     font-size: 12px;
-    position: relative; /* 요소의 위치를 기준으로 상대적인 위치 조정 */
-    top: -10px; /* 위쪽으로 20px 이동 */
+    position: relative; 
+    top: -10px;
+    
 }
 
 
@@ -201,7 +202,7 @@ body {
     background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 8px 16px; /* 패딩을 줄여서 크기 조정 */
+    padding: 8px 16px;
     margin: 0 5px;
     border-radius: 5px;
     cursor: pointer;
@@ -221,7 +222,7 @@ body {
     border: 1px solid #cccccc;
     padding: 8px;
     text-align: left;
-    font-size: 13px; /* 리스트 글자 크기 줄임 */
+    font-size: 13px; 
 }
 
 #list th {
@@ -233,7 +234,18 @@ body {
     font-size: 13px; /* 리스트 내부 텍스트 크기 */
 }
 
+input[readonly] {
+    background-color: #e9ecef; /* 회색 배경 */
+    color: #6c757d; /* 회색 텍스트 */
+}
 
+#timer {
+    color: red;
+    font-size: 12px;
+    position: relative; 
+    top: -10px; 
+    left: 157px;
+}
 
 </style>
 </head>
@@ -268,6 +280,7 @@ body {
     </div>
     
     <div id="phoneError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
+    <div id="timer"></div>
     
     <div class="form-group">
         <input type="email" id="email" name="email" placeholder="email@example.com" required>
@@ -366,10 +379,10 @@ function clearError(obj) {
 	  
 	    // 아이디에 키보드가 눌려졌을때 발생하는 이벤트
 	    // **on**은 이벤트 리스너를 지정하는 메서드입니다. 즉, 특정 태그(HTML 요소)에 대해 어떤 이벤트가 발생했을 때, 그 이벤트에 반응하여 함수를 실행하도록 연결해 줍니다. on("input")은 "input" 이벤트가 발생했을 때라는 의미입니다.
-	    $("#userId").on("input", function () {
-	      let tmpUserId = $("#userId").val();
+	    $('#userId').on('input', function () {
+	      let tmpUserId = $('#userId').val();
 	      if (tmpUserId.length < 4 || tmpUserId.length > 8) {
-	        outputError("아이디는 4~8자로 입력하세요.", $("#userId"));
+	        outputError("아이디는 4~8자로 입력하세요.", $('#userId'));
 	      } else {
 	    	  clearError($("#userId"));
 	/*         $.ajax({
@@ -398,43 +411,43 @@ function clearError(obj) {
 	      }
 	    });
 	  
-    $("#password").on("input", function () {
-      let tmpPwd = $("#password").val();
+    $('#password').on("input", function () {
+      let tmpPwd = $('#password').val();
       let passwordRegExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()])[a-zA-Z\d!@#$%^&*()]{8,20}$/;
 
       if (!passwordRegExp.test(tmpPwd)) {
-        outputError("영문/숫자/특수문자 조합 (8~20자)으로 입력하세요.", $("#password"));
+        outputError("영문/숫자/특수문자 조합 (8~20자)으로 입력하세요.", $('#password'));
       } else {
-    	  clearError($("#password"));
+    	  clearError($('#password'));
       }
     });
 
     // 패스워드 확인을 입력하고 blur 되었을때
-    $("#confirmPassword").on("input", function () {
+    $('#confirmPassword').on("input", function () {
       let tmpPwd = $("#password").val();
       if (tmpPwd != $(this).val()) {
-        outputError("패스워드 다릅니다.", $("#confirmPassword"));
+        outputError("패스워드 다릅니다.", $('#confirmPassword'));
       } else {
-    	  clearError($("#confirmPassword"));
+    	  clearError($('#confirmPassword'));
       }
     });
     
     
-    $("#phone").on("input", function () {
+    $('#phone').on("input", function () {
         let tmpPhone = $("#phone").val();
         let phoneRegExp = /^(01[016789]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
         if (!phoneRegExp.test(tmpPhone)) {
         	//$("#button-disabled").attr("cl", "button-disabled");
-        	$(".button-active").removeClass("button-active").addClass("button-disabled");
-			outputError("휴대폰 번호 형식이 아닙니다.", $("#phone"));
-			$("#sendSMSButton").removeAttr("onclick");
+        	$('.button-active').removeClass("button-active").addClass("button-disabled");
+			outputError("휴대폰 번호 형식이 아닙니다.", $('#phone'));
+			$('#sendSMSButton').removeAttr("onclick");
         } else {
         	 //$("#button-disabled").attr("id", "button-active");
         	 // 순수 JavaScript  : 추가: document.getElementById("element").classList.add("className"); 제거  : .classList.remove 토글 : .classList.toggle
         	 //클래스가 있으면 제거, 없으면 추가 (toggle 기능) : $("#element").toggleClass("className");
-        	 $(".button-disabled").removeClass("button-disabled").addClass("button-active");
-			clearError($("#phone"));
-			 $("#sendSMSButton").attr("onclick", "sendSMS()");
+        	 $('.button-disabled').removeClass("button-disabled").addClass("button-active");
+			clearError($('#phone'));
+			 $('#sendSMSButton').attr("onclick", "sendSMS()");
 			//addEventListener: 이벤트를 추가할 때, 동일한 이벤트에 대해 여러 개의 리스너를 추가할 수 있습니다. 즉, 동일한 이벤트에 대해 여러 개의 핸들러를 등록할 수 있으며, 나중에 필요하면 특정 리스너만 제거할 수도 있습니다.
 			//setAttribute: onclick과 같은 속성에 이벤트를 직접 추가합니다. 이 방법은 한 번에 하나의 이벤트 핸들러만 추가할 수 있습니다. 즉, 만약 동일한 이벤트에 대해 새로운 핸들러를 추가하려면, 이전 핸들러는 덮어쓰여집니다.
 			//document.getElementById("sendSMSButton").setAttribute("onclick", "sendSMS()");
@@ -453,13 +466,13 @@ function clearError(obj) {
     
     
     
-    $("#email").on("input", function () {
-        let tmpEmail = $("#email").val();
+    $('#email').on("input", function () {
+        let tmpEmail = $('#email').val();
         let emailRegExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
         if (!emailRegExp.test(tmpEmail)) {
-          outputError("이메일 주소 형식이 아닙니다!", $("#email"));
+          outputError("이메일 주소 형식이 아닙니다!", $('#email'));
         } else {
-      	  clearError($("#email"));
+      	  clearError($('#email'));
         }
       });
     
@@ -475,7 +488,7 @@ function clearError(obj) {
   
   
   
-  
+let code ='';
   
 function sendSMS() {
 
@@ -504,7 +517,22 @@ function sendSMS() {
 		    } else if (response == null) {
 		      alert("SMS 전송 실패: API 서버 문제");
 		    } else {
-		      alert("SMS 전송 성공: 인증 코드 - " + response);
+				alert("SMS 전송 성공: 인증 코드 - " + response);
+		      
+			      let htmlStr = '';  // 변수 초기화
+			      htmlStr += `<div class="form-group button-container">`;
+			      htmlStr += `<input type="text" id="verification" name="verification" placeholder="인증번호 입력" required>`;
+			      htmlStr += `<button type="button" id="verificationBtn" onclick="verificationCode();">인증번호 확인</button>`;
+			      htmlStr += `</div>`;
+
+			      // .smsButton-container 뒤에 htmlStr을 추가
+			      $('.smsButton-container').after(htmlStr); 
+			      $('#phone').prop("readonly", true);
+			      $('#sendSMSButton').removeAttr("onclick");
+			      startTimer();
+			      code = response;
+			      
+		  	
 		    }
 		  },
 		  error: function(error) {
@@ -520,10 +548,63 @@ function sendSMS() {
 	
 	}
 	
+let completed = false;	
+	
+function verificationCode() {
+	if(code == $('#verification').val()) {
+		completed = true;
+		console.log('인증성공');
+		$('#verificationBtn').prop('disabled', true);
+		$('#verificationBtn').addClass('button-disabled');
+		$('#verificationBtn').prop('readonly',true);
+		
+	} else {
+		alert('인증번호가 다릅니다.');
+	}
+	
+	
+}
 	
 	
 	
+
 	
+function startTimer() {
+    let timer = 180; 
+    let timerInterval = setInterval(() => {
+        
+        let min = Math.floor(timer / 60);  
+        let sec = String(timer % 60).padStart(2, '0'); 
+
+   
+        $('#timer').html(`남은시간 : \${min}:\${sec}`);
+
+
+        
+        if (timer <= 0) {
+            // clearInterval: setInterval에 의해 설정된 반복 실행을 중단
+            // 이 메서드는 setInterval 함수의 반환 값인 ID(timerInterval)를 사용하여 해당 반복을 중단함
+            clearInterval(timerInterval);  // 더 이상 타이머가 작동하지 않도록 반복 중지
+            
+            $('#verificationBtn').prop("disabled", true); // 인증 버튼을 비활성화
+            $('#verificationBtn').addClass("button-disabled");
+            alert('인증 시간이 만료되었습니다. 다시 시도하세요.');
+            // 타이머가 끝났을 때, 인증 시간이 만료되었음을 처리하는 함수 호출
+           
+        }
+        if (completed) {
+        	clearInterval(timerInterval);
+        	
+        }
+        
+        
+
+        // 타이머를 1초씩 감소
+        --timer; // 1초 감소
+    }, 1000);  // 1000ms (1초)마다 실행
+}
+
+
 	
 	
 	
@@ -819,6 +900,8 @@ const submitBtn = document.getElementById('submitBtn');
 termsCheckbox.addEventListener('change', () => {
     submitBtn.disabled = !termsCheckbox.checked;
 });
+
+
 
 
 $("form").on("submit", function (e) {
