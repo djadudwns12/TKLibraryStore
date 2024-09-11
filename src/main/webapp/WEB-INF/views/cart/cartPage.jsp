@@ -24,7 +24,46 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <script>
-
+	function showCartList() {
+		$.ajax({
+			url : '/cart/cartPage/' + '${sessionScope.loginMember.userId}',
+			type : 'get',
+			dataType : json,
+			async : false,
+			success : function(data) {
+				if(data.resultCode == 200) {
+					outputCartList(data);
+				}
+			},
+			error : function(data) {
+				consol.log(data);
+			}
+		});
+	}
+	
+	function outputCartList(data) {
+		let output = `<table class="table table-striped">`;
+		output += `<thead><tr><th>이미지</th><th>제목</th><th>원가</th><th>판매가</th><th>수량</th></tr></thead>`;
+		
+		$.each(data.data, function(i, cList) {
+			output += `<tr>`;
+			
+			output += `<td>\${cList.thumbNail}</td>`;
+			output += `<td>\${cList.title}</td>`;
+			output += `<td>\${cList.price}</td>`;
+			output += `<td>\${cList.salePrice}</td>`;
+			output += `<td>\${cList.qty}</td>`;
+			
+			output += `</tr>`;
+		});
+		
+		output += `</table>`;
+		
+		$('.outputCartArea').html(output);
+	}
+	
+	
+	
 </script>
 <body>
 	
@@ -32,30 +71,9 @@
 	
 	<div class="container">
 	
-	<table class="table table-hover">
-						<thead>
-							<tr>
-								<th>이미지</th>
-								<th>제목</th>
-								<th>원가</th>
-								<th>판매가</th>
-								<th>수량</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="cart" items="${userCartList}">
-								
-										<tr>
-											<td>${cart.thumbNail}</td>
-											<td>${cart.title}</td>
-											<td>${cart.price}</td>
-											<td>${cart.salePrice}</td>
-											<td>${cart.qty}</td>
-										</tr>
-
-							</c:forEach>
-						</tbody>
-					</table>
+	<div class="outputCartArea">
+	
+	</div>
 	
 	</div>
 

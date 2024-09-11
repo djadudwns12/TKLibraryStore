@@ -30,7 +30,7 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public List<CartDTO> getCartList(String userId) throws Exception {
-		System.out.println("CartServiceImpl : " + userId + "의 장바구니 리스트를 봐보자~");
+		System.out.println("CartServiceImpl : " + userId + " Cart List");
 		
 		List<CartDTO> list = cDao.selectCartList(userId);
 		

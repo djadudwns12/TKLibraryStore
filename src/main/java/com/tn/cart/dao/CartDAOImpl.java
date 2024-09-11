@@ -16,7 +16,7 @@ import org.apache.ibatis.session.SqlSession;
 public class CartDAOImpl implements CartDAO {
 
 	private final SqlSession ses;
-	private static final String NS = "com.miniproj.mappers.CartMapper";
+	private static final String NS = "com.tn.mapper.cartMapper";
 	
 	@Override
 	public int insertCart(CartDTO cDto) throws Exception {
@@ -27,7 +27,7 @@ public class CartDAOImpl implements CartDAO {
 	@Override
 	public List<CartDTO> selectCartList(String userId) throws Exception {
 		
-		System.out.println("CartDAOImpl~~ 가지고 온 userId : " + userId);
+		System.out.println("CartDAOImpl / " + userId + " Cart List");
 		
 		return ses.selectList(NS + ".getCartList", userId);
 	}
