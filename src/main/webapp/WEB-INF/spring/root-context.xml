@@ -55,6 +55,8 @@
 	
 	<context:component-scan	base-package="com.tn.member.service" />
 	<context:component-scan	base-package="com.tn.member.dao" />
+	<context:component-scan	base-package="com.tn.admin" />
+	
 		
 		
 		

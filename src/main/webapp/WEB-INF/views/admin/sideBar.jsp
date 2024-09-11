@@ -17,10 +17,10 @@
                         
                         <li class="nav-header">회원 관리</li>
                         <li class="nav-item"> <a href="./docs/introduction.html" class="nav-link"> <i class="nav-icon bi bi-download"></i>
-                                <p>ㅁㄴㅇㅁㄴㅇ</p>
+                                <p>asd</p>
                             </a> </li>
                         <li class="nav-item"> <a href="./docs/layout.html" class="nav-link"> <i class="nav-icon bi bi-grip-horizontal"></i>
-                                <p>ㅁㄴㅇㅁㄴㅇㅁㄴㅇ</p>
+                                <p>sda</p>
                             </a> </li>
                         
                             <ul class="nav nav-treeview">
@@ -52,28 +52,28 @@
                         
                         
                         <li class="nav-header">상품 관리</li>
-                        <li class="nav-item"> <a href="./docs/introduction.html" class="nav-link"> <i class="nav-icon bi bi-download"></i>
-                                <p>상품 관리</p>
+                        <li class="nav-item"> <a href="/admin/productAdmin" class="nav-link"> <i class="nav-icon bi bi-download"></i>
+                                <p>상품 목록</p>
                             </a> </li>
                         <li class="nav-item"> <a href="./docs/layout.html" class="nav-link"> <i class="nav-icon bi bi-grip-horizontal"></i>
-                                <p>회원 관리</p>
+                                <p>상품 등록</p>
                             </a> </li>
                         
                             <ul class="nav nav-treeview">
                                 <li class="nav-item"> <a href="./docs/components/main-header.html" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                        <p>Main Header</p>
+                                        <p>asd</p>
                                     </a> </li>
                                 <li class="nav-item"> <a href="./docs/components/main-sidebar.html" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                        <p>Main Sidebar</p>
+                                        <p>asd</p>
                                     </a> </li>
                             </ul>
                         </li>
                         
                         <li class="nav-item"> <a href="./docs/browser-support.html" class="nav-link"> <i class="nav-icon bi bi-browser-edge"></i>
-                                <p>Browser Support</p>
+                                <p>상품 통계</p>
                             </a> </li>
                         <li class="nav-item"> <a href="./docs/how-to-contribute.html" class="nav-link"> <i class="nav-icon bi bi-hand-thumbs-up-fill"></i>
-                                <p>How To Contribute</p>
+                                <p>또 뭐넣지</p>
                             </a> </li>
                         <li class="nav-item"> <a href="./docs/faq.html" class="nav-link"> <i class="nav-icon bi bi-question-circle-fill"></i>
                                 <p>FAQ</p>
