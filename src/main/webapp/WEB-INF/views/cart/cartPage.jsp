@@ -24,14 +24,20 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <script>
+	$(function(){
+		//showCartList();
+	});
+
+	/*
 	function showCartList() {
 		$.ajax({
 			url : '/cart/cartPage/' + '${sessionScope.loginMember.userId}',
 			type : 'get',
-			dataType : json,
+			dataType : 'json',
 			async : false,
 			success : function(data) {
 				if(data.resultCode == 200) {
+					console.log(data);
 					outputCartList(data);
 				}
 			},
@@ -61,7 +67,7 @@
 		
 		$('.outputCartArea').html(output);
 	}
-	
+	*/
 	
 	
 </script>
@@ -72,7 +78,7 @@
 	<div class="container">
 	
 	<div class="outputCartArea">
-	
+		${cartList }
 	</div>
 	
 	</div>
