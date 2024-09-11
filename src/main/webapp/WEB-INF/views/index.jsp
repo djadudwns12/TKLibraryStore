@@ -30,6 +30,7 @@
 	type="text/css">
 <link rel="stylesheet" href="resources/template/css/style.css"
 	type="text/css"> -->
+<script type="text/javascript" src="resources/js/category.js"/>
 </head>
 
 <body>
@@ -45,6 +46,22 @@
 	<script src="resources/template/js/mixitup.min.js"></script>
 	<script src="resources/template/js/owl.carousel.min.js"></script>
 	<script src="resources/template/js/main.js"></script> -->
+	<!-- <div class="category">
+		<select onchange="category(this)">
+			<option value="-1">선택</option>
+			<option value="05">인문</option>
+		</select>
+		중분류
+		<select id="mid_class" onchange="category(this)">
+		</select>
+		소분류
+		<select id="low_class">
+			<option value="-1">선택</option>
+		</select>
+	</div> -->
+	
+	
+	
 	
 	<c:import url="footer.jsp"></c:import>
 	
