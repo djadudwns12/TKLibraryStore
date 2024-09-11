@@ -24,66 +24,51 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <script>
-	$(function(){
+	$(function() {
 		//showCartList();
 	});
-
-	/*
-	function showCartList() {
-		$.ajax({
-			url : '/cart/cartPage/' + '${sessionScope.loginMember.userId}',
-			type : 'get',
-			dataType : 'json',
-			async : false,
-			success : function(data) {
-				if(data.resultCode == 200) {
-					console.log(data);
-					outputCartList(data);
-				}
-			},
-			error : function(data) {
-				consol.log(data);
-			}
-		});
-	}
-	
-	function outputCartList(data) {
-		let output = `<table class="table table-striped">`;
-		output += `<thead><tr><th>이미지</th><th>제목</th><th>원가</th><th>판매가</th><th>수량</th></tr></thead>`;
-		
-		$.each(data.data, function(i, cList) {
-			output += `<tr>`;
-			
-			output += `<td>\${cList.thumbNail}</td>`;
-			output += `<td>\${cList.title}</td>`;
-			output += `<td>\${cList.price}</td>`;
-			output += `<td>\${cList.salePrice}</td>`;
-			output += `<td>\${cList.qty}</td>`;
-			
-			output += `</tr>`;
-		});
-		
-		output += `</table>`;
-		
-		$('.outputCartArea').html(output);
-	}
-	*/
-	
-	
 </script>
 <body>
-	
+
 	<c:import url="../header.jsp"></c:import>
-	
+
 	<div class="container">
-	
-	<div class="outputCartArea">
-		${cartList }
-	</div>
-	
+
+		<div class="outputCartArea">${cartList}</div>
+
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>이미지</th>
+					<th>제목</th>
+					<th>원가</th>
+					<th>판매가</th>
+					<th>수량</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach var="cart" items="${cartList}">
+					
+							<tr>
+								<td><img src="${cart.thumbNail}" style="width:50px;" /></td>
+								<td><div>${cart.title}</div></td>
+								<td><div>${cart.price}</div></td>
+								<td><div>${cart.salePrice}</div></td>
+								<td><div>${cart.qty}</div></td>
+							</tr>
+				</c:forEach>
+				
+				<tr>
+					<td>전체 금액 계산하는 쿼리문</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		
+
 	</div>
 
-	
+
 	<c:import url="../footer.jsp"></c:import>
 
 
