@@ -67,6 +67,7 @@
 			let emailFormat = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
 			if(!emailFormat.test(tmpEmail)) {
 				outputError("이메일 주소형식이 아닙니다.", $('#email'));
+				$('#emailValid').val("");
 			} else {
 				// 2. 이메일 인증 : 인증메일을 보내고 문자를 입력받아서 검증한다
 				clearError($('#email')); // 이메일형식 유효성검사후 css원상복구
@@ -132,29 +133,67 @@
 		authDiv += `<label>이메일 인증코드</label>`;
 		authDiv += `<input type="text" class="form-control" id="emailAuthCode" placeholder="인증코드입력..." />`;
         authDiv += `<span class='timer'>1:00</span>`;
-        authDiv += `<button type="button" id="authBtn" class="btn btn-primary" onclick="checkAuthCode()" style='border-color:#7fad38; background-color:#7fad38;'>인증</button>`;
+        authDiv += `<button type="button" id="authBtn" class="btn btn-primary" onclick="checkEmailAuthCode()" style='border-color:#7fad38; background-color:#7fad38;'>인증</button>`;
         authDiv += `</div>`;
         
+        emailEdit = `<button type="button" id="emailEditBtn" class="btn btn-primary" onclick="editAuthEmail()" style='margin-left:10px; border-color:#7fad38; background-color:#7fad38;'>이메일 변경</button>`;
         $(authDiv).insertAfter($("#email"));
 	}
 	
 	function sendAuthMail() {
 		$.ajax({
-			url: "/member/sendAuthMail", // 데이터가 송수신될 서버의 주소
-            type: "post", // 통신 방식 : GET, POST, PUT, DELETE, PATCH
-            dataType: "text", // 수신 받을 데이터의 타입 (text, xml, json)
+			url: "/member/sendAuthMail", 
+            type: "post",
+            dataType: "text",
             data: {
               "tmpEmail" : $("#email").val()
             },
             success: function(data) {
-				// 비동기 통신에 성공하면 자동으로 호출될 callback function
 				console.log(data);
-				if (data == 'emailAuthSuccess') {
+				if (data == 'emailAuthSend') {
 					alert("이메일로 인증코드를 발송했습니다..");
- 					$('#emailAuth').focus();
+					$('#email').attr("readonly", true);
+ 					$('#emailAuthCode').focus();
 				}
             }
 		});
+	}
+	
+	function checkEmailAuthCode() {
+		let userAuthCode = $('#emailAuthCode').val();
+		$.ajax({
+			url:'/member/checkEmailAuthCode',
+			type:'post',
+			dataType:'text',
+			data:{
+				"userAuthCode":userAuthCode
+			},
+	        success: function (data) {
+				console.log(data);
+				if (data == 'success') {
+					alert("인증 성공!");
+	                $('#email').attr("readonly", true);
+	                $('#emailAuth').remove();
+	                $('#emailEditBtn').remove();
+	                $('#emailValid').val("checked");
+	                
+				} else if (data == 'fail')  {
+					alert("인증코드가 틀렸습니다. 다시 입력해주세요.");
+					$('#emailValid').val("");
+				} else if (data == 'isNull') {
+					alert("인증코드를 입력해주세요!");
+					$('#emailValid').val("");
+				}
+			}
+		});
+	}
+	
+	// 이메일 인증요청메일 발송 후 이메일을 다시 변경하고 싶을 때
+	function editAuthEmail() {
+		$('#email').removeAttr("readonly");
+		$('#emailAuth').remove();
+		$('#emailValid').val("");
+		$('#emailAuth').focus();
 	}
 </script>
 
@@ -215,6 +254,7 @@
 			<div class="input-group mb-3">
 				<label>이메일</label>
 				<input type="email" class="form-control" id="email" name="email" value="${editMemberInfo.email}" />
+            	<button type="button" id="emailEditBtn" class="btn btn-primary" onclick="editAuthEmail()" style='margin-left:10px; border-color:#7fad38; background-color:#7fad38;'>이메일 변경</button>
             	<input type="hidden" id="emailValid" value="checked"/>
             </div>
 
