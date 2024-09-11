@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.member.service.MemberService;
 import com.tn.member.service.SendMailService;
@@ -95,8 +96,9 @@ public class MemberController {
 	 * @description : 
 	*/
 	@RequestMapping(value="/mypage")
-	public void saveEditInfo(MemberVO editMember, RedirectAttributes redirectAttributes) {
-		System.out.println("수정내용을 저장");
+	public void saveEditInfo(MemberDTO editMember, RedirectAttributes redirectAttributes) {
+//		System.out.println("MemberController : 수정내용을 저장 :" + editMember.toString());
+		
 		try {
 			mService.saveEditInfo(editMember);
 			redirectAttributes.addAttribute("status", "editSuccess");
@@ -113,12 +115,31 @@ public class MemberController {
 		String authCode = UUID.randomUUID().toString();
 		System.out.println("인증코드 : " + authCode);
 		try {
-			new SendMailService().sendMail(tmpEmail, authCode);
-			return new ResponseEntity<String>("emailAuthSuccess", HttpStatus.OK);
+//			new SendMailService().sendMail(tmpEmail, authCode); // 실제 메일 보내는 기능 구현 완료
+			session.setAttribute("emailAuthCode", authCode);
+			System.out.println(session);
+			return new ResponseEntity<String>("emailAuthSend", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>("emailAuthFail", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("emailSendFail", HttpStatus.BAD_REQUEST);
 		}
 	
+	}
+	
+	@RequestMapping("/checkEmailAuthCode")
+	public ResponseEntity<String> checkAuthMail(@RequestParam("userAuthCode")String userAuthCode, HttpSession session) {
+		System.out.println(userAuthCode + "인증코드 가져옴, 세션에 저장된 인증코드와 비교" + session.getAttribute("authCode"));
+		String result = "fail";
+		if (session.getAttribute("emailAuthCode") != null) {
+			String sesAuthCode = (String) session.getAttribute("emailAuthCode");
+			if (userAuthCode.equals(sesAuthCode)) {
+				result = "success";
+				session.removeAttribute("authCode");
+			}
+		} else {
+			result="isNull";
+		}
+		return new ResponseEntity<String>(result, HttpStatus.OK);
+		
 	}
 }

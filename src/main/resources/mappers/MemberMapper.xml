@@ -15,6 +15,6 @@
   	
   	<!-- 수정된 회원정보를 DB에 저장한는 쿼리문 -->
   	<update id="updateEditMember">
-  		update Member set userPwd=#{userPwd}, userName=#{userName}, userBirth=#{userBirth}, phoneNum=#{phoneNum}, email=#{email} where userId=#{userId}
+  		update Member set userPwd=#{userPwd}, userBirth=#{userBirth}, phoneNum=#{phoneNum}, email=#{email} where userId=#{userId}
   	</update>
   </mapper>

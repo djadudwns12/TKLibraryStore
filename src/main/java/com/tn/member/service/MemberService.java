@@ -3,6 +3,7 @@ package com.tn.member.service;
 import java.util.List;
 import java.util.Map;
 
+import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.vo.MemberVO;
 
 public interface MemberService {
@@ -13,5 +14,5 @@ public interface MemberService {
 	MemberVO getEditMemberInfo(String userId) throws Exception;
 	
 	// 수정된 회원정보를 업데이트하는 메서드
-	boolean saveEditInfo(MemberVO editMember) throws Exception;
+	boolean saveEditInfo(MemberDTO editMember) throws Exception;
 }

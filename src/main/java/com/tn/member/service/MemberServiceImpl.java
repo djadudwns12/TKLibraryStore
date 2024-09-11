@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tn.member.dao.MemberDAO;
 import com.tn.member.dao.MemberDAOImpl;
+import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.vo.MemberVO;
 
 @Service
@@ -30,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public boolean saveEditInfo(MemberVO editMember) throws Exception {
+	public boolean saveEditInfo(MemberDTO editMember) throws Exception {
 		System.out.println("Service : 회원정보수정 저장 >> " + editMember.toString() );
 		boolean result = false;
 		if(dao.updateEditMember(editMember) == 1) {

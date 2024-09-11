@@ -3,6 +3,7 @@ package com.tn.member.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.vo.MemberVO;
 
 public interface MemberDAO {
@@ -13,7 +14,7 @@ public interface MemberDAO {
 	MemberVO getEditMemberInfo(String userId) throws Exception;
 	
 	// 수정된 회원정보를 업데이트하는 메서드
-	int updateEditMember(MemberVO editMember) throws Exception;
+	int updateEditMember(MemberDTO editMember) throws Exception;
 	
 	
 	
