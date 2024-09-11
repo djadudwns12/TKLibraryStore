@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,30 +34,44 @@ public class CartController {
 	private CartService cService;
 	
 	@RequestMapping("/cartPage")
-	public String goCart(@RequestParam("userId") String userId) {
-		return userId;
-	}
-	
-	@GetMapping("/cartPage/{userId}")
-	public ResponseEntity showCartList(@PathVariable("userId") String userId, HttpSession ses) {
-		
-		System.out.println("CartController / " + userId + " Cart List");
+	public String goCart(@RequestParam("userId") String userId, Model model) {
 		
 		ResponseEntity result = null;
 		
 		try {
 			List<CartDTO> list = cService.getCartList(userId);
 			
-			result = new ResponseEntity(MyResponseWithData.success(list), HttpStatus.OK);
+			model.addAttribute("cartList", list);
 		} catch (Exception e) {
 			e.printStackTrace();
 			
-			result = new ResponseEntity(MyResponseWithData.fail(), HttpStatus.BAD_REQUEST);
+			
 		}
 		
-		return result;
+		
+		return "/cart/cartPage";
 	}
 	
+//	@GetMapping(value="/cartPage/{userId}", produces="application/json; charset=utf-8")
+//	public ResponseEntity showCartList(@PathVariable("userId") String userId, HttpSession ses) {
+//		
+//		System.out.println("CartController / " + userId + " Cart List");
+//		
+////		ResponseEntity result = null;
+////		
+////		try {
+////			List<CartDTO> list = cService.getCartList(userId);
+////			
+////			result = new ResponseEntity(MyResponseWithData.success(list), HttpStatus.OK);
+////		} catch (Exception e) {
+////			e.printStackTrace();
+////			
+////			result = new ResponseEntity(MyResponseWithData.fail(), HttpStatus.BAD_REQUEST);
+////		}
+////		
+////		return result;
+//	}
+//	
 
 	
 
