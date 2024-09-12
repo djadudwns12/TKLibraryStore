@@ -26,6 +26,13 @@
 	<context:component-scan base-package="com.tn.member.controller" />
 	<context:component-scan base-package="com.tn.admin.controller" />
 	
+	<!-- Cart -->
+	<context:component-scan base-package="com.tn.cart.controller" />
+	<context:component-scan base-package="com.tn.cart.dao" />
+	<context:component-scan base-package="com.tn.cart.model.dto" />
+	<context:component-scan base-package="com.tn.cart.model.vo" />
+	<context:component-scan base-package="com.tn.cart.service" />
+	
 	<!-- 인터셉터가 동작하는 매핑 주소 설정 -->
 	<beans:bean id="loginInterceptor" class="com.tn.interceptor.LoginInterceptor" />
 	

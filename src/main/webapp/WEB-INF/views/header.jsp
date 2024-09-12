@@ -19,26 +19,21 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- Css Styles -->
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/template/css/jquery-ui.min.css"
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/jquery-ui.min.css"
+	type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/bootstrap.min.css"
+	type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/elegant-icons.css"
+	type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/nice-select.css"
+	type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/slicknav.min.css"
 	type="text/css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/template/css/owl.carousel.min.css"
 	type="text/css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/template/css/bootstrap.min.css"
-	type="text/css">
-<link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/template/css/font-awesome.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/template/css/elegant-icons.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/template/css/nice-select.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/template/css/slicknav.min.css"
 	type="text/css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/template/css/style.css"
@@ -55,7 +50,7 @@
 	<div class="humberger__menu__overlay"></div>
 	<div class="humberger__menu__wrapper">
 		<div class="humberger__menu__logo">
-			<a href="#"><img src="resources/template/img/logo.png" alt=""></a>
+			<a href="#"><img src="${pageContext.request.contextPath}/resources/template/img/logo.png" alt=""></a>
 		</div>
 		<div class="humberger__menu__cart">
 			<ul>
@@ -151,7 +146,7 @@
 										class="fa fa-heart">로그아웃</i> <span>1</span></a></li>
 							</c:if>
 							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-							<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+							<li><a href="/cart/cartPage?userId=<%= request.getAttribute("userId") %>"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
 						</ul>
 					</div>
 				</div>
@@ -230,22 +225,14 @@
 	<!-- Hero Section End -->
 
 	<!-- Js Plugins -->
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/jquery-3.3.1.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/bootstrap.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/jquery.nice-select.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/jquery-ui.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/jquery.slicknav.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/mixitup.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/owl.carousel.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/main.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/js/jquery-3.3.1.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/js/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/js/jquery.nice-select.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/js/jquery-ui.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/js/jquery.slicknav.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/js/mixitup.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/js/owl.carousel.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/js/main.js"></script>
 </body>
 
 <style>
