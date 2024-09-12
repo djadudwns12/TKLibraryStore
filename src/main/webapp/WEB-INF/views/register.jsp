@@ -804,11 +804,10 @@ function serializeDiv(divId) {
 
 
 
-const termsCheckbox = document.getElementById('terms');
-const submitBtn = document.getElementById('submitBtn');
-
-termsCheckbox.addEventListener('change', () => {
-    submitBtn.disabled = !termsCheckbox.checked;
+$(document).ready(function() {
+    $('#terms').change(function() {
+        $('#submitBtn').prop('disabled', !$(this).is(':checked'));
+    });
 });
 
 
