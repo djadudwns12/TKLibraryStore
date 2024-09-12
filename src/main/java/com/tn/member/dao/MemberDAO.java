@@ -3,19 +3,18 @@ package com.tn.member.dao;
 import java.util.List;
 import java.util.Map;
 
+
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.vo.MemberVO;
 
 public interface MemberDAO {
-
-	List<Map<String, String>> getMember();
 	
-	// È¸¿øÁ¤º¸¼öÁ¤À» À§ÇØ È¸¿øÁ¤º¸¸¦ ºÒ·¯¿À´Â ¸Þ¼­µå
+	public List<Map<String, String>> getMember();
+	
+	public MemberVO getMember(String userId, String userPwd) throws Exception;
+  // È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
 	MemberVO getEditMemberInfo(String userId) throws Exception;
 	
-	// ¼öÁ¤µÈ È¸¿øÁ¤º¸¸¦ ¾÷µ¥ÀÌÆ®ÇÏ´Â ¸Þ¼­µå
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½Ï´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
 	int updateEditMember(MemberDTO editMember) throws Exception;
-	
-	
-	
 }

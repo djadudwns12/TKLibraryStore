@@ -1,5 +1,6 @@
 package com.tn.member.controller;
 
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
@@ -10,6 +11,18 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Random;
+
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -19,6 +32,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,50 +45,40 @@ import com.tn.member.model.vo.MemberVO;
 import com.tn.member.service.MemberService;
 import com.tn.member.service.SendMailService;
 
+
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.tn.util.PropertiesTask;
+
+import lombok.RequiredArgsConstructor;
+import net.nurigo.sdk.NurigoApp;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
+import net.nurigo.sdk.message.response.SingleMessageSentResponse;
+import net.nurigo.sdk.message.service.DefaultMessageService;
+
 @Controller
 @RequestMapping("/member")
 public class MemberController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
 	@Autowired
-	MemberService mService;
-	
-
-//	@RequestMapping(value = "/", method = RequestMethod.GET)
-//	public String home(Locale locale, Model model) {
-//		logger.info("Welcome home! The client locale is {}.", locale);
-//		
-//		Date date = new Date();
-//		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-//		
-//		String formattedDate = dateFormat.format(date);
-//		
-//		
-//		//test.getMember();
-//		
-//		model.addAttribute("serverTime", formattedDate );
-//		
-//		
-//		
-//		
-//		
-//		return "index";
-//	}
-	
+	private MemberService mService;
+		
 	/**
-	 * @ÀÛ¼ºÀÚ : ÃÖ¹Ì¼³
-	 * @ÀÛ¼ºÀÏ : 2024. 9. 6.
+	 * @ì‘ì„±ì : ìµœë¯¸ì„¤
+	 * @ì‘ì„±ì¼ : 2024. 9. 6.
 	 * @method_name : getMemberInfo
-	 * @param :String userId(·Î±×ÀÎ ±â´É ±¸Çö ÀÌÈÄ ¼¼¼Ç¿¡¼­ ·Î±×ÀÎ Á¤º¸ ¹Ş¾Æ¿Í¼­ ÆÄ¶ó¹ÌÅÍ·Î ¹ŞÀ» ¿¹Á¤)
+	 * @param :String userId(ë¡œê·¸ì¸ ê¸°ëŠ¥ êµ¬í˜„ ì´í›„ ì„¸ì…˜ì—ì„œ ë¡œê·¸ì¸ ì •ë³´ ë°›ì•„ì™€ì„œ íŒŒë¼ë¯¸í„°ë¡œ ë°›ì„ ì˜ˆì •)
 	 * @param :Model model
 	 * @return : memberVO
 	 * @throws : 
-	 * @description : È¸¿øÁ¤º¸¼öÁ¤À» À§ÇØ È¸¿øÁ¤º¸¸¦ ºÒ·¯¿À´Â ¸Ş¼­µå, 
+	 * @description : íšŒì›ì •ë³´ìˆ˜ì •ì„ ìœ„í•´ íšŒì›ì •ë³´ë¥¼ ë¶ˆëŸ¬ì˜¤ëŠ” ë©”ì„œë“œ, 
 	*/
 	@RequestMapping(value="/edit")
 	public void getEditMemeberInfo(Model model) {
-		String userId = "dooly"; // ·Î±×ÀÎ ±â´É ±¸Çö ÀÌÈÄ¿¡.....
+		String userId = "dooly"; // ë¡œê·¸ì¸ ê¸°ëŠ¥ êµ¬í˜„ ì´í›„ì—.....
 		try {
 			MemberVO editMemberInfo = mService.getEditMemberInfo(userId);
 			System.out.println(editMemberInfo.toString());
@@ -86,18 +90,57 @@ public class MemberController {
 	}
 	
 	/**
-	 * @ÀÛ¼ºÀÚ : ÃÖ¹Ì¼³
-	 * @ÀÛ¼ºÀÏ : 2024. 9. 9.
-	 * @method_name : saveEditInfo
-	 * @param :
-	 * @param :
-	 * @return :
-	 * @throws : 
-	 * @description : 
-	*/
+	 * @ì‘ì„±ì : ì—„ì˜ì¤€
+	 * @ì‘ì„±ì¼ : 2024. 9. 9. 
+	 * @í´ë˜ìŠ¤ëª… : tnbookstore
+	 * @ë©”ì„œë“œëª… : loginPage
+	 * @param
+	 * @param
+	 * @return : void
+	 * @throws 
+	 * @description : ë¡œê·¸ì¸ í˜ì´ì§€ë¡œ ì´ë™í•˜ëŠ” ë©”ì„œë“œ
+	 *
+	 */
+	@RequestMapping("/loginPage")
+	public void loginPage() {
+		System.out.println("ë¡œê·¸ì¸ í˜ì´ì§€ë¡œ ì´ë™");
+	}
+	
+	/**
+	 * @ì‘ì„±ì : ì—„ì˜ì¤€
+	 * @ì‘ì„±ì¼ : 2024. 9. 9. 
+	 * @í´ë˜ìŠ¤ëª… : tnbookstore
+	 * @ë©”ì„œë“œëª… : login
+	 * @param
+	 * @param
+	 * @return : void
+	 * @throws 
+	 * @description : íšŒì›ì„ ë¡œê·¸ì¸ ì‹œí‚¤ëŠ” ë©”ì„œë“œ
+	 *
+	 */
+	@RequestMapping(value = "/login",method = RequestMethod.POST)
+	public void login(@RequestParam("userId") String userId , @RequestParam("userPwd") String userPwd,HttpSession session) {
+		System.out.println(userId+": "+ userPwd);
+		// ë¡œê·¸ì¸ ì‹œí‚¤ëŠ” ë©”ì„œë“œ
+		try {
+			MemberVO loginMember = mService.loginMember(userId,userPwd);
+			
+			if(loginMember != null) {
+				System.out.println(loginMember);
+				// ë¡œê·¸ì¸ í•œ ìœ ì € ì„¸ì…˜ì— ì €ì¥í•˜ê¸°
+				session.setAttribute("loginMember", loginMember);
+			}
+			else { // ë¡œê·¸ì¸ ì‹¤íŒ¨ì‹œ 
+				System.out.println("ë¡œê·¸ì¸ ì‹¤íŒ¨");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}	
+  
 	@RequestMapping(value="/mypage")
 	public void saveEditInfo(MemberDTO editMember, RedirectAttributes redirectAttributes) {
-//		System.out.println("MemberController : ¼öÁ¤³»¿ëÀ» ÀúÀå :" + editMember.toString());
 		
 		try {
 			mService.saveEditInfo(editMember);
@@ -111,11 +154,9 @@ public class MemberController {
 	
 	@RequestMapping("/sendAuthMail")
 	public ResponseEntity<String> sendAuthMail(@RequestParam("tmpEmail") String tmpEmail, HttpSession session) {
-//		System.out.println("Member Controller : " + tmpEmail + "·Î ÀÎÁõ¸ŞÀÏÀ» º¸³À´Ï´Ù.");
 		String authCode = UUID.randomUUID().toString();
-		System.out.println("ÀÎÁõÄÚµå : " + authCode);
 		try {
-//			new SendMailService().sendMail(tmpEmail, authCode); // ½ÇÁ¦ ¸ŞÀÏ º¸³»´Â ±â´É ±¸Çö ¿Ï·á
+//			new SendMailService().sendMail(tmpEmail, authCode); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½
 			session.setAttribute("emailAuthCode", authCode);
 			System.out.println(session);
 			return new ResponseEntity<String>("emailAuthSend", HttpStatus.OK);
@@ -128,7 +169,6 @@ public class MemberController {
 	
 	@RequestMapping("/checkEmailAuthCode")
 	public ResponseEntity<String> checkAuthMail(@RequestParam("userAuthCode")String userAuthCode, HttpSession session) {
-		System.out.println(userAuthCode + "ÀÎÁõÄÚµå °¡Á®¿È, ¼¼¼Ç¿¡ ÀúÀåµÈ ÀÎÁõÄÚµå¿Í ºñ±³" + session.getAttribute("authCode"));
 		String result = "fail";
 		if (session.getAttribute("emailAuthCode") != null) {
 			String sesAuthCode = (String) session.getAttribute("emailAuthCode");
@@ -140,4 +180,89 @@ public class MemberController {
 		return new ResponseEntity<String>(result, HttpStatus.OK);
 		
 	}
+	/**
+	 * @ì‘ì„±ì : 802-10
+	 * @ì‘ì„±ì¼ : 2024. 9. 9. 
+	 * @í´ë˜ìŠ¤ëª… : tnbookstore
+	 * @ë©”ì„œë“œëª… : logout
+	 * @param
+	 * @param
+	 * @return : void
+	 * @throws 
+	 * @description : ë¡œê·¸ì•„ì›ƒì‹œí‚¤ëŠ” ë©”ì„œë“œ
+	 *
+	 */
+	@RequestMapping(value = "/logout")
+	public String logout(HttpSession session) {
+		System.out.println("ë¡œê·¸ì•„ì›ƒ ì´ì „ì˜ ì„¸ì…˜ê°’ : "+session.getId());
+		
+		if(session.getAttribute("loginMember") != null) {
+			// ì„¸ì…˜ì— ì €ì¥í–ˆë˜ ê°’ë“¤ì„ ì§€ìš°ê³ , 
+			session.removeAttribute("loginMember");
+			// ì„¸ì…˜ ë¬´íš¨í™”
+			session.invalidate();
+		}
+		
+		System.out.println("ë¡œê·¸ì•„ì›ƒ ì´í›„ì˜ ì„¸ì…˜ê°’ : "+session.getId()); // ë¡œê·¸ì•„ì›ƒ í•œë‹¤ê³  ì„¸ì…˜ì´ ì‚¬ë¼ì§€ì§€ëŠ” ì•ŠëŠ”ë‹¤. ì„¸ì…˜ì˜ ê°’ë§Œ ë¬´íš¨í™”
+		
+		return "redirect:/";
+  }
+	
+	
+	
+
+	@RequestMapping(value="/register")
+	   public String registerMember() {
+		
+			return "register";
+		}
+	
+	
+	@RequestMapping(value = "/coolsms" , method = RequestMethod.POST)
+	public ResponseEntity<Integer> coolSms(@RequestParam("phone") String phone) {
+		System.out.println("ì»¨íŠ¸ë¡¤ í™•ì¸");
+		try {
+			return mService.sendOne(phone);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(-1);  // -1ë¡œ ì—ëŸ¬ í‘œì‹œ
+		}
+
+	}
+	
+	@RequestMapping(value="/getAddr") 
+	public void getAddrApi(HttpServletRequest req, HttpServletResponse response){ 
+	    try {
+	        // ìš”ì²­ë³€ìˆ˜ ì„¤ì • 
+	        String currentPage = "1"; 
+	        String countPerPage = "10"; 
+	        String resultType = "json"; 
+	        String confmKey = PropertiesTask.getPropertiesValue("jusoConfmKey");  // IOException ë°œìƒ ê°€ëŠ¥
+	        String keyword = req.getParameter("keyword"); 
+
+	        // API í˜¸ì¶œ URL ì •ë³´ ì„¤ì • 
+	        String apiUrl = "https://business.juso.go.kr/addrlink/addrLinkApi.do?currentPage=" + currentPage +
+	                        "&countPerPage=" + countPerPage + 
+	                        "&keyword=" + URLEncoder.encode(keyword, "UTF-8") + 
+	                        "&confmKey=" + confmKey + 
+	                        "&resultType=" + resultType; 
+
+	        URL url = new URL(apiUrl);  
+	        BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8")); 
+	        StringBuffer sb = new StringBuffer(); 
+	        String tempStr = null; 
+	        while ((tempStr = br.readLine()) != null) { 
+	            sb.append(tempStr);  // ì‘ë‹µê²°ê³¼ JSON ì €ì¥  
+	        } 
+	        br.close(); 
+	        response.setCharacterEncoding("UTF-8"); 
+	        response.setContentType("text/xml"); 
+	        response.getWriter().write(sb.toString()); // ì‘ë‹µê²°ê³¼ ë°˜í™˜ 
+	    } catch (IOException e) {
+	        e.printStackTrace();  // IOExceptionì„ ì²˜ë¦¬
+	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);  // ì—ëŸ¬ ìƒíƒœë¥¼ ë°˜í™˜
+	    }
+	}
+
 }

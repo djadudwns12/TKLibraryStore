@@ -26,13 +26,13 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/nice-select.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/slicknav.min.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/style.css" type="text/css">
+  
+<script type="text/javascript" src="resources/js/category.js"/>
 </head>
 
 <body>
 	
 	<c:import url="header.jsp"></c:import>
-
-
 	
 	<c:import url="footer.jsp"></c:import>
 	

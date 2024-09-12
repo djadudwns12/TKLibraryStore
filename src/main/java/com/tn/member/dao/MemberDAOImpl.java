@@ -1,5 +1,7 @@
 package com.tn.member.dao;
 
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,14 +9,16 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.vo.MemberVO;
 
 @Repository
-public class MemberDAOImpl implements MemberDAO{
+public class MemberDAOImpl implements MemberDAO  {
+
 
 	@Autowired
-	SqlSession sess;
+	private SqlSession sess;
 	
 	private String NS = "com.tn.mapper.memberMapper";
 	
@@ -29,7 +33,7 @@ public class MemberDAOImpl implements MemberDAO{
 	@Override
 	public MemberVO getEditMemberInfo(String userId) throws Exception {
 		
-		System.out.println("È¸¿øÁ¤º¸¼öÁ¤ : ·Î±×ÀÎÇÑ " + userId + "ÀÇ Á¤º¸¸¦ ºÒ·¯¿À±â");
+		System.out.println("È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : ï¿½Î±ï¿½ï¿½ï¿½ï¿½ï¿½ " + userId + "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½");
 		return sess.selectOne(NS + ".getEditMemberInfo", userId);
 	}
 
@@ -39,6 +43,14 @@ public class MemberDAOImpl implements MemberDAO{
 		return sess.update(NS + ".updateEditMember", editMember);
 	}
 	
+	public MemberVO getMember(String userId, String userPwd) throws Exception {
+		Map<String, String> loginMember = new HashMap<>();
+		
+		loginMember.put("userId", userId);
+		loginMember.put("userPwd", userPwd);
+	
+		return sess.selectOne(NS+".getLoginMember", loginMember);
+	}
 	
 	
 }

@@ -21,12 +21,30 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<context:component-scan base-package="com.tn.controller" />
+	<context:component-scan base-package="com.tn.category.controller" />
 	<context:component-scan base-package="com.tn.member.controller" />
 	<context:component-scan base-package="com.tn.admin.controller" />
 	<context:component-scan base-package="com.tn.controller" /> <!-- 최미설 : No mapping found error in dispatcher servlet 오류나서 홈 컨트롤러 만들었어요 지워도 됨 -->
 	
-	<!-- 인터셉터가 동작하는 매핑 주소 설정 -->
+	<!-- Cart -->
+	<context:component-scan base-package="com.tn.cart.controller" />
+	<context:component-scan base-package="com.tn.cart.dao" />
+	<context:component-scan base-package="com.tn.cart.model.dto" />
+	<context:component-scan base-package="com.tn.cart.model.vo" />
+	<context:component-scan base-package="com.tn.cart.service" />
 	
+	<!-- 인터셉터가 동작하는 매핑 주소 설정 -->
+	<beans:bean id="loginInterceptor" class="com.tn.interceptor.LoginInterceptor" />
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/member/loginPage"/>
+			<mapping path="/member/login"/>
+			<beans:ref bean="loginInterceptor" />
+		</interceptor>
+	
+	</interceptors>
 	
 	
 </beans:beans>
