@@ -61,7 +61,7 @@
 			}
 		});
 		// 이메일을 입력하고 blur되었을 때
-  		$("#email").blur(function emailValid(){
+	   	$("#email").blur(function emailValid(){
 			// 1. 이메일 주소형식 확인
 			let tmpEmail = $('#email').val();
 			let emailFormat = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
@@ -77,8 +77,18 @@
 				// 코드 확인하기
 				
 			}
-		}); 
+		});
+		
+		$('#emailEditBtn').click(function emailEdit(){
+			// 이메일 변경버튼을 클릭했을 때
+			$('#email').removeAttr("disabled");
+			$('#email').removeAttr("readonly");
+			$('#emailValid').val("");
+			$('#email').focus();
+		});
 	});
+	
+//===============================인풋태그 오입력 처리=====================================//
 	// 에러가 난 태그의 선색상을 빨간색으로
 	function outputError(msg, obj) {
         let errorTag = `<div class='error'>\${msg}</div>`;
@@ -91,21 +101,22 @@
       $(".error").remove();
       $(obj).css("border", ""); // css를 원래 상태로
     }
- 
+//==================================수정완료버튼 클릭시=========================================//
 	// 아래의 조건이 모두 만족할 때 회원수정 진행되도록
 	function isValid(){
 		// 빈칸 없음, 비밀번호 확인, 이메일 변경시 이메일 인증 진행
 		let pwdCheck = pwdValid();
 		let birthCheck = birthValid();
 		let emailCheck = emailValid();
-		if(pwdCheck && birthCheck ){
+//		let mobileCheck = mobileValid();
+		if(pwdCheck && birthCheck && emailCheck){
 			return true;
 		} else {
 			return false;
 		}
-		
 	}
 
+	// 생년월일 입력 확인
 	function birthValid(){
 		let userBirth = Date($('#userBirth').val());
 		let today = new Date();
@@ -118,6 +129,7 @@
 		}
 	}
 	
+	// 비밀번호 확인
 	function pwdValid(){
 		if ($("#pwdValid").val() == 'checked') {
 			return true;
@@ -127,6 +139,26 @@
 		}
 	}
 	
+	// 이메일 확인
+	function emailValid(){
+		// 1. 이메일 주소형식 확인
+		let tmpEmail = $('#email').val();
+		let emailFormat = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+		if(!emailFormat.test(tmpEmail)) {
+			outputError("이메일 주소형식이 아닙니다.", $('#email'));
+			$('#emailValid').val("");
+		} else {
+			// 2. 이메일 인증 : 인증메일을 보내고 문자를 입력받아서 검증한다
+			clearError($('#email')); // 이메일형식 유효성검사후 css원상복구
+			showAuthDiv(); // 이메일 인증코드 입력 태그 생성
+			sendAuthMail(); // 이메일 보내기
+			// 타이머 동작시키기
+			// 코드 확인하기
+			
+		}
+	}
+	
+	// 이메일 인증
 	function showAuthDiv() {
 		alert('이메일로 인증코드를 발송했습니다. \n인증코드를 입력해주세요.');
 		authDiv = `<div class='input-group mb-3' id='emailAuth'>`;
@@ -135,11 +167,11 @@
         authDiv += `<span class='timer'>1:00</span>`;
         authDiv += `<button type="button" id="authBtn" class="btn btn-primary" onclick="checkEmailAuthCode()" style='border-color:#7fad38; background-color:#7fad38;'>인증</button>`;
         authDiv += `</div>`;
-        
-        emailEdit = `<button type="button" id="emailEditBtn" class="btn btn-primary" onclick="editAuthEmail()" style='margin-left:10px; border-color:#7fad38; background-color:#7fad38;'>이메일 변경</button>`;
-        $(authDiv).insertAfter($("#email"));
+
+        $(authDiv).insertAfter($("#emailEditBtn"));
 	}
 	
+	// 인증메일 전송
 	function sendAuthMail() {
 		$.ajax({
 			url: "/member/sendAuthMail", 
@@ -152,13 +184,14 @@
 				console.log(data);
 				if (data == 'emailAuthSend') {
 					alert("이메일로 인증코드를 발송했습니다..");
-					$('#email').attr("readonly", true);
+					$('#email').attr("disabled", true);
  					$('#emailAuthCode').focus();
 				}
             }
 		});
 	}
 	
+	// 인증코드 확인
 	function checkEmailAuthCode() {
 		let userAuthCode = $('#emailAuthCode').val();
 		$.ajax({
@@ -172,29 +205,17 @@
 				console.log(data);
 				if (data == 'success') {
 					alert("인증 성공!");
-	                $('#email').attr("readonly", true);
+	                $('#email').attr("disabled", true);
 	                $('#emailAuth').remove();
-	                $('#emailEditBtn').remove();
 	                $('#emailValid').val("checked");
-	                
-				} else if (data == 'fail')  {
+				} else {
 					alert("인증코드가 틀렸습니다. 다시 입력해주세요.");
-					$('#emailValid').val("");
-				} else if (data == 'isNull') {
-					alert("인증코드를 입력해주세요!");
 					$('#emailValid').val("");
 				}
 			}
 		});
 	}
-	
-	// 이메일 인증요청메일 발송 후 이메일을 다시 변경하고 싶을 때
-	function editAuthEmail() {
-		$('#email').removeAttr("readonly");
-		$('#emailAuth').remove();
-		$('#emailValid').val("");
-		$('#emailAuth').focus();
-	}
+
 </script>
 
 <style>
@@ -253,8 +274,8 @@
             </div>
 			<div class="input-group mb-3">
 				<label>이메일</label>
-				<input type="email" class="form-control" id="email" name="email" value="${editMemberInfo.email}" />
-            	<button type="button" id="emailEditBtn" class="btn btn-primary" onclick="editAuthEmail()" style='margin-left:10px; border-color:#7fad38; background-color:#7fad38;'>이메일 변경</button>
+				<input type="email" class="form-control" id="email" name="email" value="${editMemberInfo.email}" disabled/>
+            	<button type="button" id="emailEditBtn" class="btn btn-primary" style='margin-left:10px; border-color:#7fad38; background-color:#7fad38;'>이메일 변경</button>
             	<input type="hidden" id="emailValid" value="checked"/>
             </div>
 

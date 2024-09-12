@@ -136,8 +136,6 @@ public class MemberController {
 				result = "success";
 				session.removeAttribute("authCode");
 			}
-		} else {
-			result="isNull";
 		}
 		return new ResponseEntity<String>(result, HttpStatus.OK);
 		
