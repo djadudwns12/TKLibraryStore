@@ -801,6 +801,19 @@ function serializeDiv(divId) {
 
 
 
+
+
+
+const termsCheckbox = document.getElementById('terms');
+const submitBtn = document.getElementById('submitBtn');
+
+termsCheckbox.addEventListener('change', () => {
+    submitBtn.disabled = !termsCheckbox.checked;
+});
+
+
+
+
 $("form").on("submit", function (e) {
 	  // 모든 Error 태그가 숨겨져 있는지 확인
 	  let allErrorsHidden = true;
