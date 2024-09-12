@@ -29,7 +29,7 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		
 		// 강사님이 풀어주신 예제에 있던 StringUtils.isNullOrEmpty가 mariadb에는 없습니다.
 		if(searchCriteria.getSearchType() == null || searchCriteria.getSearchWord() == null || 
-			searchCriteria.getSearchType() == "" || searchCriteria.getSearchWord() == ""	) {
+			searchCriteria.getSearchType() == "" || searchCriteria.getSearchWord() == "") {
 			if(sortBy.equals("default")) {
 				
 				list = pDao.getList(pi);

@@ -9,12 +9,6 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://kit.fontawesome.com/b948e77617.js"
 	crossorigin="anonymous"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap"
-	rel="stylesheet">
 <!-- Load icon library -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -292,9 +286,24 @@ body {
 
 
 </body>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap"
+	rel="stylesheet">
 <style>
 <!--
-폰트 영역 --><!--페이지 영역-->.page-link {
+폰트 영역 -->
+*{
+	font-family: "Gowun Batang", serif;
+	font-weight: 400;
+	font-style: normal;
+}
+
+<!--페이지 영역-->
+.page-link {
 	color: #999;
 	background-color: #000;
 	border-color: #444;
