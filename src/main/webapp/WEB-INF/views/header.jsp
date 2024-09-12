@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,23 +16,27 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
 	rel="stylesheet">
-
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- Css Styles -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/jquery-ui.min.css"
 	type="text/css">
-<link rel="stylesheet"
-	href="resources/template/css/owl.carousel.min.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/bootstrap.min.css"
 	type="text/css">
-<link rel="stylesheet"
-	href="resources/template/css/font-awesome.min.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/elegant-icons.css"
 	type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/nice-select.css"
 	type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/slicknav.min.css"
 	type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/style.css"
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/template/css/owl.carousel.min.css"
+	type="text/css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/template/css/font-awesome.min.css"
+	type="text/css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/template/css/style.css"
 	type="text/css">
 </head>
 
@@ -131,6 +135,16 @@
 				<div class="col-lg-3">
 					<div class="header__cart">
 						<ul>
+							<c:if test="${sessionScope.loginMember == null}">
+								<li><a
+									href="${pageContext.request.contextPath}/member/loginPage"><i
+										class="fa fa-heart">로그인</i> <span>1</span></a></li>
+							</c:if>
+							<c:if test="${sessionScope.loginMember != null}">
+								<li><a
+									href="${pageContext.request.contextPath}/member/logout"><i
+										class="fa fa-heart">로그아웃</i> <span>1</span></a></li>
+							</c:if>
 							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
 							<li><a href="/cart/cartPage?userId=<%= request.getAttribute("userId") %>"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
 						</ul>
@@ -189,6 +203,21 @@
 							</div>
 						</div>
 					</div>
+					<!-- 카테고리 -->
+					<div id="category_young">
+							<select id="high_class" onchange="category(this)">
+								<option value="-1">선택</option>
+								<option value="05">인문</option>
+							</select>
+							<!-- 중분류 -->
+							<select id="mid_class" onchange="category(this)">
+								<option value="-1">선택</option>
+							</select>
+							<!-- 소분류 -->
+							<select id="low_class">
+								<option value="-1">선택</option>
+							</select>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -206,4 +235,10 @@
 	<script src="${pageContext.request.contextPath}/resources/template/js/main.js"></script>
 </body>
 
+<style>
+div#category_young {
+	display: flex;
+	justify-content: flex-start;
+}
+</style>
 </html>
