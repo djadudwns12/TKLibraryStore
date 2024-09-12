@@ -41,8 +41,11 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 			}
 						
 		} else {
-			
-			list = pDao.selectAllBoard(pi, searchCriteria);
+			if(sortBy.equals("default")) {
+				list = pDao.selectAllBoard(pi, searchCriteria);
+			} else {
+				list = pDao.selectAllBoard(pi, searchCriteria, sortBy);
+			}
 		}
 		
 		resultMap.put("pagingInfo", pi);
