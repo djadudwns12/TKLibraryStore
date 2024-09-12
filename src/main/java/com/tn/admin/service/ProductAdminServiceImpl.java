@@ -42,7 +42,7 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 						
 		} else {
 			
-			//list = pDao.selectAllBoard(pi, searchCriteria);
+			list = pDao.selectAllBoard(pi, searchCriteria);
 		}
 		
 		resultMap.put("pagingInfo", pi);
@@ -63,6 +63,7 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 			pi.setTotalPostCnt(pDao.getTotalPostCnt());		// 전체 데이터 수 세팅
 		} else { 
 			pi.setTotalPostCnt(pDao.getTotalPostCnt(sc)); 	
+			System.out.println(pDao.getTotalPostCnt(sc));
 		}
 			
 		pi.setTotalPageCnt();								// 전체 페이지 수 세팅
@@ -73,7 +74,6 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		pi.setStartPageNoCurBlock();
 		pi.setEndPageNoCurBlock();
 		
-		System.out.println(pi.toString());
 		
 		return pi;
 	}

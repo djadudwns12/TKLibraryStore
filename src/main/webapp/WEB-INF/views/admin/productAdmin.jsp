@@ -46,6 +46,23 @@
 		let productList = '${param.productList}';
 		console.log(productList);
 	}
+	
+	function isValid() {
+		// 검색 버튼을 눌렀을 때 searchType == -1 이거나 , searchWord에 ''이면 
+		// 검색어가 제대로 입력되지 않았으므로 백엔드 단으로 데이터를 넘기면 안된다
+		
+		let result = false;
+		if($('#searchType').val() == -1 || $('#searchWord').val() == ''){
+			alert('검색 조건과 검색어를 입력해 주세요');
+			$('#searchType').focus();
+			return result;
+		} else {
+			result = true;
+		}
+		
+		return result;
+		
+	}
 </script>
 
 <style>
@@ -139,25 +156,27 @@ body {
 			<jsp:include page="header.jsp" />
 
 			<div class="content">
-				<h1 class="jemok">productlist</h1>
+				<h1 class="jemok">ProductList</h1>
 
 
 				<!-- The form -->
-				<form class="search" action="action_page.php">
+				<form class="search"style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: center;" 
+				action="/admin/productAdmin" method="post">
 						
 						<div>
-							<select class="searchConditions">
-								<option>검색 조건</option>
-								<option value="">제목</option>
-								<option value="">작가</option>
-								<option value="">내용</option>
-								<option value="">장르</option>
+							<select class="searchType" name="searchType" id="searchType" style="text-align: center">
+								<option value="-1">검색 조건</option>
+								<option value="title">제목</option>
+								<option value="author">작가</option>
+								<option value="introduction">내용</option>
+								<option value="genre">장르</option>
+								<option value="publisher">출판사</option>
 							</select>
 						</div>
 					<section>
 						
-						<div class="searchBar">
-							<input type="text" placeholder="검색어를 입력하세요.">
+						<div class="searchBar" style="margin-right: 20px;">
+							<input type="text" class="searchWord"  name="searchWord" id="searchWord" placeholder="검색어를 입력하세요.">
 							<div class="searchIcon">
 								<i class="fas fa-search"></i>
 							</div>
@@ -169,13 +188,15 @@ body {
 							</div>
 
 						</div>
-
-						
-						
-
+						<input
+					type="hidden" name="pageNo" value="${param.pageNo}" /> <input
+					type="hidden" name="pagingSize" value="${param.pagingSize}" />
 					</section>
+						<button type="submit" class="btn btn-outline-dark btn" onclick="return isValid()">검색</button>
+					</form>
 					
-					<div class="boardC">
+					<div style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: right; margin-bottom: 50px;">
+						<div class="boardC" >
 							<select class="form-select sortByWhat" id="sortByWhat" style="width: 150px ">
 								<option value="default">기본 정렬</option>
 								<option value="salePrice">가격 높은순</option>
@@ -186,7 +207,7 @@ body {
 							</select>
 						</div>
 					
-					<div class="boardControll">
+						<div class="boardControll">
 							<select class="form-select pagingSize" id="pagingSize" style="width: 150px ">
 								<option value="0">정렬 기준</option>
 								<option value="10">10개씩 보기</option>
@@ -195,8 +216,8 @@ body {
 								<option value="40">40개씩 보기</option>
 							</select>
 						</div>
-						
-				</form>
+					</div>
+				
 
 
 
@@ -270,7 +291,8 @@ body {
 
 					<c:if test="${param.pageNo < pagingInfo.totalPageCnt}">
 						<li class="page-item"><a class="page-link"
-							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo +1}&ra=${param.ra}">Next</a></li>
+							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo+1}
+						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Next</a></li>
 					</c:if>
 				</ul>
 			</div>
@@ -323,13 +345,18 @@ body {
 	border-color: #444;
 }
 
-.searchConditions {
+.searchType {
 	border: 1px solid rgba(128, 128, 128, 0.2);
 	border-radius: 22px;
 	position: relative;
 	display: flex;
 	width: 150px;
 	height: 44px;
+}
+
+.btn{
+	border: 1px solid rgba(128, 128, 128, 0.2);
+	border-radius: 22px;
 }
 
 <!--

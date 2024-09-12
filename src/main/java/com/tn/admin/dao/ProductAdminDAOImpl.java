@@ -30,7 +30,7 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 	}
 	@Override
 	public int getTotalPostCnt(SearchCriteriaDTO sc) throws Exception{
-		
+		sc.setSearchWord("%"+sc.getSearchWord()+"%");
 		return ses.selectOne(NS + ".selectTotalCountWithSearchCriteria", sc);
 	}
 	@Override
@@ -41,6 +41,16 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		params.put("viewPostCntPerPage", pi.getViewPostCntPerPage());
 		
 		return ses.selectList(NS + ".getProductBySortby",params);
+	}
+	@Override
+	public List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("searchType", searchCriteria.getSearchType());
+		params.put("searchWord", "%" +searchCriteria.getSearchWord()+ "%");
+		params.put("startRowIndex",pi.getStartRowIndex());
+		params.put("viewPostCntPerPage", pi.getViewPostCntPerPage());
+		
+		return ses.selectList(NS + ".getSearchProductWithPaging", params);
 	}
 	
 

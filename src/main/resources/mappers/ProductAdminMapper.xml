@@ -26,6 +26,12 @@
 			<when test="searchType == 'introduction'">
 				where introduction like #{searchWord}
 			</when>
+			<when test="searchType == 'genre'">
+				where genre like #{searchWord}
+			</when>
+			<when test="searchType == 'publisher'">
+				where publisher like #{searchWord}
+			</when>
 		</choose>
 	</select>
 	
@@ -52,5 +58,29 @@
 					 
 		</choose>		
 		desc limit #{startRowIndex}, #{viewPostCntPerPage};
+	</select>
+	
+	<!-- 검색어가 있을 때 리스트가져오기 -->
+	<select id="getSearchProductWithPaging"
+		resultType="com.tn.admin.model.vo.ProductVO">
+		select * from BookList
+		<choose>
+			<when test="searchType == 'title'">
+				where title like #{searchWord}
+			</when>
+			<when test="searchType == 'author'">
+				where author like #{searchWord}
+			</when>
+			<when test="searchType == 'introduction'">
+				where introduction like #{searchWord}
+			</when>
+			<when test="searchType == 'genre'">
+				where genre like #{searchWord}
+			</when>
+			<when test="searchType == 'publisher'">
+				where publisher like #{searchWord}
+			</when>
+		</choose>
+		 limit #{startRowIndex}, #{viewPostCntPerPage}
 	</select>
   </mapper>

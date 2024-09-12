@@ -20,5 +20,7 @@ public interface ProductAdminDAO {
 
 	List<ProductVO> getList(PagingInfo pi, String sortBy) throws Exception;
 
+	List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria);
+
 
 }

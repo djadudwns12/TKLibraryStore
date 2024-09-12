@@ -54,21 +54,20 @@ public class AdminController {
 			@RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize, 
 			@RequestParam(value="ra", defaultValue = "default") String sortBy, SearchCriteriaDTO searchCriteria) {
 		
+		System.out.println( searchCriteria.toString()+ "을 검색하자");
 		PagingInfoDTO dto = PagingInfoDTO.builder().pageNo(pageNo).pagingSize(pagingSize).build();
-
+		System.out.println(dto.getPagingSize() +  "페이징정보?" + dto.getPageNo());
 		Map<String, Object> result = null;
 		
 		try {			
 				result = pService.listAll(dto, searchCriteria, sortBy); 
 				PagingInfo pi = (PagingInfo) result.get("pagingInfo");			
 				List<ProductVO> list = (List<ProductVO>) result.get("productList");
-				
+				//System.out.println(pi.toString());
 				
 				model.addAttribute("productList", list); // 데이터 바인딩
 				model.addAttribute("pagingInfo", pi);
-				
-						
-			//model.addAttribute("search", searchCriteria);
+				model.addAttribute("search", searchCriteria);
 			} catch (Exception e) {
 			
 			e.printStackTrace();
