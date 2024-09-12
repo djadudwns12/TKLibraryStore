@@ -103,7 +103,7 @@
     }
 //==================================수정완료버튼 클릭시=========================================//
 	// 아래의 조건이 모두 만족할 때 회원수정 진행되도록
-	function isValid(){
+/*  	function isValid(){
 		// 빈칸 없음, 비밀번호 확인, 이메일 변경시 이메일 인증 진행
 		let pwdCheck = pwdValid();
 		let birthCheck = birthValid();
@@ -114,7 +114,7 @@
 		} else {
 			return false;
 		}
-	}
+	}  */
 
 	// 생년월일 입력 확인
 	function birthValid(){
