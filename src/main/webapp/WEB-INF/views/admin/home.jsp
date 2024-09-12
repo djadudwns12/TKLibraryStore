@@ -11,7 +11,7 @@
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 	<!--begin::App Wrapper-->
-	
+
 	<div class="app-wrapper">
 		<!--begin::Header-->
 		<div class="sideBar">
@@ -19,12 +19,17 @@
 		</div>
 		<div class="header">
 			<jsp:include page="header.jsp" />
+
+			<div class="content">
+				<h1>안녕하세요</h1>
+			</div>
 		</div>
-		
+
+		<div></div>
 
 
 
-		<div class="content"></div>
+
 	</div>
 </body>
 </html>
