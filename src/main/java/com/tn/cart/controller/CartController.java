@@ -52,27 +52,5 @@ public class CartController {
 		return "/cart/cartPage";
 	}
 	
-//	@GetMapping(value="/cartPage/{userId}", produces="application/json; charset=utf-8")
-//	public ResponseEntity showCartList(@PathVariable("userId") String userId, HttpSession ses) {
-//		
-//		System.out.println("CartController / " + userId + " Cart List");
-//		
-////		ResponseEntity result = null;
-////		
-////		try {
-////			List<CartDTO> list = cService.getCartList(userId);
-////			
-////			result = new ResponseEntity(MyResponseWithData.success(list), HttpStatus.OK);
-////		} catch (Exception e) {
-////			e.printStackTrace();
-////			
-////			result = new ResponseEntity(MyResponseWithData.fail(), HttpStatus.BAD_REQUEST);
-////		}
-////		
-////		return result;
-//	}
-//	
-
-	
 
 }
