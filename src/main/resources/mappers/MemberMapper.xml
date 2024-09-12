@@ -12,4 +12,13 @@
   		select * from Member where userId = #{userId} and userPwd = #{userPwd}
   	</select>
   	
+  	<!-- 회원정보수정을 위해 회원정보를 얻어오는 쿼리문 -->
+  	<select id="getEditMemberInfo" resultType="com.tn.member.model.vo.MemberVO">
+  		select userPwd, userName, userBirth, phoneNum, email from Member where userId=#{userId}
+  	</select>
+  	
+  	<!-- 수정된 회원정보를 DB에 저장한는 쿼리문 -->
+  	<update id="updateEditMember">
+  		update Member set userPwd=#{userPwd}, userBirth=#{userBirth}, phoneNum=#{phoneNum}, email=#{email} where userId=#{userId}
+  	</update>
   </mapper>

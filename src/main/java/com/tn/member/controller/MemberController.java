@@ -1,18 +1,27 @@
 package com.tn.member.controller;
 
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.UUID;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
 
 
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,13 +33,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-import com.tn.member.model.vo.MemberVO;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tn.member.model.dto.MemberDTO;
+import com.tn.member.model.vo.MemberVO;
 import com.tn.member.service.MemberService;
+import com.tn.member.service.SendMailService;
+
+
+import org.springframework.web.bind.annotation.PostMapping;
+
 import com.tn.util.PropertiesTask;
 
 import lombok.RequiredArgsConstructor;
@@ -39,7 +56,6 @@ import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
-
 
 @Controller
 @RequestMapping("/member")
@@ -71,12 +87,6 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	@RequestMapping(value="/mypage")
-	public void saveEditInfo() {
-		System.out.println("수정내용을 저장해보자");
-
 	}
 	
 	/**
@@ -127,8 +137,49 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}	
   
+	@RequestMapping(value="/mypage")
+	public void saveEditInfo(MemberDTO editMember, RedirectAttributes redirectAttributes) {
+		
+		try {
+			mService.saveEditInfo(editMember);
+			redirectAttributes.addAttribute("status", "editSuccess");
+		} catch (Exception e) {
+			e.printStackTrace();
+			redirectAttributes.addAttribute("status", "editFail");
+		}
+		
+	}
+	
+	@RequestMapping("/sendAuthMail")
+	public ResponseEntity<String> sendAuthMail(@RequestParam("tmpEmail") String tmpEmail, HttpSession session) {
+		String authCode = UUID.randomUUID().toString();
+		try {
+//			new SendMailService().sendMail(tmpEmail, authCode); // ���� ���� ������ ��� ���� �Ϸ�
+			session.setAttribute("emailAuthCode", authCode);
+			System.out.println(session);
+			return new ResponseEntity<String>("emailAuthSend", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("emailSendFail", HttpStatus.BAD_REQUEST);
+		}
+	
+	}
+	
+	@RequestMapping("/checkEmailAuthCode")
+	public ResponseEntity<String> checkAuthMail(@RequestParam("userAuthCode")String userAuthCode, HttpSession session) {
+		String result = "fail";
+		if (session.getAttribute("emailAuthCode") != null) {
+			String sesAuthCode = (String) session.getAttribute("emailAuthCode");
+			if (userAuthCode.equals(sesAuthCode)) {
+				result = "success";
+				session.removeAttribute("authCode");
+			}
+		}
+		return new ResponseEntity<String>(result, HttpStatus.OK);
+		
+	}
 	/**
 	 * @작성자 : 802-10
 	 * @작성일 : 2024. 9. 9. 
@@ -180,8 +231,6 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 
 	}
 	
-	
-	
 	@RequestMapping(value="/getAddr") 
 	public void getAddrApi(HttpServletRequest req, HttpServletResponse response){ 
 	    try {
@@ -216,9 +265,4 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 	    }
 	}
 
-	
-	
-	
-		   
-	
 }

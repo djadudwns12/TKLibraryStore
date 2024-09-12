@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tn.member.dao.MemberDAO;
+
+import com.tn.member.dao.MemberDAOImpl;
+import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.vo.MemberVO;
 
 import java.io.IOException;
@@ -23,6 +26,9 @@ import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
+
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -44,9 +50,19 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public MemberVO getEditMemberInfo(String userId) {
-		// TODO Auto-generated method stub
-		return null;
+	public MemberVO getEditMemberInfo(String userId) throws Exception {
+		
+		return dao.getEditMemberInfo(userId);
+	}
+
+	@Override
+	public boolean saveEditInfo(MemberDTO editMember) throws Exception {
+		System.out.println("Service : ȸ���������� ���� >> " + editMember.toString() );
+		boolean result = false;
+		if(dao.updateEditMember(editMember) == 1) {
+			result = true;
+		}		
+		return result;
 	}
 
 	@Override
@@ -87,7 +103,6 @@ public class MemberServiceImpl implements MemberService {
         return code;
     }
 		
-
 
 
 }

@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,6 +12,7 @@
 <title>Ogani | Template</title>
 
 <!-- Google Font -->
+
 <link
 	href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
 	rel="stylesheet">
@@ -38,6 +38,14 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/template/css/style.css"
 	type="text/css">
+<style>
+    div#category_young {
+      display: flex;
+      justify-content: flex-start;
+    }
+</style>
+  
+  
 </head>
 
 <body>
@@ -63,7 +71,7 @@
 		</div>
 		<div class="humberger__menu__widget">
 			<div class="header__top__right__language">
-				<img src="resources/template/img/language.png" alt="">
+				<img src="${pageContext.request.contextPath}/resources/template/img/language.png" alt="">
 				<div>English</div>
 				<span class="arrow_carrot-down"></span>
 				<ul>
@@ -112,7 +120,7 @@
 				<div class="col-lg-3">
 					<div class="header__logo">
 						<a href="./index.html"><img
-							src="resources/template/img/logo.png" alt=""></a>
+							src="${pageContext.request.contextPath}/resources/template/img/logo.png" alt=""></a>
 					</div>
 				</div>
 				<div class="col-lg-6">
@@ -235,10 +243,5 @@
 	<script src="${pageContext.request.contextPath}/resources/template/js/main.js"></script>
 </body>
 
-<style>
-div#category_young {
-	display: flex;
-	justify-content: flex-start;
-}
-</style>
+
 </html>
