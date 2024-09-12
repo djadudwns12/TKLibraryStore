@@ -1,15 +1,22 @@
 package com.tn.member.service;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.tn.member.dao.MemberDAO;
+import com.tn.member.model.vo.MemberVO;
+
 import java.io.IOException;
 import java.util.Random;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.tn.util.PropertiesTask;
-
 import lombok.RequiredArgsConstructor;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
@@ -20,12 +27,34 @@ import net.nurigo.sdk.message.service.DefaultMessageService;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
-	final DefaultMessageService messageService;
+	@Autowired
+  private MemberDAO dao;
 	
-    public MemberServiceImpl() throws IOException {
+  final DefaultMessageService messageService;
+  
+  public MemberServiceImpl() throws IOException {
         this.messageService = NurigoApp.INSTANCE.initialize(PropertiesTask.getPropertiesValue("coolSmsKey"), PropertiesTask.getPropertiesValue("coolSmsSecret"), "https://api.coolsms.co.kr");
-    }
+  }  
 	
+  @Override
+	@Transactional(readOnly = true)
+	public List<Map<String, String>> getMember() {
+		// TODO Auto-generated method stub
+		return dao.getMember();
+	}
+
+	@Override
+	public MemberVO getEditMemberInfo(String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MemberVO loginMember(String userId, String userPwd) throws Exception {
+		
+		return dao.getMember(userId,userPwd);
+	}
+  
 	@Override
 	public ResponseEntity<Integer> sendOne(String phone) throws Exception {
 		System.out.println("샌드원 확인");
@@ -48,8 +77,7 @@ public class MemberServiceImpl implements MemberService {
 		
 	}
 		
-		
-	 int createCode() {
+	private int createCode() {
         // 간단한 예시로 6자리 숫자 코드 생성
 		//0.0(포함)부터 1.0(제외)
         //int code = (int) (Math.random() * 900000) + 100000;
@@ -59,6 +87,7 @@ public class MemberServiceImpl implements MemberService {
         return code;
     }
 		
+
 
 
 }
