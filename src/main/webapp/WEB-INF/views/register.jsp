@@ -708,7 +708,7 @@ function changePage(page) {
 	// }
 	
 	function selectAddress(address) {
-	    $("#addressDetail").val(address);
+	    $("#keyword").val(address);
 	    $("#list").css('display', 'none')
 	    modal.style.display = "none";
 	    
