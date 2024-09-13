@@ -20,6 +20,12 @@
 		
 		
 		// 비밀번호 변경을 위해 userPwd에 비밀번호를 입력하고 blur 되었을 때 > 비밀번호 양식 확인
+		
+/* 		/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()])[a-zA-Z\d!@#$%^&*()]{8,20}$
+
+		위는 비밀번호 정규 표현식 입니다.
+		"영문/숫자/특수문자 조합 (8~20자)으로 입력하세요." */
+		
 		$('#userPwd').blur(function() {
 			let tmpPwd = $('#userPwd').val();
 			if(tmpPwd.length < 4 || tmpPwd.length > 8){
@@ -81,7 +87,7 @@
 		
 		$('#emailEditBtn').click(function emailEdit(){
 			// 이메일 변경버튼을 클릭했을 때
-			$('#email').removeAttr("disabled");
+			$('#email').removeAttr("readonly");
 			$('#email').removeAttr("readonly");
 			$('#emailValid').val("");
 			$('#email').focus();
@@ -184,7 +190,7 @@
 				console.log(data);
 				if (data == 'emailAuthSend') {
 					alert("이메일로 인증코드를 발송했습니다..");
-					$('#email').attr("disabled", true);
+					$('#email').attr("readonly", true);
  					$('#emailAuthCode').focus();
 				}
             }
@@ -205,7 +211,7 @@
 				console.log(data);
 				if (data == 'success') {
 					alert("인증 성공!");
-	                $('#email').attr("disabled", true);
+	                $('#email').attr("readonly", true);
 	                $('#emailAuth').remove();
 	                $('#emailValid').val("checked");
 				} else {
@@ -274,7 +280,7 @@
             </div>
 			<div class="input-group mb-3">
 				<label>이메일</label>
-				<input type="email" class="form-control" id="email" name="email" value="${editMemberInfo.email}" disabled/>
+				<input type="email" class="form-control" id="email" name="email" value="${editMemberInfo.email}" readonly/>
             	<button type="button" id="emailEditBtn" class="btn btn-primary" style='margin-left:10px; border-color:#7fad38; background-color:#7fad38;'>이메일 변경</button>
             	<input type="hidden" id="emailValid" value="checked"/>
             </div>
