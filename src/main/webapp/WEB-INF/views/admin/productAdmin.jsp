@@ -63,6 +63,35 @@
 		return result;
 		
 	}
+	
+	function selectAll(selectAll)  {
+		  const checkboxes 
+		     = document.querySelectorAll('input[type="checkbox"]');
+		  // forEach 메서드를 사용하여 모든 체크박스 요소를 순회하면서, 각 체크박스의 checked 속성을 selectAll.checked 값으로 설정합니다.
+		  // 즉, '전체 선택' 체크박스가 체크되면 모든 체크박스도 체크되고, 선택 해제되면 모든 체크박스가 선택 해제됩니다.
+		  checkboxes.forEach((checkbox) => {
+		    checkbox.checked = selectAll.checked
+		  })
+		}
+	
+	function deleteProduct() {
+	    let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
+	    if (pro_check == 0) {
+	        alert('하나 이상의 제품을 선택해주세요.');
+	        return false;
+	    }
+	    if (confirm("제출하시겠습니까?")) {
+	        let delNo = [];
+	        $('input:checkbox[name=proCheck]').each(function (index) {
+	            if ($(this).is(":checked") == true) {
+	                delNo = $(this).val();
+	                console.log(delNo);
+	            }
+	        }); // <-- 여기 닫는 괄호 추가
+	    } else {
+	        alert("제출실패");
+	    }
+	}
 </script>
 
 <style>
@@ -77,8 +106,9 @@
 table {
 	border-collapse: separate;
 	border-spacing: 0;
-	width: 1300px;
+	width: 1600px;
 	margin-left: 30px;
+	text-align: center;
 }
 
 th, td {
@@ -88,7 +118,7 @@ th, td {
 th {
 	background: #42444e;
 	color: #fff;
-	text-align: left;
+	text-align: center;
 }
 
 tr:first-child th:first-child {
@@ -102,6 +132,7 @@ tr:first-child th:last-child {
 td {
 	border-right: 1px solid #c6c9cc;
 	border-bottom: 1px solid #c6c9cc;
+	text-align: center;
 }
 
 td:first-child {
@@ -227,6 +258,7 @@ body {
 				<table>
 					<thead>
 						<tr>
+							<th><input type="checkbox" onclick="selectAll(this)"> selectAll </th>
 							<th>BookNo</th>
 							<th>Title</th>
 							<th>Author</th>
@@ -239,12 +271,15 @@ body {
 							<th>ThumbNail</th>
 							<th>Zzim</th>
 							<th>ReviewCnt</th>
+							
+							<th><button type="button" class="btn btn-danger btn" style="width:90px; font-size:small;" onclick="deleteProduct();">선택 삭제</button></th> 
 
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="product" items="${productList}">
 							<tr>
+								<td><input type="checkbox" name="proCheck" value=${product.bookNo}/></td>
 								<td>${product.bookNo}</td>
 								<td>${product.title}</td>
 								<td>${product.author}</td>
@@ -258,6 +293,7 @@ body {
 									height="80"></td>
 								<td>${product.zzim}</td>
 								<td>${product.reviewCnt}</td>
+								<td colspan="2"><button type="submit" class="btn btn-secondary btn" style="width:70px;">수정</button></td>
 							</tr>
 						</c:forEach>
 
@@ -270,6 +306,9 @@ body {
 				<ul class="pagination">
 
 					<c:if test="${param.pageNo > 1 }">
+						<li class="page-item"><a class="page-link"
+							href="/admin/productAdmin?pageNo=1
+						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> << </a></li>
 						<li class="page-item"><a class="page-link"
 							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo-1}
 						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
@@ -293,17 +332,16 @@ body {
 						<li class="page-item"><a class="page-link"
 							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo+1}
 						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Next</a></li>
+						
+						<li class="page-item"><a class="page-link"
+							href="/admin/productAdmin?pageNo=${pagingInfo.totalPageCnt}
+						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> >> </a></li>
 					</c:if>
 				</ul>
 			</div>
 
 
 		</div>
-
-
-
-
-
 	</div>
 
 
@@ -316,6 +354,7 @@ body {
 	href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap"
 	rel="stylesheet">
 <style>
+
 <!--
 폰트 영역 -->
 *{
@@ -324,10 +363,10 @@ body {
 	font-style: normal;
 }
 
-<!--페이지 영역-->
-.page-link {
+
+.page-item .page-link {
 	color: #999;
-	background-color: #000;
+	background-color: #343a40;
 	border-color: #444;
 }
 
