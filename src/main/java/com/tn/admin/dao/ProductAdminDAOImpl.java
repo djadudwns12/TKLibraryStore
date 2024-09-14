@@ -60,7 +60,7 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		params.put("startRowIndex",pi.getStartRowIndex());
 		params.put("viewPostCntPerPage", pi.getViewPostCntPerPage());
 		params.put("searchType", searchCriteria.getSearchType());
-		params.put("searchWord", searchCriteria.getSearchWord());
+		params.put("searchWord", "%" + searchCriteria.getSearchWord() + "%");
 		
 		return ses.selectList(NS + ".getProductBySbSc",params);
 		

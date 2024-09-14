@@ -44,7 +44,7 @@
 				order by salePrice
 			</when>
 			<when test="sortBy == 'inven'">
-				order by salePrice
+				order by inven
 			</when>
 			<when test="sortBy == 'zzim'">
 				order by  zzim
@@ -97,7 +97,7 @@
 						order by salePrice
 					</when>
 					<when test="sortBy == 'inven'">
-						order by salePrice
+						order by inven
 					</when>
 					<when test="sortBy == 'zzim'">
 						order by  zzim
@@ -108,41 +108,96 @@
 					<when test="sortBy == 'pubDate'">
 						order by  pubDate
 					</when>
+					
 				</choose>
 			</when>
 			<when test="searchType == 'author'">
 				where author like #{searchWord}
+				<choose>
+					<when test="sortBy == 'salePrice'">
+						order by salePrice
+					</when>
+					<when test="sortBy == 'inven'">
+						order by inven
+					</when>
+					<when test="sortBy == 'zzim'">
+						order by  zzim
+					</when>
+					<when test="sortBy == 'reviewCnt'">
+						order by  reviewCnt
+					</when>
+					<when test="sortBy == 'pubDate'">
+						order by  pubDate
+					</when>
+					
+				</choose>
 			</when>
 			<when test="searchType == 'introduction'">
 				where introduction like #{searchWord}
+				<choose>
+					<when test="sortBy == 'salePrice'">
+						order by salePrice
+					</when>
+					<when test="sortBy == 'inven'">
+						order by inven
+					</when>
+					<when test="sortBy == 'zzim'">
+						order by  zzim
+					</when>
+					<when test="sortBy == 'reviewCnt'">
+						order by  reviewCnt
+					</when>
+					<when test="sortBy == 'pubDate'">
+						order by  pubDate
+					</when>
+					
+				</choose>
 			</when>
 			<when test="searchType == 'genre'">
 				where genre like #{searchWord}
+				<choose>
+					<when test="sortBy == 'salePrice'">
+						order by salePrice
+					</when>
+					<when test="sortBy == 'inven'">
+						order by inven
+					</when>
+					<when test="sortBy == 'zzim'">
+						order by  zzim
+					</when>
+					<when test="sortBy == 'reviewCnt'">
+						order by  reviewCnt
+					</when>
+					<when test="sortBy == 'pubDate'">
+						order by  pubDate
+					</when>
+					
+				</choose>
 			</when>
 			<when test="searchType == 'publisher'">
 				where publisher like #{searchWord}
+				<choose>
+					<when test="sortBy == 'salePrice'">
+						order by salePrice
+					</when>
+					<when test="sortBy == 'inven'">
+						order by inven
+					</when>
+					<when test="sortBy == 'zzim'">
+						order by  zzim
+					</when>
+					<when test="sortBy == 'reviewCnt'">
+						order by  reviewCnt
+					</when>
+					<when test="sortBy == 'pubDate'">
+						order by  pubDate
+					</when>
+					
+				</choose>
 			</when>
 		</choose>
-		<!-- 
-		<choose>
-			<when test="sortBy == 'salePrice'">
-				order by salePrice
-			</when>
-			<when test="sortBy == 'inven'">
-				order by salePrice
-			</when>
-			<when test="sortBy == 'zzim'">
-				order by  zzim
-			</when>
-			<when test="sortBy == 'reviewCnt'">
-				order by  reviewCnt
-			</when>
-			<when test="sortBy == 'pubDate'">
-				order by  pubDate
-			</when>
-		</choose>
-		 -->
-		 limit #{startRowIndex}, #{viewPostCntPerPage}
+	
+		 desc limit #{startRowIndex}, #{viewPostCntPerPage}
 	</select>
 	
   </mapper>

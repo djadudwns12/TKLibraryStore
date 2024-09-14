@@ -43,8 +43,10 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		} else {
 			if(sortBy.equals("default")) {
 				list = pDao.selectAllBoard(pi, searchCriteria);
+				System.out.println("sortby default 일때");
 			} else {
 				list = pDao.selectAllBoard(pi, searchCriteria, sortBy);
+				System.out.println("sortby 가 있을때");
 			}
 		}
 		
