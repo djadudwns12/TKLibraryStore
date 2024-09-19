@@ -50,7 +50,7 @@ body {
     width: calc(100% - 110px); /* 버튼 옆의 필드 크기 */
 }
 
-.smsButton-container input[type="tel"] {
+.smsButton-container input {
     width: calc(100% - 110px); /* 버튼 옆의 필드 크기 */
 }
 
@@ -520,9 +520,9 @@ function sendSMS() {
 				alert("SMS 전송 성공: 인증 코드 - " + response);
 		      
 			      let htmlStr = '';  // 변수 초기화
-			      htmlStr += `<div class="form-group button-container">`;
+			      htmlStr += `<div class="form-group smsButton-container">`;
 			      htmlStr += `<input type="text" id="verification" name="verification" placeholder="인증번호 입력" required>`;
-			      htmlStr += `<button type="button" id="verificationBtn" onclick="verificationCode();">인증번호 확인</button>`;
+			      htmlStr += `<button type="button" id="verificationBtn" class="button-active" onclick="verificationCode();">인증번호 확인</button>`;
 			      htmlStr += `</div>`;
 
 			      // .smsButton-container 뒤에 htmlStr을 추가
@@ -558,9 +558,10 @@ function verificationCode() {
 		
 		$('#verificationBtn').addClass('button-disabled');
 		$('.button-active').removeClass("button-active").addClass("button-disabled");
-		$('.verificationBtn').addClass("button-disabled");
-		$('#verificationBtn').html('인증성공');
-
+		$('#verificationBtn').removeClass("button-active").addClass("button-disabled");
+		$('#verificationBtn').html('인증완료');
+		$('#verificationBtn').removeAttr("onclick");
+		$('#sendSMSButton').removeAttr("onclick");
 		
 	} else {
 		alert('인증번호가 다릅니다.');
