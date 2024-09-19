@@ -19,24 +19,24 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- Css Styles -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/jquery-ui.min.css"
+<link rel="stylesheet" href="/resources/template/css/jquery-ui.min.css"
 	type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/bootstrap.min.css"
+<link rel="stylesheet" href="/resources/template/css/bootstrap.min.css"
 	type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/elegant-icons.css"
+<link rel="stylesheet" href="/resources/template/css/elegant-icons.css"
 	type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/nice-select.css"
+<link rel="stylesheet" href="/resources/template/css/nice-select.css"
 	type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/slicknav.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/template/css/owl.carousel.min.css"
+<link rel="stylesheet" href="/resources/template/css/slicknav.min.css"
 	type="text/css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/template/css/font-awesome.min.css"
+	href="/resources/template/css/owl.carousel.min.css"
 	type="text/css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/template/css/style.css"
+	href="/resources/template/css/font-awesome.min.css"
+	type="text/css">
+<link rel="stylesheet"
+	href="/resources/template/css/style.css"
 	type="text/css">
 <style>
     div#category_young {
@@ -155,6 +155,7 @@
 							</c:if>
 							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
 							<li><a href="/cart/cartPage?userId=<%= request.getAttribute("userId") %>"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+							<li><a href="/qa/qaList"><i class="fa fa-question-circle"></i></a></li>
 						</ul>
 					</div>
 				</div>
