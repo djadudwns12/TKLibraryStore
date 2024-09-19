@@ -527,7 +527,6 @@ function sendSMS() {
 
 			      // .smsButton-container 뒤에 htmlStr을 추가
 			      $('.smsButton-container').after(htmlStr); 
-			      $('#phone').prop("readonly", true);
 			      $('#sendSMSButton').removeAttr("onclick");
 			      startTimer();
 			      code = response;
@@ -554,9 +553,14 @@ function verificationCode() {
 	if(code == $('#verification').val()) {
 		completed = true;
 		console.log('인증성공');
-		$('#verificationBtn').prop('disabled', true);
+		$('#phone').prop("readonly", true);
+		$('#verification').prop('readonly', true);
+		
 		$('#verificationBtn').addClass('button-disabled');
-		$('#verificationBtn').prop('readonly',true);
+		$('.button-active').removeClass("button-active").addClass("button-disabled");
+		$('.verificationBtn').addClass("button-disabled");
+		$('#verificationBtn').html('인증성공');
+
 		
 	} else {
 		alert('인증번호가 다릅니다.');
