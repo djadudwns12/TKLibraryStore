@@ -52,16 +52,13 @@
 		<!-- <dependency> <groupId>org.aspectj</groupId> <artifactId>aspectjrt</artifactId> 
 			<version>${org.aspectj-version}</version> </dependency> -->
 		<!-- (AOP 기능을 적용할 때 사용되는 AspectJ 문법을 이용하기 -->
+		
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjtools</artifactId>
-			Spring AOP 5
 			<version>${org.aspectj-version}</version>
 		</dependency>
-
-
-
-
+		
 
 		<!-- AspectJ -->
 		<dependency>
