@@ -11,7 +11,7 @@
 
 	<!-- 특정 회원의 카트 리스트를 가져오는 쿼리문 -->
 	<select id="getCartList" resultType="com.tn.cart.model.dto.CartDTO">
-		SELECT b.thumbNail, b.title, b.price, b.salePrice, c.qty
+		SELECT b.thumbNail, b.title, b.price, b.salePrice, c.qty, c.cartId
 		FROM Cart c
 		INNER JOIN BookList b ON c.bookNo = b.bookNo
 		WHERE c.userId = #{userId}
