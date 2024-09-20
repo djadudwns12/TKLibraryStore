@@ -108,8 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
 						<!-- 각 항목에 체크박스 추가 -->
 						<td class="common-td"><input type="checkbox"
 							class="selectItem" onclick="updateTotals()"
-							data-price="${cart.price}" data-salePrice="${cart.salePrice}" data-qty="${cart.qty}">
-						</td>
+							data-price="${cart.price}" data-salePrice="${cart.salePrice}"
+							data-qty="${cart.qty}"></td>
 						<td class="thumbnail"><img src="${cart.thumbNail}"
 							style="width: 70px;" /></td>
 						<td class="common-td">${cart.title}</td>
@@ -184,7 +184,11 @@ document.addEventListener('DOMContentLoaded', () => {
 								value="${totalPoint}" type="number" groupingUsed="true" />P</strong></td>
 				</tr>
 			</tbody>
+
 		</table>
+		<div style="display: flex; justify-content: center; align-items: center;">
+			<button type="button" class="btn btn-success">결제하기</button>
+		</div>
 
 
 
@@ -216,6 +220,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			</div>
 		</div>
 	</div>
+
+
 
 
 	<c:import url="../footer.jsp"></c:import>
