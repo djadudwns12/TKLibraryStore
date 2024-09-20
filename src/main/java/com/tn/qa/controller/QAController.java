@@ -23,6 +23,7 @@ import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.service.ProductAdminService;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.qa.model.vo.QAVO;
 import com.tn.qa.service.QAService;
 
 /**
@@ -41,13 +42,22 @@ public class QAController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/qaList", method = RequestMethod.GET)
-	public void qaHome(HttpSession sess) {
+	public void qaHome(HttpSession sess,Model model) {
 		
 		System.out.println("qa start");
 		// 회원정보에서 사용자 id불러오기
-				String userId = ((MemberVO)sess.getAttribute("loginMember")).getUserId();
-				// 회원이 남긴 QA정보가지고 오기
-				qaService.getQAList(userId);
+		String userId = ((MemberVO)sess.getAttribute("loginMember")).getUserId();
+//		logger.info("userId : "+userId);
+		// 회원이 남긴 QA정보가지고 오기
+		List<QAVO> list = qaService.getQAList(userId);
+		
+		
+//		logger.info(list.toString());
+		model.addAttribute("list", list);
+		
+		
+		
+		
 	}
 	@RequestMapping(value = "/save", method = RequestMethod.GET)
 	public String qaSave(HttpSession sess) {

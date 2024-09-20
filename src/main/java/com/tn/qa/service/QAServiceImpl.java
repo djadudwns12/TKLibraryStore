@@ -21,15 +21,19 @@ import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.service.ProductAdminService;
+import com.tn.qa.dao.QADAO;
 import com.tn.qa.model.vo.QAVO;
 
 @Service
 public class QAServiceImpl implements QAService {
 
+	@Autowired
+	private QADAO QADao;
+	
 	@Override
 	public List<QAVO> getQAList(String userId) {
 		// TODO Auto-generated method stub
-		return null;
+		return QADao.selectQAList(userId);
 	}
 
 	
