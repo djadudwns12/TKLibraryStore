@@ -37,6 +37,8 @@
 	
 	<!-- 인터셉터가 동작하는 매핑 주소 설정 -->
 	<beans:bean id="loginInterceptor" class="com.tn.interceptor.LoginInterceptor" />
+	<!-- 로그인후에 들어가도록 하는 권한 인터셉터 -->
+	<beans:bean id="authInterceptor" class="com.tn.interceptor.AuthInterceptor" />
 	
 	<interceptors>
 		<interceptor>
@@ -44,6 +46,14 @@
 			<mapping path="/member/login"/>
 			<beans:ref bean="loginInterceptor" />
 		</interceptor>
+		
+		<!-- auth인터셉터 -->
+		<interceptor>
+			<mapping path="/qa/**" />
+			
+			<beans:ref bean="authInterceptor"/>
+		
+		</interceptor>	
 	
 	</interceptors>
 	
