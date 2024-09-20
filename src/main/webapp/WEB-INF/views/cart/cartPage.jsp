@@ -102,7 +102,7 @@ function checkSelectAll() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Select all checkboxes by default
+    // selectAll 체크박스 전체 체크 default
     const selectAllCheckbox = document.getElementById('selectAll');
     selectAllCheckbox.checked = true;
     toggleSelectAll(selectAllCheckbox);
@@ -113,6 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
         checkbox.addEventListener('change', checkSelectAll);
     });
 });
+
+// 삭제 아이콘 클릭 시 삭제 여부 물어보는 모달창 띄우기
+function showDeleteModal(cartId) {   
+    $('.modal-body').html(cartId + "번을 삭제하시겠습니까?");
+    $('#myModal').show(500); // .show() 괄호 안에 숫자를 넣으면 m/s단위로 애니메이션 추가됨
+ }
 </script>
 
 <body>
@@ -167,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
 						</td>
 						<td class="common-td"><img
 							src="/resources/images/cart_delete.png" width=30px;
-							onclick="showDeleteModal();"></td>
+							onclick="showDeleteModal('${cart.cartId}');"></td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -227,36 +233,37 @@ document.addEventListener('DOMContentLoaded', () => {
 			</button>
 		</div>
 
-
-
 	</div>
 
 	<!-- The Modal -->
-	<div class="modal" id="myModal" style="display: none;">
-		<div class="modal-dialog">
-			<div class="modal-content">
+    <div class="modal" id="myModal" style="display: none;">
+    	<div class="modal-dialog">
+        	<div class="modal-content">
 
-				<!-- Modal Header -->
-				<div class="modal-header">
-					<h4 class="modal-title">MiniProject</h4>
-					<button type="button" class="btn-close modalCloseBtn"
-						data-bs-dismiss="modal"></button>
-				</div>
+            	<!-- Modal Header -->
+         			<div class="modal-header">
+            			<h4 class="modal-title"></h4>
+            				<button type="button" class="btn-close modalCloseBtn"
+               				data-bs-dismiss="modal"></button>
+         			</div>
 
-				<!-- Modal body -->
-				<div class="modal-body"></div>
+         		<!-- Modal body -->
+         		<div class="modal-body"></div>
 
-				<!-- Modal footer -->
-				<div class="modal-footer">
-					<button type="button" class="btn btn-info"
-						onclick="location.href='/cart/deleteCart?cartNo=${param.cartNo}';">삭제</button>
-					<button type="button" class="btn" 
-						data-bs-dismiss="modal">취소</button>
-				</div>
+         		<!-- Modal footer -->
+         		<div class="modal-footer">
+            		<!-- 삭제 버튼 -->
+    				<button type="button" class="btn btn-info" data-bs-dismiss="modal"
+        			onclick="location.href='/cart/deleteCart?cartId=${param.cartId}';">삭제</button>
 
-			</div>
-		</div>
+    				<!-- 취소 버튼 -->
+    				<button type="button" class="btn btn-danger modalCloseBtn"
+       				onclick="$('#myModal').hide();">취소</button>
+         		</div>
+      		</div>
+   		</div>
 	</div>
+
 
 
 
