@@ -37,6 +37,28 @@
 .thumbnail {
 	width: 80px;
 }
+
+/* 버튼 */
+.button-link {
+    color: white;                /* 글자 색을 흰색으로 설정 */
+    text-decoration: none;
+    padding: 5px 10px;           /* 패딩을 줄여서 크기를 최소화 */
+    border: none;                /* 테두리 제거 */
+    background-color: transparent; /* 배경색 투명 */
+    display: inline-block;       /* 블록처럼 동작 */
+    font-size: 16px;             /* 글자 크기 */
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+/* 마우스 올렸을 때 */
+.button-link:hover {
+    color: #f0f0f0;              /* 마우스 올렸을 때 텍스트 색상 살짝 변경 */
+}
+
+/* 클릭 시 눌리는 효과 */
+.button-link:active {
+    transform: translateY(2px);  /* 클릭 시 살짝 아래로 이동 */
+}
 </style>
 </head>
 <script>
@@ -72,11 +94,24 @@ function updateTotals() {
     document.getElementById('totalPoint').innerText = totalPoint.toLocaleString() + "P";
 }
 
+function checkSelectAll() {
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const checkboxes = document.querySelectorAll('.selectItem');
+    const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+    selectAllCheckbox.checked = allChecked;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Select all checkboxes by default
     const selectAllCheckbox = document.getElementById('selectAll');
     selectAllCheckbox.checked = true;
     toggleSelectAll(selectAllCheckbox);
+
+    // Add event listener to each item checkbox to check for selectAll status
+    const checkboxes = document.querySelectorAll('.selectItem');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', checkSelectAll);
+    });
 });
 </script>
 
@@ -187,7 +222,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		</table>
 		<div style="display: flex; justify-content: center; align-items: center;">
-			<button type="button" class="btn btn-success">결제하기</button>
+			<button type="button" class="btn btn-success" style="background:#7FAD39;">
+				<a href="/pay/payment" class="button-link">결제하기</a>
+			</button>
 		</div>
 
 
@@ -213,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-info"
 						onclick="location.href='/cart/deleteCart?cartNo=${param.cartNo}';">삭제</button>
-					<button type="button" class="btn btn-danger modalCloseBtn"
+					<button type="button" class="btn" 
 						data-bs-dismiss="modal">취소</button>
 				</div>
 
