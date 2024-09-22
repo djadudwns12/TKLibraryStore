@@ -133,7 +133,7 @@
     let currentElement; // 전역 변수로 현재 클릭된 요소를 저장
 
     function showDeleteModal(cartId, element) {
-        $('.modal-body').html(cartId + "번을 삭제하시겠습니까?");
+        $('.modal-body').html("상품을 삭제하시겠습니까?");
         $('#deleteConfirmButton').data('cart-id', cartId);
         currentElement = element; // 현재 클릭된 요소 저장
         $('#myModal').modal('show'); // Bootstrap의 modal 메서드 사용
