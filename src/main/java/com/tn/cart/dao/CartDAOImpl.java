@@ -31,4 +31,12 @@ public class CartDAOImpl implements CartDAO {
 		
 		return ses.selectList(NS + ".getCartList", userId);
 	}
+
+	@Override
+	public int deleteOneCart(String cartId) throws Exception {
+		
+		System.out.println("CartDAOImpl / " + cartId + "번을 삭제하자~~~");
+		
+		return ses.delete(NS + ".deleteCartWithId", cartId);
+	}
 }

@@ -37,4 +37,16 @@ public class CartServiceImpl implements CartService {
 		return list;
 	}
 
+	@Override
+	public boolean deleteCartById(String cartId) throws Exception {
+		System.out.println("CartServiceImpl : " + cartId + "번을 삭제하자~~~~~~~");
+		
+		boolean result = false;
+		
+		if(cDao.deleteOneCart(cartId) == 1) {
+			result = true;
+		}
+		return result;
+	}
+
 }

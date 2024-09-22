@@ -16,4 +16,9 @@
 		INNER JOIN BookList b ON c.bookNo = b.bookNo
 		WHERE c.userId = #{userId}
 	</select>
+	
+	<!-- 카트에서 개별삭제하는 쿼리문(삭제 아이콘 클릭시) -->
+	<delete id="deleteCartWithId">
+		delete from Cart where cartId = #{cartId}
+	</delete>
 </mapper>
