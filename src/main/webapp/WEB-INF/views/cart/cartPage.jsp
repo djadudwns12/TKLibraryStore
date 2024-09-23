@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -208,17 +209,35 @@
                     <c:set var="totalPrice" value="${totalPrice + cart.price * cart.qty}" />
                     <c:set var="totalSalePrice" value="${totalSalePrice + (cart.price*cart.qty - cart.salePrice*cart.qty)}" />
                     <c:set var="totalPay" value="${totalPay + cart.salePrice * cart.qty}" />
-                    <c:set var="totalPoint" value="${totalPoint + cart.salePrice * cart.qty * 0.02}" />
+                    <c:set var="totalPoint" value="${totalPoint + (cart.salePrice * cart.qty * 0.02)}" />
+                    <!-- 소수점 이하 제거 -->
+					<c:set var="totalPoint" value="${fn:substringBefore(totalPoint, '.')}"/>
                 </c:forEach>
                 <tr>
-                    <td class="common-td"><strong id="totalPrice"><fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true" />원</strong></td>
+                    <td class="common-td">
+                    	<strong id="totalPrice">
+                    		<fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true" />원
+                    	</strong>                    
+                    </td>
                     <td class="common-td"><strong>-</strong></td>
                     <td class="common-td"><strong>0원</strong></td>
                     <td class="common-td"><strong>-</strong></td>
-                    <td class="common-td"><strong id="totalSalePrice"><fmt:formatNumber value="${totalSalePrice}" type="number" groupingUsed="true" />원</strong></td>
+                    <td class="common-td">
+                    	<strong id="totalSalePrice">
+                    		<fmt:formatNumber value="${totalSalePrice}" type="number" groupingUsed="true" />원
+                    	</strong>
+                    </td>
                     <td class="common-td"><strong>=</strong></td>
-                    <td class="common-td"><strong id="totalPay"><fmt:formatNumber value="${totalPay}" type="number" groupingUsed="true" />원</strong></td>
-                    <td class="common-td"><strong id="totalPoint"><fmt:formatNumber value="${totalPoint}" type="number" groupingUsed="true" />P</strong></td>
+                    <td class="common-td">
+                    	<strong id="totalPay">
+                    		<fmt:formatNumber value="${totalPay}" type="number" groupingUsed="true" />원
+                    	</strong>
+                    </td>
+                    <td class="common-td">
+                    	<strong id="totalPoint">
+                    		<fmt:formatNumber value="${totalPoint}" type="number" groupingUsed="true" />P
+                    	</strong>
+                    </td>
                 </tr>
             </tbody>
         </table>
