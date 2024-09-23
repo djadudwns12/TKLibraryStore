@@ -82,6 +82,13 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		
 		return pi;
 	}
+
+
+	@Override
+	public int deleteProduct(int[] arr) throws Exception {
+				
+		return pDao.deleteProduct(arr);
+	}
 	
 	
 

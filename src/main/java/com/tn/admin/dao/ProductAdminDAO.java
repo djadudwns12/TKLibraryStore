@@ -27,5 +27,7 @@ public interface ProductAdminDAO {
 	// 검색했을 때 정렬기준 설정
 	List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria, String sortBy);
 
+	int deleteProduct(int[] arr) throws Exception;
+
 
 }

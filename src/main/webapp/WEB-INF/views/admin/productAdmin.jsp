@@ -19,8 +19,10 @@
 	src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script>
+
+	
 	$(function () {
-		
+			
 		$('.pagingSize').change(function(){
 			console.log($(this).val());
 			
@@ -40,6 +42,7 @@
 			 
 			location.href = '/admin/productAdmin?ra='+ $(this).val() + '&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
 		});
+				
 	});
 	
 	function pagingInfo() {
@@ -72,26 +75,57 @@
 		  checkboxes.forEach((checkbox) => {
 		    checkbox.checked = selectAll.checked
 		  })
+		  updateButton();
 		}
 	
 	function deleteProduct() {
-	    let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
+		let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
+	    let delNo = [];
 	    if (pro_check == 0) {
 	        alert('하나 이상의 제품을 선택해주세요.');
 	        return false;
 	    }
-	    if (confirm("제출하시겠습니까?")) {
-	        let delNo = [];
+	    if (confirm(pro_check+"개의 상품을 삭제하시겠습니까?")) {
+	        
 	        $('input:checkbox[name=proCheck]').each(function (index) {
 	            if ($(this).is(":checked") == true) {
 	                delNo = $(this).val();
 	                console.log(delNo);
+	                $.ajax({
+	                    url: "/admin/deleteProduct", 
+	                    type: "post", 
+	                    dataType: "json", 
+	                    data: {
+	                      "delNo" : delNo
+	                    },
+	                    success: function (data) {	  
+	                    	// 실행시키기 위해선 컨트롤러단에서 json데이터로 변환 후 데이터를 보내주어야한다.
+	                    	  alert(pro_check+"개의 상품을 삭제했습니다.");
+	                    	  location.href = '/admin/productAdmin';
+	                        
+	                      
+	                    },
+	                    error: function (data) {
+	                      console.log(data);
+	                     
+	                    },
+	                  });
 	            }
-	        }); // <-- 여기 닫는 괄호 추가
+	            
+	        });
+	        
+	        
 	    } else {
-	        alert("제출실패");
+	        alert("취소");
 	    }
 	}
+	
+	function updateButton() {
+        // 모든 체크박스를 가져오기
+        let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
+        // 버튼의 텍스트 업데이트
+        document.getElementById('delBtn').innerText = pro_check+"개 삭제";
+    }
 </script>
 
 <style>
@@ -272,14 +306,14 @@ body {
 							<th>Zzim</th>
 							<th>ReviewCnt</th>
 							
-							<th><button type="button" class="btn btn-danger btn" style="width:90px; font-size:small;" onclick="deleteProduct();">선택 삭제</button></th> 
+							<th><button type="button" class="btn btn-danger btn" id="delBtn" style="width:90px; font-size:small;" onclick="deleteProduct();" value="선택 삭제">선택 삭제</button></th> 
 
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="product" items="${productList}">
 							<tr>
-								<td><input type="checkbox" name="proCheck" value=${product.bookNo}/></td>
+								<td><input type="checkbox" name="proCheck" value=${product.bookNo} onclick="updateButton()"></td>
 								<td>${product.bookNo}</td>
 								<td>${product.title}</td>
 								<td>${product.author}</td>

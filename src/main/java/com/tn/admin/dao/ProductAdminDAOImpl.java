@@ -65,6 +65,15 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		return ses.selectList(NS + ".getProductBySbSc",params);
 		
 	}
+	@Override
+	public int deleteProduct(int[] arr) {
+		int delCount = 0;
+		for(int delNo : arr) {
+			delCount += ses.delete(NS + ".deleteProduct", delNo);
+				
+		}		
+		return delCount;
+	}
 	
 
 }

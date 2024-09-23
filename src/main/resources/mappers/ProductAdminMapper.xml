@@ -200,4 +200,8 @@
 		 desc limit #{startRowIndex}, #{viewPostCntPerPage}
 	</select>
 	
+	<delete id="deleteProduct">
+		delete from BookList where bookNo = ${delNo}
+	</delete>
+	
   </mapper>
