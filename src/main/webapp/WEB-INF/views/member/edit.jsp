@@ -15,6 +15,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/resources/js/timer.js">
 <script type="text/javascript">
 	$(function(){
 		
@@ -66,32 +67,7 @@
 				return true;
 			}
 		});
-		// 이메일을 입력하고 blur되었을 때
-	   	$("#email").blur(function emailValid(){
-			// 1. 이메일 주소형식 확인
-			let tmpEmail = $('#email').val();
-			let emailFormat = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
-			if(!emailFormat.test(tmpEmail)) {
-				outputError("이메일 주소형식이 아닙니다.", $('#email'));
-				$('#emailValid').val("");
-			} else {
-				// 2. 이메일 인증 : 인증메일을 보내고 문자를 입력받아서 검증한다
-				clearError($('#email')); // 이메일형식 유효성검사후 css원상복구
-				showAuthDiv(); // 이메일 인증코드 입력 태그 생성
-				sendAuthMail(); // 이메일 보내기
-				// 타이머 동작시키기
-				// 코드 확인하기
-				
-			}
-		});
-		
-		$('#emailEditBtn').click(function emailEdit(){
-			// 이메일 변경버튼을 클릭했을 때
-			$('#email').removeAttr("readonly");
-			$('#email').removeAttr("readonly");
-			$('#emailValid').val("");
-			$('#email').focus();
-		});
+
 	});
 	
 //===============================인풋태그 오입력 처리=====================================//
@@ -109,7 +85,7 @@
     }
 //==================================수정완료버튼 클릭시=========================================//
 	// 아래의 조건이 모두 만족할 때 회원수정 진행되도록
-/*  	function isValid(){
+	 	function isValid(){
 		// 빈칸 없음, 비밀번호 확인, 이메일 변경시 이메일 인증 진행
 		let pwdCheck = pwdValid();
 		let birthCheck = birthValid();
@@ -120,7 +96,7 @@
 		} else {
 			return false;
 		}
-	}  */
+	}
 
 	// 생년월일 입력 확인
 	function birthValid(){
@@ -147,6 +123,29 @@
 	
 	// 이메일 확인
 	function emailValid(){
+		if ($("#emailValid").val() == 'checked') {
+			return true;
+		} else {
+			alert("이메일 인증을 완료해주세요.");
+			return false;
+		}
+	}
+	
+	// 이메일 변경버튼 클릭
+	function emailEdit(){
+		
+		$('#email').removeAttr("readonly");
+		$('#emailValid').val("");
+		$('#email').focus();
+		
+		let emailInputEdit = `<button type="button" id="emailConfirmBtn" class="btn btn-primary" onclick='sendAuthCode()' style='margin-left:10px; border-color:#7fad38; background-color:#7fad38;'>인증코드 전송</button>`;
+		$(emailInputEdit).insertAfter($("#emailEditBtn"));
+		$("#emailEditBtn").hide();
+		$("#emailAuth").remove();
+	}
+
+	// 이메일 형식확인/인증
+	function sendAuthCode(){
 		// 1. 이메일 주소형식 확인
 		let tmpEmail = $('#email').val();
 		let emailFormat = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
@@ -154,16 +153,18 @@
 			outputError("이메일 주소형식이 아닙니다.", $('#email'));
 			$('#emailValid').val("");
 		} else {
+			$("#emailEditBtn").show();
+			$("#emailConfirmBtn").hide();
 			// 2. 이메일 인증 : 인증메일을 보내고 문자를 입력받아서 검증한다
 			clearError($('#email')); // 이메일형식 유효성검사후 css원상복구
 			showAuthDiv(); // 이메일 인증코드 입력 태그 생성
 			sendAuthMail(); // 이메일 보내기
-			// 타이머 동작시키기
+			startTimer();// 타이머 동작시키기
 			// 코드 확인하기
 			
 		}
 	}
-	
+
 	// 이메일 인증
 	function showAuthDiv() {
 		alert('이메일로 인증코드를 발송했습니다. \n인증코드를 입력해주세요.');
@@ -222,6 +223,8 @@
 		});
 	}
 
+	
+	
 </script>
 
 <style>
@@ -281,21 +284,13 @@
 			<div class="input-group mb-3">
 				<label>이메일</label>
 				<input type="email" class="form-control" id="email" name="email" value="${editMemberInfo.email}" readonly/>
-            	<button type="button" id="emailEditBtn" class="btn btn-primary" style='margin-left:10px; border-color:#7fad38; background-color:#7fad38;'>이메일 변경</button>
+            	<button type="button" id="emailEditBtn" class="btn btn-primary" onclick="emailEdit()" style='margin-left:10px; border-color:#7fad38; background-color:#7fad38;'>이메일 변경</button>
             	<input type="hidden" id="emailValid" value="checked"/>
             </div>
 
 			<div class="input-group mb-3">
 				<label>핸드폰 번호</label>
 				<input type="text" class="form-control" id="phoneNum" name="phoneNum" value="${editMemberInfo.phoneNum}" />
-            </div>
-			<div class="input-group mb-3">
-				<label>선호장르 선택</label>
-				<div class="form-check checkGenre" >
-					<input class="form-check-input1" type="checkbox" value="" id="flexCheckDefault1" /> 장르1
-					<input class="form-check-input2" type="checkbox" value="" id="flexCheckDefault2" /> 장르2
-					<input class="form-check-input3" type="checkbox" value="" id="flexCheckDefault3" /> 장르3
-				</div>
             </div>
 
 			<div class="d-grid gap-2" style="text-align:right;">
