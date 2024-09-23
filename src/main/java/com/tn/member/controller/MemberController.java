@@ -65,30 +65,6 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 	
 	@Autowired
 	private MemberService mService;
-		
-	/**
-	 * @작성자 : 최미설
-	 * @작성일 : 2024. 9. 6.
-	 * @method_name : getMemberInfo
-	 * @param :String userId(로그인 기능 구현 이후 세션에서 로그인 정보 받아와서 파라미터로 받을 예정)
-	 * @param :Model model
-	 * @return : memberVO
-	 * @throws : 
-	 * @description : 회원정보수정을 위해 회원정보를 불러오는 메서드
-	*/
-	
-	@RequestMapping(value="/edit")
-	public void getEditMemeberInfo(Model model) { // @RequestParam("userId") String userId
-		String userId = "dooly"; // 회원정보수정 페이지 완료하면 로그인 정보 가져오기!
-		try {
-			MemberVO editMemberInfo = mService.getEditMemberInfo(userId);
-			System.out.println(editMemberInfo.toString());
-			model.addAttribute("editMemberInfo", editMemberInfo);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
 	/**
 	 * @작성자 : 엄영준
@@ -139,7 +115,31 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 			e.printStackTrace();
 		}
 	}	
-  
+
+	/**
+	 * @작성자 : 최미설
+	 * @작성일 : 2024. 9. 6.
+	 * @method_name : getMemberInfo
+	 * @param :String userId(로그인 기능 구현 이후 세션에서 로그인 정보 받아와서 파라미터로 받을 예정)
+	 * @param :Model model
+	 * @return : memberVO
+	 * @throws : 
+	 * @description : 회원정보수정을 위해 회원정보를 불러오는 메서드
+	*/
+	
+	@RequestMapping(value="/edit")
+	public void getEditMemeberInfo(Model model) { // @RequestParam("userId") String userId
+		String userId = "dooly"; // 회원정보수정 페이지 완료하면 로그인 정보 가져오기!
+		try {
+			MemberVO editMemberInfo = mService.getEditMemberInfo(userId);
+			System.out.println(editMemberInfo.toString());
+			model.addAttribute("editMemberInfo", editMemberInfo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * @작성자 : 최미설
 	 * @작성일 : 2024. 9. 9. 
