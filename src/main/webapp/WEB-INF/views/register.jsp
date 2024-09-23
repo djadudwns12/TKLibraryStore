@@ -470,43 +470,41 @@ function clearError(obj) {
     
     
 		// 업로드 파일 영역에 drag&drop과 관련된 이벤트(파일의 경우 파일이 웹브라우저에서 실행되는 등)를 방지 해야 한다 -> 이벤트 캔슬링
-		$('.fileUploadArea').on("dragenter dragover", function(evt) {
+		$('#profileImageContainer').on("dragenter dragover", function(evt) {
 			evt.preventDefault();  // 기본 이벤트 캔슬
 		});
 		
 		// 유저가 fileUploadArea에 파일을 드래그&드랍 하면...
-		$('.fileUploadArea').on("drop", function(evt){   
+		$('#profileImageContainer').on("drop", function(evt){   
 			evt.preventDefault();
 			
 			//console.log(evt.originalEvent.dataTransfer.files);  // 업로드 되는 파일 객체의 정보
 			
-			for (let file of evt.originalEvent.dataTransfer.files) {				
+			const files = evt.dataTransfer.files;  		
 				// 파일 사이즈 검사 하여 10MB가 넘게되면 파일 업로드가 안되도록...
-				if (file.size > 10485760) {
-					alert("파일 용량이 너무 큽니다.. 업로드한 파일을 확인해 주세요..!");
+				if (files.size > 10485760) {
+					alert("파일 용량이 너무 큽니다.(제한:10MB");
+					
+				} else if (!files.type.startsWith('image/')) {
+					alert("이미지 파일만 가능합니다.");
+					
+				} else if (files.length > 1) {
+					alert("1개의 이미지만 가능합니다.");
+					
 				} else {
-					upfiles.push(file); // 배열에 담기
-					console.log(upfiles);
-					
+				
 					// 해당 파일 업로드
-					fileUpload(file)
-					
+					fileUpload(files.file[0])
 					
 				}
 				
-			}
 			
 		});
 
 	
     
-    
-    
-    
-    
-    
-    
-    
+
+   
     
     
 
@@ -515,6 +513,133 @@ function clearError(obj) {
   
 
   
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+
+
+
+//실제로 유저가 업로드한 파일을 컨트롤러단에 전송하여 저장되도록 하는 함수
+function fileUpload(file) {
+	let result = false;
+	let fd = new FormData();  // FormData 객체 생성 : form태그와 같은 역할의 객체
+	fd.append("file", file);
+	
+	$.ajax({
+        url : '/hboard/upfiles',             // 데이터가 송수신될 서버의 주소
+        type : 'post',                                     // 통신 방식 : GET, POST, PUT, DELETE, PATCH   
+        dataType : 'json',					// 수신 받을 데이터의 타입 (text, xml, json)
+		 data : fd,					// 보낼 데이터
+        // processData :  false  -> 데이터를 쿼리스트링 형태로 보내지 안겠다는 설정
+        // contentType 의 디폴트 값이 "application/x-www-form-urlencoded"인데, 파일을 전송하는 방식이기에 "multipart/form-data"로 되어야 하므로..
+        processData: false,
+        contentType : false,
+        async : false,      // 비동기 통신 : false
+        success : function (data) {                       // 비동기 통신에 성공하면 자동으로 호출될 callback function
+           console.log(data);
+        	if (data.msg == 'success') {
+        		showPreview(file, data.newFileName);  // 파일 미리보기
+        	}
+        
+        }, error : function (data) {
+       	 console.log(data);
+       	 if (data == 'fail') {
+       		 alert ('파일을 업로드 하지 못했습니다');
+       		 
+       		 for(let i = 0; i < upfiles.length; i++) {
+       			 if (upfile[i].name == file.name) {
+       				 upfiles.splice(i, 1);  // 배열에서 삭제
+       			 }
+       		 }
+       	 }
+        }
+     });
+}
+
+
+
+//넘겨진 file이 이미지 파일이라면 미리보기 하여 출력한다.
+function showPreview(file, newFileName) {
+	let imageType = ["image/jpeg", "image/png", "image/gif"];
+	console.log(file);
+	let fileType = file.type.toLowerCase();
+	if (imageType.indexOf(fileType) != -1) {
+		// 이미지 파일이라면...
+		
+		// 업로드 했던 이미지를 reader객체로 읽어와 출력 합시다. 내일~~~~~~~~~~~~
+		
+		
+		let output = `<div><img src='/resources/boardUpFiles\${newFileName}' /><span>\${file.name}</span>`;
+		output += `<span><img src='/resources/images/remove.png' width='20px' onclick="remFile(this);" id="\${newFileName}" /></span></div>`;
+		$('.preview').append(output); 
+	} else {
+		let output = `<div><img src='/resources/images/noimage.png' /><span>\${file.name}</span>`;
+		output += `<span><img src='/resources/images/remove.png' width='20px' onclick="remFile(this);" id="\${newFileName}" /></span></div>`;
+		$('.preview').append(output);
+	}
+}
+
+//업로드한 파일을 지운다. (화면, front배열, 백엔드)
+function remFile(obj) {
+	let removedFileName = $(obj).attr('id');
+	console.log('지워야 할 파일 이름 : ' + removedFileName);
+	
+	for(let i = 0; i < upfiles.length; i++) {
+		if (upfiles[i].name == $(obj).parent().prev().html()) {
+			
+			// 파일 삭제 (백엔드단에서 삭제가 성공하면 front 단에서도 배열, 화면에서 삭제 해야 함)
+			$.ajax({
+        		url : '/hboard/removefile',             // 데이터가 송수신될 서버의 주소
+        		type : 'post',                                     // 통신 방식 : GET, POST, PUT, DELETE, PATCH   
+        		dataType : 'json',					// 수신 받을 데이터의 타입 (text, xml, json)
+				data : {							// 보낼 데이터
+					"removedFileName" : removedFileName
+				},
+       		async : false,      // 비동기 통신 : false
+        		success : function (data) {                       // 비동기 통신에 성공하면 자동으로 호출될 callback function
+           		console.log(data);
+        			if (data.msg == 'success') {
+        				upfiles.splice(i, 1);  // 배열에서 삭제
+       				console.log(upfiles);
+       				$(obj).parent().parent().remove();  // 태그 삭제
+        			}
+        		         
+        		}
+     		});
+
+		}
+	}
+	
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
   
   
   
@@ -840,103 +965,6 @@ function serializeDiv(divId) {
 
 
 
-
-
-
-
-
-
-// 실제로 유저가 업로드한 파일을 컨트롤러단에 전송하여 저장되도록 하는 함수
-function fileUpload(file) {
-	let result = false;
-	let fd = new FormData();  // FormData 객체 생성 : form태그와 같은 역할의 객체
-	fd.append("file", file);
-	
-	$.ajax({
-         url : '/hboard/upfiles',             // 데이터가 송수신될 서버의 주소
-         type : 'post',                                     // 통신 방식 : GET, POST, PUT, DELETE, PATCH   
-         dataType : 'json',					// 수신 받을 데이터의 타입 (text, xml, json)
-		 data : fd,					// 보낼 데이터
-         // processData :  false  -> 데이터를 쿼리스트링 형태로 보내지 안겠다는 설정
-         // contentType 의 디폴트 값이 "application/x-www-form-urlencoded"인데, 파일을 전송하는 방식이기에 "multipart/form-data"로 되어야 하므로..
-         processData: false,
-         contentType : false,
-         async : false,      // 비동기 통신 : false
-         success : function (data) {                       // 비동기 통신에 성공하면 자동으로 호출될 callback function
-            console.log(data);
-         	if (data.msg == 'success') {
-         		showPreview(file, data.newFileName);  // 파일 미리보기
-         	}
-         
-         }, error : function (data) {
-        	 console.log(data);
-        	 if (data == 'fail') {
-        		 alert ('파일을 업로드 하지 못했습니다');
-        		 
-        		 for(let i = 0; i < upfiles.length; i++) {
-        			 if (upfile[i].name == file.name) {
-        				 upfiles.splice(i, 1);  // 배열에서 삭제
-        			 }
-        		 }
-        	 }
-         }
-      });
-}
-
-
-
-// 넘겨진 file이 이미지 파일이라면 미리보기 하여 출력한다.
-function showPreview(file, newFileName) {
-	let imageType = ["image/jpeg", "image/png", "image/gif"];
-	console.log(file);
-	let fileType = file.type.toLowerCase();
-	if (imageType.indexOf(fileType) != -1) {
-		// 이미지 파일이라면...
-		
-		// 업로드 했던 이미지를 reader객체로 읽어와 출력 합시다. 내일~~~~~~~~~~~~
-		
-		
-		let output = `<div><img src='/resources/boardUpFiles\${newFileName}' /><span>\${file.name}</span>`;
-		output += `<span><img src='/resources/images/remove.png' width='20px' onclick="remFile(this);" id="\${newFileName}" /></span></div>`;
-		$('.preview').append(output); 
-	} else {
-		let output = `<div><img src='/resources/images/noimage.png' /><span>\${file.name}</span>`;
-		output += `<span><img src='/resources/images/remove.png' width='20px' onclick="remFile(this);" id="\${newFileName}" /></span></div>`;
-		$('.preview').append(output);
-	}
-}
-
-// 업로드한 파일을 지운다. (화면, front배열, 백엔드)
-function remFile(obj) {
-	let removedFileName = $(obj).attr('id');
-	console.log('지워야 할 파일 이름 : ' + removedFileName);
-	
-	for(let i = 0; i < upfiles.length; i++) {
-		if (upfiles[i].name == $(obj).parent().prev().html()) {
-			
-			// 파일 삭제 (백엔드단에서 삭제가 성공하면 front 단에서도 배열, 화면에서 삭제 해야 함)
-			$.ajax({
-         		url : '/hboard/removefile',             // 데이터가 송수신될 서버의 주소
-         		type : 'post',                                     // 통신 방식 : GET, POST, PUT, DELETE, PATCH   
-         		dataType : 'json',					// 수신 받을 데이터의 타입 (text, xml, json)
-				data : {							// 보낼 데이터
-					"removedFileName" : removedFileName
-				},
-        		async : false,      // 비동기 통신 : false
-         		success : function (data) {                       // 비동기 통신에 성공하면 자동으로 호출될 callback function
-            		console.log(data);
-         			if (data.msg == 'success') {
-         				upfiles.splice(i, 1);  // 배열에서 삭제
-        				console.log(upfiles);
-        				$(obj).parent().parent().remove();  // 태그 삭제
-         			}
-         		         
-         		}
-      		});
-
-		}
-	}
-	
 
 
 
