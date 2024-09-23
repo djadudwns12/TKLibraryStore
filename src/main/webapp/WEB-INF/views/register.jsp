@@ -494,7 +494,7 @@ function clearError(obj) {
 				} else {
 				
 					// 해당 파일 업로드
-					fileUpload(files.file[0])
+					fileUpload(files[0])
 					
 				}
 				
