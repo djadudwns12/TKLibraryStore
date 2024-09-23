@@ -150,7 +150,9 @@
 
 	<c:import url="../header.jsp"></c:import>
 
+	
 	<div class="container">
+	<button type="button" class="btn btn-outline-danger">선택삭제</button>
 		<div style="max-height: 300px; overflow-y: auto;">
 			<table class="table table-hover">
 				<thead>
