@@ -14,35 +14,90 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Ogani | Template</title>
 
+<!-- CSS Styles -->
+<style>
+    body {
+        font-family: 'Cairo', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    .qaContent {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2em;
+        background-color: #fff;
+        max-width: 800px;
+        margin: 2em auto;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .qaContent div {
+        margin-bottom: 1.5em;
+        width: 100%;
+    }
+    h2 {
+        color: #007bff;
+        text-align: center;
+    }
+    hr {
+        border: 1px solid #007bff;
+        margin: 1em 0;
+    }
+    .Answer {
+        display: block;
+        padding: 1em;
+        width: 100%;
+        border: 1px solid #007bff;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+        font-size: 1em;
+    }
+    .Answer span {
+        color: #333;
+    }
+    strong {
+        font-size: 1.1em;
+    }
+</style>
+
 <!-- Google Font -->
 <link
-	href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
-	rel="stylesheet">
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
+    rel="stylesheet">
 </head>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript">
-	$(function() {
-		let qaList = $('.qaContent');
-		
-		$('#main_content').html(qaList);
-	})
+    $(function() {
+        let qaList = $('.qaContent');
+        $('#main_content').html(qaList);
+    });
 </script>
 
 <body>
 
-	<c:import url="../header.jsp"></c:import>
+    <c:import url="../header.jsp"></c:import>
 
-	<div class="qaContent">
-	${qa}
-		<div>제목 : ${qa.qNo}</div>
-		<div>내용 : ${qa.qContent}</div>
-		<div>답변 : ${qa.qAnswer}</div>
-	</div>
+    <div class="qaContent" id="main_content">
+        <div>
+            <h2>제목 : ${qa.qNo}</h2>
+            <hr>
+            <div>
+                <strong>내용:</strong> ${qa.qContent}
+            </div>
+        </div>
+        <c:if test="${qa.qAnswer != null}">
+        
+        <div>
+            <strong>답변</strong>
+            <span class="Answer"> ${qa.qAnswer}</span>
+        </div>
+        </c:if>
+    </div>
 
-
-
-	<c:import url="../footer.jsp"></c:import>
+    <c:import url="../footer.jsp"></c:import>
 
 </body>
 
