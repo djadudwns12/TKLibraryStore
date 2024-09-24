@@ -19,6 +19,15 @@
 	href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
 	rel="stylesheet">
 </head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		let qaList = $('.qaContent');
+		
+		$('#main_content').html(qaList);
+	})
+</script>
 
 <body>
 
@@ -26,9 +35,6 @@
 
 	<div class="qaContent">
 		<div class="container mt-3">
-			<h2>Hover Rows</h2>
-			<p>The .table-hover class enables a hover state (grey background
-				on mouse over) on table rows:</p>
 			<table class="table table-hover">
 				<thead>
 					<tr>
@@ -39,7 +45,7 @@
 				</thead>
 				<tbody>
 					<c:forEach var="qa" items="${list}"  >
-						<tr>
+						<tr onclick="location.href='/qa/qaDetail?qNo=${qa.qNo}'">
 							<td>${qa.qTitle}</td>
 							<td>${qa.qDate}</td>
 							<td>${qa.qAnswer}</td>

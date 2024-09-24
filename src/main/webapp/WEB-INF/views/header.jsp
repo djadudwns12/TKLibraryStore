@@ -227,6 +227,7 @@
 								<option value="-1">선택</option>
 							</select>
 					</div>
+					<div id="main_content"></div>
 				</div>
 			</div>
 		</div>
