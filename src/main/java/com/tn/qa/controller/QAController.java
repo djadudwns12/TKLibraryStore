@@ -1,6 +1,7 @@
 package com.tn.qa.controller;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.tn.admin.model.vo.SearchCriteriaDTO;
 import com.tn.admin.model.vo.PagingInfo;
@@ -49,22 +51,44 @@ public class QAController {
 		String userId = ((MemberVO)sess.getAttribute("loginMember")).getUserId();
 //		logger.info("userId : "+userId);
 		// 회원이 남긴 QA정보가지고 오기
-		List<QAVO> list = qaService.getQAList(userId);
+		List<QAVO> list = new ArrayList<QAVO>();
+		try {
+			list = qaService.getQAList(userId);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
-//		logger.info(list.toString());
+		logger.info(list.toString());
 		model.addAttribute("list", list);
 		
 		
 		
 		
 	}
+	@RequestMapping(value = "/qaDetail",method = RequestMethod.GET)
+	public void qaDetail(@RequestParam("qNo") int qNo,Model model) {
+		logger.info(qNo+"상세페이지 이동");
+		
+		try {
+			QAVO qa = qaService.getDetail(qNo);
+			model.addAttribute("qa", qa);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
 	@RequestMapping(value = "/save", method = RequestMethod.GET)
 	public String qaSave(HttpSession sess) {
 		// 회원정보에서 사용자 id불러오기
 		String userId = ((MemberVO)sess.getAttribute("loginMember")).getUserId();
 		// 회원이 남긴 QA정보가지고 오기
-		qaService.getQAList(userId);
+//		qaService.getQAList(userId);
 		
 		return "/admin/home";
 	}

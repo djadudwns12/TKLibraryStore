@@ -32,7 +32,9 @@ public interface QADAO {
 	 * @description : DB에서 Q&A목록을 불러오는 메서드
 	 *
 	 */
-	List<QAVO> selectQAList(String userId);
+	List<QAVO> selectQAList(String userId) throws Exception;
+
+	QAVO selectQADetail(int qNo) throws Exception;
 	
 	
 }

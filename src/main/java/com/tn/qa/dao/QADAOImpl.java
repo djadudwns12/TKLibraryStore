@@ -20,5 +20,11 @@ public class QADAOImpl implements QADAO {
 		// TODO Auto-generated method stub
 		return sess.selectList(NS+".selectQAList", userId);
 	}
+
+	@Override
+	public QAVO selectQADetail(int qNo) throws Exception {
+		// TODO Auto-generated method stub
+		return sess.selectOne(NS+".selectQADetail", qNo);
+	}
 	
 }

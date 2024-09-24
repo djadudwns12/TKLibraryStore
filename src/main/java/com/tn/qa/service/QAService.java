@@ -18,6 +18,8 @@ public interface QAService {
 	 * @description : 로그인한 회원이 작성한 
 	 *
 	 */
-	List<QAVO> getQAList(String userId); 
+	List<QAVO> getQAList(String userId) throws Exception;
+
+	QAVO getDetail(int qNo) throws Exception;
 
 }

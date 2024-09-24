@@ -8,5 +8,8 @@
   	<select id="selectQAList" resultType="QAVO">
   		select * from QA where qWriter=#{userId};
   	</select>
-  	
+  	<!-- QA 상세보기 보여주는 쿼리문 -->
+  	<select id="selectQADetail" resultType="QAVO">
+  		select * from QA where qNo=#{qNo};
+  	</select>
   </mapper>

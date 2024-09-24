@@ -31,9 +31,15 @@ public class QAServiceImpl implements QAService {
 	private QADAO QADao;
 	
 	@Override
-	public List<QAVO> getQAList(String userId) {
+	public List<QAVO> getQAList(String userId) throws Exception {
 		// TODO Auto-generated method stub
 		return QADao.selectQAList(userId);
+	}
+
+	@Override
+	public QAVO getDetail(int qNo) throws Exception {
+		// TODO Auto-generated method stub
+		return QADao.selectQADetail(qNo);
 	}
 
 	
