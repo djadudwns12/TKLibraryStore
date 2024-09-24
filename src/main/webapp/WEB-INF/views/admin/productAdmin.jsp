@@ -78,6 +78,7 @@
 		  updateButton();
 		}
 	
+	// 상품을 삭제처리하는 함수
 	function deleteProduct() {
 		let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
 	    let delNo = [];
@@ -85,12 +86,15 @@
 	        alert('하나 이상의 제품을 선택해주세요.');
 	        return false;
 	    }
+	    $('input:checkbox[name=proCheck]').each(function (index) {
+            if ($(this).is(":checked") == true) {
+                delNo = $(this).val();
+                console.log(delNo);
+            }
+       	 });
 	    if (confirm(pro_check+"개의 상품을 삭제하시겠습니까?")) {
 	        
-	        $('input:checkbox[name=proCheck]').each(function (index) {
-	            if ($(this).is(":checked") == true) {
-	                delNo = $(this).val();
-	                console.log(delNo);
+	        
 	                $.ajax({
 	                    url: "/admin/deleteProduct", 
 	                    type: "post", 
@@ -101,7 +105,48 @@
 	                    success: function (data) {	  
 	                    	// 실행시키기 위해선 컨트롤러단에서 json데이터로 변환 후 데이터를 보내주어야한다.
 	                    	  alert(pro_check+"개의 상품을 삭제했습니다.");
-	                    	  location.href = '/admin/productAdmin';
+	                    	  location.href = '/admin/productAdmin?ra=${param.ra}&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
+	                                            
+	                    },
+	                    error: function (data) {
+	                      console.log(data);
+	                     
+	                    },
+	                  });
+	                    
+	    } else {
+	        alert("취소");
+	    }
+	}
+	
+	// 상품의 재고를 0으로 만드는 함수
+	function soldOutProduct() {
+		let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
+	    let soldOutNo = [];
+	    if (pro_check == 0) {
+	        alert('하나 이상의 제품을 선택해주세요.');
+	        return false;
+	    }
+	    $('input:checkbox[name=proCheck]').each(function (index) {
+            if ($(this).is(":checked") == true) {
+            	soldOutNo = $(this).val();
+                console.log(soldOutNo);
+            	}
+            });
+	    if (confirm(pro_check+"개의 상품을 품절 처리하시겠습니까?")) {
+	        
+	        
+	                $.ajax({
+	                    url: "/admin/soldOutProduct", 
+	                    type: "post", 
+	                    dataType: "json", 
+	                    data: {
+	                      "soldOutNo" : soldOutNo
+	                    },
+	                    success: function (data) {	  
+	                    	// 실행시키기 위해선 컨트롤러단에서 json데이터로 변환 후 데이터를 보내주어야한다.
+	                    	  alert(pro_check+"개의 상품을 품절 처리했습니다.");
+	                    	  location.href = '/admin/productAdmin?ra=${param.ra}&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
 	                        
 	                      
 	                    },
@@ -110,11 +155,8 @@
 	                     
 	                    },
 	                  });
-	            }
 	            
-	        });
-	        
-	        
+	                
 	    } else {
 	        alert("취소");
 	    }
@@ -125,6 +167,7 @@
         let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
         // 버튼의 텍스트 업데이트
         document.getElementById('delBtn').innerText = pro_check+"개 삭제";
+        document.getElementById('soldOutBtn').innerText = pro_check+"개 품절";
     }
 </script>
 
@@ -307,7 +350,7 @@ body {
 							<th>ReviewCnt</th>
 							
 							<th><button type="button" class="btn btn-danger btn" id="delBtn" style="width:90px; font-size:small;" onclick="deleteProduct();" value="선택 삭제">선택 삭제</button></th> 
-
+							<th><button type="button" class="btn btn-success btn" id="soldOutBtn" style="width:90px; font-size:small;" onclick="soldOutProduct();" value="선택 수정">선택 품절</button></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -327,7 +370,7 @@ body {
 									height="80"></td>
 								<td>${product.zzim}</td>
 								<td>${product.reviewCnt}</td>
-								<td colspan="2"><button type="submit" class="btn btn-secondary btn" style="width:70px;">수정</button></td>
+								<td colspan="3"><button type="submit" class="btn btn-secondary btn" style="width:70px;">수정</button></td>
 							</tr>
 						</c:forEach>
 
@@ -373,7 +416,7 @@ body {
 					</c:if>
 				</ul>
 			</div>
-
+			
 
 		</div>
 	</div>

@@ -29,5 +29,7 @@ public interface ProductAdminDAO {
 
 	int deleteProduct(int[] arr) throws Exception;
 
+	int soldOutProduct(int[] arr) throws Exception;
+
 
 }

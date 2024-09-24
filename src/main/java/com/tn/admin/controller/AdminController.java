@@ -97,6 +97,24 @@ public class AdminController {
 		}
 		return result;
 	}
+	
+	@RequestMapping(value="/soldOutProduct", method=RequestMethod.POST)
+	public ResponseEntity<MyResponseWithData> soldOutProduct(@RequestParam(value="soldOutNo") int[] arr) {
+		
+		ResponseEntity<MyResponseWithData> result = null;
+		try {
+			
+			if(pService.soldOutProduct(arr)>0) {
+				result = new ResponseEntity(MyResponseWithData.success(), HttpStatus.OK);
+			} else {
+				result = new ResponseEntity(MyResponseWithData.fail(), HttpStatus.BAD_REQUEST);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		return result;
+	}
 		
 	
 	

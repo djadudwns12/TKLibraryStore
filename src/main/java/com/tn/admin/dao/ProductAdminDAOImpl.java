@@ -74,6 +74,15 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		}		
 		return delCount;
 	}
+	@Override
+	public int soldOutProduct(int[] arr) throws Exception {
+		int sdCount = 0;
+		for (int sdNo : arr) {
+			sdCount += ses.update(NS + ".soldOutProduct",sdNo);
+		}
+		System.out.println(sdCount);
+		return sdCount;
+	}
 	
 
 }

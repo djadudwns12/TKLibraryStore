@@ -16,4 +16,6 @@ public interface ProductAdminService {
 
 	int deleteProduct(int[] arr) throws Exception;
 
+	int soldOutProduct(int[] arr) throws Exception;
+
 }

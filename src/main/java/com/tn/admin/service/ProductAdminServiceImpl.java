@@ -89,6 +89,13 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 				
 		return pDao.deleteProduct(arr);
 	}
+
+
+	@Override
+	public int soldOutProduct(int[] arr) throws Exception {
+		
+		return pDao.soldOutProduct(arr);
+	}
 	
 	
 

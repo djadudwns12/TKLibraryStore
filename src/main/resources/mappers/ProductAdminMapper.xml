@@ -204,4 +204,8 @@
 		delete from BookList where bookNo = ${delNo}
 	</delete>
 	
+	<update id="soldOutProduct">
+		update BookList set inven = 0 where bookNo=#{sdNo}
+	</update>
+	
   </mapper>
