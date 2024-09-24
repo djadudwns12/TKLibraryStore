@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/slicknav.min.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/style.css" type="text/css">
   
-<script type="text/javascript" src="resources/js/category.js"/>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/category.js"/>
 </head>
 
 <body>
