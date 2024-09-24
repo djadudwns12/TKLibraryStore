@@ -83,6 +83,11 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		System.out.println(sdCount);
 		return sdCount;
 	}
+	@Override
+	public ProductVO readBookInfo(int bookNo) throws Exception {
+		
+		return ses.selectOne(NS +".readBookInfo",bookNo);
+	}
 	
 
 }

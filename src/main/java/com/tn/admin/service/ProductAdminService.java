@@ -18,4 +18,6 @@ public interface ProductAdminService {
 
 	int soldOutProduct(int[] arr) throws Exception;
 
+	ProductVO read(int bookNo) throws Exception;
+
 }

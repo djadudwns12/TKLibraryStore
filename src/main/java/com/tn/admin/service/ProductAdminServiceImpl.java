@@ -96,6 +96,13 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		
 		return pDao.soldOutProduct(arr);
 	}
+
+
+	@Override
+	public ProductVO read(int bookNo) throws Exception {
+		
+		return pDao.readBookInfo(bookNo);
+	}
 	
 	
 

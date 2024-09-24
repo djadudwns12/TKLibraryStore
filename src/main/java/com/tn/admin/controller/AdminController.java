@@ -115,7 +115,20 @@ public class AdminController {
 		}
 		return result;
 	}
-		
+	
+	@RequestMapping("/modifyProduct")
+	public String modifyProduct(@RequestParam("bookNo") int bookNo, Model model) {
+		ProductVO product = null;
+		try {
+			product = pService.read(bookNo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(product.toString());
+		model.addAttribute("product",product);
+		return "admin/modifyAdmin";
+	}
 	
 	
 }

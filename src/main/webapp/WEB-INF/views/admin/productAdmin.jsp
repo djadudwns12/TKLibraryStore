@@ -370,7 +370,7 @@ body {
 									height="80"></td>
 								<td>${product.zzim}</td>
 								<td>${product.reviewCnt}</td>
-								<td colspan="3"><button type="submit" class="btn btn-secondary btn" style="width:70px;">수정</button></td>
+								<td colspan="3"><button class="btn btn-secondary btn" style="width:70px" onclick="location.href='/admin/modifyProduct?bookNo=${product.bookNo}'">수정</button></td>
 							</tr>
 						</c:forEach>
 

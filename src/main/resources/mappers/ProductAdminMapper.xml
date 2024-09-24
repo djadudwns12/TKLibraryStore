@@ -208,4 +208,8 @@
 		update BookList set inven = 0 where bookNo=#{sdNo}
 	</update>
 	
+	<select id="readBookInfo" resultType="com.tn.admin.model.vo.ProductVO">
+		select * from BookList where bookNo = #{bookNo}
+	</select>
+	
   </mapper>

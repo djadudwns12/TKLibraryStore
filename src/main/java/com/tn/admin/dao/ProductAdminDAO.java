@@ -31,5 +31,7 @@ public interface ProductAdminDAO {
 
 	int soldOutProduct(int[] arr) throws Exception;
 
+	ProductVO readBookInfo(int bookNo) throws Exception;
+
 
 }
