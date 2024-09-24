@@ -20,6 +20,12 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		
 		boolean goController = false;
 		
+		
+		String destPath = request.getRequestURI();// 로그인 전 이동하려고 했던 곳
+		String queryStr = request.getQueryString(); // 쿼리스트링
+		System.out.println("--------------------------------------------"+destPath+"--------------------------------------------");
+		System.out.println("--------------------------------------------"+queryStr+"--------------------------------------------");
+		
 		HttpSession sess = request.getSession();
 		
 		if(sess.getAttribute("loginMember")==null) {
@@ -35,7 +41,11 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		// TODO Auto-generated method stub
+		HttpSession sess = request.getSession();
+		if(sess.getAttribute("loginMember")!=null) {
+			
+		}
+		
 		super.postHandle(request, response, handler, modelAndView);
 	}
 	
