@@ -44,16 +44,23 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		System.out.println("postHandle 부른다.");
+		System.out.println("Login인터셉터 -postHandle 부른다.");
 		
 		HttpSession sess = request.getSession();
 		if(request.getMethod().toUpperCase().equals("POST")) {
 			if(sess.getAttribute("loginMember") != null) { // 로그인 성공시
-				// 처음 화면으로 보냄
-				modelAndView.setViewName("index");
-				modelAndView.addObject("status", "success");
+				
+				Object tmp = sess.getAttribute("destPath");
+				
+				System.out.println((String) tmp);
+				
+				String viewName = ((tmp == null) ? "/" : (String) sess.getAttribute("destPath"));
+//				modelAndView.addObject("status", "loginSuccess");
+				modelAndView.setViewName("redirect:"+viewName);
+				
+				System.out.println(modelAndView.getViewName());
 			}else if(sess.getAttribute("loginMember") == null) {
-				modelAndView.addObject("status", "fail");
+				modelAndView.addObject("status", "loginFail");
 				modelAndView.setViewName("member/loginPage");
 			}
 		
@@ -63,7 +70,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		
 		
 		
-		//super.postHandle(request, response, handler, modelAndView);
+		super.postHandle(request, response, handler, modelAndView);
 	}
 
 	
