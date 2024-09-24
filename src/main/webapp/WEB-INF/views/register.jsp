@@ -514,6 +514,7 @@ function clearError(obj) {
   });
 		
 		
+		
 	// 실제로 유저가 업로드한 파일을 컨트롤러단에 전송하여 저장되도록 하는 함수
 	function fileUpload(file) {
 		let result = false;

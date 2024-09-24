@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -38,10 +39,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.member.model.vo.MyResponseWithoutData;
+import com.tn.member.model.vo.UpProfileImgVODTO;
 import com.tn.member.service.MemberService;
 import com.tn.member.service.SendMailService;
 
@@ -211,6 +216,74 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 	
 	
 
+
+	
+// -----------------------------------------박근영-------------------------------------------------
+	@RequestMapping(value = "/upfiles", method = RequestMethod.POST, produces = "application/json; charset=UTF-8;")
+	public ResponseEntity<MyResponseWithoutData> saveBoardFile(@RequestParam("file") MultipartFile file,
+			HttpServletRequest request) {
+		System.out.println("파일 전송됨... 이제 저장해야 함......");
+
+		ResponseEntity<MyResponseWithoutData> result = null;
+
+		try {
+			UpProfileImgVODTO fileInfo = fileSave(file, request);
+
+			this.uploadFileList.add(fileInfo);
+
+			// 7월 17일 가장 먼저 해야 할 코드 : front에서 업로드한 파일을 지웠을때 백엔드에서도 지워야 한다.
+			System.out.println("=================================================================");
+			System.out.println("현재 파일리스트에 있는 파일들");
+			for (UpProfileImgVODTO f : this.uploadFileList) {
+				System.out.println(f.toString());
+			}
+			System.out.println("=================================================================");
+
+			String tmp = null;
+			if (fileInfo.getThumbFileName() != null) {
+				// 이미지
+				tmp = fileInfo.getThumbFileName();
+			} else {
+				tmp = fileInfo.getNewFileName().substring(fileInfo.getNewFileName().lastIndexOf(File.separator) + 1);
+			}
+
+			MyResponseWithoutData mrw = MyResponseWithoutData.builder().code(200).msg("success").newFileName(tmp)
+					.build();
+
+			// 저장된 새로운 파일이름을 json으로 return 시키도록 하자...
+			result = new ResponseEntity<MyResponseWithoutData>(mrw, HttpStatus.OK);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+
+			result = new ResponseEntity<MyResponseWithoutData>(HttpStatus.NOT_ACCEPTABLE);
+
+		}
+
+		return result;
+
+	}
+
+	private UpProfileImgVODTO fileSave(MultipartFile file, HttpServletRequest request) throws IOException {
+		// 파일의 기본정보 가져옴
+		String contentType = file.getContentType();
+		String originalFileName = file.getOriginalFilename();
+		long fileSize = file.getSize();
+
+		byte[] upfile = file.getBytes(); // 파일의 실제 데이터를 읽어옴
+
+		System.out.println(
+				"서버의 실제 물리적 경로 : " + request.getSession().getServletContext().getRealPath("/resources/boardUpFiles"));
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/boardUpFiles");
+
+		// 실제파일 저장(이름변경, base64, thumbnail)
+		UpProfileImgVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, contentType, originalFileName,
+				fileSize);
+		return fileInfo;
+	}
+	
+	
+	
 	@RequestMapping(value="/register")
 	   public String registerMember() {
 		
@@ -264,5 +337,14 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);  // 에러 상태를 반환
 	    }
 	}
+	
+	// -----------------------------------------박근영-------------------------------------------------
+	
+	
+	
+	
+	
+	
+	
 
 }
