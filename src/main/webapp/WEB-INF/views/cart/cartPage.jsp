@@ -14,14 +14,9 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>장바구니</title>
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 <style>
 /* 모든 td에 공통 스타일 적용 (cart.thumbNail 제외) */
 .common-td {
@@ -55,104 +50,60 @@
 .button-link:active {
 	transform: translateY(2px);
 }
+
+.quantity-control {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden; /* 경계선에 맞춰서 내용이 잘리지 않도록 */
+}
+
+.quantity-control button {
+    background-color: #f8f9fa; /* 버튼 배경색 */
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 18px; /* 버튼 크기 */
+    transition: background-color 0.3s;
+}
+
+.quantity-control button:hover {
+    background-color: #e2e6ea; /* 버튼 마우스 오버 시 색상 */
+}
+
+.quantity-control input {
+    width: 40px; /* 수량 입력창 너비 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    border: none;
+    outline: none; /* 포커스 시 경계선 제거 */
+    font-size: 18px; /* 입력 텍스트 크기 */
+}
+
+
+.change-btn {
+    background-color: #7FAD39; /* 원하시는 배경색으로 변경 가능 */
+    color: white;
+    border: none;
+    border-radius: 5px; /* 귀여운 느낌을 위해 둥글게 */
+    padding: 5px 10px; /* 여백을 적게 설정 */
+    font-size: 12px; /* 작게 설정 */
+    transition: background-color 0.3s;
+    margin-top:0.5em;
+}
+
+.change-btn:hover {
+    background-color: #6FAF2E; /* 호버 시 색상 변경 */
+}
 </style>
 </head>
-
-<script>
-    function toggleSelectAll(source) {
-        const checkboxes = document.querySelectorAll('.selectItem');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = source.checked;
-        });
-        updateTotals();  // 체크 상태 변경 후 합계 업데이트
-    }
-
-    function updateTotals() {
-        let totalPrice = 0;
-        let totalSalePrice = 0;
-        let totalPay = 0;
-        let totalPoint = 0;
-
-        const selectedItems = document.querySelectorAll('.selectItem:checked');
-        selectedItems.forEach(item => {
-            const price = parseInt(item.getAttribute('data-price'));
-            const salePrice = parseInt(item.getAttribute('data-salePrice'));
-            const qty = parseInt(item.getAttribute('data-qty'));
-
-            totalPrice += price * qty;
-            totalSalePrice += (price - salePrice) * qty;
-            totalPay += salePrice * qty;
-            totalPoint += salePrice * 0.02 * qty;
-        });
-
-        document.getElementById('totalPrice').innerText = totalPrice.toLocaleString() + "원";
-        document.getElementById('totalSalePrice').innerText = totalSalePrice.toLocaleString() + "원";
-        document.getElementById('totalPay').innerText = totalPay.toLocaleString() + "원";
-        document.getElementById('totalPoint').innerText = totalPoint.toLocaleString() + "P";
-    }
-
-    function checkSelectAll() {
-        const selectAllCheckbox = document.getElementById('selectAll');
-        const checkboxes = document.querySelectorAll('.selectItem');
-        const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-        selectAllCheckbox.checked = allChecked;
-    }
-
-    $(document).ready(function () {
-        const selectAllCheckbox = document.getElementById('selectAll');
-        selectAllCheckbox.checked = true;
-        toggleSelectAll(selectAllCheckbox);
-
-        const checkboxes = document.querySelectorAll('.selectItem');
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', checkSelectAll);
-        });
-
-        // 삭제 버튼 클릭 이벤트
-        $('#deleteConfirmButton').on('click', function () {
-            const cartId = $(this).data('cart-id');
-            console.log('삭제할 cartId:', cartId); // 확인용 로그
-
-            $.ajax({
-                url: '/cart/deleteCart',
-                type: 'POST',
-                data: { cartId: cartId },
-                success: function (response) {
-                    console.log('응답:', response); // 확인용 로그
-                    if (response.success) {
-                        $(currentElement).closest('tr').remove();
-                        updateTotals();
-                    } else {
-                        alert('삭제에 실패했습니다. 다시 시도해주세요.');
-                    }
-                },
-                error: function (xhr, status, error) {
-                    alert('에러가 발생했습니다: ' + error);
-                }
-            });
-
-            $('#myModal').modal('hide'); // Bootstrap 모달 닫기
-        });
-    });
-
-    // AJAX로 삭제 요청을 보내는 함수
-    let currentElement; // 전역 변수로 현재 클릭된 요소를 저장
-
-    function showDeleteModal(cartId, element) {
-        $('.modal-body').html("상품을 삭제하시겠습니까?");
-        $('#deleteConfirmButton').data('cart-id', cartId);
-        currentElement = element; // 현재 클릭된 요소 저장
-        $('#myModal').modal('show'); // Bootstrap의 modal 메서드 사용
-    }
-</script>
 
 <body>
 
 	<c:import url="../header.jsp"></c:import>
 
-	
 	<div class="container">
-	<button type="button" class="btn btn-outline-danger">선택삭제</button>
+		<button type="button" class="btn btn-outline-danger">선택삭제</button>
 		<div style="max-height: 300px; overflow-y: auto;">
 			<table class="table table-hover">
 				<thead>
@@ -177,7 +128,7 @@
 							<td class="common-td"><input type="checkbox"
 								class="selectItem" onclick="updateTotals()"
 								data-price="${cart.price}" data-salePrice="${cart.salePrice}"
-								data-qty="${cart.qty}"></td>
+								data-cart-id="${cart.cartId}"></td>
 							<td class="thumbnail"><img src="${cart.thumbNail}"
 								style="width: 70px;" /></td>
 							<td class="common-td">${cart.title}</td>
@@ -194,9 +145,18 @@
 										groupingUsed="true" />
 									원
 								</div>
-							</td>
 							<td class="common-td">
-								<div>${cart.qty}</div>
+								<div class="quantity-control">
+									<button type="button" class="decrease-btn"
+										data-cart-id="${cart.cartId}">-</button>
+									<input type="text" id="qtyInput-${cart.cartId}"
+										value="${cart.qty}" size="2" readonly />
+									<button type="button" class="increase-btn"
+										data-cart-id="${cart.cartId}">+</button>
+								</div>
+								<div>
+									<button type="button" class="change-btn">변경</button>
+								</div>
 							</td>
 							<td class="common-td"><img
 								src="/resources/images/cart_delete.png" width="30px"
@@ -206,8 +166,6 @@
 				</tbody>
 			</table>
 		</div>
-
-
 
 		<table class="table table-hover" name="totalExpectedPayment">
 			<thead>
@@ -290,6 +248,157 @@
 	</div>
 
 	<c:import url="../footer.jsp"></c:import>
+
+	<!-- jQuery 및 Bootstrap JS를 body 끝 부분에 배치 -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- JavaScript 코드 -->
+	<script>
+    $(document).ready(function() {
+        // 수량 증가 함수
+        function increaseQty(cartId) {
+            let qtyInput = document.getElementById('qtyInput-' + cartId);
+            let currentQty = parseInt(qtyInput.value);
+            qtyInput.value = currentQty + 1;
+
+            // 수량이 변경되었으므로, 합계를 업데이트합니다.
+            updateTotals();
+
+            // 서버에 수량 업데이트를 위한 AJAX 호출을 추가할 수 있습니다.
+            console.log("수량 증가: cartId=", cartId, "수량=", qtyInput.value);
+        }
+
+        // 수량 감소 함수 (1보다 작은 값은 허용하지 않음)
+        function decreaseQty(cartId) {
+            let qtyInput = document.getElementById('qtyInput-' + cartId);
+            let currentQty = parseInt(qtyInput.value);
+            if (currentQty > 1) {
+                qtyInput.value = currentQty - 1;
+
+                // 수량이 변경되었으므로, 합계를 업데이트합니다.
+                updateTotals();
+            } else {
+                alert("수량은 1보다 작을 수 없습니다.");
+            }
+            console.log("수량 감소: cartId=", cartId, "수량=", qtyInput.value);
+        }
+
+        // 이벤트 위임으로 수량 증가/감소 버튼 핸들러
+        $(document).on('click', 'button.increase-btn', function() {
+            const cartId = $(this).data('cart-id');
+            increaseQty(cartId);
+        });
+
+        $(document).on('click', 'button.decrease-btn', function() {
+            const cartId = $(this).data('cart-id');
+            decreaseQty(cartId);
+        });
+
+        // 선택된 상품의 합계 업데이트 함수
+        function updateTotals() {
+            let totalPrice = 0;
+            let totalSalePrice = 0;
+            let totalPay = 0;
+            let totalPoint = 0;
+
+            const selectedItems = document.querySelectorAll('.selectItem:checked');
+            selectedItems.forEach(item => {
+                const price = parseInt(item.getAttribute('data-price'));
+                const salePrice = parseInt(item.getAttribute('data-salePrice'));
+                const cartId = item.getAttribute('data-cart-id');
+                const qty = parseInt(document.getElementById('qtyInput-' + cartId).value);
+
+                totalPrice += price * qty;
+                totalSalePrice += (price - salePrice) * qty;
+                totalPay += salePrice * qty;
+                totalPoint += salePrice * 0.02 * qty;
+            });
+
+            document.getElementById('totalPrice').innerText = totalPrice.toLocaleString() + "원";
+            document.getElementById('totalSalePrice').innerText = totalSalePrice.toLocaleString() + "원";
+            document.getElementById('totalPay').innerText = totalPay.toLocaleString() + "원";
+            document.getElementById('totalPoint').innerText = Math.floor(totalPoint).toLocaleString() + "P";
+        }
+
+        // 초기화 및 이벤트 핸들러 설정
+        function init() {
+            const selectAllCheckbox = document.getElementById('selectAll');
+            selectAllCheckbox.checked = true;
+            toggleSelectAll(selectAllCheckbox);
+
+            const checkboxes = document.querySelectorAll('.selectItem');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    checkSelectAll();
+                    updateTotals();
+                });
+            });
+
+            updateTotals();
+        }
+
+        // 전체 선택/해제 토글 함수
+        function toggleSelectAll(source) {
+            const checkboxes = document.querySelectorAll('.selectItem');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = source.checked;
+            });
+            updateTotals();
+        }
+
+        // 모든 체크박스의 상태를 확인하여 전체 선택 체크박스의 상태를 업데이트
+        function checkSelectAll() {
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const checkboxes = document.querySelectorAll('.selectItem');
+            const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+            selectAllCheckbox.checked = allChecked;
+        }
+
+        // 삭제 버튼 클릭 이벤트
+        $('#deleteConfirmButton').on('click', function () {
+            const cartId = $(this).data('cart-id');
+            console.log('삭제할 cartId:', cartId);
+
+            $.ajax({
+                url: '/cart/deleteCart',
+                type: 'POST',
+                data: { cartId: cartId },
+                success: function (response) {
+                    if (response.success) {
+                        $(currentElement).closest('tr').remove();
+                        updateTotals();
+                    } else {
+                        alert('삭제에 실패했습니다. 다시 시도해주세요.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert('에러가 발생했습니다: ' + error);
+                }
+            });
+
+            $('#myModal').modal('hide');
+        });
+
+        // AJAX로 삭제 요청을 보내는 함수
+        let currentElement; // 전역 변수로 현재 클릭된 요소를 저장
+
+        window.showDeleteModal = function(cartId, element) {
+            $('.modal-body').html("상품을 삭제하시겠습니까?");
+            $('#deleteConfirmButton').data('cart-id', cartId);
+            currentElement = element; // 현재 클릭된 요소 저장
+            $('#myModal').modal('show'); // Bootstrap의 modal 메서드 사용
+        }
+
+        // 전역으로 함수 선언
+        window.toggleSelectAll = toggleSelectAll;
+
+        // 초기화 함수 호출
+        init();
+    });
+    </script>
 
 </body>
 </html>
