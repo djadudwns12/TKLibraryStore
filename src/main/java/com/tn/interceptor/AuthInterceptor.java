@@ -1,13 +1,10 @@
 package com.tn.interceptor;
 
-import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 public class AuthInterceptor extends HandlerInterceptorAdapter {
@@ -18,35 +15,22 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		// TODO Auto-generated method stub
 		System.out.println("auth 인터셉터 preHandle");
 		
-		boolean goController = false;
+		boolean goController = false; // 컨트롤러로 보낼지를 결정하는 변수
 		
 		
-		String destPath = request.getRequestURI();// 로그인 전 이동하려고 했던 곳
-		String queryStr = request.getQueryString(); // 쿼리스트링
-		System.out.println("--------------------------------------------"+destPath+"--------------------------------------------");
-		System.out.println("--------------------------------------------"+queryStr+"--------------------------------------------");
+		new DestiationPath().setDestPath(request); // 로그인 하기전 호출했던 페이지를 저장
 		
 		HttpSession sess = request.getSession();
 		
-		if(sess.getAttribute("loginMember")==null) {
+		if(sess.getAttribute("loginMember")==null) { // 로그인이 되지 않은경우
+			// 로그인 페이지로 보내기
 			response.sendRedirect("/member/loginPage");
-		}else {
+		}else { // 로그인을 한경우
 			goController = true;
 		}
 		
 		
 		return goController;
-	}
-
-	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-			ModelAndView modelAndView) throws Exception {
-		HttpSession sess = request.getSession();
-		if(sess.getAttribute("loginMember")!=null) {
-			
-		}
-		
-		super.postHandle(request, response, handler, modelAndView);
 	}
 	
 
