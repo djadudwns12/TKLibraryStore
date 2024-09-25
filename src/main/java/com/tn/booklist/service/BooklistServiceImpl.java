@@ -15,7 +15,6 @@ import com.tn.booklist.controller.BooklistController;
 import com.tn.booklist.dao.BooklistDAO;
 import com.tn.booklist.model.dto.PagingInfo;
 import com.tn.booklist.model.dto.PagingInfoDTO;
-import com.tn.booklist.model.dto.SearchDTO;
 import com.tn.booklist.model.vo.BooklistVO;
 
 @Service
