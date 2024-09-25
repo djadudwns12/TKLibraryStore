@@ -12,4 +12,8 @@
   	<select id="selectQADetail" resultType="QAVO">
   		select * from QA where qNo=#{qNo};
   	</select>
+  	<!-- 관리자 페이지에서 모든 QA목록을 페이징하여 가지고 오는 쿼리문 -->
+  	<select id="selectAllQAList" resultType="QAVO">
+  		select * from QA limit 0 ,10;
+  	</select>
   </mapper>

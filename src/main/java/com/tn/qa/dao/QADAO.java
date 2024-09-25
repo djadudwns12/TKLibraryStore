@@ -35,6 +35,8 @@ public interface QADAO {
 	List<QAVO> selectQAList(String userId) throws Exception;
 
 	QAVO selectQADetail(int qNo) throws Exception;
+
+	List<QAVO> selectAllQAList() throws Exception;
 	
 	
 }

@@ -143,7 +143,8 @@
                         <li class="nav-item"> <a href="./docs/how-to-contribute.html" class="nav-link"> <i class="nav-icon bi bi-hand-thumbs-up-fill"></i>
                                 <p>How To Contribute</p>
                             </a> </li>
-                        <li class="nav-item"> <a href="./docs/faq.html" class="nav-link"> <i class="nav-icon bi bi-question-circle-fill"></i>
+                        <!-- 관리자 1:1 문의 답변하는 링크이동 -->
+                        <li class="nav-item"> <a href="/qa/qaAnswerView" class="nav-link"> <i class="nav-icon bi bi-question-circle-fill"></i>
                                 <p>FAQ</p>
                             </a> </li>
                         <li class="nav-item"> <a href="./docs/license.html" class="nav-link"> <i class="nav-icon bi bi-patch-check-fill"></i>
