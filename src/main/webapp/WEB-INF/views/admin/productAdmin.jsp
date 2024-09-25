@@ -349,8 +349,8 @@ body {
 							<th>Zzim</th>
 							<th>ReviewCnt</th>
 							
-							<th><button type="button" class="btn btn-danger btn" id="delBtn" style="width:90px; font-size:small;" onclick="deleteProduct();" value="선택 삭제">선택 삭제</button></th> 
-							<th><button type="button" class="btn btn-success btn" id="soldOutBtn" style="width:90px; font-size:small;" onclick="soldOutProduct();" value="선택 수정">선택 품절</button></th>
+							<th><button type="button" class="btn btn-danger btn" id="delBtn" style="width:90px; font-size:small;" onclick="deleteProduct();" >0개 삭제</button></th> 
+							<th><button type="button" class="btn btn-success btn" id="soldOutBtn" style="width:90px; font-size:small;" onclick="soldOutProduct();">0개 품절</button></th>
 						</tr>
 					</thead>
 					<tbody>

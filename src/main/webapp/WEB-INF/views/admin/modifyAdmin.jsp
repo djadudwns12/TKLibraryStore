@@ -18,6 +18,77 @@
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 
+<script type="text/javascript">
+let file = '';		//업로드 되는 파일들을 저장하는 배열
+
+$(function(){
+	//업로드 파일 영역에 drag&drop과 관련된 이벤트(파일의 경우 파일이 웹브라우저에서 실행되는 등)을 방지해야 한다 -> 이벤트 캔슬링
+	$('.fileUploadArea').on("dragenter dragover", function(evt) {
+		evt.preventDefault();  		//기본 이벤트 캔슬
+	});
+	
+	// 유저가 fileUploadArea에 파일을 드래그&드랍 하면...
+	$('.fileUploadArea').on("drop", function(evt){
+		evt.preventDefault();
+		
+		//console.log(evt.originalEvent.dataTransfer.files);	//업로드 되는 파일 객체의 정보
+		
+			let file = evt.originalEvent.dataTransfer.files; 
+			//파일 사이즈 검사하여 10MB가 넘게되면 파일 업로드가 안되도록
+			if(file[0].size > 10485760){
+				alert("파일 용량이 너무 큽니다. 업로드한 파일을 확인해 주세요.");
+			}else{
+				file = file[0].name;
+									
+			}
+		
+	});
+	
+	// 실제로 유저가 업로드한 파일을 컨트롤러단에 전송하여 저장되도록 하는 함수
+	function fileUpload(file) {
+		
+		let result = false;
+		let fd = new FormData(); 	//FormData() 객체 생성 : form태그와 같은 역할의 객체
+		fd.append("file", file);
+		
+		
+		$.ajax({
+            url : '/admin/upfiles',              			//데이터가 송수신 될 서버의 주소
+            type : 'post',             		//통신 방식 : GET, POST, PUT, DELETE, PATCH
+            dataType : 'json',        		//수신 받을 데이터의 타입 (text, xml, json)
+			data : fd,						// 보낼 데이터
+			// processData : false -> 데이터 쿼리스트링 형태로 보내지 안겠다는 설정
+			// contentType 의 디폴트 값이 "application/x-www-form-unlencoded"인데, 파일을 전송하는 방식이기에 "multipart/form-data"로 되어야 하므로
+			// 
+			processData : false,
+			contentType : false,
+			async : false,					// 비동기 통신 : false
+            success : function(data) {		//비동기 통신에 성공하면 자동으로 호출 될 callback funtion
+                console.log(data);
+          	 	
+            	if(data.msg == 'success'){
+            		//미리보기
+					showPreview(file, data.newFileName);
+           		 }
+            	
+            },error : function (data) {
+            	console.log(data);
+            	if (data == 'fail'){
+            		alert ('파일을 업로드 하지 못했습니다');
+            		
+            		for(let i=0; i < upfiles.length; i++){
+            			if(upfile[i].name == file.name){
+            				upfiles.splice(i, 1);
+            			}
+            		}
+            	}
+			}              
+
+	    });
+	}
+
+});
+</script>
 
 
 
@@ -61,9 +132,10 @@
 }
 .fileUploadArea {
 	width: 50%;
-	height: 400px;
+	height: 430px;
 	background-color: lightgray;
 	text-align: center;
+	ㅅ
 	margin-left: 60px;
 }
 .content3{

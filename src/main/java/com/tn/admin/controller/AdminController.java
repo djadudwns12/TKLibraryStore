@@ -1,10 +1,14 @@
 package com.tn.admin.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +20,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tn.admin.model.vo.SearchCriteriaDTO;
 import com.tn.admin.model.vo.MyResponseWithData;
-
+import com.tn.admin.model.vo.MyResponseWithoutData;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
@@ -130,5 +135,54 @@ public class AdminController {
 		return "admin/modifyAdmin";
 	}
 	
+	@RequestMapping(value ="/upfiles" ,method = RequestMethod.POST, produces = "application/json; charset=UTF-8;")
+	//쪼개져서온 'file' 파일을 재조립해주는 인터페이스 MultipartFile, @RequestParam로 save
+	public ResponseEntity<MyResponseWithoutData> saveBoardFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {	
+		System.out.println("파일 전송됨, 이제 저장해야함");
+		
+		ResponseEntity<MyResponseWithoutData> result = null;
+		
+		
+		
+		try {
+			BoardUpFilesVODTO fileInfo = fileSave(file, request);
+			
+			//System.out.println("저장된 파일의 정보 : " + fileInfo.toString());
+			
+			
+			// 7월 17일 가장 먼저 해야 할 코드 : front에서 업로드한 파일을 지웠을 때 백엔드에서도 지워야 한다.
+			this.uploadFileList.add(fileInfo);
+			System.out.println("====================================");
+			System.out.println("현재 파일리스트에 있는 파일들");
+			for(BoardUpFilesVODTO f : this.uploadFileList) {
+				System.out.println(f.toString());
+			}
+			System.out.println("====================================");
+			
+			String tmp = null;
+			if (fileInfo.getThumbFileName() != null) {
+				tmp = fileInfo.getThumbFileName();
+			}else {
+				tmp = fileInfo.getNewFileName().substring(fileInfo.getNewFileName().lastIndexOf(File.separator)+1);
+			}
+			
+			// 예) \2024\07\17\50.htm File.separator+1은 5의 위치이고 substring으로 자른다  
+			//String tmp = fileInfo.getNewFileName().substring(fileInfo.getNewFileName().lastIndexOf(File.separator)+1);
+			
+			MyResponseWithoutData mrw = MyResponseWithoutData.builder()
+				.code(200)
+				.msg("success")
+				.newFileName(tmp)
+				.build();
+			
+			result = new ResponseEntity<MyResponseWithoutData>(mrw, HttpStatus.OK);
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+			result = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		}
+			
+		return result;
+	}
 	
 }
