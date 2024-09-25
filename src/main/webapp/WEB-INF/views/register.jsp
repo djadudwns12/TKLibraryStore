@@ -120,6 +120,23 @@ body {
     background-color: #f0f8ff; /* 드래그 시 배경색 변경 */
 }
 
+#delPreview {
+    width: 70px; /* 버튼 크기 */
+    
+    padding: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.5em;
+    cursor: pointer;
+    display:none;
+}
+
+#delPreview:hover {
+    background-color: #45a049;
+}
+
 .submit-btn {
     width: 100%;
     padding: 10px;
@@ -326,6 +343,7 @@ input[readonly] {
     <div id="profileImageContainer">
         <p id ="sign">프로필 사진을 드래그 앤 드롭하세요.</p>
         <img id="profilePreview" alt="프로필 사진 미리보기">
+        <button type="button" id="delPreview" onclick="deleteProfileImage();">이미지 삭제</button>
         <input type="file" id="profileImageInput" style="display: none;" accept="image/*">
     </div>
     
@@ -471,7 +489,7 @@ function clearError(obj) {
     
     
     
-    
+
     
 		
 		// 유저가 fileUploadArea에 파일을 드래그&드랍 하면...
@@ -494,12 +512,21 @@ function clearError(obj) {
 						alert("1개의 이미지만 가능합니다.");
 						
 					} else {
+						
 					
 						// 해당 파일 업로드
 						showPreview(files[0])
 						
+						
 					}
 			}
+			
+			
+			
+			
+			  $('#terms').change(function() {
+			        $('#submitBtn').prop('disabled', !$(this).is(':checked'));
+			    });
 				
 			
 		});
@@ -515,11 +542,13 @@ function clearError(obj) {
 		
 		
 		
+
+		
+  let uploadedFile = null;
+		
 		
 // 넘겨진 file이 이미지 파일이라면 미리보기 하여 출력한다.
 function showPreview(imgFile) {
-	let fileType = imgFile.type.toLowerCase();
-	// 파일 읽기 위한 FileReader 객체 생성
 	const reader = new FileReader();
 	reader.readAsDataURL(imgFile);
 	
@@ -528,6 +557,8 @@ function showPreview(imgFile) {
 		$('#profilePreview').attr('src', evt.target.result); // 읽어온 파일 데이터(URL 형식)
 		$('#profilePreview').show();
 		$('#sign').hide();
+		$('#delPreview').show();
+		uploadedFile = imgFile;
 	};
 	// 파일을 읽어서 DataURL로 변환 (이미지 형식의 데이터를 읽어옴)
 	reader.readAsDataURL(imgFile);
@@ -537,7 +568,14 @@ function showPreview(imgFile) {
 		} 
 	
 		
-		
+function deleteProfileImage() {
+	uploadedFile = null;
+	$('#profilePreview').removeAttr('src').hide();
+	$('#sign').show();
+	$('#delPreview').hide();
+	
+	
+}
 		
 		
 		
@@ -1001,11 +1039,6 @@ function serializeDiv(divId) {
 
 
 
-$(document).ready(function() {
-    $('#terms').change(function() {
-        $('#submitBtn').prop('disabled', !$(this).is(':checked'));
-    });
-});
 
 
 
