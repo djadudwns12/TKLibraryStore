@@ -92,4 +92,16 @@ public class QAController {
 		
 		return "/admin/home";
 	}
+	@RequestMapping("/qaAnswerView")
+	public String qaAnswerView(Model model) {
+		List<QAVO> list = new ArrayList<QAVO>();
+		try {
+			list = qaService.getAllQAList();
+			model.addAttribute("qaList", list);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "/admin/qaAnswerView";
+	}
 }

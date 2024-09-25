@@ -24,6 +24,7 @@ public class QAVO {
 	java.sql.Date qDate;
 	String qContent;
 	String qAnswer;
+	String qAnswerYN;
 	String qType;
 	
 	public int getqNo() {
