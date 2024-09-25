@@ -16,13 +16,7 @@ import lombok.ToString;
 @ToString
 public class BoardUpFileVODTO {
 	
-	private int boardUpFileNo;
-	private String newFileName;
-	private String originFileName;
-	private String thumbFileName;
-	private String ext;
-	private long size;
-	private int boardNo;
+	private String fileName;
 	private String base64Img;
 		
 }

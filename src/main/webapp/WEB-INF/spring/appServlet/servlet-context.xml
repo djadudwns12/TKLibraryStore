@@ -46,5 +46,9 @@
 	
 	</interceptors>
 	
-	
+	<!-- 수신된 multipart의 데이터를 순서대로 재조립, 파일 업로드제한 : 10MB(10485760) -->
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="10485760"></beans:property>
+	</beans:bean>	
 </beans:beans>

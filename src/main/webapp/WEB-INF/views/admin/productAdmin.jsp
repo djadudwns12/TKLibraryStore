@@ -67,16 +67,18 @@
 		
 	}
 	
-	function selectAll(selectAll)  {
-		  const checkboxes 
-		     = document.querySelectorAll('input[type="checkbox"]');
-		  // forEach 메서드를 사용하여 모든 체크박스 요소를 순회하면서, 각 체크박스의 checked 속성을 selectAll.checked 값으로 설정합니다.
-		  // 즉, '전체 선택' 체크박스가 체크되면 모든 체크박스도 체크되고, 선택 해제되면 모든 체크박스가 선택 해제됩니다.
-		  checkboxes.forEach((checkbox) => {
-		    checkbox.checked = selectAll.checked
-		  })
-		  updateButton();
-		}
+	function selectAll(selectAll) {
+	    // 모든 체크박스 선택
+	    const checkboxes = $('input[type="checkbox"]');
+	    
+	    // jQuery의 each 메서드를 사용하여 모든 체크박스 요소의 checked 속성을 selectAll.checked 값으로 설정
+	    checkboxes.each(function() {
+	        $(this).prop('checked', $(selectAll).prop('checked'));
+	    });
+
+	    // 버튼 업데이트 함수 호출
+	    updateButton();
+	}
 	
 	// 상품을 삭제처리하는 함수
 	function deleteProduct() {
@@ -162,13 +164,15 @@
 	    }
 	}
 	
+
+	
 	function updateButton() {
-        // 모든 체크박스를 가져오기
-        let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
-        // 버튼의 텍스트 업데이트
-        document.getElementById('delBtn').innerText = pro_check+"개 삭제";
-        document.getElementById('soldOutBtn').innerText = pro_check+"개 품절";
-    }
+	    // 체크박스 선택된 개수 가져오기
+	    let pro_check = $('input[name="proCheck"]:checked').length;
+	    // 버튼 텍스트 업데이트
+	    $('#delBtn').text(pro_check + "개 삭제");
+	    $('#soldOutBtn').text(pro_check + "개 품절");
+	}
 </script>
 
 <style>

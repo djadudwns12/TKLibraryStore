@@ -24,12 +24,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tn.admin.model.vo.SearchCriteriaDTO;
+import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.MyResponseWithData;
 import com.tn.admin.model.vo.MyResponseWithoutData;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.service.ProductAdminService;
+import com.tn.admin.utils.FileProcess;
 
 /**
  * Handles requests for the application home page.
@@ -42,6 +44,9 @@ public class AdminController {
 	@Autowired
 	private ProductAdminService pService;
 	
+	
+	@Autowired
+	private FileProcess fileProcess;
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -135,54 +140,59 @@ public class AdminController {
 		return "admin/modifyAdmin";
 	}
 	
-	@RequestMapping(value ="/upfiles" ,method = RequestMethod.POST, produces = "application/json; charset=UTF-8;")
+	@RequestMapping(value ="/upfile" ,method = RequestMethod.POST, produces = "application/json; charset=UTF-8;")
 	//쪼개져서온 'file' 파일을 재조립해주는 인터페이스 MultipartFile, @RequestParam로 save
 	public ResponseEntity<MyResponseWithoutData> saveBoardFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {	
 		System.out.println("파일 전송됨, 이제 저장해야함");
 		
 		ResponseEntity<MyResponseWithoutData> result = null;
 		
-		
-		
+		 
 		try {
-			BoardUpFilesVODTO fileInfo = fileSave(file, request);
-			
-			//System.out.println("저장된 파일의 정보 : " + fileInfo.toString());
-			
-			
-			// 7월 17일 가장 먼저 해야 할 코드 : front에서 업로드한 파일을 지웠을 때 백엔드에서도 지워야 한다.
-			this.uploadFileList.add(fileInfo);
-			System.out.println("====================================");
-			System.out.println("현재 파일리스트에 있는 파일들");
-			for(BoardUpFilesVODTO f : this.uploadFileList) {
-				System.out.println(f.toString());
-			}
-			System.out.println("====================================");
-			
-			String tmp = null;
-			if (fileInfo.getThumbFileName() != null) {
-				tmp = fileInfo.getThumbFileName();
-			}else {
-				tmp = fileInfo.getNewFileName().substring(fileInfo.getNewFileName().lastIndexOf(File.separator)+1);
-			}
-			
-			// 예) \2024\07\17\50.htm File.separator+1은 5의 위치이고 substring으로 자른다  
-			//String tmp = fileInfo.getNewFileName().substring(fileInfo.getNewFileName().lastIndexOf(File.separator)+1);
-			
-			MyResponseWithoutData mrw = MyResponseWithoutData.builder()
-				.code(200)
-				.msg("success")
-				.newFileName(tmp)
-				.build();
-			
-			result = new ResponseEntity<MyResponseWithoutData>(mrw, HttpStatus.OK);
+			BoardUpFileVODTO fileInfo = fileSave(file, request);
+			System.out.println("저장된 파일의 정보 : " + fileInfo.toString());
 		} catch (IOException e) {
-			
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			result = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		}
+		
+		
+		
+//		try {
+//			BoardUpFileVODTO fileInfo = fileSave(file, request);
+//											
+//			MyResponseWithoutData mrw = MyResponseWithoutData.builder()
+//				.code(200)
+//				.msg("success")
+//				.newFileName(tmp)
+//				.build();
+//			
+//			result = new ResponseEntity<MyResponseWithoutData>(mrw, HttpStatus.OK);
+//		} catch (IOException e) {
+//			
+//			e.printStackTrace();
+//			result = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+//		}
 			
-		return result;
+		return null;
+	}
+	
+	private BoardUpFileVODTO fileSave(MultipartFile file, HttpServletRequest request) throws IOException {
+		//파일의 기본정보 가져옴
+		String contentType = file.getContentType();
+		String originalFileName = file.getOriginalFilename();
+		long fileSize = file.getSize();
+		
+		byte[] upfile = file.getBytes();
+		
+		//세션 : getSession(),서블릿 정보 : getServletContext() , 경로 : getRealPath()
+		System.out.println("서버의 실제 물리적 경로 : " + request.getSession().getServletContext().getRealPath("/resources/boardUpFiles"));
+		
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/boardUpFiles");
+		
+		// 실제 파일 저장 (이름변경, base64, thumbnail)
+		BoardUpFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, contentType, originalFileName, fileSize);
+		return fileInfo;
 	}
 	
 }

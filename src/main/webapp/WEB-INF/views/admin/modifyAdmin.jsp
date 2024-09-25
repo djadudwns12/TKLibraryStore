@@ -19,7 +19,7 @@
 	src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script type="text/javascript">
-let file = '';		//업로드 되는 파일들을 저장하는 배열
+let upfiles = new Array();		//업로드 되는 파일들을 저장하는 배열
 
 $(function(){
 	//업로드 파일 영역에 drag&drop과 관련된 이벤트(파일의 경우 파일이 웹브라우저에서 실행되는 등)을 방지해야 한다 -> 이벤트 캔슬링
@@ -34,12 +34,25 @@ $(function(){
 		//console.log(evt.originalEvent.dataTransfer.files);	//업로드 되는 파일 객체의 정보
 		
 			let file = evt.originalEvent.dataTransfer.files; 
+			//이미지 파일이 아닐경우 alert
+			//if(file.)
+		
 			//파일 사이즈 검사하여 10MB가 넘게되면 파일 업로드가 안되도록
-			if(file[0].size > 10485760){
-				alert("파일 용량이 너무 큽니다. 업로드한 파일을 확인해 주세요.");
-			}else{
-				file = file[0].name;
-									
+			for(let file of evt.originalEvent.dataTransfer.files){
+				
+				//파일 사이즈 검사하여 10MB가 넘게되면 파일 업로드가 안되도록
+				if(file.size > 10485760){
+					alert("파일 용량이 너무 큽니다. 업로드한 파일을 확인해 주세요.");
+				}else{
+				
+					upfiles.push(file);		//배열에 담기
+					console.log(upfiles);
+				
+					//해당 파일 ,업로드
+					fileUpload(file);
+					
+					
+				}
 			}
 		
 	});
@@ -53,7 +66,7 @@ $(function(){
 		
 		
 		$.ajax({
-            url : '/admin/upfiles',              			//데이터가 송수신 될 서버의 주소
+            url : '/admin/upfile',              			//데이터가 송수신 될 서버의 주소
             type : 'post',             		//통신 방식 : GET, POST, PUT, DELETE, PATCH
             dataType : 'json',        		//수신 받을 데이터의 타입 (text, xml, json)
 			data : fd,						// 보낼 데이터
@@ -68,21 +81,16 @@ $(function(){
           	 	
             	if(data.msg == 'success'){
             		//미리보기
-					showPreview(file, data.newFileName);
+					//showPreview(file, data.newFileName);
            		 }
             	
-            },error : function (data) {
-            	console.log(data);
-            	if (data == 'fail'){
-            		alert ('파일을 업로드 하지 못했습니다');
-            		
-            		for(let i=0; i < upfiles.length; i++){
-            			if(upfile[i].name == file.name){
-            				upfiles.splice(i, 1);
-            			}
-            		}
-            	}
-			}              
+            }//,error : function (data) {
+            //	console.log(data);
+           // 	if (data == 'fail'){
+           // 		alert ('파일을 업로드 하지 못했습니다');
+
+           // 	}
+		//	}              
 
 	    });
 	}
@@ -130,18 +138,18 @@ $(function(){
 	margin-left: 30px;
 	width: 80%;
 }
+
 .fileUploadArea {
 	width: 50%;
 	height: 430px;
 	background-color: lightgray;
 	text-align: center;
-	ㅅ
-	margin-left: 60px;
+	ㅅ margin-left: 60px;
 }
-.content3{
+
+.content3 {
 	display: flex;
 	margin-left: 30px;
-	
 }
 </style>
 </head>
@@ -220,29 +228,29 @@ $(function(){
 					</div>
 
 				</div>
-				
-					<div class="mb-3" style="width: 80%; margin-left: 30px;">
-						<label for="thumbNail" class="form-label">ThumbNail</label> <input
-							type="text" class="form-control" id="readcount"
-							value="${product.thumbNail}"
-							style="width: 900px; margin-bottom: 50px;" readonly>
-					</div>
-					<div class="content3">
-					 <img
-							src="${product.thumbNail}" >
+
+				<div class="mb-3" style="width: 80%; margin-left: 30px;">
+					<label for="thumbNail" class="form-label">ThumbNail</label> <input
+						type="text" class="form-control" id="readcount"
+						value="${product.thumbNail}"
+						style="width: 900px; margin-bottom: 50px;" readonly>
+				</div>
+				<div class="content3">
+					<img src="${product.thumbNail}">
 					<div class="fileUploadArea mb-3">
 						<p>업로드할 파일을 여기에 드래그 드랍하세요!</p>
 					</div>
 				</div>
-					<div class="mb-3" style="margin-top: 50px; margin-left: 30px; width: 85%;">
-						<label for="introduction" class="form-label">Introduction</label>
-						<textarea class="form-control" id="content" name="content"
-							rows="5" style="height: 150px;">
+				<div class="mb-3"
+					style="margin-top: 50px; margin-left: 30px; width: 85%;">
+					<label for="introduction" class="form-label">Introduction</label>
+					<textarea class="form-control" id="content" name="content" rows="5"
+						style="height: 150px;">
 							${product.introduction}
 						</textarea>
-					</div>
+				</div>
 
-				
+
 
 				<div style="margin-left: 1400px; margin-top: 50px;">
 					<button class="btn btn-secondary btn" style="width: 70px;"
