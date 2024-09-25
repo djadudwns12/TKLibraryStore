@@ -10,6 +10,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.tn.member.model.vo.MemberVO;
+
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
 	// 컨트롤러로 이동하기전 
@@ -48,7 +50,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		
 		HttpSession sess = request.getSession();
 		if(request.getMethod().toUpperCase().equals("POST")) {
-			if(sess.getAttribute("loginMember") != null) { // 로그인 성공시
+			
+			MemberVO loginMember =(MemberVO) sess.getAttribute("loginMember");
+			
+			if(loginMember != null) { // 로그인 성공시
 				
 				Object tmp = sess.getAttribute("destPath");
 				
@@ -56,6 +61,11 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 				
 				String viewName = ((tmp == null) ? "/" : (String) sess.getAttribute("destPath"));
 //				modelAndView.addObject("status", "loginSuccess");
+				
+				if(viewName.contains("admin")) {
+					viewName = !loginMember.getUserId().equals("admin") ? "/" : viewName; 
+				}
+				
 				modelAndView.setViewName("redirect:"+viewName);
 				
 				System.out.println(modelAndView.getViewName());
