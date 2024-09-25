@@ -145,13 +145,17 @@
 						<ul>
 							<c:if test="${sessionScope.loginMember == null}">
 								<li><a
-									href="${pageContext.request.contextPath}/member/loginPage"><i
-										class="fa fa-heart">로그인</i> <span>1</span></a></li>
+									href="${pageContext.request.contextPath}/member/loginPage"><i class="fa fa-user">로그인</i></a></li>
 							</c:if>
 							<c:if test="${sessionScope.loginMember != null}">
 								<li><a
-									href="${pageContext.request.contextPath}/member/logout"><i
-										class="fa fa-heart">로그아웃</i> <span>1</span></a></li>
+									href="${pageContext.request.contextPath}/member/logout"><i class="fa fa-user">로그아웃</i></a></li>
+							</c:if>
+							<!-- 관리자페이지이동 -->
+							<c:if test="${sessionScope.loginMember.userId == 'admin'}">
+								<li>
+										<a href="${pageContext.request.contextPath}/admin/home"><i class="fa fa-user-secret"></i></a>
+								</li>
 							</c:if>
 							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
 							<li><a href="/cart/cartPage?userId=<%= request.getAttribute("userId") %>"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
