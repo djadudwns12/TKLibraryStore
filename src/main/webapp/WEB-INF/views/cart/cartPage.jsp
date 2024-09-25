@@ -149,13 +149,15 @@
 								<div class="quantity-control">
 									<button type="button" class="decrease-btn"
 										data-cart-id="${cart.cartId}">-</button>
-									<input type="text" id="qtyInput-${cart.cartId}"
-										value="${cart.qty}" size="2" readonly />
+									<input type="text" id="qtyInput-${cart.cartId}" value="${cart.qty}" size="2" readonly />
+									<script>
+                						console.log("생성된 qtyInput ID:", 'qtyInput-${cart.cartId}');
+            						</script>
 									<button type="button" class="increase-btn"
 										data-cart-id="${cart.cartId}">+</button>
 								</div>
 								<div>
-									<button type="button" class="change-btn">변경</button>
+									<button type="button" class="change-btn" onclick="saveQty(${cart.cartId})">변경</button>
 								</div>
 							</td>
 							<td class="common-td"><img
@@ -398,6 +400,46 @@
         // 초기화 함수 호출
         init();
     });
+    
+    function saveQty(cartId) {
+        let qtyInput = document.getElementById('qtyInput-' + cartId);
+
+        if (!qtyInput) {
+            console.error("입력 필드를 찾을 수 없습니다: cartId=", cartId);
+            alert("수량 입력 필드를 찾을 수 없습니다.");
+            return;
+        }
+
+        let qty = parseInt(qtyInput.value); 
+
+        if (isNaN(qty)) {
+            alert("유효한 수량이 아닙니다.");
+            return;
+        }
+
+        console.log("Received CartID:", cartId);
+        console.log("Quantity:", qty);
+
+        $.ajax({
+            url: '/cart/updateQty',
+            type: 'POST',
+            data: {
+                cartId: cartId,
+                qty: qty
+            },
+            success: function(response) {
+                if (response.success) {
+                    console.log("수량이 성공적으로 업데이트되었습니다.");
+                } else {
+                    alert("수량 업데이트에 실패했습니다. 다시 시도해주세요.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX 요청 중 오류 발생:", error);
+                alert("에러가 발생했습니다: " + error);
+            }
+        });
+    }
     </script>
 
 </body>

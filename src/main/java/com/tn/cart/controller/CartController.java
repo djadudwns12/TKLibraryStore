@@ -66,6 +66,29 @@ public class CartController {
 	        response.put("success", false);
 	    }
 	    return response;
-	}	
+	}
+	
+	@PostMapping("/updateQty")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> updateQuantity(@RequestParam int cartId, @RequestParam int qty) {
+	    Map<String, Object> response = new HashMap<>();
+	    
+	    // DB에서 cartId에 해당하는 항목을 찾아서 수량 업데이트 로직을 구현합니다.
+	    boolean success = false; // 초기값 설정
+	    try {
+	        success = cService.updateQuantity(cartId, qty); // 서비스 호출
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        // 예외 발생 시 success는 false로 유지
+	    }
+
+	    // success 값 확인
+	    if (success) {
+	        response.put("success", true);
+	    } else {
+	        response.put("success", false);
+	    }
+	    return ResponseEntity.ok(response);
+	}
 
 }

@@ -13,5 +13,7 @@ public interface CartService {
 
 	boolean deleteCartById(String cartId) throws Exception;
 
+	boolean updateQuantity(int cartId, int qty) throws Exception;
+
 
 }

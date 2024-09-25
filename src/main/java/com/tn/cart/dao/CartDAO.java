@@ -13,4 +13,6 @@ public interface CartDAO {
 
 	int deleteOneCart(String cartId) throws Exception;
 
+	int updateQty(int cartId, int qty) throws Exception;
+
 }
