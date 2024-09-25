@@ -324,7 +324,7 @@ input[readonly] {
     
         <!-- 프로필 이미지 업로드 -->
     <div id="profileImageContainer">
-        <p>프로필 사진을 드래그 앤 드롭하세요.</p>
+        <p id ="sign">프로필 사진을 드래그 앤 드롭하세요.</p>
         <img id="profilePreview" alt="프로필 사진 미리보기">
         <input type="file" id="profileImageInput" style="display: none;" accept="image/*">
     </div>
@@ -496,7 +496,7 @@ function clearError(obj) {
 					} else {
 					
 						// 해당 파일 업로드
-						fileUpload(files[0])
+						showPreview(files[0])
 						
 					}
 			}
@@ -512,6 +512,48 @@ function clearError(obj) {
     
 
   });
+		
+		
+		
+		
+// 넘겨진 file이 이미지 파일이라면 미리보기 하여 출력한다.
+function showPreview(imgFile) {
+	let fileType = imgFile.type.toLowerCase();
+	// 파일 읽기 위한 FileReader 객체 생성
+	const reader = new FileReader();
+	reader.readAsDataURL(imgFile);
+	
+	// 파일을 다 읽으면 실행되는 콜백 함수
+	reader.onload = function(evt) {
+		$('#profilePreview').attr('src', evt.target.result); // 읽어온 파일 데이터(URL 형식)
+		$('#profilePreview').show();
+		$('#sign').hide();
+	};
+	// 파일을 읽어서 DataURL로 변환 (이미지 형식의 데이터를 읽어옴)
+	reader.readAsDataURL(imgFile);
+		
+		
+		
+		} 
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		

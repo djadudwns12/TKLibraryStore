@@ -1,5 +1,6 @@
 package com.tn.member.model.vo;
 
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class MyResponseWithoutData {
+public class ProfileResponseWithoutData {
 	private int code;
 	private String newFileName;
 	private String msg;
