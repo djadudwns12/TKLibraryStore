@@ -81,8 +81,6 @@ public class QAController {
 		
 	}
 	
-	
-	
 	@RequestMapping(value = "/save", method = RequestMethod.GET)
 	public String qaSave(HttpSession sess) {
 		// 회원정보에서 사용자 id불러오기
@@ -92,16 +90,5 @@ public class QAController {
 		
 		return "/admin/home";
 	}
-	@RequestMapping("/qaAnswerView")
-	public String qaAnswerView(Model model) {
-		List<QAVO> list = new ArrayList<QAVO>();
-		try {
-			list = qaService.getAllQAList();
-			model.addAttribute("qaList", list);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "/admin/qaAnswerView";
-	}
+	
 }

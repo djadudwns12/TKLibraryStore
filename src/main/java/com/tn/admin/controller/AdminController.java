@@ -3,6 +3,7 @@ package com.tn.admin.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,8 @@ import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.service.ProductAdminService;
 import com.tn.admin.utils.FileProcess;
+import com.tn.qa.model.vo.QAVO;
+import com.tn.qa.service.QAService;
 
 /**
  * Handles requests for the application home page.
@@ -44,6 +47,8 @@ public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	@Autowired
 	private ProductAdminService pService;
+	@Autowired
+	private QAService qaService;
 	
 	
 	@Autowired
@@ -193,5 +198,40 @@ public class AdminController {
 		BoardUpFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, contentType, originalFileName, fileSize);
 		return fileInfo;
 	}
+	
+	
+	// 엄영준(start) =============================================================================================================
+	// 관리자 페이지 qa게시판 
+		@RequestMapping("/qaAnswerView")
+		public String qaAnswerView(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+				@RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize, 
+				@RequestParam(value="ra", defaultValue = "default") String sortBy, SearchCriteriaDTO searchCriteria) {
+			
+			// 페이징 정보를 가지고 있는 DTO
+			PagingInfoDTO dto = PagingInfoDTO.builder().pageNo(pageNo).pagingSize(pagingSize).build();
+			Map<String, Object> result = null;
+			
+			List<QAVO> list = new ArrayList<QAVO>();
+			try {
+				result = qaService.getAllQAList(dto, searchCriteria, sortBy);
+				
+				PagingInfo pi = (PagingInfo) result.get("pagingInfo");			
+				list = (List<QAVO>) result.get("list");
+				//System.out.println(pi.toString());
+				
+				model.addAttribute("productList", list); // 데이터 바인딩
+				model.addAttribute("pagingInfo", pi);
+				model.addAttribute("search", searchCriteria);
+				
+				
+				model.addAttribute("qaList", list);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return "/admin/qaAnswerView";
+		}
+		// 엄영준(end) =============================================================================================================
+	
 	
 }
