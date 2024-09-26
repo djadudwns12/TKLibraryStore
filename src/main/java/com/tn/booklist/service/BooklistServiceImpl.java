@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.tn.booklist.controller.BooklistController;
 import com.tn.booklist.dao.BooklistDAO;
 import com.tn.booklist.model.dto.PagingInfo;
 import com.tn.booklist.model.dto.PagingInfoDTO;
@@ -23,7 +22,7 @@ public class BooklistServiceImpl implements BooklistService {
 	@Autowired
 	private BooklistDAO bDao;
 
-	private static Logger logger = LoggerFactory.getLogger(BooklistController.class);
+	private static Logger logger = LoggerFactory.getLogger(BooklistServiceImpl.class);
 	
 	@Override
 	@Transactional(readOnly = true)

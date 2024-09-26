@@ -22,9 +22,9 @@ import com.tn.booklist.service.BooklistService;
  */
 @Controller
 @RequestMapping("/bookList")
-public class BooklistController {
+public class BookListController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(BooklistController.class);
+	private static final Logger logger = LoggerFactory.getLogger(BookListController.class);
 	
 	@Autowired
 	private BooklistService bService;

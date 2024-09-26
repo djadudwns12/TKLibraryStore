@@ -1,6 +1,5 @@
 package com.tn.member.controller;
 
-
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
@@ -12,17 +11,12 @@ import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-
-
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Random;
-
 
 import javax.servlet.http.HttpSession;
 
@@ -42,7 +36,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.member.model.vo.ProfileResponseWithoutData;
@@ -50,9 +43,7 @@ import com.tn.member.model.vo.ProfileUpImgVODTO;
 import com.tn.member.service.MemberService;
 import com.tn.member.service.SendMailService;
 
-
 import org.springframework.web.bind.annotation.PostMapping;
-
 
 import com.tn.util.PropertiesTask;
 
@@ -66,43 +57,21 @@ import net.nurigo.sdk.message.service.DefaultMessageService;
 @Controller
 @RequestMapping("/member")
 public class MemberController {
-	
-private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
-	
+
+	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+
 	@Autowired
 	private MemberService mService;
-	
-	/**
-	 * @작성자 : 최미설
-	 * @작성일 : 2024. 9. 6.
-	 * @method_name : getMemberInfo
-	 * @param :String userId(로그인 기능 구현 이후 세션에서 로그인 정보 받아와서 파라미터로 받을 예정)
-	 * @param :Model model
-	 * @return : memberVO
-	 * @throws : 
-	 * @description : 회원정보수정을 위해 회원정보를 불러오는 메서드, 
-	*/
-	@RequestMapping(value="/edit")
-	public void getEditMemeberInfo(Model model) {
-		String userId = "dooly"; // 로그인 기능 구현 이후에.....
-		try {
-			MemberVO editMemberInfo = mService.getEditMemberInfo(userId);
-			System.out.println(editMemberInfo.toString());
-			model.addAttribute("editMemberInfo", editMemberInfo);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}	
+
 	/**
 	 * @작성자 : 엄영준
-	 * @작성일 : 2024. 9. 9. 
+	 * @작성일 : 2024. 9. 9.
 	 * @클래스명 : tnbookstore
 	 * @메서드명 : loginPage
 	 * @param
 	 * @param
 	 * @return : void
-	 * @throws 
+	 * @throws
 	 * @description : 로그인 페이지로 이동하는 메서드
 	 *
 	 */
@@ -110,52 +79,52 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 	public void loginPage() {
 		System.out.println("로그인 페이지로 이동");
 	}
-	
+
 	/**
 	 * @작성자 : 엄영준
-	 * @작성일 : 2024. 9. 9. 
+	 * @작성일 : 2024. 9. 9.
 	 * @클래스명 : tnbookstore
 	 * @메서드명 : login
 	 * @param
 	 * @param
 	 * @return : void
-	 * @throws 
+	 * @throws
 	 * @description : 회원을 로그인 시키는 메서드
 	 *
 	 */
-	@RequestMapping(value = "/login",method = RequestMethod.POST)
-	public void login(@RequestParam("userId") String userId , @RequestParam("userPwd") String userPwd,HttpSession session) {
-		System.out.println(userId+": "+ userPwd);
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public void login(@RequestParam("userId") String userId, @RequestParam("userPwd") String userPwd,
+			HttpSession session) {
+		System.out.println(userId + ": " + userPwd);
 		// 로그인 시키는 메서드
 		try {
-			MemberVO loginMember = mService.loginMember(userId,userPwd);
-			
-			if(loginMember != null) {
+			MemberVO loginMember = mService.loginMember(userId, userPwd);
+
+			if (loginMember != null) {
 				System.out.println(loginMember);
 				// 로그인 한 유저 세션에 저장하기
 				session.setAttribute("loginMember", loginMember);
-			}
-			else { // 로그인 실패시 
+			} else { // 로그인 실패시
 				System.out.println("로그인 실패");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}	
+	}
 
 	/**
 	 * @작성자 : 최미설
 	 * @작성일 : 2024. 9. 6.
 	 * @method_name : getMemberInfo
 	 * @param :String userId(로그인 기능 구현 이후 세션에서 로그인 정보 받아와서 파라미터로 받을 예정)
-	 * @param :Model model
+	 * @param :Model  model
 	 * @return : memberVO
-	 * @throws : 
+	 * @throws :
 	 * @description : 회원정보수정을 위해 회원정보를 불러오는 메서드
-	*/
-	
-	@RequestMapping(value="/edit")
+	 */
+
+	@RequestMapping(value = "/edit")
 	public void getEditMemeberInfo(Model model) { // @RequestParam("userId") String userId
 		String userId = "dooly"; // 회원정보수정 페이지 완료하면 로그인 정보 가져오기!
 		try {
@@ -167,21 +136,21 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * @작성자 : 최미설
-	 * @작성일 : 2024. 9. 9. 
+	 * @작성일 : 2024. 9. 9.
 	 * @클래스명 : MemberController
 	 * @메서드명 : saveEditInfo
 	 * @param : MemberDTO, RedirectAttributes
 	 * @return : void
-	 * @throws 
+	 * @throws
 	 * @description : 회원정보수정 페이지에서 수정된 정보를 저장하는 메서드
 	 *
 	 */
-	@RequestMapping(value="/mypage")
+	@RequestMapping(value = "/mypage")
 	public void saveEditInfo(MemberDTO editMember, RedirectAttributes redirectAttributes) {
-		
+
 		try {
 			mService.saveEditInfo(editMember);
 			redirectAttributes.addAttribute("status", "editSuccess");
@@ -189,17 +158,17 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 			e.printStackTrace();
 			redirectAttributes.addAttribute("status", "editFail");
 		}
-		
+
 	}
-	
+
 	/**
 	 * @작성자 : 최미설
-	 * @작성일 : 2024. 9. 9. 
+	 * @작성일 : 2024. 9. 9.
 	 * @클래스명 : MemberController
 	 * @메서드명 : sendAuthMail
 	 * @param : @RequestParam("tmpEmail") String, HttpSession
 	 * @return : ResponseEntity<String>
-	 * @throws 
+	 * @throws
 	 * @description : 회원정보수정 페이지에서 이메일인증을 위해 인증코드를 생성하고 메일을 보내는 메서드
 	 */
 	@RequestMapping("/sendAuthMail")
@@ -214,21 +183,22 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 			e.printStackTrace();
 			return new ResponseEntity<String>("emailSendFail", HttpStatus.BAD_REQUEST);
 		}
-	
+
 	}
-	
+
 	/**
 	 * @작성자 : 최미설
-	 * @작성일 : 2024. 9. 9. 
+	 * @작성일 : 2024. 9. 9.
 	 * @클래스명 : MemberController
 	 * @메서드명 : checkAuthMail
 	 * @param : @RequestParam("userAuthCode")String, HttpSession
 	 * @return : ResponseEntity<String>
-	 * @throws 
+	 * @throws
 	 * @description : 회원정보수정 페이지에서 이메일인증코드를 확인하는 메서드
 	 */
 	@RequestMapping("/checkEmailAuthCode")
-	public ResponseEntity<String> checkAuthMail(@RequestParam("userAuthCode")String userAuthCode, HttpSession session) {
+	public ResponseEntity<String> checkAuthMail(@RequestParam("userAuthCode") String userAuthCode,
+			HttpSession session) {
 		String result = "fail";
 		if (session.getAttribute("emailAuthCode") != null) {
 			String sesAuthCode = (String) session.getAttribute("emailAuthCode");
@@ -238,11 +208,12 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 			}
 		}
 		return new ResponseEntity<String>(result, HttpStatus.OK);
-		
+
 	}
+
 	/**
 	 * @작성자 : 최미설
-	 * @작성일 : 2024. 9. 25. 
+	 * @작성일 : 2024. 9. 25.
 	 * @클래스명 : MemberController
 	 * @메서드명 : clearCode
 	 * @param : HttpSession session
@@ -257,43 +228,37 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 
 		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
-	
+
 	/**
 	 * @작성자 : 802-10
-	 * @작성일 : 2024. 9. 9. 
+	 * @작성일 : 2024. 9. 9.
 	 * @클래스명 : tnbookstore
 	 * @메서드명 : logout
 	 * @param
 	 * @param
 	 * @return : void
-	 * @throws 
+	 * @throws
 	 * @description : 로그아웃시키는 메서드
 	 *
 	 */
 	@RequestMapping(value = "/logout")
 	public String logout(HttpSession session) {
-		System.out.println("로그아웃 이전의 세션값 : "+session.getId());
-		
-		if(session.getAttribute("loginMember") != null) {
-			// 세션에 저장했던 값들을 지우고, 
+		System.out.println("로그아웃 이전의 세션값 : " + session.getId());
+
+		if (session.getAttribute("loginMember") != null) {
+			// 세션에 저장했던 값들을 지우고,
 			session.removeAttribute("loginMember");
 			// 세션 무효화
 			session.invalidate();
 		}
-		
-		System.out.println("로그아웃 이후의 세션값 : "+session.getId()); // 로그아웃 한다고 세션이 사라지지는 않는다. 세션의 값만 무효화
-		
+
+		System.out.println("로그아웃 이후의 세션값 : " + session.getId()); // 로그아웃 한다고 세션이 사라지지는 않는다. 세션의 값만 무효화
+
 		return "redirect:/";
-  }
-	
-	
-	
+	}
 
-
-	
 // -----------------------------------------박근영-------------------------------------------------
-	
-	
+
 	/*
 	 * @RequestMapping(value = "/upfiles", method = RequestMethod.POST, produces =
 	 * "application/json; charset=UTF-8;") public
@@ -352,17 +317,14 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 	 * fileProcess.saveFileToRealPath(upfile, realPath, contentType,
 	 * originalFileName); return fileInfo; }
 	 */
-	
-	
-	
-	@RequestMapping(value="/register")
-	   public String registerMember() {
-		
-			return "register";
-		}
-	
-	
-	@RequestMapping(value = "/coolsms" , method = RequestMethod.POST)
+
+	@RequestMapping(value = "/register")
+	public String registerMember() {
+
+		return "register";
+	}
+
+	@RequestMapping(value = "/coolsms", method = RequestMethod.POST)
 	public ResponseEntity<Integer> coolSms(@RequestParam("phone") String phone) {
 		System.out.println("컨트롤 확인");
 		try {
@@ -370,52 +332,43 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(-1);  // -1로 에러 표시
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(-1); // -1로 에러 표시
 		}
 
 	}
-	
-	@RequestMapping(value="/getAddr") 
-	public void getAddrApi(HttpServletRequest req, HttpServletResponse response){ 
-	    try {
-	        // 요청변수 설정 
-	        String currentPage = "1"; 
-	        String countPerPage = "10"; 
-	        String resultType = "json"; 
-	        String confmKey = PropertiesTask.getPropertiesValue("jusoConfmKey");  // IOException 발생 가능
-	        String keyword = req.getParameter("keyword"); 
 
-	        // API 호출 URL 정보 설정 
-	        String apiUrl = "https://business.juso.go.kr/addrlink/addrLinkApi.do?currentPage=" + currentPage +
-	                        "&countPerPage=" + countPerPage + 
-	                        "&keyword=" + URLEncoder.encode(keyword, "UTF-8") + 
-	                        "&confmKey=" + confmKey + 
-	                        "&resultType=" + resultType; 
+	@RequestMapping(value = "/getAddr")
+	public void getAddrApi(HttpServletRequest req, HttpServletResponse response) {
+		try {
+			// 요청변수 설정
+			String currentPage = "1";
+			String countPerPage = "10";
+			String resultType = "json";
+			String confmKey = PropertiesTask.getPropertiesValue("jusoConfmKey"); // IOException 발생 가능
+			String keyword = req.getParameter("keyword");
 
-	        URL url = new URL(apiUrl);  
-	        BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8")); 
-	        StringBuffer sb = new StringBuffer(); 
-	        String tempStr = null; 
-	        while ((tempStr = br.readLine()) != null) { 
-	            sb.append(tempStr);  // 응답결과 JSON 저장  
-	        } 
-	        br.close(); 
-	        response.setCharacterEncoding("UTF-8"); 
-	        response.setContentType("text/xml"); 
-	        response.getWriter().write(sb.toString()); // 응답결과 반환 
-	    } catch (IOException e) {
-	        e.printStackTrace();  // IOException을 처리
-	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);  // 에러 상태를 반환
-	    }
+			// API 호출 URL 정보 설정
+			String apiUrl = "https://business.juso.go.kr/addrlink/addrLinkApi.do?currentPage=" + currentPage
+					+ "&countPerPage=" + countPerPage + "&keyword=" + URLEncoder.encode(keyword, "UTF-8") + "&confmKey="
+					+ confmKey + "&resultType=" + resultType;
+
+			URL url = new URL(apiUrl);
+			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+			StringBuffer sb = new StringBuffer();
+			String tempStr = null;
+			while ((tempStr = br.readLine()) != null) {
+				sb.append(tempStr); // 응답결과 JSON 저장
+			}
+			br.close();
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/xml");
+			response.getWriter().write(sb.toString()); // 응답결과 반환
+		} catch (IOException e) {
+			e.printStackTrace(); // IOException을 처리
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 에러 상태를 반환
+		}
 	}
-	
+
 	// -----------------------------------------박근영-------------------------------------------------
-	
-	
-	
-	
-	
-	
-	
 
 }
