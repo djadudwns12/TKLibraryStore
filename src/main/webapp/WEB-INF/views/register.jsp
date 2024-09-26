@@ -455,8 +455,6 @@ function clearError(obj) {
       }); 
     
     
-    
-    
     $('#email').on("input", function () {
         let tmpEmail = $('#email').val();
         let emailRegExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
@@ -467,12 +465,7 @@ function clearError(obj) {
         }
       });
     
-    
-    
-    
-    
-    
-    
+
 		
 		// 유저가 fileUploadArea에 파일을 드래그&드랍 하면...
 		$('#profileImageContainer').on("drop dragenter dragover", function(evt){   
@@ -504,12 +497,7 @@ function clearError(obj) {
 			
 		});
 
-	
-    
-
-   
-    
-    
+  
 
   });
 		
@@ -536,26 +524,6 @@ function showPreview(imgFile) {
 		
 		} 
 	
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 	// 실제로 유저가 업로드한 파일을 컨트롤러단에 전송하여 저장되도록 하는 함수
 	function fileUpload(file) {
@@ -593,6 +561,7 @@ function showPreview(imgFile) {
 	         }
 	      });
 	}
+	
 	
 	async function fileUpload(file) {
 	    let result = false;
@@ -633,18 +602,7 @@ function showPreview(imgFile) {
 	}
 	
 	
-	
-		
-		
-		
-		
-		
-		
-		
-		
-  
 
-  
   
 let code ='';
   
@@ -698,12 +656,8 @@ function sendSMS() {
 		  }
 		});
 	
-	
-	
-	
-	
-	
 	}
+	
 	
 let completed = false;	
 	
@@ -727,9 +681,7 @@ function verificationCode() {
 	
 	
 }
-	
-	
-	
+
 
 	
 function startTimer() {
@@ -767,10 +719,6 @@ function startTimer() {
     }, 1000);  // 1000ms (1초)마다 실행
 }
 
-
-	
-	
-	
 	
 	
 	
@@ -894,8 +842,7 @@ function changePage(page) {
 	}
 	
 	
-	
-	
+
 	
 	//특수문자, 특정문자열(sql예약어의 앞뒤공백포함) 제거
 	function checkSearchedWord(obj){
@@ -947,8 +894,6 @@ function changePage(page) {
 	}
 	
 	
-	
-
 
 function serializeDiv(divId) {
 		
@@ -961,42 +906,6 @@ function serializeDiv(divId) {
 	    });
 	    return formData.join('&');
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
