@@ -1,6 +1,5 @@
 package com.tn.booklist.controller;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -9,11 +8,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tn.booklist.model.dto.PagingInfoDTO;
@@ -24,6 +21,7 @@ import com.tn.booklist.service.BooklistService;
  * Handles requests for the application home page.
  */
 @Controller
+@RequestMapping("/bookList")
 public class BooklistController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BooklistController.class);
@@ -32,7 +30,7 @@ public class BooklistController {
 	private BooklistService bService;
 	
 	
-	@RequestMapping("/bookList")
+	@RequestMapping("/listAll")
 	public String getAllList(Model model, @RequestParam(value="pageNo", defaultValue = "1") int pageNo, @RequestParam(value="pagingSize", defaultValue = "10")int pagingSize) {
 		
 		PagingInfoDTO dto = PagingInfoDTO.builder()
@@ -49,7 +47,7 @@ public class BooklistController {
 			e.printStackTrace();
 		}
 		
-		return "/bookList/listAll.jsp";
+		return "/bookList/listAll";
 	}
 	
 }
