@@ -430,6 +430,7 @@
             success: function(response) {
                 if (response.success) {
                     console.log("수량이 성공적으로 업데이트되었습니다.");
+                    alert("해당 상품의 수량을 변경했습니다.");
                 } else {
                     alert("수량 업데이트에 실패했습니다. 다시 시도해주세요.");
                 }
