@@ -103,7 +103,7 @@
 
 	<div class="container">
 		<button type="button" class="btn btn-outline-danger">선택삭제</button>
-		<div style="max-height: 300px; overflow-y: auto;">
+		<div style="max-height: 500px; overflow-y: auto;">
 			<table class="table table-hover">
 				<thead>
 					<tr style="text-align: center;">
@@ -117,10 +117,6 @@
 						<th>선택</th>
 					</tr>
 				</thead>
-			</table>
-		</div>
-		<div style="max-height: 500px; overflow-y: auto;">
-			<table class="table table-hover">
 				<tbody>
 					<c:forEach var="cart" items="${cartList}">
 						<tr>
@@ -144,21 +140,21 @@
 										groupingUsed="true" />
 									원
 								</div>
+							</td>
 							<td class="common-td">
 								<div class="quantity-control">
 									<button type="button" class="decrease-btn"
 										data-cart-id="${cart.cartId}">-</button>
 									<input type="text" id="qtyInput-${cart.cartId}"
-										value="${cart.qty}" size="2" readonly />
-									<input type="hidden" id="inven-${cart.cartId}" value="${cart.inven}" />
+										value="${cart.qty}" size="2" readonly /> <input type="hidden"
+										id="inven-${cart.cartId}" value="${cart.inven}" />
 									<script>
-                						console.log("생성된 qtyInput ID:", 'qtyInput-${cart.cartId}');
-                						console.log("cartId : ", '${cart.cartId}', "재고수량 : ", '${cart.inven}');
-            						</script>
+                                console.log("생성된 qtyInput ID:", 'qtyInput-${cart.cartId}');
+                                console.log("cartId : ", '${cart.cartId}', "재고수량 : ", '${cart.inven}');
+                            </script>
 									<button type="button" class="increase-btn"
 										data-cart-id="${cart.cartId}">+</button>
 								</div>
-								
 							</td>
 							<td class="common-td"><img
 								src="/resources/images/cart_delete.png" width="30px"
