@@ -34,16 +34,43 @@
 
 	<c:import url="../header.jsp"></c:import>
 
-
 	<div class="bList">
-
-		${listAll}
+		<div class="container">
+	        <table class="table">
+	            <thead>
+	              <tr>
+	                <th>제목</th>
+	                <th>작가</th>
+	                <th>출판사</th>
+	                <th>출간일</th>
+	                <th>가격</th>
+	              </tr>
+	            </thead>
+	            <tbody>
+	             <c:forEach var="list" items="${listAll}">
+	            
+	              <tr>
+	                <td onclick="location.href='/bookList/bDetail?=${list.bookNo}';">${list.title}</td>
+	                <td>${list.author}</td>
+	                <td>${list.publisher}</td>
+	                <td>${list.pubDate}</td>
+	                <td>${list.salePrice}</td>
+	              </tr>
+	              
+	             </c:forEach>
+	            </tbody>
+	          </table>
+          </div>
+          
+          
+          
+        </div>
+		
 
 		
 		
 
 	</div>
-
 
 	<c:import url="../footer.jsp"></c:import>
 
