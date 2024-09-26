@@ -52,48 +52,47 @@
 }
 
 .quantity-control {
-    display: inline-flex;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow: hidden; /* 경계선에 맞춰서 내용이 잘리지 않도록 */
+	display: inline-flex;
+	align-items: center;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	overflow: hidden; /* 경계선에 맞춰서 내용이 잘리지 않도록 */
 }
 
 .quantity-control button {
-    background-color: #f8f9fa; /* 버튼 배경색 */
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 18px; /* 버튼 크기 */
-    transition: background-color 0.3s;
+	background-color: #f8f9fa; /* 버튼 배경색 */
+	border: none;
+	padding: 5px 10px;
+	cursor: pointer;
+	font-size: 18px; /* 버튼 크기 */
+	transition: background-color 0.3s;
 }
 
 .quantity-control button:hover {
-    background-color: #e2e6ea; /* 버튼 마우스 오버 시 색상 */
+	background-color: #e2e6ea; /* 버튼 마우스 오버 시 색상 */
 }
 
 .quantity-control input {
-    width: 40px; /* 수량 입력창 너비 */
-    text-align: center; /* 텍스트 중앙 정렬 */
-    border: none;
-    outline: none; /* 포커스 시 경계선 제거 */
-    font-size: 18px; /* 입력 텍스트 크기 */
+	width: 40px; /* 수량 입력창 너비 */
+	text-align: center; /* 텍스트 중앙 정렬 */
+	border: none;
+	outline: none; /* 포커스 시 경계선 제거 */
+	font-size: 18px; /* 입력 텍스트 크기 */
 }
 
-
 .change-btn {
-    background-color: #7FAD39; /* 원하시는 배경색으로 변경 가능 */
-    color: white;
-    border: none;
-    border-radius: 5px; /* 귀여운 느낌을 위해 둥글게 */
-    padding: 5px 10px; /* 여백을 적게 설정 */
-    font-size: 12px; /* 작게 설정 */
-    transition: background-color 0.3s;
-    margin-top:0.5em;
+	background-color: #7FAD39; /* 원하시는 배경색으로 변경 가능 */
+	color: white;
+	border: none;
+	border-radius: 5px; /* 귀여운 느낌을 위해 둥글게 */
+	padding: 5px 10px; /* 여백을 적게 설정 */
+	font-size: 12px; /* 작게 설정 */
+	transition: background-color 0.3s;
+	margin-top: 0.5em;
 }
 
 .change-btn:hover {
-    background-color: #6FAF2E; /* 호버 시 색상 변경 */
+	background-color: #6FAF2E; /* 호버 시 색상 변경 */
 }
 </style>
 </head>
@@ -149,15 +148,19 @@
 								<div class="quantity-control">
 									<button type="button" class="decrease-btn"
 										data-cart-id="${cart.cartId}">-</button>
-									<input type="text" id="qtyInput-${cart.cartId}" value="${cart.qty}" size="2" readonly />
+									<input type="text" id="qtyInput-${cart.cartId}"
+										value="${cart.qty}" size="2" readonly />
+									<input type="hidden" id="inven-${cart.cartId}" value="${cart.inven}" />
 									<script>
                 						console.log("생성된 qtyInput ID:", 'qtyInput-${cart.cartId}');
+                						console.log("cartId : ", '${cart.cartId}', "재고수량 : ", '${cart.inven}');
             						</script>
 									<button type="button" class="increase-btn"
 										data-cart-id="${cart.cartId}">+</button>
 								</div>
 								<div>
-									<button type="button" class="change-btn" onclick="saveQty(${cart.cartId})">변경</button>
+									<button type="button" class="change-btn"
+										onclick="saveQty(${cart.cartId})">변경</button>
 								</div>
 							</td>
 							<td class="common-td"><img
@@ -262,16 +265,21 @@
     $(document).ready(function() {
         // 수량 증가 함수
         function increaseQty(cartId) {
-            let qtyInput = document.getElementById('qtyInput-' + cartId);
-            let currentQty = parseInt(qtyInput.value);
-            qtyInput.value = currentQty + 1;
+    		let qtyInput = document.getElementById('qtyInput-' + cartId);
+    		let currentQty = parseInt(qtyInput.value);
+    		let maxQty = parseInt(document.getElementById('inven-' + cartId).value); // 재고 가져오기
 
-            // 수량이 변경되었으므로, 합계를 업데이트합니다.
-            updateTotals();
+    		if (currentQty < maxQty) { // 재고보다 적을 때만 수량 증가
+        		qtyInput.value = currentQty + 1;
 
-            // 서버에 수량 업데이트를 위한 AJAX 호출을 추가할 수 있습니다.
-            console.log("수량 증가: cartId=", cartId, "수량=", qtyInput.value);
-        }
+        		// 수량이 변경되었으므로, 합계를 업데이트합니다.
+        		updateTotals();
+
+        		console.log("수량 증가: cartId=", cartId, "수량=", qtyInput.value);
+    		} else {
+        		alert("재고가 부족합니다.");
+    		}
+		}
 
         // 수량 감소 함수 (1보다 작은 값은 허용하지 않음)
         function decreaseQty(cartId) {
