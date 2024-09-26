@@ -158,10 +158,7 @@
 									<button type="button" class="increase-btn"
 										data-cart-id="${cart.cartId}">+</button>
 								</div>
-								<div>
-									<button type="button" class="change-btn"
-										onclick="saveQty(${cart.cartId})">변경</button>
-								</div>
+								
 							</td>
 							<td class="common-td"><img
 								src="/resources/images/cart_delete.png" width="30px"
@@ -263,23 +260,20 @@
 	<!-- JavaScript 코드 -->
 	<script>
     $(document).ready(function() {
-        // 수량 증가 함수
+    	// 수량 증가 함수
         function increaseQty(cartId) {
-    		let qtyInput = document.getElementById('qtyInput-' + cartId);
-    		let currentQty = parseInt(qtyInput.value);
-    		let maxQty = parseInt(document.getElementById('inven-' + cartId).value); // 재고 가져오기
+            let qtyInput = document.getElementById('qtyInput-' + cartId);
+            let currentQty = parseInt(qtyInput.value);
+            let maxQty = parseInt(document.getElementById('inven-' + cartId).value);
 
-    		if (currentQty < maxQty) { // 재고보다 적을 때만 수량 증가
-        		qtyInput.value = currentQty + 1;
-
-        		// 수량이 변경되었으므로, 합계를 업데이트합니다.
-        		updateTotals();
-
-        		console.log("수량 증가: cartId=", cartId, "수량=", qtyInput.value);
-    		} else {
-        		alert("재고가 부족합니다.");
-    		}
-		}
+            if (currentQty < maxQty) {
+                qtyInput.value = currentQty + 1;
+                updateTotals();
+                updateQtyInDB(cartId, qtyInput.value);  // AJAX로 수량 업데이트
+            } else {
+                alert("재고가 부족합니다.");
+            }
+        }
 
         // 수량 감소 함수 (1보다 작은 값은 허용하지 않음)
         function decreaseQty(cartId) {
@@ -287,13 +281,31 @@
             let currentQty = parseInt(qtyInput.value);
             if (currentQty > 1) {
                 qtyInput.value = currentQty - 1;
-
-                // 수량이 변경되었으므로, 합계를 업데이트합니다.
                 updateTotals();
+                updateQtyInDB(cartId, qtyInput.value);  // AJAX로 수량 업데이트
             } else {
                 alert("수량은 1보다 작을 수 없습니다.");
             }
-            console.log("수량 감소: cartId=", cartId, "수량=", qtyInput.value);
+        }
+
+        // AJAX로 DB에 수량 업데이트
+        function updateQtyInDB(cartId, newQty) {
+            $.ajax({
+                url: '/cart/updateQty',
+                type: 'POST',
+                data: { cartId: cartId, qty: newQty },
+                success: function(response) {
+                    if (response.success) {
+                        console.log("수량이 성공적으로 업데이트되었습니다.");
+                    } else {
+                        alert("수량 업데이트에 실패했습니다. 다시 시도해주세요.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX 요청 중 오류 발생:", error);
+                    alert("에러가 발생했습니다: " + error);
+                }
+            });
         }
 
         // 이벤트 위임으로 수량 증가/감소 버튼 핸들러
