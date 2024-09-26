@@ -1,10 +1,9 @@
 function startTimer() {
-   let timer = 25;
+	let timer = 59;
+	let timerInterval = setInterval(displayTime, 1000);
 
-   let timerInterval = setInterval(displayTime, 1000);
 
-
-   function displayTime() {
+  function displayTime() {
     // 시간이 0보다 작거나 인증이 성공 되었으면..
 
         if (timer < 0 ) {
@@ -23,11 +22,11 @@ function startTimer() {
                   console.log(data);
                   if (data == 'success') {
                     alert("인증시간이 만료되었습니다. 이메일 주소를 다시 입력하시고, 재 인증 시도 하세요");
-                    $('#authenticateDiv').remove();
-                    $("#userEmail").val('');
-                    $("#userEmail").focus();
-
+                    $('#emailAuth').remove();
+                    $("#email").focus();
+                    clearInterval(timerInterval);
                   }
+                  
                 }
               });
             }
