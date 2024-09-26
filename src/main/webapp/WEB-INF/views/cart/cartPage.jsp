@@ -245,6 +245,25 @@
 		</div>
 	</div>
 
+	<!-- 재고 부족 모달 -->
+	<div class="modal" id="stockModal" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">재고 부족</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body">
+					<p>재고가 부족합니다.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<c:import url="../footer.jsp"></c:import>
 
 	<!-- jQuery 및 Bootstrap JS를 body 끝 부분에 배치 -->
@@ -267,7 +286,8 @@
                 updateTotals();
                 updateQtyInDB(cartId, qtyInput.value);  // AJAX로 수량 업데이트
             } else {
-                alert("재고가 부족합니다.");
+            	// 재고 부족 모달 표시
+                $('#stockModal').modal('show');
             }
         }
 
