@@ -33,9 +33,9 @@
 	<bean id="sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
-		<!-- <property name="configLocation"
-			value="classpath:/mybatis-config.xml"> root / 으로 표시 // 시 에러
-		</property> -->
+		<property name="configLocation"
+			value="classpath:/mybatis-config.xml"><!--  root / 으로 표시 // 시 에러 -->
+		</property>
 		<property name="mapperLocations"
 			value="classpath:mappers/**/*Mapper.xml">
 		</property>
@@ -70,6 +70,7 @@
 
 	<context:component-scan	base-package="com.tn.admin" />
 	
+	<context:component-scan	base-package="com.tn.qa" />
 	<context:component-scan	base-package="com.tn.category.service" />
 	<context:component-scan	base-package="com.tn.category.dao" />
 

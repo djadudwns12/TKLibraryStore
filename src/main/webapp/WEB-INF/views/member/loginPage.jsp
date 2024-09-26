@@ -53,7 +53,7 @@ body {
 #login-form>input[type="submit"] {
 	color: #fff;
 	font-size: 16px;
-	background-color: #0D7C66;
+	background-color: #7FAD39;
 	margin-top: 20px;
 }
 input[type="button"]{
@@ -65,7 +65,7 @@ input[type="button"]{
 	border-radius: 6px;
 	color: #fff;
 	font-size: 16px;
-	background-color: #41B3A2;
+	background-color: #7FAD39;
 	margin-top: 20px;
 }
 

@@ -12,31 +12,31 @@
 <title>Ogani | Template</title>
 
 <!-- Google Font -->
-
+<script type="text/javascript" src="/resources/js/category.js"></script>
 <link
 	href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
 	rel="stylesheet">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- Css Styles -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/jquery-ui.min.css"
+<link rel="stylesheet" href="/resources/template/css/jquery-ui.min.css"
 	type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/bootstrap.min.css"
+<link rel="stylesheet" href="/resources/template/css/bootstrap.min.css"
 	type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/elegant-icons.css"
+<link rel="stylesheet" href="/resources/template/css/elegant-icons.css"
 	type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/nice-select.css"
+<link rel="stylesheet" href="/resources/template/css/nice-select.css"
 	type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/slicknav.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/template/css/owl.carousel.min.css"
+<link rel="stylesheet" href="/resources/template/css/slicknav.min.css"
 	type="text/css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/template/css/font-awesome.min.css"
+	href="/resources/template/css/owl.carousel.min.css"
 	type="text/css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/template/css/style.css"
+	href="/resources/template/css/font-awesome.min.css"
+	type="text/css">
+<link rel="stylesheet"
+	href="/resources/template/css/style.css"
 	type="text/css">
 <style>
     div#category_young {
@@ -145,16 +145,21 @@
 						<ul>
 							<c:if test="${sessionScope.loginMember == null}">
 								<li><a
-									href="${pageContext.request.contextPath}/member/loginPage"><i
-										class="fa fa-heart">로그인</i> <span>1</span></a></li>
+									href="${pageContext.request.contextPath}/member/loginPage"><i class="fa fa-user">로그인</i></a></li>
 							</c:if>
 							<c:if test="${sessionScope.loginMember != null}">
 								<li><a
-									href="${pageContext.request.contextPath}/member/logout"><i
-										class="fa fa-heart">로그아웃</i> <span>1</span></a></li>
+									href="${pageContext.request.contextPath}/member/logout"><i class="fa fa-user">로그아웃</i></a></li>
+							</c:if>
+							<!-- 관리자페이지이동 -->
+							<c:if test="${sessionScope.loginMember.userId == 'admin'}">
+								<li>
+										<a href="${pageContext.request.contextPath}/admin/home"><i class="fa fa-user-secret"></i></a>
+								</li>
 							</c:if>
 							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
 							<li><a href="/cart/cartPage?userId=<%= request.getAttribute("userId") %>"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+							<li><a href="/qa/qaList"><i class="fa fa-question-circle"></i></a></li>
 						</ul>
 					</div>
 				</div>
@@ -226,6 +231,7 @@
 								<option value="-1">선택</option>
 							</select>
 					</div>
+					<div id="main_content"></div>
 				</div>
 			</div>
 		</div>
