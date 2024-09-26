@@ -40,8 +40,8 @@ function category(obj) {
             
             $(obj).next().next().next().children('ul').html(li);  // 리스트 업데이트
             		
-    		// $(obj).next().next().next().find('li').eq(0).trigger('click');  // 첫 번째 li 항목 클릭 이벤트 트리거
-    		// $(obj).next().next().next().find('li').eq(0).trigger('click');  // 첫 번째 li 항목 클릭 이벤트 트리거
+    		$(obj).next().next().next().find('li').eq(0).trigger('click');  // 첫 번째 li 항목 클릭 이벤트 트리거
+    		$(obj).next().next().next().find('li').eq(0).trigger('click');  // 첫 번째 li 항목 클릭 이벤트 트리거
 
         },
         error: function(data, status) {
