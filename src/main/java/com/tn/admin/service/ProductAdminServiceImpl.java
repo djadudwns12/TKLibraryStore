@@ -87,14 +87,26 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 	@Override
 	public int deleteProduct(int[] arr) throws Exception {
 				
-		return pDao.deleteProduct(arr);
+		int delCount = 0;
+		for(int delNo : arr) {
+			delCount += pDao.deleteProduct(delNo);
+		}
+		return delCount;
+		
 	}
 
 
 	@Override
 	public int soldOutProduct(int[] arr) throws Exception {
 		
-		return pDao.soldOutProduct(arr);
+		int sdCount = 0;
+		for(int sdNo : arr) {
+			sdCount += pDao.soldOutProduct(sdNo);
+		}
+		
+		System.out.println(sdCount);
+		return sdCount;
+		
 	}
 
 

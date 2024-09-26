@@ -103,6 +103,7 @@ public class AdminController {
 	@RequestMapping(value="/soldOutProduct", method=RequestMethod.POST)
 	public ResponseEntity<MyResponseWithData> soldOutProduct(@RequestParam(value="soldOutNo") int[] arr) {
 		
+		
 		ResponseEntity<MyResponseWithData> result = null;
 		try {
 			

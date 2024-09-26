@@ -90,8 +90,8 @@
 	    }
 	    $('input:checkbox[name=proCheck]').each(function (index) {
             if ($(this).is(":checked") == true) {
-                delNo = $(this).val();
-                console.log(delNo);
+                delNo.push($(this).val());
+               
             }
        	 });
 	    if (confirm(pro_check+"개의 상품을 삭제하시겠습니까?")) {
@@ -101,6 +101,7 @@
 	                    url: "/admin/deleteProduct", 
 	                    type: "post", 
 	                    dataType: "json", 
+	                    traditional :true,
 	                    data: {
 	                      "delNo" : delNo
 	                    },
@@ -131,26 +132,28 @@
 	    }
 	    $('input:checkbox[name=proCheck]').each(function (index) {
             if ($(this).is(":checked") == true) {
-            	soldOutNo = $(this).val();
-                console.log(soldOutNo);
-            	}
+            	soldOutNo.push($(this).val());
+                }
+            
             });
 	    if (confirm(pro_check+"개의 상품을 품절 처리하시겠습니까?")) {
 	        
-	        
+	    	console.log(soldOutNo)
 	                $.ajax({
 	                    url: "/admin/soldOutProduct", 
 	                    type: "post", 
 	                    dataType: "json", 
+	                    // 배열보낼때 넣어줘야함
+	                    traditional :true,
 	                    data: {
 	                      "soldOutNo" : soldOutNo
 	                    },
 	                    success: function (data) {	  
 	                    	// 실행시키기 위해선 컨트롤러단에서 json데이터로 변환 후 데이터를 보내주어야한다.
+	                    	console.log(data)
 	                    	  alert(pro_check+"개의 상품을 품절 처리했습니다.");
 	                    	  location.href = '/admin/productAdmin?ra=${param.ra}&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
-	                        
-	                      
+	                                            
 	                    },
 	                    error: function (data) {
 	                      console.log(data);
