@@ -103,7 +103,6 @@ $(function() {
 		$('#userId').val(localStorage.getItem('userId'));
         $('#remember-check').prop('checked', true);
 	}
-
 })
 
 // 유저의 id 저장
@@ -134,6 +133,7 @@ function valid() {
 		return returnYn;
 	}
 	if(userId != '' && userPwd != ''){
+		userIdsave();
 		returnYn = true;
 	}
 	return returnYn;
