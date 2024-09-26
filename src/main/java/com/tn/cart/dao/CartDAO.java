@@ -11,4 +11,8 @@ public interface CartDAO {
 
 	List<CartDTO> selectCartList(String userId) throws Exception;
 
+	int deleteOneCart(String cartId) throws Exception;
+
+	int updateQty(int cartId, int qty) throws Exception;
+
 }

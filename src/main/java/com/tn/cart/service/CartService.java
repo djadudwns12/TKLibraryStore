@@ -11,5 +11,9 @@ public interface CartService {
 
 	List<CartDTO> getCartList(String userId) throws Exception;
 
+	boolean deleteCartById(String cartId) throws Exception;
+
+	boolean updateQuantity(int cartId, int qty) throws Exception;
+
 
 }
