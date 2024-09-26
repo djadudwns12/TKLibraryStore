@@ -23,12 +23,19 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+<script>
+    $(function() {
+            let bList = $('.bList');
+            $('#main_content').html(bList);
+        });
 
+</script>
 <body>
 
 	<c:import url="../header.jsp"></c:import>
 
-	<div class="container">
+
+	<div class="bList">
 
 		${listAll}
 
