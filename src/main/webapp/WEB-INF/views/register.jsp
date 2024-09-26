@@ -357,7 +357,7 @@ input[readonly] {
         <label for="terms">회원 가입 조항에 동의합니다.</label>
     </div>
 
-    <button type="submit" class="submit-btn" id="submitBtn" disabled>가입하기</button>
+    <button type="submit" class="submit-btn" id="submitBtn" >가입하기</button>
     
 </form>
 
@@ -515,24 +515,43 @@ function clearError(obj) {
 						
 					
 						// 해당 파일 업로드
-						showPreview(files[0])
+						showPreview(files[0]);
 						
 						
 					}
 			}
 			
 			
-			
+		});
 			
 			  $('#terms').change(function() {
 			        $('#submitBtn').prop('disabled', !$(this).is(':checked'));
 			    });
 				
 			
-		});
+		
 
 	
-    
+		$("form").on("submit", function (evt) {
+			  // 모든 Error 태그가 숨겨져 있는지 확인
+			  let allErrorsHidden = true;
+
+			  // .hide()된 요소는 jQuery에서 is(":visible")로 검사하여 보이지 않으면 false 반환
+			  //$ 기호는 **"끝나는"**이라는 의미입니다. , ^ 기호는 **"시작하는"**이라는 의미입니다.
+			  $("div[id$='Error']").each(function () {
+			    if ($(this).is(":visible")) {
+			      allErrorsHidden = false;
+			    }
+			  });
+
+			  // Error 태그가 하나라도 보이면 submit 방지
+			  if (!allErrorsHidden) {
+			    evt.preventDefault(); // submit 방지
+			    alert("잘못된 입력이 있습니다. 입력을 다시 확인하세요.");
+			  } else {
+				  register();
+			  }
+			});
 
    
     
@@ -576,70 +595,15 @@ function deleteProfileImage() {
 	
 	
 }
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	// 실제로 유저가 업로드한 파일을 컨트롤러단에 전송하여 저장되도록 하는 함수
-	function fileUpload(file) {
-		let result = false;
-		let fd = new FormData();  // FormData 객체 생성 : form태그와 같은 역할의 객체
-		fd.append("file", file);
-		
-		$.ajax({
-	         url : '/member/upfiles',             // 데이터가 송수신될 서버의 주소
-	         type : 'post',                                     // 통신 방식 : GET, POST, PUT, DELETE, PATCH   
-	         dataType : 'json',					// 수신 받을 데이터의 타입 (text, xml, json)
-			 data : fd,					// 보낼 데이터
-	         // processData :  false  -> 데이터를 쿼리스트링 형태로 보내지 안겠다는 설정
-	         // contentType 의 디폴트 값이 "application/x-www-form-urlencoded"인데, 파일을 전송하는 방식이기에 "multipart/form-data"로 되어야 하므로..
-	         processData: false,
-	         contentType : false,
-	         async : false,      // 비동기 통신 : false
-	         success : function (data) {                       // 비동기 통신에 성공하면 자동으로 호출될 callback function
-	            console.log(data);
-	         	if (data.msg == 'success') {
-	         		showPreview(file, data.newFileName);  // 파일 미리보기
-	         	}
-	         
-	         }, error : function (data) {
-	        	 console.log(data);
-	        	 if (data == 'fail') {
-	        		 alert ('파일을 업로드 하지 못했습니다');
-	        		 
-	        		 for(let i = 0; i < upfiles.length; i++) {
-	        			 if (upfile[i].name == file.name) {
-	        				 upfiles.splice(i, 1);  // 배열에서 삭제
-	        			 }
-	        		 }
-	        	 }
-	         }
-	      });
-	}
-	
-	async function fileUpload(file) {
+
+	async function register() {
 	    let result = false;
-	    let fd = new FormData();  // FormData 객체 생성 : form태그와 같은 역할의 객체
-	    fd.append("file", file);
+	    let fd = new FormData(this);  // FormData 객체 생성 : form태그와 같은 역할의 객체
+	    fd.append("imgFile", uploadedFile);
 
 	    try {
 	        let response = await $.ajax({
-	            url: '/member/upfiles',             // 데이터가 송수신될 서버의 주소
+	            url: '/member/register',             // 데이터가 송수신될 서버의 주소
 	            type: 'post',                                     // 통신 방식 : GET, POST, PUT, DELETE, PATCH
 	            dataType: 'json',                  // 수신 받을 데이터의 타입 (text, xml, json)
 	            data: fd,                          // 보낼 데이터
@@ -657,15 +621,9 @@ function deleteProfileImage() {
 	    } catch (error) {
 	        // 에러 처리
 	        console.error(error);
-	        if (error === 'fail') {
-	            alert('파일을 업로드하지 못했습니다');
+	        if (error == 'fail') {
+	            alert('회원 가입 중 예기치 못한 오류가 발생했니다.');
 
-	            // 배열에서 파일 제거
-	            for (let i = 0; i < upfiles.length; i++) {
-	                if (upfiles[i].name == file.name) {
-	                    upfiles.splice(i, 1);  // 배열에서 삭제
-	                }
-	            }
 	        }
 	    }
 	}
@@ -1001,66 +959,6 @@ function serializeDiv(divId) {
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-$("form").on("submit", function (e) {
-	  // 모든 Error 태그가 숨겨져 있는지 확인
-	  let allErrorsHidden = true;
-
-	  // .hide()된 요소는 jQuery에서 is(":visible")로 검사하여 보이지 않으면 false 반환
-	  //$ 기호는 **"끝나는"**이라는 의미입니다. , ^ 기호는 **"시작하는"**이라는 의미입니다.
-	  $("div[id$='Error']").each(function () {
-	    if ($(this).is(":visible")) {
-	      allErrorsHidden = false;
-	    }
-	  });
-
-	  // Error 태그가 하나라도 보이면 submit 방지
-	  if (!allErrorsHidden) {
-	    e.preventDefault(); // submit 방지
-	    alert("잘못된 입력이 있습니다. 입력을 다시 확인하세요.");
-	  }
-	});
 
 </script>
 </body>
