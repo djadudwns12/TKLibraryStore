@@ -23,6 +23,7 @@
 	
 	<context:component-scan base-package="com.tn.member.controller" />
 	<context:component-scan base-package="com.tn.admin.controller" />
+	<context:component-scan base-package="com.tn.booklist.controller" />
 	
 	<!-- 인터셉터가 동작하는 매핑 주소 설정 -->
 	
