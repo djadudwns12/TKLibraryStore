@@ -71,10 +71,7 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 	
 	@Autowired
 	private MemberService mService;
-
-
 	
-		
 	/**
 	 * @작성자 : 최미설
 	 * @작성일 : 2024. 9. 6.
@@ -96,8 +93,7 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
+	}	
 	/**
 	 * @작성자 : 엄영준
 	 * @작성일 : 2024. 9. 9. 
@@ -147,7 +143,42 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 			e.printStackTrace();
 		}
 	}	
-  
+
+	/**
+	 * @작성자 : 최미설
+	 * @작성일 : 2024. 9. 6.
+	 * @method_name : getMemberInfo
+	 * @param :String userId(로그인 기능 구현 이후 세션에서 로그인 정보 받아와서 파라미터로 받을 예정)
+	 * @param :Model model
+	 * @return : memberVO
+	 * @throws : 
+	 * @description : 회원정보수정을 위해 회원정보를 불러오는 메서드
+	*/
+	
+	@RequestMapping(value="/edit")
+	public void getEditMemeberInfo(Model model) { // @RequestParam("userId") String userId
+		String userId = "dooly"; // 회원정보수정 페이지 완료하면 로그인 정보 가져오기!
+		try {
+			MemberVO editMemberInfo = mService.getEditMemberInfo(userId);
+			System.out.println(editMemberInfo.toString());
+			model.addAttribute("editMemberInfo", editMemberInfo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * @작성자 : 최미설
+	 * @작성일 : 2024. 9. 9. 
+	 * @클래스명 : MemberController
+	 * @메서드명 : saveEditInfo
+	 * @param : MemberDTO, RedirectAttributes
+	 * @return : void
+	 * @throws 
+	 * @description : 회원정보수정 페이지에서 수정된 정보를 저장하는 메서드
+	 *
+	 */
 	@RequestMapping(value="/mypage")
 	public void saveEditInfo(MemberDTO editMember, RedirectAttributes redirectAttributes) {
 		
@@ -161,13 +192,23 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 		
 	}
 	
+	/**
+	 * @작성자 : 최미설
+	 * @작성일 : 2024. 9. 9. 
+	 * @클래스명 : MemberController
+	 * @메서드명 : sendAuthMail
+	 * @param : @RequestParam("tmpEmail") String, HttpSession
+	 * @return : ResponseEntity<String>
+	 * @throws 
+	 * @description : 회원정보수정 페이지에서 이메일인증을 위해 인증코드를 생성하고 메일을 보내는 메서드
+	 */
 	@RequestMapping("/sendAuthMail")
 	public ResponseEntity<String> sendAuthMail(@RequestParam("tmpEmail") String tmpEmail, HttpSession session) {
 		String authCode = UUID.randomUUID().toString();
 		try {
-//			new SendMailService().sendMail(tmpEmail, authCode); // ���� ���� ������ ��� ���� �Ϸ�
+//			new SendMailService().sendMail(tmpEmail, authCode); // 이메일 전송 메서드 구현 완료... 
 			session.setAttribute("emailAuthCode", authCode);
-			System.out.println(session);
+			System.out.println("인증코드 : " + authCode);
 			return new ResponseEntity<String>("emailAuthSend", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -176,6 +217,16 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 	
 	}
 	
+	/**
+	 * @작성자 : 최미설
+	 * @작성일 : 2024. 9. 9. 
+	 * @클래스명 : MemberController
+	 * @메서드명 : checkAuthMail
+	 * @param : @RequestParam("userAuthCode")String, HttpSession
+	 * @return : ResponseEntity<String>
+	 * @throws 
+	 * @description : 회원정보수정 페이지에서 이메일인증코드를 확인하는 메서드
+	 */
 	@RequestMapping("/checkEmailAuthCode")
 	public ResponseEntity<String> checkAuthMail(@RequestParam("userAuthCode")String userAuthCode, HttpSession session) {
 		String result = "fail";
@@ -189,6 +240,24 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 		return new ResponseEntity<String>(result, HttpStatus.OK);
 		
 	}
+	/**
+	 * @작성자 : 최미설
+	 * @작성일 : 2024. 9. 25. 
+	 * @클래스명 : MemberController
+	 * @메서드명 : clearCode
+	 * @param : HttpSession session
+	 * @return : ResponseEntity<String>
+	 * @description : 이메일인증시간이 만료되면 세션의 코드를 지우는 메서드
+	 */
+	@RequestMapping("/clearAuthCode")
+	public ResponseEntity<String> clearCode(HttpSession session) {
+		if (session.getAttribute("emailAuthCode") != null) {
+			session.removeAttribute("emailAuthCode"); // attribute 속성을 지운다...
+		}
+
+		return new ResponseEntity<String>("success", HttpStatus.OK);
+	}
+	
 	/**
 	 * @작성자 : 802-10
 	 * @작성일 : 2024. 9. 9. 
