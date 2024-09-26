@@ -48,7 +48,7 @@
 	<div class="card pwdConfirmCard" style="padding:10px">
 		<p class="register-box-msg">회원 정보 수정</p>
 		
-		<form method="post"> <!-- action="/member/mypage" -->
+		<form action="/member/mypage" method="post"> <!-- -->
 			<div class="input-group mb-3">
 				<label>이름</label>
 				<input type="text" class="form-control" id="userName" name="userName" value="${editMemberInfo.userName}" readonly/>
@@ -110,8 +110,9 @@ $(function(){
 	$('#userPwd').on("input", function() {
 		let tmpPwd = $('#userPwd').val();
 		let passwordRegExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()])[a-zA-Z\d!@#$%^&*()]{8,20}$/;
-		if (!passwordRegExp.test(tmpPwd)) {
+		if (!passwordRegExp.test(tmpPwd) || tmpPwd =='') {
 			outputError("영문/숫자/특수문자[!@#$%^&*()] 조합 (8~20자)으로 입력하세요.", $('#userPwd'));
+			$("#pwdCheck").val("");
 		} else {
 			// 에러메시지 사라짐
 			clearError($("#userPwd"));
@@ -190,13 +191,13 @@ function clearError(obj) {
 		//location.href="/member/mypage";
 		return true;
 	} else {
-		return;
+		return false;
 	}
 }
 
 // 생년월일 입력 확인
 function userBirthValid(){
-	let userBirth = Date($('#userBirth').val());
+	let userBirth =new Date($('#userBirth').val());
 	let today = new Date();
 	let userBirthCheck = $('#userBirthCheck').val();
 	if(userBirth<today){
