@@ -19,8 +19,10 @@
 	src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script>
+
+	
 	$(function () {
-		
+			
 		$('.pagingSize').change(function(){
 			console.log($(this).val());
 			
@@ -40,11 +42,136 @@
 			 
 			location.href = '/admin/productAdmin?ra='+ $(this).val() + '&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
 		});
+				
 	});
 	
 	function pagingInfo() {
 		let productList = '${param.productList}';
 		console.log(productList);
+	}
+	
+	function isValid() {
+		// 검색 버튼을 눌렀을 때 searchType == -1 이거나 , searchWord에 ''이면 
+		// 검색어가 제대로 입력되지 않았으므로 백엔드 단으로 데이터를 넘기면 안된다
+		
+		let result = false;
+		if($('#searchType').val() == -1 || $('#searchWord').val() == ''){
+			alert('검색 조건과 검색어를 입력해 주세요');
+			$('#searchType').focus();
+			return result;
+		} else {
+			result = true;
+		}
+		
+		return result;
+		
+	}
+	
+	function selectAll(selectAll) {
+	    // 모든 체크박스 선택
+	    const checkboxes = $('input[type="checkbox"]');
+	    
+	    // jQuery의 each 메서드를 사용하여 모든 체크박스 요소의 checked 속성을 selectAll.checked 값으로 설정
+	    checkboxes.each(function() {
+	        $(this).prop('checked', $(selectAll).prop('checked'));
+	    });
+
+	    // 버튼 업데이트 함수 호출
+	    updateButton();
+	}
+	
+	// 상품을 삭제처리하는 함수
+	function deleteProduct() {
+		let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
+	    let delNo = [];
+	    if (pro_check == 0) {
+	        alert('하나 이상의 제품을 선택해주세요.');
+	        return false;
+	    }
+	    $('input:checkbox[name=proCheck]').each(function (index) {
+            if ($(this).is(":checked") == true) {
+                delNo = $(this).val();
+                console.log(delNo);
+            }
+       	 });
+	    if (confirm(pro_check+"개의 상품을 삭제하시겠습니까?")) {
+	        
+	        
+	                $.ajax({
+	                    url: "/admin/deleteProduct", 
+	                    type: "post", 
+	                    dataType: "json", 
+	                    data: {
+	                      "delNo" : delNo
+	                    },
+	                    success: function (data) {	  
+	                    	// 실행시키기 위해선 컨트롤러단에서 json데이터로 변환 후 데이터를 보내주어야한다.
+	                    	  alert(pro_check+"개의 상품을 삭제했습니다.");
+	                    	  location.href = '/admin/productAdmin?ra=${param.ra}&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
+	                                            
+	                    },
+	                    error: function (data) {
+	                      console.log(data);
+	                     
+	                    },
+	                  });
+	                    
+	    } else {
+	        alert("취소");
+	    }
+	}
+	
+	// 상품의 재고를 0으로 만드는 함수
+	function soldOutProduct() {
+		let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
+	    let soldOutNo = [];
+	    if (pro_check == 0) {
+	        alert('하나 이상의 제품을 선택해주세요.');
+	        return false;
+	    }
+	    $('input:checkbox[name=proCheck]').each(function (index) {
+            if ($(this).is(":checked") == true) {
+            	soldOutNo = $(this).val();
+                console.log(soldOutNo);
+            	}
+            });
+	    if (confirm(pro_check+"개의 상품을 품절 처리하시겠습니까?")) {
+	        
+	        
+	                $.ajax({
+	                    url: "/admin/soldOutProduct", 
+	                    type: "post", 
+	                    dataType: "json", 
+	                    data: {
+	                      "soldOutNo" : soldOutNo
+	                    },
+	                    success: function (data) {	  
+	                    	// 실행시키기 위해선 컨트롤러단에서 json데이터로 변환 후 데이터를 보내주어야한다.
+	                    	  alert(pro_check+"개의 상품을 품절 처리했습니다.");
+	                    	  location.href = '/admin/productAdmin?ra=${param.ra}&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
+	                        
+	                      
+	                    },
+	                    error: function (data) {
+	                      console.log(data);
+	                     
+	                    },
+	                  });
+	            
+	                
+	    } else {
+	        alert("취소");
+	    }
+	}
+	
+
+	
+	function updateButton() {
+	    // 체크박스 선택된 개수 가져오기
+	    let pro_check = $('input[name="proCheck"]:checked').length;
+	    // 버튼 텍스트 업데이트
+	    $('#delBtn').text(pro_check + "개 삭제");
+	    $('#soldOutBtn').text(pro_check + "개 품절");
 	}
 </script>
 
@@ -60,8 +187,9 @@
 table {
 	border-collapse: separate;
 	border-spacing: 0;
-	width: 1300px;
+	width: 1600px;
 	margin-left: 30px;
+	text-align: center;
 }
 
 th, td {
@@ -71,7 +199,7 @@ th, td {
 th {
 	background: #42444e;
 	color: #fff;
-	text-align: left;
+	text-align: center;
 }
 
 tr:first-child th:first-child {
@@ -85,6 +213,7 @@ tr:first-child th:last-child {
 td {
 	border-right: 1px solid #c6c9cc;
 	border-bottom: 1px solid #c6c9cc;
+	text-align: center;
 }
 
 td:first-child {
@@ -139,25 +268,27 @@ body {
 			<jsp:include page="header.jsp" />
 
 			<div class="content">
-				<h1 class="jemok">productlist</h1>
+				<h1 class="jemok">ProductList</h1>
 
 
 				<!-- The form -->
-				<form class="search" action="action_page.php">
+				<form class="search"style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: center;" 
+				action="/admin/productAdmin" method="post">
 						
 						<div>
-							<select class="searchConditions">
-								<option>검색 조건</option>
-								<option value="">제목</option>
-								<option value="">작가</option>
-								<option value="">내용</option>
-								<option value="">장르</option>
+							<select class="searchType" name="searchType" id="searchType" style="text-align: center">
+								<option value="-1">검색 조건</option>
+								<option value="title">제목</option>
+								<option value="author">작가</option>
+								<option value="introduction">내용</option>
+								<option value="genre">장르</option>
+								<option value="publisher">출판사</option>
 							</select>
 						</div>
 					<section>
 						
-						<div class="searchBar">
-							<input type="text" placeholder="검색어를 입력하세요.">
+						<div class="searchBar" style="margin-right: 20px;">
+							<input type="text" class="searchWord"  name="searchWord" id="searchWord" placeholder="검색어를 입력하세요.">
 							<div class="searchIcon">
 								<i class="fas fa-search"></i>
 							</div>
@@ -169,13 +300,15 @@ body {
 							</div>
 
 						</div>
-
-						
-						
-
+						<input
+					type="hidden" name="pageNo" value="${param.pageNo}" /> <input
+					type="hidden" name="pagingSize" value="${param.pagingSize}" />
 					</section>
+						<button type="submit" class="btn btn-outline-dark btn" onclick="return isValid()">검색</button>
+					</form>
 					
-					<div class="boardC">
+					<div style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: right; margin-bottom: 50px;">
+						<div class="boardC" >
 							<select class="form-select sortByWhat" id="sortByWhat" style="width: 150px ">
 								<option value="default">기본 정렬</option>
 								<option value="salePrice">가격 높은순</option>
@@ -186,7 +319,7 @@ body {
 							</select>
 						</div>
 					
-					<div class="boardControll">
+						<div class="boardControll">
 							<select class="form-select pagingSize" id="pagingSize" style="width: 150px ">
 								<option value="0">정렬 기준</option>
 								<option value="10">10개씩 보기</option>
@@ -195,8 +328,8 @@ body {
 								<option value="40">40개씩 보기</option>
 							</select>
 						</div>
-						
-				</form>
+					</div>
+				
 
 
 
@@ -206,6 +339,7 @@ body {
 				<table>
 					<thead>
 						<tr>
+							<th><input type="checkbox" onclick="selectAll(this)"> selectAll </th>
 							<th>BookNo</th>
 							<th>Title</th>
 							<th>Author</th>
@@ -218,12 +352,15 @@ body {
 							<th>ThumbNail</th>
 							<th>Zzim</th>
 							<th>ReviewCnt</th>
-
+							
+							<th><button type="button" class="btn btn-danger btn" id="delBtn" style="width:90px; font-size:small;" onclick="deleteProduct();" >0개 삭제</button></th> 
+							<th><button type="button" class="btn btn-success btn" id="soldOutBtn" style="width:90px; font-size:small;" onclick="soldOutProduct();">0개 품절</button></th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="product" items="${productList}">
 							<tr>
+								<td><input type="checkbox" name="proCheck" value=${product.bookNo} onclick="updateButton()"></td>
 								<td>${product.bookNo}</td>
 								<td>${product.title}</td>
 								<td>${product.author}</td>
@@ -237,6 +374,7 @@ body {
 									height="80"></td>
 								<td>${product.zzim}</td>
 								<td>${product.reviewCnt}</td>
+								<td colspan="3"><button class="btn btn-secondary btn" style="width:70px" onclick="location.href='/admin/modifyProduct?bookNo=${product.bookNo}'">수정</button></td>
 							</tr>
 						</c:forEach>
 
@@ -249,6 +387,9 @@ body {
 				<ul class="pagination">
 
 					<c:if test="${param.pageNo > 1 }">
+						<li class="page-item"><a class="page-link"
+							href="/admin/productAdmin?pageNo=1
+						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> << </a></li>
 						<li class="page-item"><a class="page-link"
 							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo-1}
 						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
@@ -270,18 +411,18 @@ body {
 
 					<c:if test="${param.pageNo < pagingInfo.totalPageCnt}">
 						<li class="page-item"><a class="page-link"
-							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo +1}&ra=${param.ra}">Next</a></li>
+							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo+1}
+						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Next</a></li>
+						
+						<li class="page-item"><a class="page-link"
+							href="/admin/productAdmin?pageNo=${pagingInfo.totalPageCnt}
+						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> >> </a></li>
 					</c:if>
 				</ul>
 			</div>
-
+			
 
 		</div>
-
-
-
-
-
 	</div>
 
 
@@ -294,6 +435,7 @@ body {
 	href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap"
 	rel="stylesheet">
 <style>
+
 <!--
 폰트 영역 -->
 *{
@@ -302,10 +444,10 @@ body {
 	font-style: normal;
 }
 
-<!--페이지 영역-->
-.page-link {
+
+.page-item .page-link {
 	color: #999;
-	background-color: #000;
+	background-color: #343a40;
 	border-color: #444;
 }
 
@@ -323,13 +465,18 @@ body {
 	border-color: #444;
 }
 
-.searchConditions {
+.searchType {
 	border: 1px solid rgba(128, 128, 128, 0.2);
 	border-radius: 22px;
 	position: relative;
 	display: flex;
 	width: 150px;
 	height: 44px;
+}
+
+.btn{
+	border: 1px solid rgba(128, 128, 128, 0.2);
+	border-radius: 22px;
 }
 
 <!--

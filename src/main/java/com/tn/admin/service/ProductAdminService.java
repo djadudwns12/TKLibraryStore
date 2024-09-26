@@ -14,4 +14,10 @@ public interface ProductAdminService {
 
 	Map<String, Object> listAll(PagingInfoDTO dto, SearchCriteriaDTO searchCriteria, String sortBy) throws Exception;
 
+	int deleteProduct(int[] arr) throws Exception;
+
+	int soldOutProduct(int[] arr) throws Exception;
+
+	ProductVO read(int bookNo) throws Exception;
+
 }
