@@ -55,7 +55,6 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjtools</artifactId>
-			Spring AOP 5
 			<version>${org.aspectj-version}</version>
 		</dependency>
 
