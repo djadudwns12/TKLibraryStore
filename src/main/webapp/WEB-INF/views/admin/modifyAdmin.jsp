@@ -19,7 +19,7 @@
 	src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script type="text/javascript">
-let upfiles = new Array();		//업로드 되는 파일들을 저장하는 배열
+let upfiles = '';		//업로드 되는 파일들을 저장하는 배열
 
 $(function(){
 	//업로드 파일 영역에 drag&drop과 관련된 이벤트(파일의 경우 파일이 웹브라우저에서 실행되는 등)을 방지해야 한다 -> 이벤트 캔슬링
@@ -43,19 +43,37 @@ $(function(){
 				//파일 사이즈 검사하여 10MB가 넘게되면 파일 업로드가 안되도록
 				if(file.size > 10485760){
 					alert("파일 용량이 너무 큽니다. 업로드한 파일을 확인해 주세요.");
-				}else{
-				
-					upfiles.push(file);		//배열에 담기
-					console.log(upfiles);
-				
-					//해당 파일 ,업로드
-					fileUpload(file);
+				}else{	
+					// 파일이 이미지인지 확인
+	                if(file.type.startsWith('image/')) {
+	                    var reader = new FileReader();
+	                    
+	                    // 파일을 읽어온 후 처리
+	                    reader.onload = function(e) {
+	                        // id가 imageArea인 태그에 이미지 덮어씌우기
+	                        console.log(e.target.result)
+	                        $('#imageArea').html('<img src="' + e.target.result + '" alt="업로드된 이미지" style="width: 100%; height: 100%;">');
+	                    }
+	                    
+	                    reader.readAsDataURL(file);  // 파일을 읽어옴
+	                } else {
+	                    alert("이미지 파일만 업로드 가능합니다.");
+	                }
+					
 					
 					
 				}
 			}
 		
 	});
+	// upfiles.push(file);		//배열에 담기
+	//console.log(upfiles);
+	//해당 파일 ,업로드
+	//fileUpload(upfiles);
+	
+	function updateImage(file) {
+		$('#imageArea').append(file);
+	}
 	
 	// 실제로 유저가 업로드한 파일을 컨트롤러단에 전송하여 저장되도록 하는 함수
 	function fileUpload(file) {
@@ -75,7 +93,7 @@ $(function(){
 			// 
 			processData : false,
 			contentType : false,
-			async : false,					// 비동기 통신 : false
+			//async : false,					// 비동기 통신 : false
             success : function(data) {		//비동기 통신에 성공하면 자동으로 호출 될 callback funtion
                 console.log(data);
           	 	
@@ -144,7 +162,7 @@ $(function(){
 	height: 430px;
 	background-color: lightgray;
 	text-align: center;
-	ㅅ margin-left: 60px;
+	margin-left: 60px;
 }
 
 .content3 {
@@ -231,12 +249,14 @@ $(function(){
 
 				<div class="mb-3" style="width: 80%; margin-left: 30px;">
 					<label for="thumbNail" class="form-label">ThumbNail</label> <input
-						type="text" class="form-control" id="readcount"
+						type="text" class="form-control imageArea" 
 						value="${product.thumbNail}"
 						style="width: 900px; margin-bottom: 50px;" readonly>
 				</div>
 				<div class="content3">
-					<img src="${product.thumbNail}">
+					<div id="imageArea">
+						<img src="${product.thumbNail}">
+					</div>
 					<div class="fileUploadArea mb-3">
 						<p>업로드할 파일을 여기에 드래그 드랍하세요!</p>
 					</div>
