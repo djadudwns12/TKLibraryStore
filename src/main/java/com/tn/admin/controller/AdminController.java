@@ -3,6 +3,7 @@ package com.tn.admin.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -147,7 +148,14 @@ public class AdminController {
 		
 		ResponseEntity<MyResponseWithoutData> result = null;
 		
-		 
+		try {
+			System.out.println(Arrays.toString(file.getBytes()));
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		try {
 			BoardUpFileVODTO fileInfo = fileSave(file, request);
 			System.out.println("저장된 파일의 정보 : " + fileInfo.toString());
