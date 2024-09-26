@@ -50,7 +50,7 @@ body {
     width: calc(100% - 110px); /* 버튼 옆의 필드 크기 */
 }
 
-.smsButton-container input[type="tel"] {
+.smsButton-container input {
     width: calc(100% - 110px); /* 버튼 옆의 필드 크기 */
 }
 
@@ -98,8 +98,6 @@ body {
     background-color: #45a049;
 }
 
-
-
 /* 드래그 앤 드롭 이미지 업로드 */
 #profileImageContainer {
     border: 2px dashed #cccccc;
@@ -108,6 +106,8 @@ body {
     border-radius: 4px;
     margin-bottom: 20px;
     cursor: pointer;
+    /* pointer-events: auto; 마우스 이벤트 허용 */
+    /* z-index: 100; 드래그 앤 드롭 시 상위 요소로 설정 */
 }
 
 #profileImageContainer img {
@@ -316,19 +316,6 @@ input[readonly] {
 				
 				
 				
-
-
-
-
-
-
-
-
-
-
-
-
-
     					
     
     <div class="form-group">
@@ -337,10 +324,14 @@ input[readonly] {
     
         <!-- 프로필 이미지 업로드 -->
     <div id="profileImageContainer">
-        <p>프로필 사진을 드래그 앤 드롭하세요.</p>
+        <p id ="sign">프로필 사진을 드래그 앤 드롭하세요.</p>
         <img id="profilePreview" alt="프로필 사진 미리보기">
         <input type="file" id="profileImageInput" style="display: none;" accept="image/*">
     </div>
+    
+    
+    
+
 
     <!-- 회원 가입 조항 동의 -->
     <div id="agreement">
@@ -464,8 +455,6 @@ function clearError(obj) {
       }); 
     
     
-    
-    
     $('#email').on("input", function () {
         let tmpEmail = $('#email').val();
         let emailRegExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
@@ -477,16 +466,143 @@ function clearError(obj) {
       });
     
 
-  });
-  
-  
+		
+		// 유저가 fileUploadArea에 파일을 드래그&드랍 하면...
+		$('#profileImageContainer').on("drop dragenter dragover", function(evt){   
+			evt.preventDefault(); // 기본 동작(브라우저가 파일을 열거나 다운로드하는 것) 방지
+	        //evt.stopPropagation(); // 이벤트 전파 방지
+			
+			//console.log(evt.originalEvent.dataTransfer.files);  // 업로드 되는 파일 객체의 정보
+			
+			if (evt.type === 'drop') {
+				const files = evt.originalEvent.dataTransfer.files;  		
+					// 파일 사이즈 검사 하여 10MB가 넘게되면 파일 업로드가 안되도록...
+					if (files[0].size > 10485760) {
+						alert("파일 용량이 너무 큽니다.(제한:10MB");
+						
+					} else if (!files[0].type.startsWith('image/')) {
+						alert("이미지 파일만 가능합니다.");
+						
+					} else if (files.length > 1) {
+						alert("1개의 이미지만 가능합니다.");
+						
+					} else {
+					
+						// 해당 파일 업로드
+						showPreview(files[0])
+						
+					}
+			}
+				
+			
+		});
 
   
-  
-  
-  
-  
-  
+
+  });
+		
+		
+		
+		
+// 넘겨진 file이 이미지 파일이라면 미리보기 하여 출력한다.
+function showPreview(imgFile) {
+	let fileType = imgFile.type.toLowerCase();
+	// 파일 읽기 위한 FileReader 객체 생성
+	const reader = new FileReader();
+	reader.readAsDataURL(imgFile);
+	
+	// 파일을 다 읽으면 실행되는 콜백 함수
+	reader.onload = function(evt) {
+		$('#profilePreview').attr('src', evt.target.result); // 읽어온 파일 데이터(URL 형식)
+		$('#profilePreview').show();
+		$('#sign').hide();
+	};
+	// 파일을 읽어서 DataURL로 변환 (이미지 형식의 데이터를 읽어옴)
+	reader.readAsDataURL(imgFile);
+		
+		
+		
+		} 
+	
+		
+	// 실제로 유저가 업로드한 파일을 컨트롤러단에 전송하여 저장되도록 하는 함수
+	function fileUpload(file) {
+		let result = false;
+		let fd = new FormData();  // FormData 객체 생성 : form태그와 같은 역할의 객체
+		fd.append("file", file);
+		
+		$.ajax({
+	         url : '/member/upfiles',             // 데이터가 송수신될 서버의 주소
+	         type : 'post',                                     // 통신 방식 : GET, POST, PUT, DELETE, PATCH   
+	         dataType : 'json',					// 수신 받을 데이터의 타입 (text, xml, json)
+			 data : fd,					// 보낼 데이터
+	         // processData :  false  -> 데이터를 쿼리스트링 형태로 보내지 안겠다는 설정
+	         // contentType 의 디폴트 값이 "application/x-www-form-urlencoded"인데, 파일을 전송하는 방식이기에 "multipart/form-data"로 되어야 하므로..
+	         processData: false,
+	         contentType : false,
+	         async : false,      // 비동기 통신 : false
+	         success : function (data) {                       // 비동기 통신에 성공하면 자동으로 호출될 callback function
+	            console.log(data);
+	         	if (data.msg == 'success') {
+	         		showPreview(file, data.newFileName);  // 파일 미리보기
+	         	}
+	         
+	         }, error : function (data) {
+	        	 console.log(data);
+	        	 if (data == 'fail') {
+	        		 alert ('파일을 업로드 하지 못했습니다');
+	        		 
+	        		 for(let i = 0; i < upfiles.length; i++) {
+	        			 if (upfile[i].name == file.name) {
+	        				 upfiles.splice(i, 1);  // 배열에서 삭제
+	        			 }
+	        		 }
+	        	 }
+	         }
+	      });
+	}
+	
+	
+	async function fileUpload(file) {
+	    let result = false;
+	    let fd = new FormData();  // FormData 객체 생성 : form태그와 같은 역할의 객체
+	    fd.append("file", file);
+
+	    try {
+	        let response = await $.ajax({
+	            url: '/member/upfiles',             // 데이터가 송수신될 서버의 주소
+	            type: 'post',                                     // 통신 방식 : GET, POST, PUT, DELETE, PATCH
+	            dataType: 'json',                  // 수신 받을 데이터의 타입 (text, xml, json)
+	            data: fd,                          // 보낼 데이터
+	            processData: false,                 // 데이터를 쿼리스트링 형태로 보내지 않겠다는 설정
+	            contentType: false,                 // "multipart/form-data"로 전송되도록 설정
+	            //async: true                         // 비동기 통신을 true로 설정 (기본 값)
+	        });
+
+	        // 성공 시 처리
+	        console.log(response);
+	        if (response.msg == 'success') {
+	            showPreview(file, response.newFileName);  // 파일 미리보기
+	        }
+
+	    } catch (error) {
+	        // 에러 처리
+	        console.error(error);
+	        if (error === 'fail') {
+	            alert('파일을 업로드하지 못했습니다');
+
+	            // 배열에서 파일 제거
+	            for (let i = 0; i < upfiles.length; i++) {
+	                if (upfiles[i].name == file.name) {
+	                    upfiles.splice(i, 1);  // 배열에서 삭제
+	                }
+	            }
+	        }
+	    }
+	}
+	
+	
+
   
 let code ='';
   
@@ -520,14 +636,13 @@ function sendSMS() {
 				alert("SMS 전송 성공: 인증 코드 - " + response);
 		      
 			      let htmlStr = '';  // 변수 초기화
-			      htmlStr += `<div class="form-group button-container">`;
+			      htmlStr += `<div class="form-group smsButton-container">`;
 			      htmlStr += `<input type="text" id="verification" name="verification" placeholder="인증번호 입력" required>`;
-			      htmlStr += `<button type="button" id="verificationBtn" onclick="verificationCode();">인증번호 확인</button>`;
+			      htmlStr += `<button type="button" id="verificationBtn" class="button-active" onclick="verificationCode();">인증번호 확인</button>`;
 			      htmlStr += `</div>`;
 
 			      // .smsButton-container 뒤에 htmlStr을 추가
 			      $('.smsButton-container').after(htmlStr); 
-			      $('#phone').prop("readonly", true);
 			      $('#sendSMSButton').removeAttr("onclick");
 			      startTimer();
 			      code = response;
@@ -541,12 +656,8 @@ function sendSMS() {
 		  }
 		});
 	
-	
-	
-	
-	
-	
 	}
+	
 	
 let completed = false;	
 	
@@ -554,9 +665,15 @@ function verificationCode() {
 	if(code == $('#verification').val()) {
 		completed = true;
 		console.log('인증성공');
-		$('#verificationBtn').prop('disabled', true);
+		$('#phone').prop("readonly", true);
+		$('#verification').prop('readonly', true);
+		
 		$('#verificationBtn').addClass('button-disabled');
-		$('#verificationBtn').prop('readonly',true);
+		$('.button-active').removeClass("button-active").addClass("button-disabled");
+		$('#verificationBtn').removeClass("button-active").addClass("button-disabled");
+		$('#verificationBtn').html('인증완료');
+		$('#verificationBtn').removeAttr("onclick");
+		$('#sendSMSButton').removeAttr("onclick");
 		
 	} else {
 		alert('인증번호가 다릅니다.');
@@ -564,9 +681,7 @@ function verificationCode() {
 	
 	
 }
-	
-	
-	
+
 
 	
 function startTimer() {
@@ -604,10 +719,6 @@ function startTimer() {
     }, 1000);  // 1000ms (1초)마다 실행
 }
 
-
-	
-	
-	
 	
 	
 	
@@ -708,7 +819,7 @@ function changePage(page) {
 	// }
 	
 	function selectAddress(address) {
-	    $("#addressDetail").val(address);
+	    $("#keyword").val(address);
 	    $("#list").css('display', 'none')
 	    modal.style.display = "none";
 	    
@@ -731,8 +842,7 @@ function changePage(page) {
 	}
 	
 	
-	
-	
+
 	
 	//특수문자, 특정문자열(sql예약어의 앞뒤공백포함) 제거
 	function checkSearchedWord(obj){
@@ -784,8 +894,6 @@ function changePage(page) {
 	}
 	
 	
-	
-
 
 function serializeDiv(divId) {
 		
@@ -798,8 +906,6 @@ function serializeDiv(divId) {
 	    });
 	    return formData.join('&');
 	}
-
-
 
 
 
