@@ -37,13 +37,22 @@
 	background-color:#7fad38;
 }
 </style>
+<script>
+$(function() {
+	let qaList = $('.register-box');
+	
+	$('#main_content').html(qaList);
+})
+</script> 
+
+
 </head>
 
 
 <body>
 	
 	<jsp:include page="./../header.jsp"></jsp:include>
-		<!-- 회원정보 : ${editMemberInfo} -->
+		<!-- 회원정보 : ${loginMember} -->
     <div class="register-box pwdConfirm">
 	<div class="card pwdConfirmCard" style="padding:10px">
 		<p class="register-box-msg">회원 정보 수정</p>
@@ -51,32 +60,32 @@
 		<form action="/member/mypage" method="post"> <!-- -->
 			<div class="input-group mb-3">
 				<label>이름</label>
-				<input type="text" class="form-control" id="userName" name="userName" value="${editMemberInfo.userName}" readonly/>
+				<input type="text" class="form-control" id="userName" name="userName" value="${loginMember.userName}" readonly/>
             </div>
 			<div class="input-group mb-3">
 				<label>아이디</label>
-				<input type="text" class="form-control" id="userId" name="userId" value="dooly" readonly/>
+				<input type="text" class="form-control" id="userId" name="userId" value="${loginMember.userId}" readonly/>
             </div>
 			<div class="input-group mb-3">
 				<label>생년월일</label>
-				<input type="date" class="form-control" id="userBirth" name="userBirth" value="${editMemberInfo.userBirth}" />
+				<input type="date" class="form-control" id="userBirth" name="userBirth" value="${loginMember.userBirth}" />
             	<input type="hidden" id="userBirthCheck" value="checked"/>
             	<div id="userBirthError" style="color: red;"></div>
             </div>
 			<div class="input-group mb-3">
 				<label>비밀번호</label>
-				<input type="password" class="form-control " id="userPwd" name="userPwd" value="${editMemberInfo.userPwd}"/>
+				<input type="password" class="form-control " id="userPwd" name="userPwd" value="${loginMember.userPwd}"/>
             	<div id="userPwdError" style="color: red;"></div>
             </div>
 			<div class="input-group mb-3">
 				<label>비밀번호확인</label>
-				<input type="password" class="form-control" id="userPwdConfirm" name="userPwdConfirm" value="${editMemberInfo.userPwd}"/>
+				<input type="password" class="form-control" id="userPwdConfirm" name="userPwdConfirm" value="${loginMember.userPwd}"/>
             	<input type="hidden" id="pwdCheck" value="checked"/>
             	<div id="userPwdConfirmError" style="color: red;"></div>
             </div>
 			<div class="input-group mb-3">
 				<label>이메일</label>
-				<input type="email" class="form-control" id="email" name="email" value="${editMemberInfo.email}" readonly/>
+				<input type="email" class="form-control" id="email" name="email" value="${loginMember.email}" readonly/>
             	<button type="button" id="emailEditBtn" class="btn btn-primary" onclick="emailEdit();" >이메일변경</button>
             	<input type="hidden" id="emailCheck" value="checked"/>
             	<div id="emailError" style="color: red;"></div>
@@ -84,7 +93,7 @@
 
 			<div class="input-group mb-3">
 				<label>핸드폰 번호</label>
-				<input type="text" class="form-control" id="phoneNum" name="phoneNum" value="${editMemberInfo.phoneNum}" />
+				<input type="text" class="form-control" id="phoneNum" name="phoneNum" value="${loginMember.phoneNum}" />
             	<input type="hidden" id="phoneNumCheck" value="checked"/>
             	<div id="phoneNumError" style="color: red;"></div>
             </div>
@@ -102,8 +111,7 @@
 	<jsp:include page="./../footer.jsp"></jsp:include>
 
 
-
-<!-- <script src="/resources/js/authTimer.js"></script> -->
+<script src="/resources/js/authTimer.js"></script>
 <script type="text/javascript">
 $(function(){
 	// 비밀번호 변경을 위해 userPwd에 비밀번호를 입력할 때 > 비밀번호 양식 확인
@@ -236,8 +244,6 @@ function userEmailValid(){
 	$('#email').removeAttr("readonly");
 	$('#email').focus();
 	$('#emailCheck').val("");
-	// clearInterval(timerInterval);
-	
 	let emailInputEdit = `<button type="button" id="emailConfirmBtn" class="btn btn-primary" onclick='sendAuthCode()' style='margin-left:10px; border-color:#7fad38; background-color:#7fad38;'>인증코드 전송</button>`;
 	$(emailInputEdit).insertAfter($("#emailEditBtn"));
 	$("#emailEditBtn").hide();
@@ -259,9 +265,7 @@ function sendAuthCode(){
 		clearError($('#email')); // 이메일형식 유효성검사후 css원상복구
 		showAuthDiv(); // 이메일 인증코드 입력 태그 생성
 		sendAuthMail(); // 이메일 보내기
-		//startTimer(); //타이머 동작시키기
-		// 코드 확인하기
-		
+
 	}
 }
 
@@ -271,7 +275,7 @@ function showAuthDiv() {
 	authDiv = `<div class='input-group mb-3' id='emailAuth'>`;
 	authDiv += `<label>이메일 인증코드</label>`;
 	authDiv += `<input type="text" class="form-control" id="emailAuthCode" placeholder="인증코드입력..." />`;
-    authDiv += `<div class='timer' ></div>`;
+    authDiv += `<span class='timer'></span>`;
     authDiv += `<button type="button" id="authBtn" class="btn btn-primary" onclick="checkEmailAuthCode()" style='border-color:#7fad38; background-color:#7fad38;'>인증</button>`;
     authDiv += `<div id="emailAuthCodeError" style="color: red;"></div>`
     authDiv += `</div>`;
@@ -292,8 +296,9 @@ function sendAuthMail() {
 			console.log(data);
 			if (data == 'emailAuthSend') {
 				alert("이메일로 인증코드를 발송했습니다..");
+				startTimer();
 				$('#email').attr("readonly", true);
-					$('#emailAuthCode').focus();
+				$('#emailAuthCode').focus();
 			}
         }
 	});
@@ -323,6 +328,8 @@ function checkEmailAuthCode() {
 		}
 	});
 }
+
+
 
 // 휴대폰번호 확인
 function phoneNumValid(){
