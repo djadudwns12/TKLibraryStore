@@ -213,6 +213,24 @@ private static final Logger logger = LoggerFactory.getLogger(MemberController.cl
 		
 	}
 	/**
+	 * @작성자 : 최미설
+	 * @작성일 : 2024. 9. 25. 
+	 * @클래스명 : MemberController
+	 * @메서드명 : clearCode
+	 * @param : HttpSession session
+	 * @return : ResponseEntity<String>
+	 * @description : 이메일인증시간이 만료되면 세션의 코드를 지우는 메서드
+	 */
+	@RequestMapping("/clearAuthCode")
+	public ResponseEntity<String> clearCode(HttpSession session) {
+		if (session.getAttribute("emailAuthCode") != null) {
+			session.removeAttribute("emailAuthCode"); // attribute 속성을 지운다...
+		}
+
+		return new ResponseEntity<String>("success", HttpStatus.OK);
+	}
+	
+	/**
 	 * @작성자 : 802-10
 	 * @작성일 : 2024. 9. 9. 
 	 * @클래스명 : tnbookstore
