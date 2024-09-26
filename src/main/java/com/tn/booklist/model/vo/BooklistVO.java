@@ -19,6 +19,7 @@ import lombok.ToString;
 @ToString
 public class BooklistVO {
 	
+	private int bookNo;
 	private String title;
 	private String author;
 	private String publisher;
