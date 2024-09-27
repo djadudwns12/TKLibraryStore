@@ -63,6 +63,8 @@ public class MemberController {
 	@Autowired
 	private MemberService mService;
 
+	
+//	-------------------------------------------------------------(엄영준) Start-----------------------------------------------------------------------------------
 	/**
 	 * @작성자 : 엄영준
 	 * @작성일 : 2024. 9. 9.
@@ -112,6 +114,24 @@ public class MemberController {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * @작성자 : 엄영준
+	 * @작성일 : 2024. 9. 27. 
+	 * @클래스명 : tnbookstore
+	 * @메서드명 : gotomyPage
+	 * @param
+	 * @param
+	 * @return : void
+	 * @throws 
+	 * @description : 마이페이지로 이동하는 메서드
+	 *
+	 */
+	@RequestMapping("/myPage")
+	public void gotoMyPage(Model model,HttpSession sess) {
+		model.addAttribute("loginMember", (MemberVO)sess.getAttribute("loginMember"));
+	}
+//-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
+
 
 	/**
 	 * @작성자 : 최미설

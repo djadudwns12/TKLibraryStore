@@ -34,7 +34,7 @@ public class QAServiceImpl implements QAService {
 	@Override
 	public List<QAVO> getQAList(String userId) throws Exception {
 		// TODO Auto-generated method stub
-		return qaDao.selectQAList(userId);
+		return qaDao.selectByUserIdQAList(userId);
 	}
 
 	@Override
@@ -105,6 +105,11 @@ public class QAServiceImpl implements QAService {
 		pi.setEndPageNoCurBlock();
 
 		return pi;
+	}
+
+	@Override
+	public int qaSave(QAVO qa) throws Exception {
+		return qaDao.insertQA(qa);
 	}
 
 }

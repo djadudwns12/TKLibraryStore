@@ -28,7 +28,7 @@ public interface QADAO {
 	 * @작성자 : 엄영준
 	 * @작성일 : 2024. 9. 20. 
 	 * @클래스명 : tnbookstore
-	 * @메서드명 : selectQAList
+	 * @메서드명 : selectByUserIdQAList
 	 * @param
 	 * @param
 	 * @return : List<QAVO>
@@ -36,7 +36,7 @@ public interface QADAO {
 	 * @description : DB에서 Q&A목록을 불러오는 메서드
 	 *
 	 */
-	List<QAVO> selectQAList(String userId) throws Exception;
+	List<QAVO> selectByUserIdQAList(String userId) throws Exception;
 
 	/**
 	 * @작성자 : 802-10
@@ -100,6 +100,20 @@ public interface QADAO {
 	List<QAVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria);
 
 	List<QAVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria, String sortBy);
+	
+	/**
+	 * @작성자 : 802-10
+	 * @작성일 : 2024. 9. 27. 
+	 * @클래스명 : tnbookstore
+	 * @메서드명 : insertQA
+	 * @param
+	 * @param
+	 * @return : int
+	 * @throws 
+	 * @description : 로그인 한 회원의 Q&A를 저장하는 쿼리문을 부르는 메서드
+	 *
+	 */
+	int insertQA(QAVO qa);
 	
 	
 	

@@ -26,7 +26,6 @@ public class QAVO {
 	String qAnswer;
 	String qAnswerYN;
 	String qType;
-	
 	public int getqNo() {
 		return qNo;
 	}
@@ -63,12 +62,20 @@ public class QAVO {
 	public void setqAnswer(String qAnswer) {
 		this.qAnswer = qAnswer;
 	}
+	public String getqAnswerYN() {
+		return qAnswerYN;
+	}
+	public void setqAnswerYN(String qAnswerYN) {
+		this.qAnswerYN = qAnswerYN;
+	}
 	public String getqType() {
 		return qType;
 	}
 	public void setqType(String qType) {
 		this.qType = qType;
 	}
+	
+	
 	
 	
 	

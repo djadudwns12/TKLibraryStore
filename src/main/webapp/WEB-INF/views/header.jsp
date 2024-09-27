@@ -180,18 +180,13 @@
 						<div class="hero__categories__all">
 							<i class="fa fa-bars"></i> <span>All departments</span>
 						</div>
-						<ul>
-							<li><a href="#">Fresh Meat</a></li>
+						<ul id="categoryList">
+						<c:if test="${loginMember != null}">
+							<li><a href="/member/myPage">마이페이지</a></li>
+						</c:if>
 							<li><a href="#">Vegetables</a></li>
 							<li><a href="#">Fruit & Nut Gifts</a></li>
 							<li><a href="#">Fresh Berries</a></li>
-							<li><a href="#">Ocean Foods</a></li>
-							<li><a href="#">Butter & Eggs</a></li>
-							<li><a href="#">Fastfood</a></li>
-							<li><a href="#">Fresh Onion</a></li>
-							<li><a href="#">Papaya & Crisps</a></li>
-							<li><a href="#">Oatmeal</a></li>
-							<li><a href="#">Fresh Bananas</a></li>
 						</ul>
 					</div>
 				</div>

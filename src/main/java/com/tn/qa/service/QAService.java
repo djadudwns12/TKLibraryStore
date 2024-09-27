@@ -54,4 +54,6 @@ public interface QAService {
 	 */
 	Map<String, Object> getAllQAList(PagingInfoDTO dto, SearchCriteriaDTO searchCriteria, String sortBy) throws Exception;
 
+	int qaSave(QAVO qa) throws Exception;
+
 }

@@ -155,7 +155,7 @@ function valid() {
 					<input type="submit" value="Login" onclick="return valid()">
 				</form>
 				<!-- 회원 가입 버튼 -->
-				<input type="button" value="회원가입" onclick="register()">
+				<a href="/member/register"><input type="button" value="회원가입"></a>
 			</div>
 		</div>
 </body>
