@@ -3,6 +3,7 @@ package com.tn.admin.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,8 @@ import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.service.ProductAdminService;
 import com.tn.admin.utils.FileProcess;
+import com.tn.member.model.vo.MemberVO;
+import com.tn.member.service.MemberService;
 
 /**
  * Handles requests for the application home page.
@@ -193,5 +196,21 @@ public class AdminController {
 		BoardUpFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, contentType, originalFileName, fileSize);
 		return fileInfo;
 	}
+	//========================================최미설===================================//
+	//회원관리페이지
 	
+	@Autowired
+	private MemberService mService;
+	@RequestMapping("/memberadmin")
+	public void memberList(Model model) {
+		//System.out.println("AdminController : 회원정보 불러오기" );
+		try {
+			List<MemberVO> memberList = mService.getMemberList();
+			model.addAttribute("memberList", memberList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
 }

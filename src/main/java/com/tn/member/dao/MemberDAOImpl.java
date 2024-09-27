@@ -51,6 +51,12 @@ public class MemberDAOImpl implements MemberDAO  {
 	
 		return sess.selectOne(NS+".getLoginMember", loginMember);
 	}
+
+	@Override
+	public List<MemberVO> getMemberList() {
+		
+		return sess.selectList(NS + ".getMemberList");
+	}
 	
 	
 }

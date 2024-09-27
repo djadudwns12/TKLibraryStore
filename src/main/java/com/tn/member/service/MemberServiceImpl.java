@@ -57,7 +57,6 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean saveEditInfo(MemberDTO editMember) throws Exception {
-		System.out.println("Service : ȸ���������� ���� >> " + editMember.toString() );
 		boolean result = false;
 		if(dao.updateEditMember(editMember) == 1) {
 			result = true;
@@ -102,6 +101,12 @@ public class MemberServiceImpl implements MemberService {
         int code = 100000 + random.nextInt(900000); 
         return code;
     }
+
+	@Override
+	public List<MemberVO> getMemberList() throws Exception {
+		
+		return dao.getMemberList();
+	}
 		
 
 

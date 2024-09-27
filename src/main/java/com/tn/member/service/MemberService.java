@@ -13,14 +13,19 @@ public interface MemberService {
 
 	List<Map<String, String>> getMember();
 	
-	// ȸ������������ ���� ȸ�������� �ҷ����� �޼���
+	// 회원수정페이지에 접속한 회원정보를 불러오는 메서드
 	MemberVO getEditMemberInfo(String userId) throws Exception;
 	
-	// ������ ȸ�������� ������Ʈ�ϴ� �޼���
+	// 회원수정페이지에서 수정된 회원정보를 저장하는 메서드
 	boolean saveEditInfo(MemberDTO editMember) throws Exception;
+	
 	// 로그인 시키는 메서드
 	MemberVO loginMember(String userId, String userPwd) throws Exception;
-  
+	
+	// 관리자페이지-회원관리 페이지에서 회원정보를 불러오는 메서드
+	List<MemberVO> getMemberList() throws Exception;
+	
+	
   public ResponseEntity<Integer> sendOne(String phone) throws Exception;
 
 }
