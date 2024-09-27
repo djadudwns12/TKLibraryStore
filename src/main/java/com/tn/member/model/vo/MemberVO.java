@@ -40,5 +40,7 @@ public class MemberVO {
 	private String email;
 	private String userTotalPay;
 	private String userPoint;
+	private String userClass;
+	private String userImg; 
 	
 }
