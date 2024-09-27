@@ -47,7 +47,7 @@ import com.tn.member.service.SendMailService;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.tn.util.FileProcess;
+import com.tn.util.ImgFileProcess;
 import com.tn.util.PropertiesTask;
 
 import lombok.RequiredArgsConstructor;
@@ -66,7 +66,7 @@ public class MemberController {
 	@Autowired
 	private MemberService mService;
 	@Autowired
-	private FileProcess fileProcess;
+	private ImgFileProcess fileProcess;
 
 	/**
 	 * @작성자 : 엄영준
@@ -265,45 +265,34 @@ public class MemberController {
 // -----------------------------------------박근영-------------------------------------------------
 
 	
-	@RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json; charset=UTF-8;")
-	public ResponseEntity<ProfileResponseWithoutData> registerMember(@RequestParam("imgFile") MultipartFile imgFile, @ModelAttribute RegisterDTO registerDTO,
-			HttpServletRequest request) {
+	@PostMapping(value = "/register")
+	public ResponseEntity<Void> registerMember(
+	        @RequestParam(value = "imgFile", required = false) MultipartFile imgFile, // 파일 처리
+	        HttpServletRequest request, // request 객체로 전송된 파일 접근
+	        @ModelAttribute RegisterDTO registerDTO) { // 일반 폼 필드 수신
+		
 		System.out.println("파일 전송됨... 이제 저장해야 함......");
 		
 		String userId = registerDTO.getUserId();
-		ResponseEntity<ProfileResponseWithoutData> result = null;
+		ResponseEntity<Void> result = null;
 
 		try {
+			if(imgFile != null && !imgFile.isEmpty()) {
+				
+			
 			ImgFileVODTO fileInfo = fileSave(imgFile, userId, request);
-
-			this.uploadFileList.add(fileInfo);
-
-			// 7월 17일 가장 먼저 해야 할 코드 : front에서 업로드한 파일을 지웠을때 백엔드에서도 지워야 한다.
-			System.out.println("=================================================================");
-			System.out.println("현재 파일리스트에 있는 파일들");
-			for (ImgFileVODTO f : this.uploadFileList) {
-				System.out.println(f.toString());
+			
 			}
-			System.out.println("=================================================================");
+		
 
-			String tmp = null;
-			if (fileInfo.getThumbFileName() != null) {
-				// 이미지
-				tmp = fileInfo.getThumbFileName();
-			} else {
-				tmp = fileInfo.getNewFileName().substring(fileInfo.getNewFileName().lastIndexOf(File.separator) + 1);
-			}
+			
 
-			ProfileResponseWithoutData mrw = ProfileResponseWithoutData.builder().code(200).msg("success").newFileName(tmp)
-					.build();
-
-			// 저장된 새로운 파일이름을 json으로 return 시키도록 하자...
-			result = new ResponseEntity<ProfileResponseWithoutData>(mrw, HttpStatus.OK);
+			result = new ResponseEntity<Void>(HttpStatus.OK);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 
-			result = new ResponseEntity<ProfileResponseWithoutData>(HttpStatus.NOT_ACCEPTABLE);
+			result = new ResponseEntity<Void>(HttpStatus.NOT_ACCEPTABLE);
 
 		}
 
@@ -313,15 +302,17 @@ public class MemberController {
 	
 	  
 	private ImgFileVODTO fileSave(MultipartFile imgFile, String userId, HttpServletRequest request) throws IOException { // 파일의 기본정보 가져옴 
-		String contentType = imgFile.getContentType(); 
+		
+		String originalFileName = imgFile.getOriginalFilename();
 	  
 		byte[] upfile = imgFile.getBytes(); // 파일의 실제 데이터를 읽어옴
 	  
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/profileImgs");
 	  
-	  // 실제파일 저장(이름변경, base64, thumbnail) ProfileUpImgVODTO fileInfo =
-		ImgFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, userId, realPath); 
-		return fileInfo; }
+		// 실제파일 저장(이름변경, base64, thumbnail) 
+		ImgFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, userId, realPath, originalFileName); 
+		return fileInfo; 
+		}
 	  
 	 
 	@RequestMapping(value = "/register")

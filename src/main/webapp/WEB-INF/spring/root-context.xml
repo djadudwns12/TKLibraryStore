@@ -73,6 +73,8 @@
 	<context:component-scan	base-package="com.tn.qa" />
 	<context:component-scan	base-package="com.tn.category.service" />
 	<context:component-scan	base-package="com.tn.category.dao" />
+	
+	<context:component-scan	base-package="com.tn.util" />
 
 		
 		

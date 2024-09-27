@@ -267,7 +267,7 @@ input[readonly] {
 </style>
 </head>
 <body>
-<form class="form-container">
+<form class="form-container"  method="post" enctype="multipart/form-data">
     <div class="form-group button-container">
         <input type="text" id="userId" name="userId" placeholder="아이디 입력 (4~8자)" required>
         <button type="button">중복 확인</button>
@@ -549,6 +549,7 @@ function clearError(obj) {
 			    evt.preventDefault(); // submit 방지
 			    alert("잘못된 입력이 있습니다. 입력을 다시 확인하세요.");
 			  } else {
+				  evt.preventDefault();
 				  register();
 			  }
 			});
@@ -569,7 +570,7 @@ function clearError(obj) {
 // 넘겨진 file이 이미지 파일이라면 미리보기 하여 출력한다.
 function showPreview(imgFile) {
 	const reader = new FileReader();
-	reader.readAsDataURL(imgFile);
+	
 	
 	// 파일을 다 읽으면 실행되는 콜백 함수
 	reader.onload = function(evt) {
@@ -597,16 +598,21 @@ function deleteProfileImage() {
 }
 
 	async function register() {
-	    let result = false;
-	    let fd = new FormData(this);  // FormData 객체 생성 : form태그와 같은 역할의 객체
+	    console.log("레지스터 진입");
+	    let form = $("form")[0];  // 폼 요소를 선택
+	    let fd = new FormData(form);  // FormData 객체 생성
 	    fd.append("imgFile", uploadedFile);
+	    
+	    for (var pair of fd.entries()) {
+	        console.log(pair[0]+ ', ' + pair[1]);
+	    }
 
 	    try {
 	        let response = await $.ajax({
 	            url: '/member/register',             // 데이터가 송수신될 서버의 주소
 	            type: 'post',                                     // 통신 방식 : GET, POST, PUT, DELETE, PATCH
-	            dataType: 'json',                  // 수신 받을 데이터의 타입 (text, xml, json)
 	            data: fd,                          // 보낼 데이터
+	            cache: false,
 	            processData: false,                 // 데이터를 쿼리스트링 형태로 보내지 않겠다는 설정
 	            contentType: false,                 // "multipart/form-data"로 전송되도록 설정
 	            //async: true                         // 비동기 통신을 true로 설정 (기본 값)
@@ -614,8 +620,8 @@ function deleteProfileImage() {
 
 	        // 성공 시 처리
 	        console.log(response);
-	        if (response.msg == 'success') {
-	            showPreview(file, response.newFileName);  // 파일 미리보기
+	        if (response.status == 'success') {
+	            alert('성공')
 	        }
 
 	    } catch (error) {

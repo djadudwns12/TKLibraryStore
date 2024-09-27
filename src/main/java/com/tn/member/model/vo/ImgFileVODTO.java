@@ -18,7 +18,6 @@ import lombok.ToString;
 public class ImgFileVODTO {
 	
 	private String newFileName;
-	private String originalFileName;
 	private String base64Img;
 	
 }
