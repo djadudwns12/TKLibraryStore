@@ -51,8 +51,12 @@ $(function(){
 	                    // 파일을 읽어온 후 처리
 	                    reader.onload = function(e) {
 	                        // id가 imageArea인 태그에 이미지 덮어씌우기
-	                        console.log(e.target.result)
+	                        
 	                        $('#imageArea').html('<img src="' + e.target.result + '" alt="업로드된 이미지" style="width: 100%; height: 100%;">');
+	                        console.log(file)
+	                        $('.imageText').val('/resources/'+file.name);
+	                        
+	                        
 	                    }
 	                    
 	                    reader.readAsDataURL(file);  // 파일을 읽어옴
@@ -66,14 +70,43 @@ $(function(){
 			}
 		
 	});
+});
 	// upfiles.push(file);		//배열에 담기
 	//console.log(upfiles);
 	//해당 파일 ,업로드
 	//fileUpload(upfiles);
 	
-	function updateImage(file) {
-		$('#imageArea').append(file);
+	function validBook() {
+
+		let result = false;
+		let fields = [
+			  { element: $('#title'), value: $('#title').val() },
+			  { element: $('#author'), value: $('#author').val() },
+			  { element: $('#publisher'), value: $('#publisher').val() },
+			  { element: $('#pubDate'), value: $('#pubDate').val() },
+			  { element: $('#genre'), value: $('#genre').val() },
+			  { element: $('#price'), value: $('#price').val() },
+			  { element: $('#salePrice'), value: $('#salePrice').val() },
+			  { element: $('#inven'), value: $('#inven').val() },			  
+			  { element: $('#introduction'), value: $('#introduction').val() }
+			];
+
+			// 빈 값이나 길이가 1 미만인 요소 찾기
+			let emptyFieldIndex = fields.findIndex(field => !field.value || field.value.length < 1);
+
+			// 해당 조건을 만족하는 요소가 있을 경우
+			if (emptyFieldIndex != -1) {
+			  fields[emptyFieldIndex].element.focus();  // 해당 요소에 포커스 주기
+			  alert(emptyFieldIndex)
+			  alert( fields[emptyFieldIndex].element.attr('id')+ "의 값을 입력해주세요.")
+			} else {
+			  console.log("모든 필드가 올바르게 입력되었습니다.");
+			  result = ture;
+			}
+		return result;
 	}
+	
+	
 	
 	// 실제로 유저가 업로드한 파일을 컨트롤러단에 전송하여 저장되도록 하는 함수
 	function fileUpload(file) {
@@ -113,7 +146,7 @@ $(function(){
 	    });
 	}
 
-});
+
 </script>
 
 
@@ -184,8 +217,9 @@ $(function(){
 
 			<h1 class="jemok">ModifyProduct</h1>
 
-			<form action="/hboard/modifyBoardSave" method="post"
+			<form action="/admin/modifySave" method="post"
 				enctype="multipart/form-data">
+				
 				<div class="content1">
 
 					<div class="mb-3">
@@ -200,48 +234,55 @@ $(function(){
 					</div>
 					<div class="mb-3">
 						<label for="author" class="form-label">Author</label> <input
-							type="text" class="form-control" id="writer"
-							value="${product.author}" readonly>
+							type="text" class="form-control" id="author" name="author"
+							value="${product.author}" >
 					</div>
 					<div class="mb-3">
 						<label for="publisher" class="form-label">Publisher</label> <input
-							type="text" class="form-control" id="postdate"
-							value="${product.publisher}" readonly>
+							type="text" class="form-control" id="publisher" name="publisher"
+							value="${product.publisher}" >
 					</div>
 
 					<div class="mb-3">
-						<label for="genre" class="form-label">Genre</label> <input
-							type="text" class="form-control" id="readcount"
-							value="${product.genre}" readonly>
+						<label for="genre" class="form-label">PubDate</label> <input
+							type="text" class="form-control" id="pubDate" name="pubDate"
+							value="${product.pubDate}" >
 					</div>
 
 				</div>
 				<div class="content2">
 
 					<div class="mb-3">
+						<label for="genre" class="form-label">Genre</label> <input
+							type="text" class="form-control" id="genre" name="genre"
+							value="${product.genre}" >
+					</div>
+					
+						
+					<div class="mb-3">
 						<label for="price" class="form-label">Price</label> <input
-							type="text" class="form-control" id="readcount"
-							value="${product.price}" readonly>
+							type="text" class="form-control" id="price" name="price"
+							value="${product.price}" >
 					</div>
 					<div class="mb-3">
 						<label for="salePrice" class="form-label">SalePrice</label> <input
-							type="text" class="form-control" id="readcount"
-							value="${product.salePrice}" readonly>
+							type="text" class="form-control" id="salePrice" name="salePrice"
+							value="${product.salePrice}" >
 					</div>
 					<div class="mb-3">
 						<label for="inven" class="form-label">Inven</label> <input
-							type="text" class="form-control" id="readcount"
-							value="${product.inven}" readonly>
+							type="text" class="form-control" id="inven" name="inven"
+							value="${product.inven}">
 					</div>
 
 					<div class="mb-3">
 						<label for="reviewCnt" class="form-label">ReviewCnt</label> <input
-							type="text" class="form-control" id="readcount"
+							type="text" class="form-control" id="reviewCnt" name="reviewCnt"
 							value="${product.reviewCnt}" readonly>
 					</div>
 					<div class="mb-3">
 						<label for="zzim" class="form-label">Zzim</label> <input
-							type="text" class="form-control" id="readcount"
+							type="text" class="form-control" id="zzim" name="zzim"
 							value="${product.zzim}" readonly>
 					</div>
 
@@ -249,7 +290,7 @@ $(function(){
 
 				<div class="mb-3" style="width: 80%; margin-left: 30px;">
 					<label for="thumbNail" class="form-label">ThumbNail</label> <input
-						type="text" class="form-control imageArea" 
+						type="text" class="form-control imageText" id="thumbNail" name="thumbNail"
 						value="${product.thumbNail}"
 						style="width: 900px; margin-bottom: 50px;" readonly>
 				</div>
@@ -264,7 +305,7 @@ $(function(){
 				<div class="mb-3"
 					style="margin-top: 50px; margin-left: 30px; width: 85%;">
 					<label for="introduction" class="form-label">Introduction</label>
-					<textarea class="form-control" id="content" name="content" rows="5"
+					<textarea class="form-control" id="introduction" name="introduction" rows="5"
 						style="height: 150px;">
 							${product.introduction}
 						</textarea>
@@ -273,8 +314,8 @@ $(function(){
 
 
 				<div style="margin-left: 1400px; margin-top: 50px;">
-					<button class="btn btn-secondary btn" style="width: 70px;"
-						onclick="location.href='/admin/modifySave'">저장</button>
+					<button type="submit" class="btn btn-secondary btn" style="width: 70px;"
+						onclick='return validBook();'>저장</button>
 				</div>
 
 			</form>
