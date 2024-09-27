@@ -212,4 +212,9 @@
 		select * from BookList where bookNo = #{bookNo}
 	</select>
 	
+	
+	<update id="saveImgInfo">
+		update BookList set thumbNail=#{fileName}, base64ProfileImg=#{base64Img} where bookNo=#{bookNo};
+	</update> 
+	
   </mapper>

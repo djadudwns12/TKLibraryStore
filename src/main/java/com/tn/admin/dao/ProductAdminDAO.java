@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
@@ -32,6 +33,8 @@ public interface ProductAdminDAO {
 	int soldOutProduct(int sdNo) throws Exception;
 
 	ProductVO readBookInfo(int bookNo) throws Exception;
+
+	int saveImgInfo(BoardUpFileVODTO fileInfo, int bookNo) throws Exception;
 
 
 }

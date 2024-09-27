@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
@@ -79,6 +80,16 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 	public ProductVO readBookInfo(int bookNo) throws Exception {
 		
 		return ses.selectOne(NS +".readBookInfo",bookNo);
+	}
+	@Override
+	public int saveImgInfo(BoardUpFileVODTO fileInfo,int bookNo) {
+		
+		Map<String,Object> params = new HashMap<String, Object>();
+		params.put("fileName", "/resources/" + fileInfo.getFileName());
+		params.put("base64Img", fileInfo.getBase64Img());
+		params.put("bookNo", bookNo);
+		
+		return ses.update(NS + ".saveImgInfo",params);
 	}
 	
 

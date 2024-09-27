@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
@@ -19,5 +20,7 @@ public interface ProductAdminService {
 	int soldOutProduct(int[] arr) throws Exception;
 
 	ProductVO read(int bookNo) throws Exception;
+
+	int saveImgInfo(BoardUpFileVODTO fileInfo, int bookNo) throws Exception;
 
 }

@@ -135,46 +135,28 @@ public class AdminController {
 	
 	@RequestMapping(value ="/upfile" ,method = RequestMethod.POST, produces = "application/json; charset=UTF-8;")
 	//쪼개져서온 'file' 파일을 재조립해주는 인터페이스 MultipartFile, @RequestParam로 save
-	public ResponseEntity<MyResponseWithoutData> saveBoardFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {	
+	public ResponseEntity<Void> saveBoardFile(@RequestParam("file") MultipartFile file,
+								@RequestParam("bookNo") int bookNo, HttpServletRequest request) {
+		System.out.println(bookNo);
 		System.out.println("파일 전송됨, 이제 저장해야함");
 		
-		ResponseEntity<MyResponseWithoutData> result = null;
-		
-		try {
-			System.out.println(Arrays.toString(file.getBytes()));
+		ResponseEntity<Void> result = null;
 			
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
 		try {
 			BoardUpFileVODTO fileInfo = fileSave(file, request);
 			System.out.println("저장된 파일의 정보 : " + fileInfo.toString());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-//		try {
-//			BoardUpFileVODTO fileInfo = fileSave(file, request);
-//											
-//			MyResponseWithoutData mrw = MyResponseWithoutData.builder()
-//				.code(200)
-//				.msg("success")
-//				.newFileName(tmp)
-//				.build();
-//			
-//			result = new ResponseEntity<MyResponseWithoutData>(mrw, HttpStatus.OK);
-//		} catch (IOException e) {
-//			
-//			e.printStackTrace();
-//			result = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-//		}
+			if(pService.saveImgInfo(fileInfo, bookNo) > 0) {
+				result = new ResponseEntity<Void>(HttpStatus.OK);
+			}
 			
-		return null;
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			result = new ResponseEntity<Void>(HttpStatus.NOT_ACCEPTABLE);
+		}
+	
+
+		return result;
 	}
 	
 	private BoardUpFileVODTO fileSave(MultipartFile file, HttpServletRequest request) throws IOException {
@@ -184,11 +166,11 @@ public class AdminController {
 		long fileSize = file.getSize();
 		
 		byte[] upfile = file.getBytes();
-		
+		System.out.println(originalFileName);
 		//세션 : getSession(),서블릿 정보 : getServletContext() , 경로 : getRealPath()
-		System.out.println("서버의 실제 물리적 경로 : " + request.getSession().getServletContext().getRealPath("/resources/boardUpFiles"));
+		System.out.println("서버의 실제 물리적 경로 : " + request.getSession().getServletContext().getRealPath("/resources/bookImgs"));
 		
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/boardUpFiles");
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/bookImgs");
 		
 		// 실제 파일 저장 (이름변경, base64, thumbnail)
 		BoardUpFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, contentType, originalFileName, fileSize);
