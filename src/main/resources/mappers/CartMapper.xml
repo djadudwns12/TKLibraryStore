@@ -14,7 +14,7 @@
 		SELECT b.thumbNail, b.title, b.price, b.salePrice, b.inven, c.qty, c.cartId
 		FROM Cart c
 		INNER JOIN BookList b ON c.bookNo = b.bookNo
-		WHERE c.userId = #{userId}
+		WHERE c.userId = #{userId} order by cartId desc
 	</select>
 	
 	<!-- 카트에서 개별삭제하는 쿼리문(삭제 아이콘 클릭시) -->
