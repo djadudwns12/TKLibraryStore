@@ -50,7 +50,7 @@
 	             <c:forEach var="list" items="${listAll}">
 	            
 	              <tr>
-	                <td onclick="location.href='/bookList/bDetail?=${list.bookNo}';">${list.title}</td>
+	                <td onclick="location.href='/bookList/bookDetail?bookNo=${list.bookNo}';">${list.title}</td>
 	                <td>${list.author}</td>
 	                <td>${list.publisher}</td>
 	                <td>${list.pubDate}</td>
