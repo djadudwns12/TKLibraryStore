@@ -3,6 +3,7 @@ package com.tn.member.service;
 import java.util.List;
 import java.util.Map;
 
+import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.member.model.dto.MemberDTO;
 import org.springframework.http.ResponseEntity;
 
@@ -22,10 +23,11 @@ public interface MemberService {
 	// 로그인 시키는 메서드
 	MemberVO loginMember(String userId, String userPwd) throws Exception;
 	
-	// 관리자페이지-회원관리 페이지에서 회원정보를 불러오는 메서드
-	List<MemberVO> getMemberList() throws Exception;
+
 	
-	
+
   public ResponseEntity<Integer> sendOne(String phone) throws Exception;
+
+  
 
 }

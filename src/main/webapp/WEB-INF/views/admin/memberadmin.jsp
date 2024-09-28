@@ -31,7 +31,9 @@
 					<div>
 						<select class="searchType" name="searchType" id="searchType" style="text-align: center">
 							<option value="-1">검색 조건</option>
-							<option value="title">제목</option>
+							<option value="userId">아이디</option>
+							<option value="userName">이름</option>
+							<option value="phoneNum">전화번호</option>
 		
 						</select>
 					</div>
@@ -57,10 +59,9 @@
 				<div style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: right; margin-bottom: 50px;">
 					<div class="boardC" >
 						<select class="form-select sortByWhat" id="sortByWhat" style="width: 150px ">
-							<option value="default">기본 정렬</option>
-							<option value="salePrice">가격 높은순</option>
-							<option value="inven">재고 많은순</option>
-
+							<option value="default">아이디순</option>
+							<option value="userName">이름순</option>
+							<option value="userBirth">생년월일순</option>
 						</select>
 					</div>
 					
@@ -79,26 +80,29 @@
 					<thead>
 						<tr>
 							<th><input type="checkbox" onclick="selectAll(this)"> selectAll </th>
-							<th>BookNo</th>
-							<th>Title</th>
-							<th>Author</th>
-							<th>Publisher</th>
+							<th>프로필사진</th>
+							<th>아이디</th>
+							<th>이름</th>
+							<th>생년월일</th>
+							<th>전화번호</th>
+							<th>이메일</th>
 							
-							<th><button type="button" class="btn btn-danger btn" id="delBtn" style="width:90px; font-size:small;" onclick="deleteProduct();" >0개 삭제</button></th> 
-							<th><button type="button" class="btn btn-success btn" id="soldOutBtn" style="width:90px; font-size:small;" onclick="soldOutProduct();">0개 품절</button></th>
+							<th><button type="button" class="btn btn-danger btn" id="delBtn" style="width:90px; font-size:small;" onclick="deletememberList();" >0개 삭제</button></th> 
+							<th><button type="button" class="btn btn-success btn" id="soldOutBtn" style="width:90px; font-size:small;" onclick="soldOutmemberList();">0개 품절</button></th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="product" items="${productList}">
-							<tr>
-								<td><input type="checkbox" name="proCheck" value=${product.bookNo} onclick="updateButton()"></td>
-								<td><img src="${product.thumbNail}" width="50px" height="80"></td>
-								<td>${product.bookNo}</td>
-								<td>${product.title}</td>
-								<td>${product.author}</td>
-								<td>${product.publisher}</td>
-
-								<td colspan="3"><button class="btn btn-secondary btn" style="width:70px" onclick="location.href='/admin/modifyProduct?bookNo=${product.bookNo}'">수정</button></td>
+						<c:forEach var="memberList" items="${memberList}">
+							<tr onclick="location.href='/admin/memberDetail?userId=${memberList.userId}'">
+								<td><input type="checkbox" name="proCheck" value=${member.userId} onclick="updateButton()"></td>
+								<td><img src="/resources/userImg/${memberList.userId}.png" width="50px" height="80"></td>
+								<td>${memberList.userId}</td>
+								<td>${memberList.userName}</td>
+								<td>${memberList.userBirth}</td>
+								<td>${memberList.phoneNum}</td>
+								<td>${memberList.email}</td>
+								<td></td>
+								<td></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -140,8 +144,7 @@
 
 
 <style>
-<!--
-폰트 영역 -->
+<!--폰트 영역 -->
 *{
 	font-family: "Gowun Batang", serif;
 	font-weight: 400;
@@ -183,8 +186,8 @@
 	border-radius: 22px;
 }
 
-<!--
-검색 바 영역 -->* {
+<!--검색 바 영역 -->
+* {
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
@@ -286,7 +289,6 @@ tr:last-child td:last-child {
 	border-bottom-right-radius: 6px;
 }
 
-$
 background-color: #2A2E37 ; $search-bg-color: #242628 ; $icon-color: #00FEDE 
 	 ; $transition: all .5s ease ; * {
 	box-sizing: border-box;
@@ -306,10 +308,53 @@ body {
 
 </style>
 
-
 <script type="text/javascript">
+$(function () {	
+	$('.pagingSize').change(function(){
+		console.log($(this).val());
+		
+		let pageNo = '${param.pageNo}';
+		if (pageNo == ''){
+			pageNo = 1;
+		} else {
+			pageNo = parseInt(pageNo);
+		}
+		
+		location.href = '/admin/memberadmin?pagingSize='+ $(this).val() + '&pageNo=1&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}';
+	});
+	
+	
+	$('.sortByWhat').change(function(){
+		console.log($(this).val());						
+		 
+		location.href = '/admin/memberadmin?sortBy='+ $(this).val() + '&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
+	});
+			
+});
 
+function pagingInfo() {
+	let memberList = '${param.memberList}';
+	console.log(memberList);
+}
+
+function isValid() {
+	// 검색 버튼을 눌렀을 때 searchType == -1 이거나 , searchWord에 ''이면 
+	// 검색어가 제대로 입력되지 않았으므로 백엔드 단으로 데이터를 넘기면 안된다
+	
+	let result = false;
+	if($('#searchType').val() == -1 || $('#searchWord').val() == ''){
+		alert('검색 조건과 검색어를 입력해 주세요');
+		$('#searchType').focus();
+		return result;
+	} else {
+		result = true;
+	}
+	
+	return result;
+	
+}
 
 </script>
+
 </body>
 </html>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tn.mapper.MemberAdminMapper">
+  	
+<!--
+   	<select id="getMember" resultType="com.tn.member.model.vo.MemberVO">
+  		select * from Member order by userId limit #{startRowIndex}, #{viewPostCntPerPage}
+  	</select>
+--> 	
+	<select id="selectTotalCount" resultType="int">
+		select count(*) from Member	
+	</select>
+	
+	<!-- 검색어가 있을 경우의 데이터 갯수 가져오기 -->
+	<select id="selectTotalCountWithSearchCriteria" resultType="int">
+		select count(*) from Member
+		<choose>
+			<when test="searchType == 'userId'">
+				where userId like #{userId}
+			</when>
+			<when test="searchType == 'userName'">
+				where userName like #{userName}
+			</when>
+			<when test="searchType == 'phoneNum'">
+				where phoneNum like #{phoneNum}
+			</when>
+		</choose>
+	</select>
+	
+	<!-- 조건별 정렬 -->
+	<select id="getMemberSorted" resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member 
+		<choose>
+			<when test="sortBy == 'userId'">
+				order by userId
+			</when>
+			<when test="sortBy == 'userName'">
+				order by userName
+			</when>
+			<when test="sortBy == 'userBirth'">
+				order by userBirth desc
+			</when>
+		</choose>		
+		limit #{startRowIndex}, #{viewPostCntPerPage};
+	</select>
+	
+	<!-- 검색어가 있을 때 리스트가져오기 -->
+	<select id="getSearchedMemberPaged" resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member
+		<choose>
+			<when test="searchType == 'userId'">
+				where userId like #{searchWord}
+			</when>
+			<when test="searchType == 'userName'">
+				where userName like #{searchWord}
+			</when>
+			<when test="searchType == 'phoneNum'">
+				where phoneNum like #{searchWord}
+			</when>
+		</choose>
+		 limit #{startRowIndex}, #{viewPostCntPerPage}
+	</select>
+	
+	<!-- 검색어가 있을 때 정렬 조건 적용 -->
+	<!-- select * from BookList where title like '마음' order by salePrice desc limit desc limit #{startRowIndex}, #{viewPostCntPerPage}  -->
+	<select id="getMemberSearchedSorted" resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member
+		<choose>
+			<when test="searchType == 'userId'">
+				where title like #{searchWord}
+				<choose>
+					<when test="sortBy == 'userId'">
+						order by userId
+					</when>
+					<when test="sortBy == 'userName'">
+						order by userName
+					</when>
+					<when test="sortBy == 'userBirth'">
+						order by userBirth desc
+					</when>
+				</choose>
+			</when>
+			<when test="searchType == 'userName'">
+				where author like #{searchWord}
+				<choose>
+					<when test="sortBy == 'userId'">
+						order by userId
+					</when>
+					<when test="sortBy == 'userName'">
+						order by userName
+					</when>
+					<when test="sortBy == 'userBirth'">
+						order by userBirth desc
+					</when>
+				</choose>
+			</when>
+			<when test="searchType == 'phoneNum'">
+				where introduction like #{searchWord}
+				<choose>
+					<when test="sortBy == 'userId'">
+						order by userId
+					</when>
+					<when test="sortBy == 'userName'">
+						order by userName
+					</when>
+					<when test="sortBy == 'userBirth'">
+						order by userBirth desc
+					</when>
+				</choose>
+			</when>
+		</choose>
+		 limit #{startRowIndex}, #{viewPostCntPerPage}
+	</select>
+  </mapper>

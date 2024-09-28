@@ -19,5 +19,5 @@ public interface MemberDAO {
 	// 회원수정페이지에서 수정된 회원정보를 저장하는 메서드
 	int updateEditMember(MemberDTO editMember) throws Exception;
 
-	public List<MemberVO> getMemberList();
+
 }

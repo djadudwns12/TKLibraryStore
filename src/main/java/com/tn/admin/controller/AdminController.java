@@ -32,6 +32,7 @@ import com.tn.admin.model.vo.MyResponseWithoutData;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
+import com.tn.admin.service.MemberAdminService;
 import com.tn.admin.service.ProductAdminService;
 import com.tn.admin.utils.FileProcess;
 import com.tn.member.model.vo.MemberVO;
@@ -47,7 +48,8 @@ public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	@Autowired
 	private ProductAdminService pService;
-	
+	@Autowired
+	private MemberAdminService mService;
 	
 	@Autowired
 	private FileProcess fileProcess;
@@ -199,18 +201,32 @@ public class AdminController {
 	//========================================최미설===================================//
 	//회원관리페이지
 	
-	@Autowired
-	private MemberService mService;
+	
 	@RequestMapping("/memberadmin")
-	public void memberList(Model model) {
-		//System.out.println("AdminController : 회원정보 불러오기" );
-		try {
-			List<MemberVO> memberList = mService.getMemberList();
-			model.addAttribute("memberList", memberList);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void memberList(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+			@RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize, @RequestParam(value="sortBy", defaultValue = "default") String sortBy,
+			SearchCriteriaDTO searchCriteria) {
+		Map<String, Object> memberList = null;
+
+		PagingInfoDTO pDTO = PagingInfoDTO.builder()
+				.pageNo(pageNo)
+				.pagingSize(pagingSize)
+				.build(); 
 		
+		List<MemberVO> list = null;
+		Map<String, Object> result = null;
+		try {
+			result = mService.getAllMember(pDTO, searchCriteria, sortBy);
+			list = (List<MemberVO>) result.get("memberList");
+			PagingInfo pi = (PagingInfo) result.get("pagingInfo");
+			
+			model.addAttribute("pagingInfo", pi); // 데이터 바인딩
+			model.addAttribute("memberList", list); // 데이터 바인딩
+			model.addAttribute("search", searchCriteria); // 데이터 바인딩
+		} catch (Exception e) {
+			e.printStackTrace(); 
+		}
+		System.out.println("MemberAdminController : " + result.toString());
 		
 	}
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.member.dao.MemberDAO;
 
 import com.tn.member.dao.MemberDAOImpl;
@@ -102,11 +103,6 @@ public class MemberServiceImpl implements MemberService {
         return code;
     }
 
-	@Override
-	public List<MemberVO> getMemberList() throws Exception {
-		
-		return dao.getMemberList();
-	}
 		
 
 
