@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import com.tn.booklist.dao.BooklistDAO;
 import com.tn.booklist.model.dto.PagingInfo;
 import com.tn.booklist.model.dto.PagingInfoDTO;
+import com.tn.booklist.model.vo.BookDetailInfo;
 import com.tn.booklist.model.vo.BooklistVO;
 
 @Service
@@ -53,6 +54,16 @@ public class BooklistServiceImpl implements BooklistService {
 		
 		System.out.println(pi.toString());
 		return pi;
+	}
+
+
+	@Override
+	@Transactional(readOnly = true, rollbackFor = Exception.class)
+	public List<BookDetailInfo> read(int bookNo, String ipAddr) throws Exception {
+		
+		List<BookDetailInfo> bookInfo = bDao.selectAllByBookNo(bookNo);
+				
+		return bookInfo;
 	}
 
 }

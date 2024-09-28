@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tn.booklist.model.dto.PagingInfoDTO;
+import com.tn.booklist.model.vo.BookDetailInfo;
 import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.booklist.service.BooklistService;
+import com.tn.util.GetClientIPAddr;
 
 /**
  * Handles requests for the application home page.
@@ -28,8 +32,9 @@ public class BookListController {
 	
 	@Autowired
 	private BooklistService bService;
+
 	
-	
+	// 책 전체 리스트를 불러오는 메서드 
 	@RequestMapping("/listAll")
 	public String getAllList(Model model, @RequestParam(value="pageNo", defaultValue = "1") int pageNo, @RequestParam(value="pagingSize", defaultValue = "10")int pagingSize) {
 		
@@ -49,6 +54,38 @@ public class BookListController {
 		
 		return "/bookList/listAll";
 	}
+	
+	// 책 상세페이지를 불러오는 메서드 
+	@RequestMapping("/bookDetail")
+	public String bookDetail(@RequestParam("bookNo") int bookNo, Model model, HttpServletRequest request) {
+		
+		String returnBDetail = "";
+		List<BookDetailInfo> bookDetailInfo = null;
+
+	         String ipAddr = GetClientIPAddr.getClientIP(request);
+//	         System.out.println(ipAddr + "가 " + bookNo + "번 책 정보를 검색한다!!");
+	         
+	         if (request.getRequestURI().contains("/bookDetail")) {
+	        	 	
+//	        	 	System.out.println("상세페이지 호출..................");
+	        	 	
+	        	 	try {   
+	        	  	
+			        returnBDetail = "/bookList/bookDetail";
+			        bookDetailInfo = bService.read(bookNo, ipAddr);
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	         }
+
+	      model.addAttribute("bookDetailInfo", bookDetailInfo);
+
+		
+		return returnBDetail;
+		
+	}
+
 	
 }
 
