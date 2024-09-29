@@ -26,7 +26,7 @@ public class RegisterDTO {
 	private String userName;
 	private String phone;
 	private String email;
-	private LocalDate birthday;
+	private String birthday;
 	private String keyword;
 	private String addressDetail;
 	

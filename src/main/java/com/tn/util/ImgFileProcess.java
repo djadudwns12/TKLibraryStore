@@ -19,21 +19,17 @@ import com.tn.member.model.vo.ImgFileVODTO;
 @Component
 public class ImgFileProcess{
 	
-	// 회원가입시 업로드된 유저 프로필 이미지를 저장하는 메소드
-	public void saveUserProfileFile(byte[] upfile, String realPath, String fileName) throws IOException {
 
-		File saveFile = new File(realPath + File.separator + fileName);
-		FileUtils.writeByteArrayToFile(saveFile, upfile); // 실제 파일 저장
-	}
-	
 
 	public ImgFileVODTO saveFileToRealPath(byte[] upfile, String realPath, String userId, String originalFileName) throws IOException {
 		ImgFileVODTO result = null;
-		
+		System.out.println(realPath);
 		String newFileName = null;
 		String ext = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
 		newFileName = userId + "." + ext;
 		File saveFile = new File(realPath + File.separator + newFileName);
+		System.out.println(saveFile);
+		
 		FileUtils.writeByteArrayToFile(saveFile, upfile); //저장경로(파일명포함), 실제 파일의 데이터
 		
 		String base64Str = makeBase64String(saveFile, ext);

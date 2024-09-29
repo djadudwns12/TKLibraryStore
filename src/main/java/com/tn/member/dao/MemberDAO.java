@@ -5,6 +5,8 @@ import java.util.Map;
 
 
 import com.tn.member.model.dto.MemberDTO;
+import com.tn.member.model.dto.RegisterDTO;
+import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
 
 public interface MemberDAO {
@@ -17,4 +19,9 @@ public interface MemberDAO {
 	
 	// ������ ȸ�������� ������Ʈ�ϴ� �޼���
 	int updateEditMember(MemberDTO editMember) throws Exception;
+
+//-----------------------------------------박근영-------------------------------------------------
+	// 회원정보 insert(가입)
+	public int insertMember(RegisterDTO registerDTO, ImgFileVODTO fileInfo);
+//-----------------------------------------박근영-------------------------------------------------
 }

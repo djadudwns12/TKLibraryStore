@@ -266,51 +266,43 @@ public class MemberController {
 
 	
 	@PostMapping(value = "/register")
-	public ResponseEntity<Void> registerMember(
+	public ResponseEntity<Void> register(
 	        @RequestParam(value = "imgFile", required = false) MultipartFile imgFile, // 파일 처리
 	        HttpServletRequest request, // request 객체로 전송된 파일 접근
 	        @ModelAttribute RegisterDTO registerDTO) { // 일반 폼 필드 수신
-		
-		System.out.println("파일 전송됨... 이제 저장해야 함......");
 		
 		String userId = registerDTO.getUserId();
 		ResponseEntity<Void> result = null;
 
 		try {
 			if(imgFile != null && !imgFile.isEmpty()) {
-				
-			
 			ImgFileVODTO fileInfo = fileSave(imgFile, userId, request);
 			
+			if(mService.registerMember(registerDTO, fileInfo)) {
+				result = new ResponseEntity<Void>(HttpStatus.OK);
 			}
-		
-
 			
-
-			result = new ResponseEntity<Void>(HttpStatus.OK);
-
-		} catch (IOException e) {
+			}
+			
+			System.out.println("결과를 보냅니다 파일 저장 완료");
+			
+		} catch (Exception e) {
+			
 			e.printStackTrace();
-
 			result = new ResponseEntity<Void>(HttpStatus.NOT_ACCEPTABLE);
-
 		}
 
 		return result;
-
 	}
 	
 	  
 	private ImgFileVODTO fileSave(MultipartFile imgFile, String userId, HttpServletRequest request) throws IOException { // 파일의 기본정보 가져옴 
 		
 		String originalFileName = imgFile.getOriginalFilename();
-	  
 		byte[] upfile = imgFile.getBytes(); // 파일의 실제 데이터를 읽어옴
-	  
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/profileImgs");
-	  
-		// 실제파일 저장(이름변경, base64, thumbnail) 
-		ImgFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, userId, realPath, originalFileName); 
+		
+		ImgFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, userId, originalFileName); 
 		return fileInfo; 
 		}
 	  

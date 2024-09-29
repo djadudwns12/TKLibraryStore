@@ -267,7 +267,7 @@ input[readonly] {
 </style>
 </head>
 <body>
-<form class="form-container"  method="post" enctype="multipart/form-data">
+<form class="form-container">
     <div class="form-group button-container">
         <input type="text" id="userId" name="userId" placeholder="아이디 입력 (4~8자)" required>
         <button type="button">중복 확인</button>
@@ -282,7 +282,7 @@ input[readonly] {
     <div id="passwordError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
     
     <div class="form-group">
-        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호 재입력" required>
+        <input type="password" id="confirmPassword" placeholder="비밀번호 재입력" required>
     </div>
     
     <div id="confirmPasswordError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
@@ -598,14 +598,13 @@ function deleteProfileImage() {
 }
 
 	async function register() {
-	    console.log("레지스터 진입");
 	    let form = $("form")[0];  // 폼 요소를 선택
 	    let fd = new FormData(form);  // FormData 객체 생성
 	    fd.append("imgFile", uploadedFile);
 	    
-	    for (var pair of fd.entries()) {
+/* 	    for (var pair of fd.entries()) {
 	        console.log(pair[0]+ ', ' + pair[1]);
-	    }
+	    } */
 
 	    try {
 	        let response = await $.ajax({
@@ -616,21 +615,21 @@ function deleteProfileImage() {
 	            processData: false,                 // 데이터를 쿼리스트링 형태로 보내지 않겠다는 설정
 	            contentType: false,                 // "multipart/form-data"로 전송되도록 설정
 	            //async: true                         // 비동기 통신을 true로 설정 (기본 값)
+	            statusCode: {
+	                // 상태 코드 200: 성공 처리
+	                200: function () {
+	                    alert('가입 성공!');
+	                },
+	                // 상태 코드 406: 실패 처리
+	                406: function () {
+	                    alert('가입 실패');
+	                }
+	            }
 	        });
 
-	        // 성공 시 처리
-	        console.log(response);
-	        if (response.status == 'success') {
-	            alert('성공')
-	        }
-
 	    } catch (error) {
-	        // 에러 처리
-	        console.error(error);
-	        if (error == 'fail') {
-	            alert('회원 가입 중 예기치 못한 오류가 발생했니다.');
-
-	        }
+	        console.log("에러 발생: ", error);
+	        alert('입력된 회원가입 정보를 확인 후 가입해 주세요');
 	    }
 	}
 	
