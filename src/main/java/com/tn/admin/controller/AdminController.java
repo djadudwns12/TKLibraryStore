@@ -118,6 +118,7 @@ public class AdminController {
 		return result;
 	}
 
+	
 	@RequestMapping("/modifyProduct")
 	public String modifyProduct(@RequestParam("bookNo") int bookNo, Model model) {
 		ProductVO product = null;
@@ -131,6 +132,8 @@ public class AdminController {
 		model.addAttribute("product", product);
 		return "admin/modifyAdmin";
 	}
+	
+	
 
 	@RequestMapping(value = "/upfile", method = RequestMethod.POST, produces = "application/json; charset=UTF-8;")
 	// 쪼개져서온 'file' 파일을 재조립해주는 인터페이스 MultipartFile, @RequestParam로 save
@@ -196,6 +199,12 @@ public class AdminController {
 		BoardUpFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, contentType, originalFileName,
 				fileSize);
 		return fileInfo;
+	}
+	
+	@RequestMapping("/registProduct")
+	public String registProduct() {
+		
+		return "admin/registProduct";
 	}
 
 }
