@@ -20,11 +20,6 @@ public class CartDAOImpl implements CartDAO {
 	private final SqlSession ses;
 	private static final String NS = "com.tn.mapper.cartMapper";
 	
-	@Override
-	public int insertCart(CartDTO cDto) throws Exception {
-		
-		return ses.insert(NS + ".putCart", cDto);
-	}
 
 	@Override
 	public List<CartDTO> selectCartList(String userId) throws Exception {

@@ -7,8 +7,6 @@ import com.tn.cart.model.vo.CartVO;
 
 public interface CartDAO {
 
-	int insertCart(CartDTO cDto) throws Exception;
-
 	List<CartDTO> selectCartList(String userId) throws Exception;
 
 	int deleteOneCart(String cartId) throws Exception;
