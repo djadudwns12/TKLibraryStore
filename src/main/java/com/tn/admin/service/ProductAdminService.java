@@ -23,4 +23,6 @@ public interface ProductAdminService {
 
 	int saveImgInfo(BoardUpFileVODTO fileInfo, int bookNo) throws Exception;
 
+	int modifyProduct(ProductVO product) throws Exception;
+
 }

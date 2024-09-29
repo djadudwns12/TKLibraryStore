@@ -53,7 +53,7 @@ $(function(){
                     
 
                     // 파일 경로 저장
-                    $('.imageText').val('/resources/' + file.name);
+                    $('.imageText').val('/resources/bookImgs/' + file.name);
 
                     // 전역 변수에 파일 정보 저장
                     uploadedFiles.push(file);  // 파일을 전역 변수에 추가
@@ -103,10 +103,11 @@ $(function(){
 			  console.log("모든 필드가 올바르게 입력되었습니다.");
 			  if($('#thumbNail').val() === `${product.thumbNail}`) {
 				    alert('이미지가 그대로임');
-				    // result = true;
+				   result = true;
 				} else{
 				  alert('이미지가 바뀜');
 				  fileUpload(uploadedFiles);
+				  result = true;
 			  }
 			}
 		
@@ -137,23 +138,41 @@ $(function(){
 			contentType : false,
 			//async : false,					// 비동기 통신 : false
 			//console.log(response)
-			success: function(response) {
-		        // 서버 응답이 성공일 때 처리
-		        if(response.status === 'ok') {
-		            alert('성공!');
-		        } else if (response.status === NOT_ACCEPTABLE) {
-		            console.log(response);
-		            alert('실패!');
-		        }
-		    },
-		    error: function(xhr, status, error) {
-		        // 서버 요청이 실패할 때 처리
-		        console.error('에러 발생:', status, error);
-		        alert('업로드 중 문제가 발생했습니다.');
-		    }
+			success : function(data) {		//비동기 통신에 성공하면 자동으로 호출 될 callback funtion
+                console.log(data);
+          	 	
+            	if(data.msg == 'success'){
+            		result = true;
+            		
+           		 }
+            	
+            },error : function (data) {
+            	console.log(data);
+            	if (data == 'fail'){
+            		alert ('파일을 업로드 하지 못했습니다');
+            	            	
+            	}
+			}
 		});
 		
+		return result;
 	}
+	
+	
+	  // URL에서 파라미터 값을 가져오는 함수
+	  function getParameterByName(name) {
+	      const url = new URL(window.location.href);
+	      return url.searchParams.get(name);
+	  }
+
+	  // 상태 값 확인 후 alert 실행
+	  const status = getParameterByName('status');
+	  if (status === 'success') {
+	      alert('성공적으로 저장되었습니다!');
+	  } else if (status === 'error') {
+	      alert('저장에 실패했습니다.');
+	  }
+	
 
 
 </script>
@@ -226,14 +245,13 @@ $(function(){
 
 			<h1 class="jemok">ModifyProduct</h1>
 
-			<form action="/admin/modifySave" method="post"
-				enctype="multipart/form-data">
+			<form action="/admin/modifySave" method="post">
 
 				<div class="content1">
 
 					<div class="mb-3">
 						<label for="bookNo" class="form-label">BookNo</label> <input
-							type="text" class="form-control" id="boardNo" name="boardNo"
+							type="text" class="form-control" id="bookNo" name="bookNo"
 							value="${product.bookNo}" readonly>
 					</div>
 					<div class="mb-3">
@@ -253,7 +271,7 @@ $(function(){
 					</div>
 
 					<div class="mb-3">
-						<label for="genre" class="form-label">PubDate</label> <input
+						<label for="pubDate" class="form-label">PubDate</label> <input
 							type="text" class="form-control" id="pubDate" name="pubDate"
 							value="${product.pubDate}">
 					</div>
@@ -299,8 +317,8 @@ $(function(){
 
 				<div class="mb-3" style="width: 80%; margin-left: 30px;">
 					<label for="thumbNail" class="form-label">ThumbNail</label> <input
-						type="text" class="form-control imageText" id="thumbNail"
-						name="thumbNail" value="${product.thumbNail}"
+						type="text" class="form-control imageText" id="thumbNail" name="thumbNail"
+						 value="${product.thumbNail}"
 						style="width: 900px; margin-bottom: 50px;" readonly>
 				</div>
 				<div class="content3">

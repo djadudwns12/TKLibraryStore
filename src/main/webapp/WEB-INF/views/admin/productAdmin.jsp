@@ -412,7 +412,7 @@ body {
 						</c:choose>
 					</c:forEach>
 
-					<c:if test="${param.pageNo < pagingInfo.totalPageCnt}">
+					<c:if test="${pagingInfo.pageNo < pagingInfo.totalPageCnt}">
 						<li class="page-item"><a class="page-link"
 							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo+1}
 						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Next</a></li>

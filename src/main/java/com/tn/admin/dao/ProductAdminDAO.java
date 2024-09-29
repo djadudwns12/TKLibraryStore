@@ -36,5 +36,7 @@ public interface ProductAdminDAO {
 
 	int saveImgInfo(BoardUpFileVODTO fileInfo, int bookNo) throws Exception;
 
+	int updateProduct(ProductVO product)throws Exception;
+
 
 }

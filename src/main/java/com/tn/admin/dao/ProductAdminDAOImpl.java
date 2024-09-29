@@ -85,11 +85,16 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 	public int saveImgInfo(BoardUpFileVODTO fileInfo,int bookNo) {
 		
 		Map<String,Object> params = new HashMap<String, Object>();
-		params.put("fileName", "/resources/" + fileInfo.getFileName());
+		params.put("fileName", "/resources/bookImgs/" + fileInfo.getFileName());
 		params.put("base64Img", fileInfo.getBase64Img());
 		params.put("bookNo", bookNo);
 		
 		return ses.update(NS + ".saveImgInfo",params);
+	}
+	@Override
+	public int updateProduct(ProductVO product) throws Exception {
+		
+		return ses.update(NS + ".updateProduct", product);
 	}
 	
 

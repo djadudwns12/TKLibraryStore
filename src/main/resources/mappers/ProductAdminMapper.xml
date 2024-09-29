@@ -201,7 +201,7 @@
 	</select>
 	
 	<delete id="deleteProduct">
-		delete from BookList where bookNo = ${delNo}
+		delete from BookList where bookNo = #{delNo}
 	</delete>
 	
 	<update id="soldOutProduct">
@@ -216,5 +216,12 @@
 	<update id="saveImgInfo">
 		update BookList set thumbNail=#{fileName}, base64ProfileImg=#{base64Img} where bookNo=#{bookNo};
 	</update> 
+	
+	<update id = "updateProduct">
+		update BookList set 
+		title=#{title}, author=#{author}, publisher=#{publisher}, pubDate=#{pubDate},
+		genre=#{genre}, price=#{price}, salePrice=#{salePrice}, inven=#{inven}, introduction=#{introduction}		
+		where bookNo=#{bookNo};
+	</update>
 	
   </mapper>

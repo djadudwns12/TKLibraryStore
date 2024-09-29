@@ -118,6 +118,13 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		
 		return pDao.saveImgInfo(fileInfo, bookNo);
 	}
+
+
+	@Override
+	public int modifyProduct(ProductVO product) throws Exception {
+		
+		return pDao.updateProduct(product);
+	}
 	
 	
 
