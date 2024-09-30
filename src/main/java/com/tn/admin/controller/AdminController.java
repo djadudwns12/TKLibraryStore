@@ -50,6 +50,8 @@ public class AdminController {
 	private ProductAdminService pService;
 	@Autowired
 	private MemberAdminService mService;
+	@Autowired
+	private MemberService ms;
 	
 	@Autowired
 	private FileProcess fileProcess;
@@ -200,8 +202,6 @@ public class AdminController {
 	}
 	//========================================최미설===================================//
 	//회원관리페이지
-	
-	
 	@RequestMapping("/memberadmin")
 	public void memberList(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
 			@RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize, @RequestParam(value="sortBy", defaultValue = "default") String sortBy,
@@ -229,4 +229,19 @@ public class AdminController {
 		System.out.println("MemberAdminController : " + result.toString());
 		
 	}
+	
+	//회원관리페이지-회원정보상세보기
+	@RequestMapping("/memberDetail")
+	public String memberDetail(@RequestParam("userId") String userId, Model model) {
+		MemberVO memberDetail;
+		try {
+			memberDetail = ms.getEditMemberInfo(userId);
+			model.addAttribute("memberDetail", memberDetail);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "/admin/memberDetail";
+	}
+	
 }
