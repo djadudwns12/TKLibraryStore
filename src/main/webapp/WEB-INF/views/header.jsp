@@ -222,7 +222,7 @@
 								<option value="-1">선택</option>
 							</select>
 							<!-- 소분류 -->
-							<select id="low_class">
+							<select id="low_class" onchange="category(this)">
 								<option value="-1">선택</option>
 							</select>
 					</div>

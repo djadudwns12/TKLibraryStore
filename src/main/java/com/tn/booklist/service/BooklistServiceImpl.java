@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import com.tn.booklist.dao.BooklistDAO;
 import com.tn.booklist.model.dto.PagingInfo;
 import com.tn.booklist.model.dto.PagingInfoDTO;
+import com.tn.booklist.model.vo.BookDetailInfo;
 import com.tn.booklist.model.vo.BooklistVO;
 
 @Service
@@ -55,4 +56,30 @@ public class BooklistServiceImpl implements BooklistService {
 		return pi;
 	}
 
+
+	@Override
+	@Transactional(readOnly = true, rollbackFor = Exception.class)
+	public List<BookDetailInfo> read(int bookNo, String ipAddr) throws Exception {
+		
+		List<BookDetailInfo> bookInfo = bDao.selectAllByBookNo(bookNo);
+				
+		return bookInfo;
+	}
+
+//	====================================================엄영준=============================================================
+	@Override
+	public List<BooklistVO> getCategoryBooklist(String category) throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		PagingInfo pi = makePagingInfo(PagingInfoDTO.builder().pageNo(1).PagingSize(10).build());
+		
+		params.put("pi", pi);
+		params.put("category", category);
+		
+		
+		List<BooklistVO> lst = bDao.selectCategoryBooklist(pi,category);
+		
+		return lst;
+	}
+//	====================================================엄영준 END=============================================================
 }

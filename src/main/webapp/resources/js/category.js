@@ -41,7 +41,10 @@ function category(obj) {
             $(obj).next().next().next().children('ul').html(li);  // 리스트 업데이트
             		
     		$(obj).next().next().next().find('li').eq(0).trigger('click');  // 첫 번째 li 항목 클릭 이벤트 트리거
-    		$(obj).next().next().next().find('li').eq(0).trigger('click');  // 첫 번째 li 항목 클릭 이벤트 트리거
+    		$(obj).next().next().next().find('li').eq(0).trigger('click');  // 첫 번째 li 항목 클릭 이벤트 트리거 
+
+            // 북리스트 페이지 불러오기
+            getBookList(obj);
 
         },
         error: function(data, status) {
@@ -49,4 +52,45 @@ function category(obj) {
             // 오류 처리 로직 추가 가능
         }
     });
+}
+
+function getBookList(obj){
+    $.ajax({
+        url: '/bookList/category/' + obj.value,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            console.log(data);
+            if(data.length != 0){
+            	let inputHTML = ''
+            	
+            	$.each(data,function(i,row){
+            		inputHTML += '<tr>'
+            		inputHTML += `<td>${row.title}</td>`
+            		inputHTML += `<td>${row.author}</td>`
+            		inputHTML += `<td>${row.publisher}</td>`
+            		let dd = longodate(row.pubDate);
+            		inputHTML += `<td>${dd}</td>`
+            		inputHTML += `<td>${row.salePrice}</td>`
+            		inputHTML += '</tr>'
+            	})
+            	
+            	
+            	$('.table tbody').html(inputHTML);
+            }
+        },
+        error: function(data, status) {
+            console.error("Error fetching book list data:", status);
+            // 오류 처리 로직 추가 가능
+        }
+    });
+}
+function longodate(datetime){
+	let today=new Date(datetime);
+	var year = today.getFullYear();
+	var month = ('0' + (today.getMonth() + 1)).slice(-2);
+	var day = ('0' + today.getDate()).slice(-2);
+	var dateString = year + '-' + month  + '-' + day;
+	
+	return dateString
 }

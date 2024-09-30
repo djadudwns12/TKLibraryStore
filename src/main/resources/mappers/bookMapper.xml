@@ -7,7 +7,7 @@
   
   <!-- 전체 책 리스트를 출간일 내림차순 정렬해 가져오는 쿼리문 -->
   <select id="getAllBooklist" resultType = "com.tn.booklist.model.vo.BooklistVO">
-  	SELECT thumbNail, title, author, publisher, pubDate, price, salePrice, introduction, zzim, reviewCnt
+  	SELECT bookNo, thumbNail, title, author, publisher, pubDate, price, salePrice, introduction, zzim, reviewCnt
 	FROM BookList order by pubDate desc 
 	limit #{startRowIndex}, #{viewPostCntPerPage} 
   </select>
@@ -17,5 +17,17 @@
  	select count(*) from BookList
   </select>
  
+	<!-- 책의 상세정보를 가져오는 쿼리문 -->
+	<select id="selectBookDetailInfoByBookNo" resultType="com.tn.booklist.model.vo.BookDetailInfo">
+		select * from BookList where bookNo = #{bookNo}
+	</select>
+	
+	
+	<!-- ====================================================엄영준============================================================= -->
+	<!-- 카테고리화된 것을 페이징 하여 가지고 가는 것 -->
+	<select id="selectCategoryBooklist" resultType="com.tn.booklist.model.vo.BooklistVO">
+		select * from BookList where genre like #{category} limit #{startRowIndex}, #{viewPostCntPerPage} 
+	</select>
+	<!-- ====================================================엄영준 END=============================================================  -->
  
  </mapper>
