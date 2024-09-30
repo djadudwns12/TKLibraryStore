@@ -4,11 +4,11 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.tn.mapper.MemberAdminMapper">
   	
-<!--
+
    	<select id="getMember" resultType="com.tn.member.model.vo.MemberVO">
   		select * from Member order by userId limit #{startRowIndex}, #{viewPostCntPerPage}
   	</select>
---> 	
+	
 	<select id="selectTotalCount" resultType="int">
 		select count(*) from Member	
 	</select>
@@ -18,13 +18,13 @@
 		select count(*) from Member
 		<choose>
 			<when test="searchType == 'userId'">
-				where userId like #{userId}
+				where userId like #{searchWord}
 			</when>
 			<when test="searchType == 'userName'">
-				where userName like #{userName}
+				where userName like #{searchWord}
 			</when>
 			<when test="searchType == 'phoneNum'">
-				where phoneNum like #{phoneNum}
+				where phoneNum like #{searchWord}
 			</when>
 		</choose>
 	</select>
@@ -40,10 +40,10 @@
 				order by userName
 			</when>
 			<when test="sortBy == 'userBirth'">
-				order by userBirth desc
+				order by userBirth
 			</when>
 		</choose>		
-		limit #{startRowIndex}, #{viewPostCntPerPage};
+		limit #{startRowIndex}, #{viewPostCntPerPage}
 	</select>
 	
 	<!-- 검색어가 있을 때 리스트가져오기 -->
@@ -69,7 +69,7 @@
 		select * from Member
 		<choose>
 			<when test="searchType == 'userId'">
-				where title like #{searchWord}
+				where userId like #{searchWord}
 				<choose>
 					<when test="sortBy == 'userId'">
 						order by userId
@@ -78,12 +78,12 @@
 						order by userName
 					</when>
 					<when test="sortBy == 'userBirth'">
-						order by userBirth desc
+						order by userBirth
 					</when>
 				</choose>
 			</when>
 			<when test="searchType == 'userName'">
-				where author like #{searchWord}
+				where userName like #{searchWord}
 				<choose>
 					<when test="sortBy == 'userId'">
 						order by userId
@@ -92,12 +92,12 @@
 						order by userName
 					</when>
 					<when test="sortBy == 'userBirth'">
-						order by userBirth desc
+						order by userBirth
 					</when>
 				</choose>
 			</when>
 			<when test="searchType == 'phoneNum'">
-				where introduction like #{searchWord}
+				where phoneNum like #{searchWord}
 				<choose>
 					<when test="sortBy == 'userId'">
 						order by userId
@@ -106,11 +106,17 @@
 						order by userName
 					</when>
 					<when test="sortBy == 'userBirth'">
-						order by userBirth desc
+						order by userBirth
 					</when>
 				</choose>
 			</when>
 		</choose>
 		 limit #{startRowIndex}, #{viewPostCntPerPage}
 	</select>
+<!--	 더미 멤버 만들기.. 
+	<insert id="insertDummyMember">
+		insert into Member(userId, userPwd, userName, userBirth, phoneNum, email, userImg)
+		values(#{userId}, #{userPwd}, #{userName}, #{userBirth}, #{phoneNum}, #{email}, #{userImg})
+	</insert>
+-->
   </mapper>

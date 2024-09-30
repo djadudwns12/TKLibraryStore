@@ -30,7 +30,7 @@
 				<form class="search"style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: center;" action="" method="post">
 					<div>
 						<select class="searchType" name="searchType" id="searchType" style="text-align: center">
-							<option value="-1">검색 조건</option>
+							<option value="none">검색 조건</option>
 							<option value="userId">아이디</option>
 							<option value="userName">이름</option>
 							<option value="phoneNum">전화번호</option>
@@ -58,8 +58,9 @@
 				</form>
 				<div style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: right; margin-bottom: 50px;">
 					<div class="boardC" >
-						<select class="form-select sortByWhat" id="sortByWhat" style="width: 150px ">
-							<option value="default">아이디순</option>
+						<select class="form-select sortByWhat" id="sortBy" style="width: 150px ">
+							<option value="default">==정렬기준==</option>
+							<option value="userId">아이디순</option>
 							<option value="userName">이름순</option>
 							<option value="userBirth">생년월일순</option>
 						</select>
@@ -86,23 +87,27 @@
 							<th>생년월일</th>
 							<th>전화번호</th>
 							<th>이메일</th>
-							
+							<th>회원등급</th>
+							<th>적립포인트</th>
+							<!--  
 							<th><button type="button" class="btn btn-danger btn" id="delBtn" style="width:90px; font-size:small;" onclick="deletememberList();" >0개 삭제</button></th> 
 							<th><button type="button" class="btn btn-success btn" id="soldOutBtn" style="width:90px; font-size:small;" onclick="soldOutmemberList();">0개 품절</button></th>
+							-->
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="memberList" items="${memberList}">
-							<tr onclick="location.href='/admin/memberDetail?userId=${memberList.userId}'">
-								<td><input type="checkbox" name="proCheck" value=${member.userId} onclick="updateButton()"></td>
-								<td><img src="/resources/userImg/${memberList.userId}.png" width="50px" height="80"></td>
-								<td>${memberList.userId}</td>
+							<tr>
+								<td><input type="checkbox" name="proCheck" value="${memberList.userId}" onclick="updateCheck()"></td>
+								
+								<td><img src="/resources/userImg/${memberList.userImg}" width="30px" height="30"></td>
+								<td onclick="location.href='/admin/memberDetail?userId=${memberList.userId}'">${memberList.userId}</td>
 								<td>${memberList.userName}</td>
 								<td>${memberList.userBirth}</td>
 								<td>${memberList.phoneNum}</td>
 								<td>${memberList.email}</td>
-								<td></td>
-								<td></td>
+								<td>${memberList.userClass}</td>
+								<td>${memberList.userPoint}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -138,6 +143,7 @@
 					</c:if>
 				</ul>
 			</div>
+			<div id="result"></div>
 		</div>
 	</div>
 
@@ -342,7 +348,7 @@ function isValid() {
 	// 검색어가 제대로 입력되지 않았으므로 백엔드 단으로 데이터를 넘기면 안된다
 	
 	let result = false;
-	if($('#searchType').val() == -1 || $('#searchWord').val() == ''){
+	if($('#searchType').val() == 'none' || $('#searchWord').val() == ''){
 		alert('검색 조건과 검색어를 입력해 주세요');
 		$('#searchType').focus();
 		return result;
@@ -354,6 +360,30 @@ function isValid() {
 	
 }
 
+function updateCheck() {
+	const checkboxes = document.querySelectorAll('input[name="proCheck"]:checked');
+	const selectedItems = [];
+            
+	checkboxes.forEach((checkbox) => {
+		selectedItems.push(checkbox.value);
+	});
+
+	document.getElementById("result").innerHTML = selectedItems.length > 0
+		? '선택된 항목: ' + selectedItems.join(', ')
+		: '선택된 항목이 없습니다.';
+	
+}
+function selectAll(selectAll) {
+    // 모든 체크박스 선택
+    const checkboxes = $('input[type="checkbox"]');
+    
+    // jQuery의 each 메서드를 사용하여 모든 체크박스 요소의 checked 속성을 selectAll.checked 값으로 설정
+    checkboxes.each(function() {
+        $(this).prop('checked', $(selectAll).prop('checked'));
+        updateCheck();
+    });
+
+}
 </script>
 
 </body>

@@ -32,8 +32,7 @@ public class MemberDAOImpl implements MemberDAO  {
 
 	@Override
 	public MemberVO getEditMemberInfo(String userId) throws Exception {
-		
-		System.out.println("ȸ���������� : �α����� " + userId + "�� ������ �ҷ�����");
+
 		return sess.selectOne(NS + ".getEditMemberInfo", userId);
 	}
 
@@ -51,6 +50,9 @@ public class MemberDAOImpl implements MemberDAO  {
 	
 		return sess.selectOne(NS+".getLoginMember", loginMember);
 	}
+
+
+
 
 
 	
