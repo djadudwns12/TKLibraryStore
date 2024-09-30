@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tn.admin.dao.MemberAdminDAO;
 import com.tn.member.dao.MemberDAO;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.service.MemberService;
@@ -27,34 +28,24 @@ import com.tn.member.service.MemberService;
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"}) // 파일의 위치를 제공하여 파일에 접근할 수 있도록
 public class InsertDummyData {
 	@Autowired
-	private MemberDAO dao;
-	
-	@Autowired
-	private MemberService service;
-	
-	
+	private MemberAdminDAO dao;
+		
 	@Test
 	public void insertDummyDataToDB() throws Exception {
 		
-		for(int i= 0 ; i<300; i++)  {
+		for(int i= 0 ; i<100; i++)  {
 			Date randomdate = getRandomDate();
 			Random rNum = new Random();
 			MemberDTO dto = MemberDTO.builder()
-				.userId("dummyUser" + i)
+				.userId("dummy" + i)
 				.userPwd("dummy" + i)
-				.userName("더미유저" + i)
+				.userName("더미" + i)
 				.userBirth(randomdate)
 				.phoneNum("010-" + rNum.nextInt(9999) + "-" + rNum.nextInt(9999))
-				.email("dummyUser" + i + "@email.no")
+				.email("dummy" + i + "@email.no")
+				.userImg("noImage.png")
 				.build();
-		
-//			if (dao.insertNewBoard(dto) == 1) {
-////				1-1. 위에서 저장된 게시글의 pk(boardNo)를 가져와야한다(select)
-//				int newBoardNo = dao.getMaxBoardNo();
-//
-////				1-1-1 위에서 가져온 글 번호를 ref컬럼에 update
-//				dao.updateBoardRef(newBoardNo);
-//			}
+			// dao.insertDummyMember(dto);
 		}
 		
 	}

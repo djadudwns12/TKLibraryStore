@@ -27,14 +27,14 @@ public class MemberAdminServiceImpl implements MemberAdminService {
 		
 		if (searchCriteria.getSearchType() == null || searchCriteria.getSearchWord() == null || 
 				searchCriteria.getSearchType() == "" || searchCriteria.getSearchWord() == "") {
-			list = dao.getMemberList(pi,sortBy);
-//			if(sortBy.equals("default")) {
-//				list = dao.getMemberList(pi);
-//				System.out.println("검색조건X, 검색어X, sortby default 일때");
-//			} else {
-//				list = dao.getMemberList(pi,sortBy);
-//				System.out.println("검색조건X, 검색어X, sortby 있을 때");
-//			}
+			//list = dao.getMemberList2 (pi,sortBy);
+			if(sortBy.equals("default")) {
+				list = dao.getMemberList1(pi);
+				System.out.println("검색조건X, 검색어X, sortby default 일때");
+			} else {
+				list = dao.getMemberList2(pi,sortBy);
+				System.out.println("검색조건X, 검색어X, sortby 있을 때");
+			}
 						
 		} else {
 			if(sortBy.equals("default")) {
