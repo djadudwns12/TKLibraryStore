@@ -13,7 +13,7 @@ public interface CartService {
 
 	boolean updateQuantity(int cartId, int qty) throws Exception;
 
-	//boolean putCart(CartDTO cDto) throws Exception;
+	boolean deleteCartsByIds(List<Integer> cartIds) throws Exception;
 
 
 }

@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,7 +32,7 @@ import com.tn.cart.service.CartService;
 @RequestMapping("/cart")
 public class CartController {
 	
-	// Log¸¦ ³²±æ ¼ö ÀÖµµ·Ï ÇÏ´Â °´Ã¼
+	// Logï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½Ã¼
 	private static Logger logger = LoggerFactory.getLogger(CartController.class);
 	
 	@Autowired
@@ -55,14 +56,14 @@ public class CartController {
 	@PostMapping("/deleteCart")
 	@ResponseBody
 	public Map<String, Object> deleteCart(@RequestParam("cartId") String cartId) {
-	    System.out.println("»èÁ¦ ¿äÃ»¹ŞÀ½: " + cartId); // ·Î±× Ãß°¡
+	    System.out.println("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½: " + cartId); // ï¿½Î±ï¿½ ï¿½ß°ï¿½
 	    Map<String, Object> response = new HashMap<>();
 	    
 	    try {
 	        cService.deleteCartById(cartId);
 	        response.put("success", true);
 	    } catch (Exception e) {
-	        e.printStackTrace(); // ¿¡·¯ ·Î±× Ãß°¡
+	        e.printStackTrace(); // ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ ï¿½ß°ï¿½
 	        response.put("success", false);
 	    }
 	    return response;
@@ -73,19 +74,35 @@ public class CartController {
 	public ResponseEntity<Map<String, Object>> updateQuantity(@RequestParam int cartId, @RequestParam int qty) {
 	    Map<String, Object> response = new HashMap<>();
 	    
-	    // DB¿¡¼­ cartId¿¡ ÇØ´çÇÏ´Â Ç×¸ñÀ» Ã£¾Æ¼­ ¼ö·® ¾÷µ¥ÀÌÆ® ·ÎÁ÷À» ±¸ÇöÇÕ´Ï´Ù.
-	    boolean success = false; // ÃÊ±â°ª ¼³Á¤
+	    // DBï¿½ï¿½ï¿½ï¿½ cartIdï¿½ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ Ã£ï¿½Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
+	    boolean success = false; // ï¿½Ê±â°ª ï¿½ï¿½ï¿½ï¿½
 	    try {
-	        success = cService.updateQuantity(cartId, qty); // ¼­ºñ½º È£Ãâ
+	        success = cService.updateQuantity(cartId, qty); // ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        // ¿¹¿Ü ¹ß»ı ½Ã success´Â false·Î À¯Áö
+	        // ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ ï¿½ï¿½ successï¿½ï¿½ falseï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	    }
 
-	    // success °ª È®ÀÎ
+	    // success ï¿½ï¿½ È®ï¿½ï¿½
 	    if (success) {
 	        response.put("success", true);
 	    } else {
+	        response.put("success", false);
+	    }
+	    return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/deleteSelected")
+	public ResponseEntity<Map<String, Object>> deleteSelected(@RequestBody List<Integer> cartIds) {
+		
+		System.out.println("Controller : ì²´í¬ë°•ìŠ¤ ì„ íƒëœ " + cartIds + "ë²ˆ ëª©ë¡ë“¤ ì‚­ì œí•˜ê¸°");
+	    
+		Map<String, Object> response = new HashMap<>();
+		try {
+	        cService.deleteCartsByIds(cartIds); // ì„œë¹„ìŠ¤ í˜¸ì¶œ
+	        response.put("success", true);
+	    } catch (Exception e) {
+	        e.printStackTrace(); // ì˜¤ë¥˜ ë°œìƒ ì‹œ ë¡œê·¸ ì¶œë ¥
 	        response.put("success", false);
 	    }
 	    return ResponseEntity.ok(response);

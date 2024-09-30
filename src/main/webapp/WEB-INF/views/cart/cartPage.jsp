@@ -102,7 +102,8 @@
 	<c:import url="../header.jsp"></c:import>
 
 	<div class="container">
-		<button type="button" class="btn btn-outline-danger">선택삭제</button>
+		<button type="button" class="btn btn-outline-danger"
+			id="deleteSelectedButton">선택삭제</button>
 		<div style="max-height: 500px; overflow-y: auto;">
 			<table class="table table-hover">
 				<thead>
@@ -477,6 +478,44 @@
             }
         });
     }
+    
+    /* 선택 삭제 버튼 눌렀을 때 */
+    $('#deleteSelectedButton').on('click', function() {
+        // 선택된 체크박스의 cartId 수집
+        const selectedCartIds = [];
+        $('.selectItem:checked').each(function() {
+            selectedCartIds.push($(this).data('cart-id'));
+        });
+
+        if (selectedCartIds.length === 0) {
+            alert("삭제할 상품을 선택해주세요.");
+            return;
+        }
+
+        // AJAX 요청으로 서버에 삭제 요청 보내기
+        $.ajax({
+            url: '/cart/deleteSelected',
+            type: 'POST',
+            contentType: 'application/json', // JSON 형식으로 전송
+            data: JSON.stringify(selectedCartIds), // 데이터 JSON 문자열로 변환
+            success: function(response) {
+                if (response.success) {
+                    // 삭제 성공 시 항목 제거
+                    selectedIds.forEach(function(cartId) {
+                        // 해당 cartId를 가진 행 제거
+                        $('input[data-cart-id="' + cartId + '"]').closest('tr').remove();
+                    });
+                    alert('선택된 항목이 삭제되었습니다.');
+                } else {
+                    alert('삭제 중 오류가 발생했습니다.');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX 요청 중 오류 발생:", error);
+                alert("에러가 발생했습니다: " + error);
+            }
+        });
+    });
     </script>
 
 </body>

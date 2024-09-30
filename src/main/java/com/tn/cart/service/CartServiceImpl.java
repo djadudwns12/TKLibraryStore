@@ -28,7 +28,7 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public boolean deleteCartById(String cartId) throws Exception {
-		System.out.println("CartServiceImpl : " + cartId + "¹øÀ» »èÁ¦ÇÏÀÚ~~~~~~~");
+		System.out.println("CartServiceImpl : " + cartId + "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½~~~~~~~");
 		
 		boolean result = false;
 		
@@ -40,7 +40,7 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public boolean updateQuantity(int cartId, int qty) throws Exception {
-		System.out.println("CartServiceImpl : " + cartId + "¹øÀÇ ¼ö·®À» " + qty + "·Î ¼öÁ¤ÇÏÀÚ~~~~~");
+		System.out.println("CartServiceImpl : " + cartId + "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ " + qty + "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½~~~~~");
 		
 		boolean result = false;
 		
@@ -50,36 +50,26 @@ public class CartServiceImpl implements CartService {
 		
 		return result;
 	}
+
+	@Override
+	public boolean deleteCartsByIds(List<Integer> cartIds) throws Exception {
+	    System.out.println("CartServiceImpl : ì‚­ì œí•  cartId - " + cartIds);
+	    
+	    boolean result = false;
+	    
+	    // cartIdsì˜ í¬ê¸°(ì‚­ì œí•  ìˆ˜) ì²´í¬
+	    if (cartIds != null && !cartIds.isEmpty()) {
+	        // DAOì—ì„œ ì‚­ì œ ìž‘ì—… ìˆ˜í–‰í•˜ê³ , ì‚­ì œëœ ìˆ˜ë¥¼ ë°›ìŒ
+	        int deletedCount = cDao.deleteCartsByIds(cartIds);
+	        
+	        // ì‚­ì œëœ ìˆ˜ê°€ 0ë³´ë‹¤ í¬ë©´ ì„±ê³µìœ¼ë¡œ ê°„ì£¼
+	        if (deletedCount > 0) {
+	            result = true;
+	        }
+	    }
+	    
+	    return result;
+	}
 	
-//	@Override
-//	public boolean putCart(CartDTO cDto) throws Exception {
-//		boolean result = false;
-//
-//		// 1. »ç¿ëÀÚ Àå¹Ù±¸´Ï ¸ñ·ÏÀ» °¡Á®¿È
-//		List<CartDTO> cartList = cDao.selectCartList(cDto.getUserId());
-//
-//		// 2. µ¿ÀÏÇÑ titleÀÌ ÀÖ´ÂÁö È®ÀÎ
-//		for (CartDTO cartItem : cartList) {
-//			if (cartItem.getTitle().equals(cDto.getTitle())) {
-//				// 3. ¼ö·®À» ÇÕ»ê
-//				int newQty = cartItem.getQty() + cDto.getQty();
-//
-//				// 4. DB¿¡ ¼ö·® ¾÷µ¥ÀÌÆ®
-//				cDao.updateQty(cartItem.getCartId(), newQty);
-//
-//				// 5. ±âÁ¸ Ç×¸ñÀÇ ¼ö·®À» ¾÷µ¥ÀÌÆ®ÇßÀ¸¹Ç·Î true·Î ¼³Á¤
-//				result = true;
-//
-//				return result; // Áßº¹ Ç×¸ñÀ» Ã³¸®ÇßÀ¸¹Ç·Î ¸Þ¼­µå¸¦ Á¾·á
-//			}
-//		}
-//
-//		// 6. µ¿ÀÏÇÑ titleÀÌ ¾øÀ¸¸é »õ·Î¿î Ç×¸ñÀ» Àå¹Ù±¸´Ï¿¡ Ãß°¡
-//		if (cDao.insertCart(cDto) == 1) {
-//			result = true;
-//		}
-//
-//		return result;
-//	}
 
 }

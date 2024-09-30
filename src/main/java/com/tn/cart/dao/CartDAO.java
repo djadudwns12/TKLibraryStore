@@ -13,4 +13,6 @@ public interface CartDAO {
 
 	int updateQty(int cartId, int qty) throws Exception;
 
+	int deleteCartsByIds(List<Integer> cartIds) throws Exception;
+
 }
