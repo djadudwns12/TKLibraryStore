@@ -10,8 +10,8 @@
 <meta name="keywords" content="Ogani, unica, creative, html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>책 리스트</title>
-
+<title>떡잎서점: 전체리스트</title>
+<link rel="icon" href="/resources/images/TKlogo.png" type="image/png">
 
 
 <script
@@ -95,8 +95,6 @@
 		
 
 	</div>
-
-
 
 	<c:import url="../footer.jsp"></c:import>
 
