@@ -110,6 +110,45 @@ body {
 		}
 		
 	}
+	function isValid() {
+		// 검색 버튼을 눌렀을 때 searchType == -1 이거나 , searchWord에 ''이면 
+		// 검색어가 제대로 입력되지 않았으므로 백엔드 단으로 데이터를 넘기면 안된다
+		
+		let result = false;
+		if($('#searchType').val() == -1 || $('#searchWord').val() == ''){
+			alert('검색 조건과 검색어를 입력해 주세요');
+			$('#searchType').focus();
+			return result;
+		} else {
+			result = true;
+		}
+		
+		return result;
+		
+	}
+	$(function () {
+		
+		$('.pagingSize').change(function(){
+			console.log($(this).val());
+			
+			let pageNo = '${param.pageNo}';
+			if (pageNo == ''){
+				pageNo = 1;
+			} else {
+				pageNo = parseInt(pageNo);
+			}
+			
+			location.href = '/admin/qaAnswerView?pagingSize='+ $(this).val() + '&pageNo=1&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}';
+		});
+		
+		
+		$('.sortByWhat').change(function(){
+			console.log($(this).val());						
+			 
+			location.href = '/admin/qaAnswerView?ra='+ $(this).val() + '&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
+		});
+				
+	});
 </script>
 
 
@@ -131,16 +170,14 @@ body {
 
             <!-- The form -->
             <form class="search"style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: center;" 
-            action="/admin/productAdmin" method="post">
+            action="/admin/qaAnswerView" method="post">
                   
                   <div>
                      <select class="searchType" name="searchType" id="searchType" style="text-align: center">
                         <option value="-1">검색 조건</option>
                         <option value="title">제목</option>
-                        <option value="author">작가</option>
-                        <option value="introduction">내용</option>
-                        <option value="genre">장르</option>
-                        <option value="publisher">출판사</option>
+                        <option value="writer">작성자</option>
+                       <!--  <option value="introduction">내용</option> -->
                      </select>
                   </div>
                <section>
@@ -166,11 +203,8 @@ body {
                   <div class="boardC" >
                      <select class="form-select sortByWhat" id="sortByWhat" style="width: 150px ">
                         <option value="default">기본 정렬</option>
-                        <option value="salePrice">가격 높은순</option>
-                        <option value="inven">재고 많은순</option>
-                        <option value="zzim">찜 많은순</option>
-                        <option value="reviewCnt">리뷰 많은순</option>
-                        <option value="pubDate">최신순</option>
+                        <option value="title">제목</option>
+                        <option value="writer">작성자</option>
                      </select>
                   </div>
                
@@ -205,7 +239,7 @@ body {
                         <td>${qa.qTitle}</td>
                         <td>${qa.qWriter}</td>
                         <td>${qa.qDate}</td>
-                        <td>${qa.qAnswer}</td>
+                        <td>${qa.qAnswerYN}</td>
                      </tr>
                   </c:forEach>
                </tbody>
@@ -218,10 +252,10 @@ body {
 
                <c:if test="${param.pageNo > 1 }">
                   <li class="page-item"><a class="page-link"
-                     href="/admin/productAdmin?pageNo=1
+                     href="/admin/qaAnswerView?pageNo=1
                   &pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> << </a></li>
                   <li class="page-item"><a class="page-link"
-                     href="/admin/productAdmin?pageNo=${pagingInfo.pageNo-1}
+                     href="/admin/qaAnswerView?pageNo=${pagingInfo.pageNo-1}
                   &pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
                </c:if>
 
@@ -230,22 +264,22 @@ body {
                   <c:choose>
                      <c:when test="${param.pageNo == i }">
                         <li class="page-item active" id="${i}"><a class="page-link"
-                           href="/admin/productAdmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
+                           href="/admin/qaAnswerView?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
                      </c:when>
                      <c:otherwise>
                         <li class="page-item" id="${i}"><a class="page-link"
-                           href="/admin/productAdmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
+                           href="/admin/qaAnswerView?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
                      </c:otherwise>
                   </c:choose>
                </c:forEach>
 
                <c:if test="${param.pageNo < pagingInfo.totalPageCnt}">
                   <li class="page-item"><a class="page-link"
-                     href="/admin/productAdmin?pageNo=${pagingInfo.pageNo+1}
+                     href="/admin/qaAnswerView?pageNo=${pagingInfo.pageNo+1}
                   &pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Next</a></li>
                   
                   <li class="page-item"><a class="page-link"
-                     href="/admin/productAdmin?pageNo=${pagingInfo.totalPageCnt}
+                     href="/admin/qaAnswerView?pageNo=${pagingInfo.totalPageCnt}
                   &pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> >> </a></li>
                </c:if>
             </ul>

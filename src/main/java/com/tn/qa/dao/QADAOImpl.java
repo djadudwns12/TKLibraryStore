@@ -38,7 +38,7 @@ public class QADAOImpl implements QADAO {
 	
 	@Override
 	public int getTotalPostCnt(SearchCriteriaDTO sc) {
-		return sess.selectOne(NS+".selectSearchAllQAListCnt");
+		return sess.selectOne(NS+".selectSearchAllQAListCnt",sc);
 	}
 	// 구현해야할 코드---------------------------------------------------------------------------------------------
 	@Override
