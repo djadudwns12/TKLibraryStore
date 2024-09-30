@@ -212,6 +212,7 @@
 						</div>
 					</div>
 					<!-- 카테고리 -->
+					<input type="hidden" class="categoryNo">
 					<div id="category_young">
 							<select id="high_class" onchange="category(this)">
 								<option value="-1">선택</option>

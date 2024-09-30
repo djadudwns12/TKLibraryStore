@@ -8,6 +8,8 @@ function category(obj) {
     if (obj.value == '-1') {
         $(obj).next().val("-1").prop("selected", true); // 값이 -1인 option 선택
         //return;  // 값이 -1이면 아래의 AJAX 호출을 하지 않음
+    }else if(obj.value != '-1'){
+    	$('.categoryNo').val(obj.value);
     }
 
     // AJAX 요청을 통해 해당 카테고리 데이터를 가져옴
