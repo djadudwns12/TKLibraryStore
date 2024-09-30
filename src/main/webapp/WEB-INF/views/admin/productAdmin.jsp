@@ -309,8 +309,13 @@ body {
 					</section>
 						<button type="submit" class="btn btn-outline-dark btn" onclick="return isValid()">검색</button>
 					</form>
+					<div style="display: flex; margin-left: 50px; width:200px;" >
+						<button type="button" class="btn btn-outline-dark btn" onclick="location.href='/admin/registProduct';" >
+							Add Product</button>
+					</div>
 					
 					<div style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: right; margin-bottom: 50px;">
+											
 						<div class="boardC" >
 							<select class="form-select sortByWhat" id="sortByWhat" style="width: 150px ">
 								<option value="default">기본 정렬</option>

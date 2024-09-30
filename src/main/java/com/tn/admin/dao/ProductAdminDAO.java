@@ -38,5 +38,7 @@ public interface ProductAdminDAO {
 
 	int updateProduct(ProductVO product)throws Exception;
 
+	int registSave(ProductVO product, BoardUpFileVODTO fileInfo) throws Exception;
+
 
 }

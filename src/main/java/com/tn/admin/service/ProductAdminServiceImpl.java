@@ -125,6 +125,13 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		
 		return pDao.updateProduct(product);
 	}
+
+
+	@Override
+	public int registSave(ProductVO product,BoardUpFileVODTO fileInfo) throws Exception {
+		
+		return pDao.registSave(product, fileInfo);
+	}
 	
 	
 

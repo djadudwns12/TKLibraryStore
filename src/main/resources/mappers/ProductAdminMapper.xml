@@ -224,4 +224,11 @@
 		where bookNo=#{bookNo};
 	</update>
 	
+	<insert id="registSave">
+		insert into BookList
+		(title, author, publisher, pubDate, genre, price, salePrice, inven, thumbNail, introduction, base64ProfileImg)
+		values
+		(#{title}, #{author}, #{publisher}, #{pubDate}, #{genre}, #{price}, #{salePrice},
+		#{inven}, #{fileName}, #{introduction}, #{base64ProfileImg})
+	</insert>
   </mapper>

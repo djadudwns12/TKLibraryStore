@@ -25,6 +25,8 @@ public interface ProductAdminService {
 
 	int modifyProduct(ProductVO product) throws Exception;
 
+	int registSave(ProductVO product, BoardUpFileVODTO fileInfo) throws Exception;
+
 
 
 

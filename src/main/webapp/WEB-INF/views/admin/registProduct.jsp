@@ -21,57 +21,7 @@
 <script type="text/javascript">
 let uploadedFiles = new Array();		//업로드 되는 파일들을 저장하는 배열
 
-$(function(){
-	//업로드 파일 영역에 drag&drop과 관련된 이벤트(파일의 경우 파일이 웹브라우저에서 실행되는 등)을 방지해야 한다 -> 이벤트 캔슬링
-	$('.fileUploadArea').on("dragenter dragover", function(evt) {
-		evt.preventDefault();  		//기본 이벤트 캔슬
-	});
-	
-	// 유저가 fileUploadArea에 파일을 드래그&드랍 하면...
-	$('.fileUploadArea').on("drop", function(evt){
-		evt.preventDefault();
-		
-		//console.log(evt.originalEvent.dataTransfer.files);	//업로드 되는 파일 객체의 정보
-			// 기존의 파일 배열을 비움
-    		uploadedFiles.length = 0;  // 이전에 저장된 파일 정보 삭제
-		
-		
-			let files = evt.originalEvent.dataTransfer.files; 
 
-   			 for (let file of files) {
-       		 // 파일 사이즈가 10MB 이상이면 업로드 금지
-       			 if (file.size > 10485760) {
-          		  alert("파일 용량이 너무 큽니다. 업로드한 파일을 확인해 주세요.");
-       			 } else {    
-          		  // 파일이 이미지인지 확인
-            	if (file.type.startsWith('image/')) {
-               	 var reader = new FileReader();
-
-               	 reader.onload = function(e) {
-                    // 이미지 미리보기
-                    $('#imageArea').html('<img src="' + e.target.result + '" alt="업로드된 이미지" style="width: 100%; height: 100%;">');
-                    
-
-                    // 파일 경로 저장
-                    $('.imageText').val('/resources/bookImgs/' + file.name);
-
-                    // 전역 변수에 파일 정보 저장
-                    uploadedFiles.push(file);  // 파일을 전역 변수에 추가
-                    console.log(uploadedFiles);
-                }
-
-                reader.readAsDataURL(file);  // 파일을 읽어옴
-           		 } else {
-              		  alert("이미지 파일만 업로드 가능합니다.");
-            	}
-					
-					
-					
-				}
-			}
-		
-	});
-});
 	// upfiles.push(file);		//배열에 담기
 	//console.log(upfiles);
 	//해당 파일 ,업로드
@@ -89,7 +39,8 @@ $(function(){
 			  { element: $('#price'), value: $('#price').val() },
 			  { element: $('#salePrice'), value: $('#salePrice').val() },
 			  { element: $('#inven'), value: $('#inven').val() },			  
-			  { element: $('#introduction'), value: $('#introduction').val() }
+			  { element: $('#introduction'), value: $('#introduction').val() },
+			  { element: $('#bookImgfile'), value: $('#bookImgfile	').val() }
 			];
 
 			// 빈 값이나 길이가 1 미만인 요소 찾기
@@ -101,17 +52,9 @@ $(function(){
 			  alert( fields[emptyFieldIndex].element.attr('id')+ "의 값을 입력해주세요.")
 			} else {
 			  console.log("모든 필드가 올바르게 입력되었습니다.");
-			  if($('#thumbNail').val() === `${product.thumbNail}`) {
-				    alert('이미지가 그대로임');
-				   result = true;
-				} else{
-				  alert('이미지가 바뀜');
-				  fileUpload(uploadedFiles);
-				  result = true;
-			  }
+			  	  result = true;
 			}
-		
-			//return result로 바꿔야함!
+				
 			return result;
 	}
 	
@@ -245,7 +188,7 @@ $(function(){
 
 			<h1 class="jemok">RegistProduct</h1>
 
-			<form action="/admin/registSave" method="post">
+			<form action="/admin/registSave" method="post" enctype="multipart/form-data">
 
 				<div class="content1">
 
@@ -266,7 +209,7 @@ $(function(){
 					<div class="mb-3">
 						<label for="pubDate" class="form-label">PubDate</label> <input
 							type="text" class="form-control" id="pubDate" name="pubDate"
-							value="yyyy-MM--dd" style="opacity: ">
+							value="yyyy-MM-dd" style="opacity: ">
 					</div>
 
 				</div>
@@ -294,18 +237,25 @@ $(function(){
 					
 				</div>
 
+						
+				
 				<div class="mb-3" style="width: 80%; margin-left: 30px;">
-					<label for="thumbNail" class="form-label">ThumbNail</label> <input
-						type="text" class="form-control imageText" id="thumbNail" name="thumbNail"
+					<label for="thumbNail" class="form-label">bookImgfile</label> <input
+						type="File" class="form-control imageText" id="bookImgfile" name="bookImgfile"
 						 style="width: 900px; margin-bottom: 50px;" readonly>
 				</div>
+				
+			
+					
 				<div class="content3">
 					<div id="imageArea">
 						
 					</div>
+					<!-- 
 					<div class="fileUploadArea mb-3">
 						<p>업로드할 파일을 여기에 드래그 드랍하세요!</p>
-					</div>
+					</div>  -->
+					
 				</div>
 				<div class="mb-3"
 					style="margin-top: 50px; margin-left: 30px; width: 85%;">

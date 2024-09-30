@@ -206,5 +206,25 @@ public class AdminController {
 		
 		return "admin/registProduct";
 	}
+	
+	@RequestMapping(value="/registSave", method=RequestMethod.POST)
+	public String registSave(ProductVO product, @RequestParam("bookImgfile") MultipartFile bookImgfile, 
+			RedirectAttributes redirectAttributes, HttpServletRequest request) {
+		System.out.println(product.toString());
+		try {
+			BoardUpFileVODTO fileInfo = fileSave(bookImgfile, request);
+			if(pService.registSave(product,fileInfo) > 0){
+				redirectAttributes.addAttribute("status","success");				
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			redirectAttributes.addAttribute("status","fail");
+		}
+		
+		return "redirect:/admin/productAdmin";
+	}
+	
 
 }

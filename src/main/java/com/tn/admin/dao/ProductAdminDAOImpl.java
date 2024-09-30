@@ -96,6 +96,24 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		
 		return ses.update(NS + ".updateProduct", product);
 	}
+	@Override
+	public int registSave(ProductVO product, BoardUpFileVODTO fileInfo) throws Exception {
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("fileName", "/resources/bookImgs/" + fileInfo.getFileName());
+		params.put("base64ProfileImg", fileInfo.getBase64Img());
+		params.put("title", product.getTitle());
+		params.put("author", product.getAuthor());
+		params.put("publisher", product.getPublisher());
+		params.put("pubDate", product.getPubDate());
+		params.put("genre", product.getGenre());
+		params.put("price", product.getPrice());
+		params.put("salePrice", product.getSalePrice());
+		params.put("inven", product.getInven());
+		params.put("introduction", product.getIntroduction());
+		
+		return ses.insert(NS + ".registSave", params);
+	}
 	
 
 }
