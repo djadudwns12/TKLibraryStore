@@ -22,17 +22,21 @@
   		update Member set userPwd=#{userPwd}, userBirth=#{userBirth}, phoneNum=#{phoneNum}, email=#{email} where userId=#{userId}
   	</update>
   	
-//-----------------------------------------박근영-------------------------------------------------
-  	<insert id="insertRegisterMember">
-  		INSERT INTO member 
-		<if test="fileInfo != null">
-			(userId, userPwd, userName, userBirth, phoneNum, email, userImg, base64ProfileImg) 
-			VALUES(#{registerDTO.userId}, sha1(md5(#{registerDTO.password})), #{registerDTO.userName}, #{registerDTO.birthday}, #{registerDTO.phone}, #{registerDTO.email}, #{ImgFileVODTO.newFileName}, #{ImgFileVODTO.base64Img})
-		</if>
-		<if test="fileInfo == null">
-			(userId, userPwd, userName, userBirth, phoneNum, email) 
-			VALUES(#{registerDTO.userId}, sha1(md5(#{registerDTO.password})), #{registerDTO.userName}, #{registerDTO.birthday}, #{registerDTO.phone}, #{registerDTO.email})
-		</if>
-  	</insert>
-//-----------------------------------------박근영-------------------------------------------------
+<!-- 박근영 -->
+<insert id="insertRegisterMember">
+    INSERT INTO Member (
+        userId, userPwd, userName, userBirth, phoneNum, email
+        <if test="fileInfo != null">
+            , userImg, base64ProfileImg
+        </if>
+    )
+    VALUES (
+        #{registerDTO.userId}, sha1(md5(#{registerDTO.password})), #{registerDTO.userName}, 
+        #{registerDTO.birthday}, #{registerDTO.phone}, #{registerDTO.email}
+        <if test="fileInfo != null">
+            , #{fileInfo.newFileName}, #{fileInfo.base64Img}
+        </if>
+    )
+</insert>
+<!-- 박근영 -->
   </mapper>

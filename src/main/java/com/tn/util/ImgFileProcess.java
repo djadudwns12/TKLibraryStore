@@ -20,7 +20,7 @@ import com.tn.member.model.vo.ImgFileVODTO;
 public class ImgFileProcess{
 	
 
-
+// -----------------------------------------박근영-------------------------------------------------
 	public ImgFileVODTO saveFileToRealPath(byte[] upfile, String realPath, String userId, String originalFileName) throws IOException {
 		ImgFileVODTO result = null;
 		System.out.println(realPath);
@@ -66,7 +66,7 @@ public class ImgFileProcess{
 		
 		return result;
 	}
-
+// -----------------------------------------박근영-------------------------------------------------
 	
 	
 }

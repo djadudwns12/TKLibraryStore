@@ -263,7 +263,19 @@ public class MemberController {
 	}
 
 // -----------------------------------------박근영-------------------------------------------------
-
+	@PostMapping(value = "/checkedDupl")
+	public ResponseEntity<String> checkedDupl(@RequestParam(value = "tmpUserId") String tmpUserId){
+		if(mService.compareId(tmpUserId)) {
+			
+		}
+		
+		
+		
+		return null;
+		
+	}
+	
+	
 	
 	@PostMapping(value = "/register")
 	public ResponseEntity<Void> register(
@@ -358,6 +370,6 @@ public class MemberController {
 		}
 	}
 
-	// -----------------------------------------박근영-------------------------------------------------
+// -----------------------------------------박근영-------------------------------------------------
 
 }

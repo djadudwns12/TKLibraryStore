@@ -118,7 +118,16 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
-	
+
+	@Override
+	public boolean compareId(String tmpUserId) {
+		boolean result = false;
+		if (dao.selectCompareId(tmpUserId) == 1) {
+			result = true;
+		}
+		
+		return false;
+	}
 //-----------------------------------------박근영-------------------------------------------------
 		
 

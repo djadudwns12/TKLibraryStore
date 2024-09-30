@@ -50,7 +50,7 @@ body {
     width: calc(100% - 110px); /* 버튼 옆의 필드 크기 */
 }
 
-.smsButton-container input {
+.sendButton-container input {
     width: calc(100% - 110px); /* 버튼 옆의 필드 크기 */
 }
 
@@ -68,7 +68,7 @@ body {
     background-color: #45a049;
 }
 
-.smsButton-container {
+.sendButton-container {
     display: flex;
     justify-content: space-between;
 }
@@ -160,9 +160,18 @@ body {
     font-size: 12px;
     position: relative; 
     top: -10px;
+    margin-top: 5px;
     
 }
 
+#confirmId {
+    color: green;
+    font-size: 12px;
+    position: relative; 
+    top: -10px;
+    margin-top: 5px;
+    
+}
 
 /* The Modal (background) */
 .modal {
@@ -268,42 +277,43 @@ input[readonly] {
 </head>
 <body>
 <form class="form-container">
-    <div class="form-group button-container">
+    <div class="form-group sendButton-container">
         <input type="text" id="userId" name="userId" placeholder="아이디 입력 (4~8자)" required>
-        <button type="button">중복 확인</button>
+        <button type="button" class="button-disabled" id="checkedDuplBtn" onclick="checkedDupl();">중복 확인</button>
     </div>
     
-    <div id="userIdError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
+    <div id="userIdError"></div> <!-- 에러 메시지 표시할 div -->
+    <div id="confirmId"></div>
     
     <div class="form-group">
         <input type="password" id="password" name="password" placeholder="비밀번호 입력 (문자, 숫자, 특수문자 포함 8~20자)" required>
     </div>
     
-    <div id="passwordError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
+    <div id="passwordError"></div> <!-- 에러 메시지 표시할 div -->
     
     <div class="form-group">
         <input type="password" id="confirmPassword" placeholder="비밀번호 재입력" required>
     </div>
     
-    <div id="confirmPasswordError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
+    <div id="confirmPasswordError"></div> <!-- 에러 메시지 표시할 div -->
     
     <div class="form-group">
         <input type="text" id="userName" name="userName" placeholder="이름을 입력해주세요." required>
     </div>
     
-    <div class="form-group smsButton-container">
+    <div class="form-group sendButton-container">
         <input type="tel" id="phone" name="phone" placeholder="휴대폰 번호 입력" required>
-         <button type="button" class="button-disabled"  id="sendSMSButton">문자 전송</button>
+         <button type="button" class="button-disabled"  id="sendSMSBtn">문자 전송</button>
     </div>
     
-    <div id="phoneError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
+    <div id="phoneError"></div> <!-- 에러 메시지 표시할 div -->
     <div id="timer"></div>
     
     <div class="form-group">
         <input type="email" id="email" name="email" placeholder="email@example.com" required>
     </div>
     
-    <div id="emailError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
+    <div id="emailError"></div> <!-- 에러 메시지 표시할 div -->
     
     <div class="form-group">
         <label for="birthday">생년월일</label>
@@ -388,36 +398,17 @@ function clearError(obj) {
 	  
 	    // 아이디에 키보드가 눌려졌을때 발생하는 이벤트
 	    // **on**은 이벤트 리스너를 지정하는 메서드입니다. 즉, 특정 태그(HTML 요소)에 대해 어떤 이벤트가 발생했을 때, 그 이벤트에 반응하여 함수를 실행하도록 연결해 줍니다. on("input")은 "input" 이벤트가 발생했을 때라는 의미입니다.
-	    $('#userId').on('input', function () {
-	      let tmpUserId = $('#userId').val();
-	      if (tmpUserId.length < 4 || tmpUserId.length > 8) {
-	        outputError("아이디는 4~8자로 입력하세요.", $('#userId'));
-	      } else {
-	    	  clearError($("#userId"));
-	/*         $.ajax({
-	          url: "/member/isDuplicate", // 데이터가 송수신될 서버의 주소
-	          type: "post", // 통신 방식 : GET, POST, PUT, DELETE, PATCH
-	          dataType: "json", // 수신 받을 데이터의 타입 (text, xml, json)
-	          data: {
-	            tmpUserId: tmpUserId,
-	          },
-	          success: function (data) {
-	            // 비동기 통신에 성공하면 자동으로 호출될 callback function
-	            console.log(data);
-	            if (data.msg == "duplicate") {
-	              outputError("중복된 아이디입니다.", $("#userId"));
-	              $("#idValid").val("");
-	              $("#userId").focus();
-	            } else if (data.msg == "not duplicate") {
-	              clearError($("#userId")); // error 메시지 클리어
-	              $("#idValid").val("checked");
-	            }
-	          },
-	          error: function (data) {
-	            console.log(data);
-	          },
-	        }); */
-	      }
+	$('#userId').on('input', function () {
+		$('#confirmId').hide();
+		let tmpUserId = $('#userId').val();
+		if (tmpUserId.length < 4 || tmpUserId.length > 8) {
+			outputError("아이디는 4~8자로 입력하세요.", $('#userId'));
+			$('#checkedDuplBtn').removeClass("button-active").addClass("button-disabled")
+		} else {
+			clearError($("#userId"));
+			$('#checkedDuplBtn').removeClass("button-disabled").addClass("button-active")
+			$('#checkedDuplBtn').attr("onclick", "checkedDupl()")
+		}
 	    });
 	  
     $('#password').on("input", function () {
@@ -449,26 +440,26 @@ function clearError(obj) {
         	//$("#button-disabled").attr("cl", "button-disabled");
         	$('.button-active').removeClass("button-active").addClass("button-disabled");
 			outputError("휴대폰 번호 형식이 아닙니다.", $('#phone'));
-			$('#sendSMSButton').removeAttr("onclick");
+			$('#sendSMSBtn').removeAttr("onclick");
         } else {
         	 //$("#button-disabled").attr("id", "button-active");
         	 // 순수 JavaScript  : 추가: document.getElementById("element").classList.add("className"); 제거  : .classList.remove 토글 : .classList.toggle
         	 //클래스가 있으면 제거, 없으면 추가 (toggle 기능) : $("#element").toggleClass("className");
         	 $('.button-disabled').removeClass("button-disabled").addClass("button-active");
 			clearError($('#phone'));
-			 $('#sendSMSButton').attr("onclick", "sendSMS()");
+			 $('#sendSMSBtn').attr("onclick", "sendSMS()");
 			//addEventListener: 이벤트를 추가할 때, 동일한 이벤트에 대해 여러 개의 리스너를 추가할 수 있습니다. 즉, 동일한 이벤트에 대해 여러 개의 핸들러를 등록할 수 있으며, 나중에 필요하면 특정 리스너만 제거할 수도 있습니다.
 			//setAttribute: onclick과 같은 속성에 이벤트를 직접 추가합니다. 이 방법은 한 번에 하나의 이벤트 핸들러만 추가할 수 있습니다. 즉, 만약 동일한 이벤트에 대해 새로운 핸들러를 추가하려면, 이전 핸들러는 덮어쓰여집니다.
-			//document.getElementById("sendSMSButton").setAttribute("onclick", "sendSMS()");
-			//$("#sendSMSButton").attr("onclick", "sendSMS()");
+			//document.getElementById("sendSMSBtn").setAttribute("onclick", "sendSMS()");
+			//$("#sendSMSBtn").attr("onclick", "sendSMS()");
 			//이벤트 리스너 사용
 			//추가
-			//document.getElementById("sendSMSButton").addEventListener("click", sendSMS);
-			//$("#sendSMSButton").attr("onclick", "sendSMS()");
-			//document.getElementById("sendSMSButton").setAttribute("onclick", "sendSMS()");
+			//document.getElementById("sendSMSBtn").addEventListener("click", sendSMS);
+			//$("#sendSMSBtn").attr("onclick", "sendSMS()");
+			//document.getElementById("sendSMSBtn").setAttribute("onclick", "sendSMS()");
 			//제거
-			// $("#sendSMSButton").removeAttr("onclick");
-			//document.getElementById("sendSMSButton").removeAttribute("onclick");
+			// $("#sendSMSBtn").removeAttr("onclick");
+			//document.getElementById("sendSMSBtn").removeAttribute("onclick");
         }
       }); 
     
@@ -562,9 +553,62 @@ function clearError(obj) {
 		
 		
 		
+		
 
 		
-  let uploadedFile = null;
+let uploadedFile = null;
+  
+async function checkedDupl() {
+	
+	let tmpUserId = $('#userId').val();
+	let response = await $.ajax({
+		url : '/member/checkedDupl',
+		type : 'post',
+		data ; {tmpUserId : tmpUserId},
+		dataype : json,
+		cache: false,
+		success : function(data){
+				if(data == "duplicate"){
+					$('#confirmId').html("사용 가능한 아이디입니다.");
+					$('#confirmId').show();
+					
+					
+					// 올바른 방식으로 `onclick` 설정
+                    //$('#confirmId').prop("onclick", function() {
+                    //    send();  // send 함수가 호출되도록 설정
+                    //});
+
+                    // jQuery의 권장 방식: on() 메서드 사용
+                    // $('#confirmId').on("click", send);
+
+					
+				} else if(data == "notDuplicate"){
+					$('#confirmId').html("중복된 아이디입니다.");
+					$('#confirmId').css("color", "red");
+					$('#confirmId').show();
+					
+					
+				}
+				
+			},
+			error : function(data){
+				alert('중복 확인 요청 중 문제가 발생했습니다. 다시 시도해 주세요.');
+				
+			}
+			
+		});
+} catch (error) {
+    console.log("비동기 처리 중 오류 발생:", error);
+    alert('다시 시도해 주세요.');
+    
+}
+}
+  
+  
+  
+  
+ 
+
 		
 		
 // 넘겨진 file이 이미지 파일이라면 미리보기 하여 출력한다.
@@ -597,55 +641,6 @@ function deleteProfileImage() {
 	
 }
 
-	async function register() {
-	    let form = $("form")[0];  // 폼 요소를 선택
-	    let fd = new FormData(form);  // FormData 객체 생성
-	    fd.append("imgFile", uploadedFile);
-	    
-/* 	    for (var pair of fd.entries()) {
-	        console.log(pair[0]+ ', ' + pair[1]);
-	    } */
-
-	    try {
-	        let response = await $.ajax({
-	            url: '/member/register',             // 데이터가 송수신될 서버의 주소
-	            type: 'post',                                     // 통신 방식 : GET, POST, PUT, DELETE, PATCH
-	            data: fd,                          // 보낼 데이터
-	            cache: false,
-	            processData: false,                 // 데이터를 쿼리스트링 형태로 보내지 않겠다는 설정
-	            contentType: false,                 // "multipart/form-data"로 전송되도록 설정
-	            //async: true                         // 비동기 통신을 true로 설정 (기본 값)
-	            statusCode: {
-	                // 상태 코드 200: 성공 처리
-	                200: function () {
-	                    alert('가입 성공!');
-	                },
-	                // 상태 코드 406: 실패 처리
-	                406: function () {
-	                    alert('가입 실패');
-	                }
-	            }
-	        });
-
-	    } catch (error) {
-	        console.log("에러 발생: ", error);
-	        alert('입력된 회원가입 정보를 확인 후 가입해 주세요');
-	    }
-	}
-	
-	
-	
-		
-		
-		
-		
-		
-		
-		
-		
-  
-
-  
   
 let code ='';
   
@@ -679,14 +674,14 @@ function sendSMS() {
 				alert("SMS 전송 성공: 인증 코드 - " + response);
 		      
 			      let htmlStr = '';  // 변수 초기화
-			      htmlStr += `<div class="form-group smsButton-container">`;
+			      htmlStr += `<div class="form-group sendButton-container">`;
 			      htmlStr += `<input type="text" id="verification" name="verification" placeholder="인증번호 입력" required>`;
 			      htmlStr += `<button type="button" id="verificationBtn" class="button-active" onclick="verificationCode();">인증번호 확인</button>`;
 			      htmlStr += `</div>`;
 
-			      // .smsButton-container 뒤에 htmlStr을 추가
-			      $('.smsButton-container').after(htmlStr); 
-			      $('#sendSMSButton').removeAttr("onclick");
+			      // .sendButton-container 뒤에 htmlStr을 추가
+			      $('.sendButton-container').after(htmlStr); 
+			      $('#sendSMSBtn').removeAttr("onclick");
 			      startTimer();
 			      code = response;
 			      
@@ -720,7 +715,7 @@ function verificationCode() {
 		$('#verificationBtn').removeClass("button-active").addClass("button-disabled");
 		$('#verificationBtn').html('인증완료');
 		$('#verificationBtn').removeAttr("onclick");
-		$('#sendSMSButton').removeAttr("onclick");
+		$('#sendSMSBtn').removeAttr("onclick");
 		
 	} else {
 		alert('인증번호가 다릅니다.');
@@ -962,6 +957,44 @@ function serializeDiv(divId) {
 	    });
 	    return formData.join('&');
 	}
+	
+	
+	
+async function register() {
+    let form = $("form")[0];  // 폼 요소를 선택
+    let fd = new FormData(form);  // FormData 객체 생성
+    fd.append("imgFile", uploadedFile);
+    
+/* 	    for (var pair of fd.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]);
+    } */
+
+    try {
+        let response = await $.ajax({
+            url: '/member/register',             // 데이터가 송수신될 서버의 주소
+            type: 'post',                                     // 통신 방식 : GET, POST, PUT, DELETE, PATCH
+            data: fd,                          // 보낼 데이터
+            cache: false,
+            processData: false,                 // 데이터를 쿼리스트링 형태로 보내지 않겠다는 설정
+            contentType: false,                 // "multipart/form-data"로 전송되도록 설정
+            //async: true                         // 비동기 통신을 true로 설정 (기본 값)
+            statusCode: {
+                // 상태 코드 200: 성공 처리
+                200: function () {
+                    alert('가입 성공!');
+                },
+                // 상태 코드 406: 실패 처리
+                406: function () {
+                    alert('가입 실패');
+                }
+            }
+        });
+
+    } catch (error) {
+        console.log("에러 발생: ", error);
+        alert('입력된 회원가입 정보를 확인 후 가입해 주세요');
+    }
+}
 
 
 
