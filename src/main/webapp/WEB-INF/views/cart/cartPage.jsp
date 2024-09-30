@@ -265,6 +265,27 @@
 		</div>
 	</div>
 
+	<!-- 삭제 확인 모달 -->
+	<div class="modal fade" id="confirmDeleteModal" tabindex="-1"
+		aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="confirmDeleteModalLabel">삭제 확인</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">선택한 상품을 삭제하시겠습니까?</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-danger"
+						id="confirmDeleteButton">삭제</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<c:import url="../footer.jsp"></c:import>
 
 	<!-- jQuery 및 Bootstrap JS를 body 끝 부분에 배치 -->
@@ -479,10 +500,12 @@
         });
     }
     
+    let selectedCartIds = []; // 선택된 cartId를 저장할 변수
+
     /* 선택 삭제 버튼 눌렀을 때 */
     $('#deleteSelectedButton').on('click', function() {
         // 선택된 체크박스의 cartId 수집
-        const selectedCartIds = [];
+        selectedCartIds = [];
         $('.selectItem:checked').each(function() {
             selectedCartIds.push($(this).data('cart-id'));
         });
@@ -492,6 +515,12 @@
             return;
         }
 
+        // 모달 띄우기
+        $('#confirmDeleteModal').modal('show');
+    });
+
+    // 삭제 버튼 클릭 시 처리
+    $('#confirmDeleteButton').on('click', function() {
         // AJAX 요청으로 서버에 삭제 요청 보내기
         $.ajax({
             url: '/cart/deleteSelected',
@@ -501,18 +530,21 @@
             success: function(response) {
                 if (response.success) {
                     // 삭제 성공 시 항목 제거
-                    selectedIds.forEach(function(cartId) {
+                    selectedCartIds.forEach(function(cartId) {
                         // 해당 cartId를 가진 행 제거
                         $('input[data-cart-id="' + cartId + '"]').closest('tr').remove();
                     });
-                    alert('선택된 항목이 삭제되었습니다.');
                 } else {
                     alert('삭제 중 오류가 발생했습니다.');
                 }
+                // 모달 닫기
+                $('#confirmDeleteModal').modal('hide');
             },
             error: function(xhr, status, error) {
                 console.error("AJAX 요청 중 오류 발생:", error);
                 alert("에러가 발생했습니다: " + error);
+                // 모달 닫기
+                $('#confirmDeleteModal').modal('hide');
             }
         });
     });
