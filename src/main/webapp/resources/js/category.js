@@ -65,7 +65,7 @@ function getBookList(obj){
             	let inputHTML = ''
             	
             	$.each(data,function(i,row){
-            		inputHTML += '<tr>'
+            		inputHTML += `<tr onclick="location.href='/bookList/bookDetail?bookNo=${row.bookNo}';" style='cursor:pointer;'>>`
             		inputHTML += `<td>${row.title}</td>`
             		inputHTML += `<td>${row.author}</td>`
             		inputHTML += `<td>${row.publisher}</td>`
