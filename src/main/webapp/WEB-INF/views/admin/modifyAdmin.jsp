@@ -323,7 +323,7 @@ $(function(){
 				</div>
 				<div class="content3">
 					<div id="imageArea">
-						<img src="${product.thumbNail}">
+						<img src="${product.base64ProfileImg}">
 					</div>
 					<div class="fileUploadArea mb-3">
 						<p>업로드할 파일을 여기에 드래그 드랍하세요!</p>

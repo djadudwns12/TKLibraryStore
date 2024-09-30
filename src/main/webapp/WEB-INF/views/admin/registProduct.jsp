@@ -243,9 +243,9 @@ $(function(){
 		<div class="header">
 			<jsp:include page="header.jsp" />
 
-			<h1 class="jemok">ModifyProduct</h1>
+			<h1 class="jemok">RegistProduct</h1>
 
-			<form action="/admin/modifySave" method="post">
+			<form action="/admin/registSave" method="post">
 
 				<div class="content1">
 
@@ -268,7 +268,8 @@ $(function(){
 
 					<div class="mb-3">
 						<label for="pubDate" class="form-label">PubDate</label> <input
-							type="text" class="form-control" id="pubDate" name="pubDate">
+							type="text" class="form-control" id="pubDate" name="pubDate"
+							value="yyyy-MM--dd" style="opacity: ">
 					</div>
 
 				</div>
@@ -299,12 +300,11 @@ $(function(){
 				<div class="mb-3" style="width: 80%; margin-left: 30px;">
 					<label for="thumbNail" class="form-label">ThumbNail</label> <input
 						type="text" class="form-control imageText" id="thumbNail" name="thumbNail"
-						 value="${product.thumbNail}"
-						style="width: 900px; margin-bottom: 50px;" readonly>
+						 style="width: 900px; margin-bottom: 50px;" readonly>
 				</div>
 				<div class="content3">
 					<div id="imageArea">
-						<img src="${product.thumbNail}">
+						
 					</div>
 					<div class="fileUploadArea mb-3">
 						<p>업로드할 파일을 여기에 드래그 드랍하세요!</p>
@@ -315,7 +315,7 @@ $(function(){
 					<label for="introduction" class="form-label">Introduction</label>
 					<textarea class="form-control" id="introduction"
 						name="introduction" rows="5" style="height: 150px;">
-							${product.introduction}
+							
 						</textarea>
 				</div>
 

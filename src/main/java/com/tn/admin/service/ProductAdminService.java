@@ -25,4 +25,7 @@ public interface ProductAdminService {
 
 	int modifyProduct(ProductVO product) throws Exception;
 
+
+
+
 }
