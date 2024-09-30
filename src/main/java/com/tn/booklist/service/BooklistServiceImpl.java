@@ -27,20 +27,24 @@ public class BooklistServiceImpl implements BooklistService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<BooklistVO> getAllBooklist(PagingInfoDTO dto) throws Exception {
+	public Map<String, Object> getAllBooklist(PagingInfoDTO dto) throws Exception {
 		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		PagingInfo pi = makePagingInfo(dto);
 		
 		List<BooklistVO> lst = bDao.selectAllBook(pi);
 		
-		return lst;
+		resultMap.put("pagingInfo", pi);
+		resultMap.put("listAll", lst);
+		
+		return resultMap;
 	}
 	
 	
 	private PagingInfo makePagingInfo(PagingInfoDTO dto) throws Exception {
 		PagingInfo pi = new PagingInfo(dto);
 		
-		bDao.getTotalPostCnt();
+		pi.setTotalPostCnt(bDao.getTotalPostCnt());
 		
 		pi.setTotalPageCnt();	//전체 페이지 수 세팅
 		pi.setStartRowIndex();	// 현재 페이지에서 보여주기 시작할 rowIndex 세팅
@@ -56,6 +60,24 @@ public class BooklistServiceImpl implements BooklistService {
 		return pi;
 	}
 
+	private PagingInfo makePagingInfo(PagingInfoDTO dto,int totalCount) throws Exception {
+		PagingInfo pi = new PagingInfo(dto);
+		
+		pi.setTotalPostCnt(bDao.getTotalPostCnt());
+		
+		pi.setTotalPageCnt();	//전체 페이지 수 세팅
+		pi.setStartRowIndex();	// 현재 페이지에서 보여주기 시작할 rowIndex 세팅
+		
+		
+		// 페이징 블럭 만들기
+		pi.setPageBlockNoCurPage();
+		pi.setStartPageNoCurBlock();
+		pi.setEndPageNoCurBlock();
+		
+		
+		System.out.println(pi.toString());
+		return pi;
+	}
 
 	@Override
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
@@ -68,18 +90,19 @@ public class BooklistServiceImpl implements BooklistService {
 
 //	====================================================엄영준=============================================================
 	@Override
-	public List<BooklistVO> getCategoryBooklist(String category) throws Exception {
-		Map<String, Object> params = new HashMap<String, Object>();
+	public Map<String, Object> getCategoryBooklist(PagingInfoDTO dto, String category) throws Exception {
+		Map<String, Object> result = new HashMap<String, Object>();
 		
-		PagingInfo pi = makePagingInfo(PagingInfoDTO.builder().pageNo(1).PagingSize(10).build());
+		int totalCount = bDao.countCategoryBooklist(category);
 		
-		params.put("pi", pi);
-		params.put("category", category);
-		
+		PagingInfo pi = makePagingInfo(dto,totalCount);
 		
 		List<BooklistVO> lst = bDao.selectCategoryBooklist(pi,category);
 		
-		return lst;
+		result.put("pi", pi);
+		result.put("list", lst);
+		
+		return result;
 	}
 //	====================================================엄영준 END=============================================================
 }

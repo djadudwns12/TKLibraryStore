@@ -51,5 +51,11 @@ public class BooklistDAOImpl implements BooklistDAO {
 		return ses.selectList(NS + ".selectCategoryBooklist", params);
 	}
 
+	@Override
+	public int countCategoryBooklist(String category) throws Exception {
+		
+		return ses.selectOne(NS+".countCategoryBooklist",category);
+	}
+
 //	====================================================엄영준 END=============================================================
 }
