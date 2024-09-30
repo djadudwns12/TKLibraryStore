@@ -21,7 +21,11 @@ public interface MemberDAO {
 	int updateEditMember(MemberDTO editMember) throws Exception;
 
 //-----------------------------------------박근영-------------------------------------------------
-	// 회원정보 insert(가입)
-	public int insertMember(RegisterDTO registerDTO, ImgFileVODTO fileInfo);
+	// 회원정보 INSERT(가입)
+	public int insertMember(RegisterDTO registerDTO, ImgFileVODTO fileInfo) throws Exception;
+	// ID 중복확인 SELECT
+	public int selectId(String tmpUserId) throws Exception;
 //-----------------------------------------박근영-------------------------------------------------
+
+
 }

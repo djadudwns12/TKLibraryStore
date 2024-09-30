@@ -29,7 +29,7 @@ public interface MemberService {
 	// 회원정보 저장 메서드
 	boolean registerMember(RegisterDTO registerDTO, ImgFileVODTO fileInfo) throws Exception;
 	// 중복아이디 비교 메서드
-	boolean compareId(String tmpUserId);
+	boolean compareId(String tmpUserId) throws Exception;
 //-----------------------------------------박근영-------------------------------------------------
 
 

@@ -265,13 +265,22 @@ public class MemberController {
 // -----------------------------------------박근영-------------------------------------------------
 	@PostMapping(value = "/checkedDupl")
 	public ResponseEntity<String> checkedDupl(@RequestParam(value = "tmpUserId") String tmpUserId){
-		if(mService.compareId(tmpUserId)) {
-			
+		ResponseEntity<String> result = null;
+		try {
+			if(mService.compareId(tmpUserId)) {
+				result = new ResponseEntity<String>("duplicate", HttpStatus.OK);
+				
+			} else {
+				result = new ResponseEntity<String>("notDuplicate", HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
 		}
 		
 		
 		
-		return null;
+		return result;
 		
 	}
 	

@@ -62,7 +62,14 @@ public class MemberDAOImpl implements MemberDAO  {
 		paramMap.put("fileInfo", fileInfo);
 		return sess.insert(NS + ".insertRegisterMember", paramMap);
 	}
+	
+	@Override
+	public int selectId(String tmpUserId) throws Exception {
+		return sess.selectOne(NS + ".selectCompareId", tmpUserId);
+	}
 //-----------------------------------------박근영-------------------------------------------------
+
+
 	
 	
 }

@@ -120,13 +120,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public boolean compareId(String tmpUserId) {
+	public boolean compareId(String tmpUserId) throws Exception {
 		boolean result = false;
-		if (dao.selectCompareId(tmpUserId) == 1) {
+		if (dao.selectId(tmpUserId) == 1) {
 			result = true;
 		}
 		
-		return false;
+		return result;
 	}
 //-----------------------------------------박근영-------------------------------------------------
 		

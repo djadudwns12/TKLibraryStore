@@ -165,7 +165,6 @@ body {
 }
 
 #confirmId {
-    color: green;
     font-size: 12px;
     position: relative; 
     top: -10px;
@@ -279,7 +278,7 @@ input[readonly] {
 <form class="form-container">
     <div class="form-group sendButton-container">
         <input type="text" id="userId" name="userId" placeholder="아이디 입력 (4~8자)" required>
-        <button type="button" class="button-disabled" id="checkedDuplBtn" onclick="checkedDupl();">중복 확인</button>
+        <button type="button" class="button-disabled" id="checkedDuplBtn">중복 확인</button>
     </div>
     
     <div id="userIdError"></div> <!-- 에러 메시지 표시할 div -->
@@ -404,10 +403,18 @@ function clearError(obj) {
 		if (tmpUserId.length < 4 || tmpUserId.length > 8) {
 			outputError("아이디는 4~8자로 입력하세요.", $('#userId'));
 			$('#checkedDuplBtn').removeClass("button-active").addClass("button-disabled")
+			$('#checkedDuplBtn').removeAttr("onclick", "checkedDupl()")
+			
 		} else {
+			
 			clearError($("#userId"));
 			$('#checkedDuplBtn').removeClass("button-disabled").addClass("button-active")
 			$('#checkedDuplBtn').attr("onclick", "checkedDupl()")
+			
+			// 올바른 방식으로 `onclick` 설정
+            //$('#confirmId').prop("onclick", function() { send(); }); // send 함수가 호출되도록 설정
+			// jQuery의 권장 방식: on() 메서드 사용
+			// $('#confirmId').on("click", send);
 		}
 	    });
 	  
@@ -545,64 +552,43 @@ function clearError(obj) {
 			  }
 			});
 
-   
-    
-    
-
   });
 		
-		
-		
-		
-
 		
 let uploadedFile = null;
   
 async function checkedDupl() {
-	
-	let tmpUserId = $('#userId').val();
-	let response = await $.ajax({
-		url : '/member/checkedDupl',
-		type : 'post',
-		data ; {tmpUserId : tmpUserId},
-		dataype : json,
-		cache: false,
-		success : function(data){
-				if(data == "duplicate"){
-					$('#confirmId').html("사용 가능한 아이디입니다.");
-					$('#confirmId').show();
-					
-					
-					// 올바른 방식으로 `onclick` 설정
-                    //$('#confirmId').prop("onclick", function() {
-                    //    send();  // send 함수가 호출되도록 설정
-                    //});
-
-                    // jQuery의 권장 방식: on() 메서드 사용
-                    // $('#confirmId').on("click", send);
-
-					
-				} else if(data == "notDuplicate"){
-					$('#confirmId').html("중복된 아이디입니다.");
-					$('#confirmId').css("color", "red");
-					$('#confirmId').show();
-					
-					
-				}
-				
-			},
-			error : function(data){
-				alert('중복 확인 요청 중 문제가 발생했습니다. 다시 시도해 주세요.');
-				
-			}
-			
-		});
-} catch (error) {
-    console.log("비동기 처리 중 오류 발생:", error);
-    alert('다시 시도해 주세요.');
-    
+    try {
+        let tmpUserId = $('#userId').val();
+        let response = await $.ajax({
+            url : '/member/checkedDupl',
+            type : 'post',
+            data : {tmpUserId : tmpUserId},  // 여기에 `:`를 사용해야 함
+            dataType : "text",  // `dataType` 오타 수정: "dataType"으로 해야 함
+            cache: false,
+            success : function(data){
+                if(data == "notDuplicate") {
+                    $('#confirmId').html("사용 가능한 아이디입니다.");
+                    $('#confirmId').css("color", "green");
+                    $('#confirmId').show();
+                    
+                } else if(data == "duplicate") {
+                    $('#confirmId').html("중복된 아이디입니다.");
+                    $('#confirmId').css("color", "red");
+                    $('#confirmId').show();
+                }
+            },
+            error : function(data){
+                alert('중복 확인 요청 중 문제가 발생했습니다. 다시 시도해 주세요.');
+            }
+        });
+    } catch (error) {  // 이 부분을 함수 내부로 이동
+        console.log("비동기 처리 중 오류 발생:", error);
+        alert('다시 시도해 주세요.');
+    }
 }
-}
+
+
   
   
   
@@ -626,10 +612,8 @@ function showPreview(imgFile) {
 	};
 	// 파일을 읽어서 DataURL로 변환 (이미지 형식의 데이터를 읽어옴)
 	reader.readAsDataURL(imgFile);
-		
-		
-		
-		} 
+
+} 
 	
 		
 function deleteProfileImage() {
