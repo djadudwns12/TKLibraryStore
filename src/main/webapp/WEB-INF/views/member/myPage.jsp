@@ -21,50 +21,105 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
 <style>
+/* 전역 스타일 */
+body {
+    font-family: 'Cairo', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .input-group {
-	display: flex;
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
 }
 
 .input-group label {
-	display: inline-block;
-	width: 150px;
-}
-
-.input-group form-check {
-	padding-left: 0px;
+    display: inline-block;
+    width: 150px;
 }
 
 .input-group span {
-	border: 1px solid;
-	border-radius: 3px;
-	width: inherit;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 8px;
+    width: 100%;
 }
 
 /* 이미지 슬라이더 */
 .swiper-container {
-	height: 420px;
-	border: 5px solid silver;
-	border-radius: 7px;
-	box-shadow: 0 0 20px #ccc inset;
+    height: 420px;
+    border: 5px solid silver;
+    border-radius: 7px;
+    box-shadow: 0 0 20px #ccc inset;
 }
 
 .swiper-slide {
-	text-align: center;
-	display: flex; /* 내용을 중앙정렬 하기위해 flex 사용 */
-	align-items: center; /* 위아래 기준 중앙정렬 */
-	justify-content: center; /* 좌우 기준 중앙정렬 */
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .swiper-slide img {
-	box-shadow: 0 0 5px #555;
-	max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
-	/* 이 예제에서 필요해서 설정했습니다. 상황에따라 다를 수 있습니다. */
+    box-shadow: 0 0 5px #555;
+    max-width: 100%;
 }
 
 .ex1 {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+/* 포인트 현황 테이블 스타일 */
+table.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table.table th, table.table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+table.table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+/* 최근 주문내역 및 최근 본 상품 */
+.ex1 > div {
+    flex: 1;
+}
+
+.ex1 img {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.list-group-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 반응형 디자인 */
+@media screen and (max-width: 768px) {
+    .ex1 {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .swiper-container {
+        height: auto;
+    }
 }
 </style>
 <script type="text/javascript">
@@ -188,11 +243,11 @@
 		<div class="ex1">
 			<!-- 최근 주문내역 -->
 			<div>
-				<img width="100"
+				<img  style="width: 100px"
 					src="https://mblogthumb-phinf.pstatic.net/MjAxODEyMDhfMTQz/MDAxNTQ0MjMyMDE4NDU4.x8TtSN-Knc5CrNjwpb1ulTDLpEui7mTLYPqGNUjnDbQg.-9zaXZALDcAXbsdoOfiPngUMs5JRQ6KNVPi0MCoowAgg.PNG.8713232/image.png?type=w800">
-				<img width="100"
+				<img style="width: 100px"
 					src="https://mblogthumb-phinf.pstatic.net/MjAxODEyMDhfMTQz/MDAxNTQ0MjMyMDE4NDU4.x8TtSN-Knc5CrNjwpb1ulTDLpEui7mTLYPqGNUjnDbQg.-9zaXZALDcAXbsdoOfiPngUMs5JRQ6KNVPi0MCoowAgg.PNG.8713232/image.png?type=w800">
-				<img width="100"
+				<img style="width: 100px"
 					src="https://mblogthumb-phinf.pstatic.net/MjAxODEyMDhfMTQz/MDAxNTQ0MjMyMDE4NDU4.x8TtSN-Knc5CrNjwpb1ulTDLpEui7mTLYPqGNUjnDbQg.-9zaXZALDcAXbsdoOfiPngUMs5JRQ6KNVPi0MCoowAgg.PNG.8713232/image.png?type=w800">
 			</div>
 			<!-- 최근본상품 -->
