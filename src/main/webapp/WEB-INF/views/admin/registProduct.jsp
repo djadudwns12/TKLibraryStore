@@ -249,10 +249,7 @@ $(function(){
 
 				<div class="content1">
 
-					<div class="mb-3">
-						<label for="bookNo" class="form-label">BookNo</label> <input
-							type="text" class="form-control" id="bookNo" name="bookNo" readonly>
-					</div>
+					
 					<div class="mb-3">
 						<label for="title" class="form-label">Title</label> <input
 							type="text" class="form-control" id="title" name="title" >
