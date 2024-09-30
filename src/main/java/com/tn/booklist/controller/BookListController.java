@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.tn.booklist.model.dto.PagingInfo;
 import com.tn.booklist.model.dto.PagingInfoDTO;
 import com.tn.booklist.model.vo.BookDetailInfo;
 import com.tn.booklist.model.vo.BooklistVO;
@@ -36,23 +37,33 @@ public class BookListController {
 	
 	// 책 전체 리스트를 불러오는 메서드 
 	@RequestMapping("/listAll")
-	public String getAllList(Model model, @RequestParam(value="pageNo", defaultValue = "1") int pageNo, @RequestParam(value="pagingSize", defaultValue = "10")int pagingSize) {
+	public void getAllList(Model model, @RequestParam(value="pageNo", defaultValue = "1") int pageNo, @RequestParam(value="pagingSize", defaultValue = "10")int pagingSize) {
 		
 		PagingInfoDTO dto = PagingInfoDTO.builder()
 				.pageNo(pageNo)
 				.PagingSize(pagingSize)
 				.build();
 		
+		List<BooklistVO> list = null;
+		Map<String, Object> result = null;
+		 
 		try {
-			List<BooklistVO> listAll = bService.getAllBooklist(dto);
-			model.addAttribute("listAll", listAll);
+			result = bService.getAllBooklist(dto);
+			PagingInfo pi = (PagingInfo) result.get("pagingInfo");
+			
+			list = (List<BooklistVO>) result.get("listAll");
+//			List<BooklistVO> listAll = bService.getAllBooklist(dto);
+			
+			model.addAttribute("listAll", list);
+			model.addAttribute("pagingInfo", pi);
 			
 		} catch (Exception e) {
 			
 			e.printStackTrace();
+			model.addAttribute("exception", "error");
 		}
 		
-		return "/bookList/listAll";
+//		return "/bookList/listAll";
 	}
 	
 	// 책 상세페이지를 불러오는 메서드 
