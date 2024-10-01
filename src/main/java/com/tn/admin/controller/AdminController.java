@@ -2,14 +2,19 @@ package com.tn.admin.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,10 +62,12 @@ public class AdminController {
 	}
 
 	@RequestMapping("/productAdmin")
-	public void productAdmin(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+	// response 객체를 사용할 시에는 반환값 void를 사용해선 안된다. freshAttribute 관련문제
+	public String productAdmin(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
 			@RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize,
-			@RequestParam(value = "ra", defaultValue = "default") String sortBy, SearchCriteriaDTO searchCriteria) {
-
+			@RequestParam(value = "ra", defaultValue = "default") String sortBy, SearchCriteriaDTO searchCriteria, HttpServletRequest request, HttpServletResponse response) {
+		
+		
 		// System.out.println( searchCriteria.toString()+ "을 검색하자");
 		PagingInfoDTO dto = PagingInfoDTO.builder().pageNo(pageNo).pagingSize(pagingSize).build();
 		// System.out.println(dto.getPagingSize() + "페이징정보?" + dto.getPageNo());
@@ -71,7 +78,59 @@ public class AdminController {
 			PagingInfo pi = (PagingInfo) result.get("pagingInfo");
 			List<ProductVO> list = (List<ProductVO>) result.get("productList");
 			// System.out.println(pi.toString());
+			
+			
+		
+			// 검색어가 존재하고, 제목을 검색했을 때만 쿠키에 저장.
+			if(searchCriteria.getSearchWord() != null && searchCriteria.getSearchType().equals("title")) {
+				
+				
+				String searchWord = searchCriteria.getSearchWord();
+							
+				try {
+		            // 기존 쿠키 확인
+		            Cookie[] cookies = request.getCookies();
+		            String searchHistory = "";
 
+		            if (cookies != null) {
+		                for (Cookie cookie : cookies) {
+		                    if ("recentSearch".equals(cookie.getName())) {
+		                        searchHistory = URLDecoder.decode(cookie.getValue(), "UTF-8");
+		                        System.out.println("검색 전 " +searchHistory);
+		                    }
+		                }
+		            }
+
+		            // 검색어를 쿠키 값에 추가 (중복 체크)
+		            
+		            
+		            List<String> historyList = new ArrayList<>(List.of(searchHistory.split(",")));
+		            	            
+		            historyList.add(0, searchWord); // 가장 앞에 추가
+		                
+		            	            
+		            // 최대 5개의 검색어만 유지
+		            if (historyList.size() > 5) {
+		                historyList = historyList.subList(0, 5);
+		            }
+
+		            for(String L : historyList) {
+		            	System.out.println("historyList 에 있는 키워드 검색 후 : "  +L);
+		            }
+		            // 쿠키에 기록
+		            Cookie searchCookie = new Cookie("recentSearch", URLEncoder.encode(String.join(",", historyList), "UTF-8"));
+		            searchCookie.setMaxAge(60 * 60 * 24 * 7); // 쿠키 유효 기간: 7일
+		            response.addCookie(searchCookie);
+		            
+		            
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+				
+				
+				
+			}
+			
 			model.addAttribute("productList", list); // 데이터 바인딩
 			model.addAttribute("pagingInfo", pi);
 			model.addAttribute("search", searchCriteria);
@@ -80,6 +139,8 @@ public class AdminController {
 			e.printStackTrace();
 			model.addAttribute("exception", "error");
 		}
+		
+		return "admin/productAdmin";
 	}
 
 	@RequestMapping(value = "/deleteProduct", method = RequestMethod.POST)

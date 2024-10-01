@@ -83,27 +83,22 @@
             }
         });
 
-        // Ajax로 최근 검색 기록 불러오기
-        /* 
-        function loadRecentSearches() {
-            $.ajax({
-                url: '/search/recent',  // 최근 검색 기록 API
-                method: 'GET',
-                success: function (data) {
-                    var list = $("#recentSearchesList");
-                    list.empty();  // 기존 목록 비우기
+        function getCookie(name) {
+            let value = "; " + document.cookie;
+            let parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+        }
 
-                    // 최근 검색 기록 데이터를 리스트에 추가
-                    $.each(data, function (index, search) {
-                        list.append("<li>" + search.searchQuery + " (" + search.searchTime + ")</li>");
-                    });
-                },
-                error: function () {
-                    alert("검색 기록을 불러오는 데 실패했습니다.");
-                }
+        // 최근 검색어 쿠키 가져오기
+        let recentSearch = getCookie("recentSearch");
+        if (recentSearch) {
+            let searchArray = decodeURIComponent(recentSearch).split(',');
+
+            // 검색어 목록 표시
+            searchArray.forEach(function(keyword) {
+                $("#recentSearchesList").append('<li class="recentSearchs"><a href= "/admin/productAdmin?searchType=title&searchWord=' + keyword + '";>' + keyword + '</a></li>');
             });
         }
-        */
     });
 	
 
@@ -321,46 +316,62 @@ body {
 	margin-left: 30px;
 }
 
- /* 모달 스타일 */
-        .modal {
-            display: none; /* 기본적으로 숨김 */
-            position: absolute; /* 검색창 아래 고정 */
-            z-index: 1;
-            width: 100%; /* 검색창과 동일한 가로 길이 */
-            max-height: 300px; /* 모달 최대 높이 설정 */
-            overflow-y: auto; /* 스크롤 가능 */
-        }
+/* 모달 스타일 */
+.modal {
+	display: none; /* 기본적으로 숨김 */
+	position: absolute; /* 검색창 아래 고정 */
+	z-index: 1;
+	width: 100%; /* 검색창과 동일한 가로 길이 */
+	max-height: 300px; /* 모달 최대 높이 설정 */
+	overflow-y: auto; /* 스크롤 가능 */
+}
 
-        /* 모달 내부 콘텐츠 스타일 */
-        .modal-content {
-            padding: 10px;
-        }
+/* 모달 내부 콘텐츠 스타일 */
+.modal-content {
+	padding: 10px;
+}
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
+}
 
-        .close:hover, .close:focus {
-            color: black;
-            text-decoration: none;
-        }
+.close:hover, .close:focus {
+	color: black;
+	text-decoration: none;
+}
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
+ul {
+	list-style-type: none;
+	padding: 0;
+}
 
-        li {
-            padding: 5px 0;
-        }
-        
-        .content-top{
-        	display: flex;
-        }
+li {
+	padding: 5px 0;
+}
+
+.content-top {
+	display: flex;
+}
+
+/* 최근 검색어 */
+a:link {
+	color: 5C636A;
+	text-decoration: inherit;
+}
+
+a:hover {
+	color: 5C636A;
+	text-decoration: inherit;
+}
+
+a:visited {
+	color: #5C636A;
+	text-decoration: none;
+}
 </style>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -398,7 +409,7 @@ body {
 
 						<div class="searchBar" style="margin-right: 20px;">
 							<input type="text" class="searchWord" name="searchWord"
-								id="searchWord" placeholder="검색어를 입력하세요.">
+								id="searchWord" placeholder="검색어를 입력하세요." autocomplete="off">
 							<div class="searchIcon">
 								<i class="fas fa-search"></i>
 							</div>
@@ -559,9 +570,7 @@ body {
 					</div>
 					<ul id="recentSearchesList">
 						<!-- 검색 기록이 동적으로 삽입될 곳 -->
-						<li>1번 검색어</li>
-						<li>2번 검색어</li>
-						<li>3번 검색어</li>
+
 					</ul>
 				</div>
 			</div>
