@@ -21,25 +21,33 @@
 		</div>
 		<div class="header">
 			<jsp:include page="header.jsp" />
-
+		
 			<h1 class="jemok">회원정보상세보기</h1>
-			<form action="" method="post" enctype="multipart/form-data">
-				<div class="mb-3"><img src="/resources/userImg/${memberDetail.userImg }" style="width:50px; height:50px; border-radius: 25px;"/></div>
+		<div class="content">	
+
+			<div class="mb-3 profile">	
+				<div >
+					<img src="/resources/userImg/${memberDetail.userImg }" style="width:200px; border-radius: 50%; margin-left:30px;"/>
+				</div>
+			
 				<div class="content1">
-					<div class="mb-3">
+					
+					<div>
 						<label for="userId" class="form-label">아이디</label> 
 						<input type="text" class="form-control" id="userId" name="userId" value="${memberDetail.userId}" readonly>
 					</div>
-					<div class="mb-3">
+					<div>
 						<label for="userPwd" class="form-label">비밀번호</label> 
-						<input type="text" class="form-control" id="userPwd" name="userPwd" value="${memberDetail.userPwd}" readonly>
+						<input type="text" class="form-control" id="userPwd" name="userPwd" value="${memberDetail.userPwd}" readonly>	
 					</div>
-				</div>
-				<div class="content2">
 					<div class="mb-3">
 						<label for="userName" class="form-label">이름</label> 
 						<input type="text" class="form-control" id="userName" value="${memberDetail.userName}" readonly>
 					</div>
+				</div>
+			</div>
+				
+				<div class="content2">
 					<div class="mb-3">
 						<label for="userBirth" class="form-label">생년월일</label> 
 						<input type="text" class="form-control" id="userBirth" value="${memberDetail.userBirth}" readonly>
@@ -69,24 +77,62 @@
 
 				</div>
 
-				<div class="mb-3" style="width: 80%; margin-left: 30px;">
-					<label for="thumbNail" class="form-label">ThumbNail</label> <input
-						type="text" class="form-control" id="readcount"
-						value=""
-						style="width: 900px; margin-bottom: 50px;" readonly>
-				</div>
-				<div class="mb-3" style="margin-top: 50px; margin-left: 30px; width: 85%;">
-					<label for="introduction" class="form-label">Introduction</label>
-					<textarea class="form-control" id="content" name="content" rows="5" style="height: 150px;">${memberDetail}
-					</textarea>
+				<div class="container mt-3" style="margin-top: 50px; margin-left: 30px; width: 80%;">
+				  <h4>최근 주문 내역</h4>
+				  <table class="table table-hover">
+				    <thead>
+				      <tr>
+				        <th>주문일</th>
+				        <th>주문번호</th>
+				        <th>제목</th>
+				        <th>수량</th>
+				        <th>주문상태</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				    <c:choose>
+				    	<c:when test="${recentOrder.isEmpty()}">
+				    		<td colspan="5">주문내역이 없습니다...</td>
+				    	</c:when>
+				    	<c:otherwise>
+					    	<c:forEach var="recentOrder" items="${recentOrder}">
+						      <tr>
+						        <td>${recentOrder.orderDate}</td>
+						        <td>${recentOrder.orderNo}</td>
+						        <td>${recentOrder.title}</td>
+						        <td>${recentOrder.qty}</td>
+						        <td>${recentOrder.orderStatus}</td>
+						      </tr>
+							</c:forEach>
+						</c:otherwise>	
+					</c:choose>
+				    </tbody>
+				  </table>
 				</div>
 
-				<div style="margin-left: 1400px; margin-top: 50px;">
-					<button class="btn btn-secondary btn" style="width: 70px;"
-						onclick="">저장</button>
-				</div>
+				<div class="mb-3 reviews" >
+					<h4>최근 리뷰</h4>	</div>
+					<div class="mb-3 review" >
+					<c:forEach var="recentReview" items="${recentReview}">
+						<div class="card" style="width:25%;">
+							<img class="card-img-top" src="${recentReview.thumbNail}" alt="Card image">
+							<div class="card-body">
+								<h4 class="card-title"><${recentReview.title}></h4>
+								<div class="card-text">${recentReview.reviewContent}</div>
+								<a href="#" class="btn btn-primary">자세히..</a>
+							</div>
+						</div>
+					</c:forEach>
+					</div>
+				
 
-			</form>
+ 				<div style="margin-left: 1400px; margin-top: 50px;">
+					<button class="btn btn-secondary btn" style="width: 70px;" onclick="goBack()">뒤로가기
+					</button>
+				</div> 
+
+			</div>
+		
 		</div>
 	</div>
 
@@ -110,37 +156,73 @@
 }
 
 .jemok {
+	margin-top: 50px;
 	margin-left: 30px;
 }
-
+.profile {
+	display: flex;
+	justify-content: space-around;
+	flex-direction: row;
+	margin-left: 30px;
+	margin-top: 50px;
+	width: 80%;
+}
 .content1 {
 	display: flex;
-	justify-content: space-between;
-	margin-left: 30px;
-	width: 80%;
+	justify-content: space-around;
+	flex-direction: column;
+	margin-left: 10px;
+	width: 50%;
 }
 
 .content2 {
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 	margin-left: 30px;
 	width: 80%;
 }
 
-.fileUploadArea {
-	width: 50%;
-	height: 430px;
-	background-color: lightgray;
-	text-align: center;
-	ㅅ margin-left: 60px;
-}
-
 .content3 {
 	display: flex;
+	justify-content: space-around;
 	margin-left: 30px;
+	width: 80%;
+}
+
+.reviews {
+	margin-top: 50px; 
+	margin-left: 40px; 
+}
+.review {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 10px; 
+	margin-left: 30px; 
+	width: 80%;"
+
+}
+
+.card {
+	margin-left: 10px;
 }
 </style>
+<script>
+$(function(){
+	truncateText('.card-text', 10);
+});
+function goBack() {
+    window.history.back();
+}
+function truncateText(selector, maxLength) {
+    const element = document.querySelector(selector);
+    const text = element.innerText;
 
+    if (text.length > maxLength) {
+        const truncated = text.substring(0, maxLength) + '...';
+        element.innerText = truncated;
+    }
+}
+</script>
 
 </body>
 </html>

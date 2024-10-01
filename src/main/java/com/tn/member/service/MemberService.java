@@ -6,10 +6,11 @@ import java.util.Map;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.member.model.dto.MemberDTO;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.stereotype.Service;
 
 import com.tn.member.model.vo.MemberVO;
 
+@Service
 public interface MemberService {
 
 	List<Map<String, String>> getMember();

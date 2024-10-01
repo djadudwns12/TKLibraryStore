@@ -14,6 +14,7 @@ import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.order.model.vo.OrderVO;
 
 @Repository
 public class MemberAdminDAOImpl implements MemberAdminDAO {
@@ -85,6 +86,18 @@ public class MemberAdminDAOImpl implements MemberAdminDAO {
 
 		return ses.selectList(NS + ".getMemberSearchedSorted", params);
 
+	}
+
+	@Override
+	public MemberVO getMemberInfo(String userId) throws Exception {
+		
+		return ses.selectOne(NS + ".getMemberInfo", userId);
+	}
+
+	@Override
+	public List<OrderVO> getRecentOrder(String userId) throws Exception {
+
+		return ses.selectList(NS + ".getRecentOrder", userId);
 	}
 
 	// 더미데이터 만들기

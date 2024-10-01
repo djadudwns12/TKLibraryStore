@@ -37,6 +37,9 @@ import com.tn.admin.service.ProductAdminService;
 import com.tn.admin.utils.FileProcess;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.member.service.MemberService;
+import com.tn.order.model.vo.OrderVO;
+import com.tn.review.model.VO.ReviewVO;
+import com.tn.review.service.ReviewService;
 
 /**
  * Handles requests for the application home page.
@@ -51,7 +54,7 @@ public class AdminController {
 	@Autowired
 	private MemberAdminService mService;
 	@Autowired
-	private MemberService ms;
+	private ReviewService rService;
 	
 	@Autowired
 	private FileProcess fileProcess;
@@ -201,7 +204,7 @@ public class AdminController {
 		return fileInfo;
 	}
 	//========================================최미설===================================//
-	//회원관리페이지
+	// 회원관리페이지
 	@RequestMapping("/memberadmin")
 	public void memberList(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
 			@RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize, @RequestParam(value="sortBy", defaultValue = "default") String sortBy,
@@ -230,18 +233,26 @@ public class AdminController {
 		
 	}
 	
-	//회원관리페이지-회원정보상세보기
+	// 회원관리페이지-회원정보상세보기
 	@RequestMapping("/memberDetail")
-	public String memberDetail(@RequestParam("userId") String userId, Model model) {
-		MemberVO memberDetail;
+	public String memberDetail(@RequestParam("userId")String userId, Model model) {
+		System.out.println("일단 서비스단에는 오네요.....");
+		MemberVO memberDetail; // 회원정보
+		List<OrderVO> recentOrder = null; // 최근주문내역
+		List<ReviewVO> recentReview = null; // 최근리뷰
 		try {
-			memberDetail = ms.getEditMemberInfo(userId);
+			memberDetail = mService.getMemberInfo(userId);
+			recentOrder = mService.getRecentOrder(userId);
+			recentReview = rService.getRecentReview(userId);
 			model.addAttribute("memberDetail", memberDetail);
+			model.addAttribute("recentOrder", recentOrder);
+			model.addAttribute("recentReview", recentReview);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return "/admin/memberDetail";
 	}
 	
+	
+
 }

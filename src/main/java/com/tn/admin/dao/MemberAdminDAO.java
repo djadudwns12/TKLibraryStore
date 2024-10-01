@@ -11,6 +11,7 @@ import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.order.model.vo.OrderVO;
 
 @Repository
 public interface MemberAdminDAO {
@@ -32,6 +33,12 @@ public interface MemberAdminDAO {
 
 	// 검색했을 때 정렬기준 설정
 	List<MemberVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria, String sortBy) throws Exception;
+
+	// 회원관리페이지-회원정보상세보기
+	MemberVO getMemberInfo(String userId) throws Exception;
+
+	// 회원관리페이지-회원정보상세보기의 최근 주문내역
+	List<OrderVO> getRecentOrder(String userId) throws Exception;
 
 	// 더미 멤버 만들기..
 	//int insertDummyMember(MemberDTO dto) throws Exception;

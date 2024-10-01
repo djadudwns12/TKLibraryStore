@@ -113,6 +113,18 @@
 		</choose>
 		 limit #{startRowIndex}, #{viewPostCntPerPage}
 	</select>
+	
+	<select id="getMemberInfo" resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member where userId=#{userId}
+	</select>
+	
+	<select id="getRecentOrder" resultType="com.tn.order.model.vo.OrderVO">
+		select o.*, b.title from `Order` as o 
+		left join BookList b
+		on b.bookNo = o.bookNo 
+		where orderWho=#{userId}
+	</select>
+	
 <!--	 더미 멤버 만들기.. 
 	<insert id="insertDummyMember">
 		insert into Member(userId, userPwd, userName, userBirth, phoneNum, email, userImg)

@@ -12,6 +12,7 @@ import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.order.model.vo.OrderVO;
 
 @Service
 public class MemberAdminServiceImpl implements MemberAdminService {
@@ -77,6 +78,18 @@ public class MemberAdminServiceImpl implements MemberAdminService {
 		
 		
 		return pi;
+	}
+
+	@Override
+	public MemberVO getMemberInfo(String userId) throws Exception {
+		
+		return dao.getMemberInfo(userId);
+	}
+
+	@Override
+	public List<OrderVO> getRecentOrder(String userId) throws Exception {
+
+		return dao.getRecentOrder(userId);
 	}
 	
 
