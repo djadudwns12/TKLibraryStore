@@ -233,7 +233,7 @@ body {
                </thead>
                <tbody>
                   <c:forEach var="qa" items="${qaList}">
-                     <tr>
+                     <tr onclick="location.href='/admin/qaAnswer?qNo=${qa.qNo}'">
                         <td><input type="checkbox" name="proCheck" value="${qa.qNo}" onclick="checkallYN(this)"></td>
                         <td>${qa.qNo}</td>
                         <td>${qa.qTitle}</td>

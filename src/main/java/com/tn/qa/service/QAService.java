@@ -56,4 +56,6 @@ public interface QAService {
 
 	int qaSave(QAVO qa) throws Exception;
 
+	int qaAnswerSave(QAVO qa) throws Exception;
+
 }

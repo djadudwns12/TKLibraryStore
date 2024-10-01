@@ -90,5 +90,11 @@ public class QADAOImpl implements QADAO {
 		
 		return sess.insert(NS+".insertQA", qa);
 	}
+
+	@Override
+	public int saveQaAnswer(QAVO qa) {
+		// TODO Auto-generated method stub
+		return sess.update(NS+".saveQaAnswer", qa);
+	}
 	
 }

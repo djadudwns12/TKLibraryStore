@@ -114,6 +114,20 @@ public interface QADAO {
 	 *
 	 */
 	int insertQA(QAVO qa);
+
+	/**
+	 * @작성자 : 엄영준 
+	 * @작성일 : 2024. 10. 1. 
+	 * @클래스명 : tnbookstore
+	 * @메서드명 : saveQaAnswer
+	 * @param
+	 * @param
+	 * @return : int
+	 * @throws 
+	 * @description : qa 답변 저장하기
+	 *
+	 */
+	int saveQaAnswer(QAVO qa);
 	
 	
 	

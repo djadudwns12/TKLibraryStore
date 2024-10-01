@@ -11,6 +11,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>떡잎서점: 전체리스트</title>
+<link rel="icon" href="/resources/images/TKlogo.png" type="image/png">
+
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,9 +42,7 @@ div#category_young {
 	<c:import url="../header.jsp"></c:import>
 	
 	<div class="bList">
-
 		<div class="container">
-
 			<table class="table">
 				<thead>
 					<tr>
@@ -76,32 +77,27 @@ div#category_young {
 		<div class="pagination justify-content-center" style="margin: 20px 0">
 			<ul class="pagination">
 				<c:if test="${param.pageNo > 1}">
-					<li class="page-item"><a class="page-link"
-						href="/bookList/listAll?pageNo=${param.pageNo - 1}&pagingSize=${param.pagingSize}">Previous</a></li>
+					<li class="page-item"><a class="page-link" href="/bookList/listAll?pageNo=${param.pageNo - 1}&pagingSize=${param.pagingSize}">Previous</a></li>
 				</c:if>
-
-				<c:forEach var="i" begin="${pagingInfo.startPageNoCurBlock}"
-					end="${pagingInfo.endPageNoCurBlock }">
+				
+				<c:forEach var="i" begin="${pagingInfo.startPageNoCurBlock}" end="${pagingInfo.endPageNoCurBlock }">
 					<c:choose>
 						<c:when test="${param.pageNo == i}">
-							<li class="page-item active" id="${i}"><a class="page-link"
-								href="/bookList/listAll?pageNo=${i}&pagingSize=${param.pagingSize}">${i}</a></li>
+							<li class="page-item active" id="${i}"><a class="page-link" href="/bookList/listAll?pageNo=${i}&pagingSize=${param.pagingSize}">${i}</a></li>
 						</c:when>
 						<c:otherwise>
-							<li class="page-item" id="${i}"><a class="page-link"
-								href="/bookList/listAll?pageNo=${i}&pagingSize=${param.pagingSize}">${i}</a></li>
+							<li class="page-item" id="${i}"><a class="page-link" href="/bookList/listAll?pageNo=${i}&pagingSize=${param.pagingSize}">${i}</a></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
-
+				
 				<c:if test="${param.pageNo < pagingInfo.totalPageCnt}">
-					<li class="page-item"><a class="page-link"
-						href="/bookList/listAll?pageNo=${param.pageNo + 1}&pagingSize=${param.pagingSize}">Next</a></li>
+					<li class="page-item"><a class="page-link" href="/bookList/listAll?pageNo=${param.pageNo + 1}&pagingSize=${param.pagingSize}">Next</a></li>
 				</c:if>
-
+			
 			</ul>
 		</div>
-
+		
 
 	</div>
 

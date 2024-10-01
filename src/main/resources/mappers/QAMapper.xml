@@ -88,4 +88,9 @@
 		INSERT INTO QA (qWriter, qTitle, qContent, qType, qAnswerYN) VALUES
 		(#{qWriter}, #{qTitle}, #{qContent}, '질문', 'N');
 	</insert>
+	
+	<!-- 관리자가 답변을 남기는 쿼리문 -->
+	<update id="saveQaAnswer">
+		update QA set qAnswer = #{qAnswer} , qAnswerYN = 'Y' where qNo = #{qNo}
+	</update>
 </mapper>

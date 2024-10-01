@@ -112,4 +112,12 @@ public class QAServiceImpl implements QAService {
 		return qaDao.insertQA(qa);
 	}
 
+	@Override
+	public int qaAnswerSave(QAVO qa) throws Exception {
+		
+		
+		
+		return qaDao.saveQaAnswer(qa);
+	}
+
 }
