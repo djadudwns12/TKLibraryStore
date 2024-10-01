@@ -21,5 +21,5 @@ public class OrderInfoDTO {
 	private String totalSalePrice;
 	private String totalPay;
 	private String totalPoint;
-	private List<String> bookNos;
+	private List<String> cartIds;
 }

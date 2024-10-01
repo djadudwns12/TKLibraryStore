@@ -291,7 +291,8 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<!-- JavaScript 코드 -->
 	<script>
     $(document).ready(function() {
@@ -455,7 +456,7 @@
 
         // 초기화 함수 호출
         init();
-    });
+    
     
     function saveQty(cartId) {
         let qtyInput = document.getElementById('qtyInput-' + cartId);
@@ -546,19 +547,18 @@
             }
         });
     });
-    
-    $(document).ready(function() {
+
         $("#paymentButton").on("click", function(event) {
             console.log("결제 버튼 클릭됨"); // 클릭 이벤트 확인
 
             // 체크된 tr 태그에서 bookNo 가져오기
-            let bookNos = [];
+            let cartIds = [];
             console.log($("tr input[type='checkbox']:checked"));
             
             $("tr.cartItem input[type='checkbox']:checked").each(function(i, item) {
                 console.log(i ,'번째 아이템 : ', item);
                 
-                bookNos.push($(item).attr('data-cart-id'));
+                cartIds.push($(item).attr('data-cart-id'));
             });
 
             
@@ -575,7 +575,7 @@
                     'totalSalePrice': totalSalePrice,
                     'totalPay': totalPay,
                     'totalPoint': totalPoint,
-                    'bookNos': bookNos
+                    'cartIds': cartIds
                 };
 
            // 선택된 bookNos 로그 출력
