@@ -14,14 +14,14 @@ function category(obj) {
 
     // AJAX 요청을 통해 해당 카테고리 데이터를 가져옴
     $.ajax({
-        url: '/category/' + obj.value,
+        url: '/category/' + $('.categoryNo').val(),
         type: 'GET',
         dataType: 'json',
         success: function(data) {
             //console.log(data);
-
-            let category = '<option value="-1">선택</option>';
-            let li = '<li data-value="-1" class="option selected focus">선택</li>';
+            
+            let category = '<option value='+$('.categoryNo').val()+'>선택</option>';
+            let li = '<li data-value='+$('.categoryNo').val()+' class="option selected focus">선택</li>';
 
             // 받아온 데이터를 바탕으로 option과 li를 생성
             for (let i = 0; i < data.length; i++) {
@@ -66,7 +66,6 @@ function getBookList(){
         	let data = result.list;
            // console.log(result);
            // console.log(data);
-            if(data.length != 0){
             	let inputHTML = ''
             	
             	$.each(data,function(i,row){
@@ -86,7 +85,7 @@ function getBookList(){
             	categoryPaging(result);
             	
             	
-            }
+            
         },
         error: function(data, status) {
             console.error("Error fetching book list data:", status);
@@ -114,7 +113,7 @@ function categoryPaging(obj){
     if(paginationInfo.pageNo > 1){
         inputHtml += `<li class="page-item"><a class="page-link" href="javascript:getBookListPaging(${paginationInfo.pageNo-1},${paginationInfo.viewPostCntPerPage})">Previous</a></li>`;
     }
-	for(let i=paginationInfo.startPageNoCurBlock; i<paginationInfo.endPageNoCurBlock; i++){
+	for(let i=paginationInfo.startPageNoCurBlock; i<=paginationInfo.endPageNoCurBlock; i++){
         if(paginationInfo.pageNo == i){
             inputHtml += `<li class="page-item active" id="${i}"><a class="page-link" href="javascript:getBookListPaging(${i},${paginationInfo.viewPostCntPerPage})">${i}</a></li>`;
         }else{
@@ -138,7 +137,6 @@ function getBookListPaging(pageNo,pageSize){
         	let data = result.list;
            // console.log(result);
            // console.log(data);
-            if(data.length != 0){
             	let inputHTML = ''
             	
             	$.each(data,function(i,row){
@@ -147,8 +145,8 @@ function getBookListPaging(pageNo,pageSize){
             		inputHTML += `<td>${row.title}</td>`
             		inputHTML += `<td>${row.author}</td>`
             		inputHTML += `<td>${row.publisher}</td>`
-            		let dd = longodate(row.pubDate);
-            		inputHTML += `<td>${dd}</td>`
+            		let pubDate = longodate(row.pubDate);
+            		inputHTML += `<td>${pubDate}</td>`
             		inputHTML += `<td>${row.salePrice}</td>`
             		inputHTML += '</tr>'
             	});
@@ -157,8 +155,6 @@ function getBookListPaging(pageNo,pageSize){
             	// 페이징
             	categoryPaging(result);
             	
-            	
-            }
         },
         error: function(data, status) {
             console.error("Error fetching book list data:", status);

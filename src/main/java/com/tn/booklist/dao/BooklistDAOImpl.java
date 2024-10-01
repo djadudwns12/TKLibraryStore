@@ -46,7 +46,7 @@ public class BooklistDAOImpl implements BooklistDAO {
 				
 		params.put("startRowIndex", pi.getStartRowIndex());
 		params.put("viewPostCntPerPage", pi.getViewPostCntPerPage());
-		params.put("category", "%"+category+"%");
+		params.put("category", category+"%");
 		
 		return ses.selectList(NS + ".selectCategoryBooklist", params);
 	}

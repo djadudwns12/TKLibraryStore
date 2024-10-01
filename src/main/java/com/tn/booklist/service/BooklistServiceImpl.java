@@ -63,7 +63,7 @@ public class BooklistServiceImpl implements BooklistService {
 	private PagingInfo makePagingInfo(PagingInfoDTO dto,int totalCount) throws Exception {
 		PagingInfo pi = new PagingInfo(dto);
 		
-		pi.setTotalPostCnt(bDao.getTotalPostCnt());
+		pi.setTotalPostCnt(totalCount);
 		
 		pi.setTotalPageCnt();	//전체 페이지 수 세팅
 		pi.setStartRowIndex();	// 현재 페이지에서 보여주기 시작할 rowIndex 세팅
@@ -93,7 +93,7 @@ public class BooklistServiceImpl implements BooklistService {
 	public Map<String, Object> getCategoryBooklist(PagingInfoDTO dto, String category) throws Exception {
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		int totalCount = bDao.countCategoryBooklist(category);
+		int totalCount = bDao.countCategoryBooklist(category+"%");
 		
 		PagingInfo pi = makePagingInfo(dto,totalCount);
 		

@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,10 +31,10 @@
 <link rel="stylesheet" href="/resources/template/css/slicknav.min.css"
 	type="text/css">
 <link rel="stylesheet"
-	href="/resources/template/css/owl.carousel.min.css"
-	type="text/css">
+	href="/resources/template/css/owl.carousel.min.css" type="text/css">
 <link rel="stylesheet"
-	href="/resources/template/css/font-awesome.min.css"
+	href="/resources/template/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="/resources/template/css/style.css"
 	type="text/css">
 <link rel="stylesheet"
 	href="/resources/template/css/style.css"
@@ -151,6 +152,11 @@
 								<li><a
 									href="${pageContext.request.contextPath}/member/logout"><i class="fa fa-user">로그아웃</i></a></li>
 							</c:if>
+							<!-- 마이페이지 이동 -->
+							<li><a
+								href="${pageContext.request.contextPath}/member/myPage"><i
+									class="fa fa-user"></i></a></li>
+
 							<!-- 관리자페이지이동 -->
 							<c:if test="${sessionScope.loginMember.userId == 'admin'}">
 								<li>
@@ -181,9 +187,9 @@
 							<i class="fa fa-bars"></i> <span>All departments</span>
 						</div>
 						<ul id="categoryList">
-						<c:if test="${loginMember != null}">
-							<li><a href="/member/myPage">마이페이지</a></li>
-						</c:if>
+							<c:if test="${loginMember != null}">
+								<li><a href="/member/myPage">마이페이지</a></li>
+							</c:if>
 							<li><a href="#">Vegetables</a></li>
 							<li><a href="#">Fruit & Nut Gifts</a></li>
 							<li><a href="#">Fresh Berries</a></li>
@@ -212,8 +218,9 @@
 						</div>
 					</div>
 					<!-- 카테고리 -->
-					<input type="hidden" class="categoryNo">
-					<div id="category_young">
+					<div class="categoryArea" style="display: none;">
+						<input type="hidden" class="categoryNo">
+						<div id="category_young">
 							<select id="high_class" onchange="category(this)">
 								<option value="-1">선택</option>
 								<option value="05">인문</option>
@@ -226,6 +233,7 @@
 							<select id="low_class" onchange="category(this)">
 								<option value="-1">선택</option>
 							</select>
+						</div>
 					</div>
 					<div id="main_content"></div>
 				</div>
