@@ -324,37 +324,56 @@ body {
 	width: 100%; /* 검색창과 동일한 가로 길이 */
 	max-height: 300px; /* 모달 최대 높이 설정 */
 	overflow-y: auto; /* 스크롤 가능 */
+	height: fit-content;
 }
 
 /* 모달 내부 콘텐츠 스타일 */
 .modal-content {
-	padding: 10px;
+    width: 600px;
+    padding: 20px;
+    border-radius: 10px;
 }
 
-.close {
-	color: #aaa;
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
-	cursor: pointer;
+.content-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
-.close:hover, .close:focus {
-	color: black;
-	text-decoration: none;
+.recent-searches, .popular-searches {
+    width: 45%; /* 각각 45%의 공간을 차지 */
+}
+
+.divider {
+    width: 1px;
+    background-color: #ccc; /* 세로선 색상 */
+    height: 100%;
+}
+
+h5 {
+    margin-top: 0;
 }
 
 ul {
-	list-style-type: none;
-	padding: 0;
+    list-style-type: none;
+    padding: 0;
 }
 
-li {
-	padding: 5px 0;
+.modal {
+    display: none; /* 필요에 따라 모달을 숨기거나 보여줄 수 있습니다 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
 }
 
-.content-top {
-	display: flex;
+.close {
+    cursor: pointer;
+    font-size: 20px;
 }
 
 /* 최근 검색어 */
@@ -561,17 +580,34 @@ a:visited {
 				</ul>
 			</div>
 
-			<!--  모달 영역 -->
 			<div id="recentSearchModal" class="modal">
 				<div class="modal-content">
 					<div class="content-top">
-						<h4>최근 검색 기록</h4>
-						<span class="close" style="margin-left: 400px;">&times;</span>
+						<span class="close" style="margin-left: 500px; height: 10px;">&times;</span>						
 					</div>
-					<ul id="recentSearchesList">
-						<!-- 검색 기록이 동적으로 삽입될 곳 -->
-
-					</ul>
+					<div class="content-body">
+						<div class="recent-searches">
+							<h5>최근 검색 기록</h5>
+							<ul id="recentSearchesList">
+								<!-- 검색 기록이 동적으로 삽입될 곳 -->
+							</ul>
+						</div>
+						<div class="divider"></div>
+						<!-- 세로선 -->
+						<div class="popular-searches">
+							<h5>인기 검색어</h5>
+							<ul id="popularSearchesList">
+								<!-- 인기 검색어가 동적으로 삽입될 곳 -->
+								<li>1위</li>
+								<li>2위</li>
+								<li>3위</li>
+								<li>4위</li>
+								<li>5위</li>
+							</ul>
+						</div>
+						
+					</div>
+					
 				</div>
 			</div>
 

@@ -37,7 +37,7 @@ import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.service.ProductAdminService;
-import com.tn.admin.utils.FileProcess;
+import com.tn.util.BookFileProcess;
 
 /**
  * Handles requests for the application home page.
@@ -51,7 +51,7 @@ public class AdminController {
 	private ProductAdminService pService;
 
 	@Autowired
-	private FileProcess fileProcess;
+	private BookFileProcess fileProcess;
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -257,8 +257,7 @@ public class AdminController {
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/bookImgs");
 
 		// 실제 파일 저장 (이름변경, base64, thumbnail)
-		BoardUpFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, contentType, originalFileName,
-				fileSize);
+		BoardUpFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, contentType, originalFileName,fileSize);
 		return fileInfo;
 	}
 	

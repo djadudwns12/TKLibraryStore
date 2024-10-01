@@ -1,4 +1,4 @@
-package com.tn.admin.utils;
+package com.tn.util;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -22,7 +22,7 @@ import com.tn.admin.model.vo.BoardUpFileVODTO;
 
 
 @Component		
-public class FileProcess {
+public class BookFileProcess {
 	
 	// 회원가입시 업로드된 유저 프로필 이미지를 저장하는 메서드
 	public void saveUserProfileFile(byte[] upfile, String realPath, String fileName) throws IOException {
