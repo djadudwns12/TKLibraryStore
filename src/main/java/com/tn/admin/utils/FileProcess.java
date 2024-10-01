@@ -40,6 +40,7 @@ public class FileProcess {
 		//makeDirectory(realPath,ymd);
 		
 		String saveFilePath = realPath;
+		makeDirectory(realPath);
 		
 		String newFileName = null;
 		String ext = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
@@ -87,6 +88,19 @@ public class FileProcess {
 		//저장된 파일의 정보를 담은 객체
 		return result;
 	}
+
+	private void makeDirectory(String realPath) {
+		if (!new File(realPath).exists()) {
+				
+				File tmp = new File(realPath); 
+					tmp.mkdir();
+				
+			}
+		}
+
+	
+		
+	
 
 	private String makeBase64String(String thumbNailFileName) throws IOException {
 		String result = null;
