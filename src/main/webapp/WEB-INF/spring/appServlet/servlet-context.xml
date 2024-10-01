@@ -52,6 +52,7 @@
 		<interceptor>
 			<mapping path="/qa/**" />
 			<mapping path="/admin/**" />
+			<mapping path="/cart/**" />
 			
 			<beans:ref bean="authInterceptor"/>
 		
