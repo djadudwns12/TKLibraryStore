@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import com.tn.member.model.vo.ImgFileVODTO;
 
 @Component
-public class ImgFileProcess{
+public class ProfileFileProcess{
 	
 
 // -----------------------------------------박근영-------------------------------------------------

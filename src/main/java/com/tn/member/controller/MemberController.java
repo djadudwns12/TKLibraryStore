@@ -47,7 +47,7 @@ import com.tn.member.service.SendMailService;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.tn.util.ImgFileProcess;
+import com.tn.util.ProfileFileProcess;
 import com.tn.util.PropertiesTask;
 
 import lombok.RequiredArgsConstructor;
@@ -66,7 +66,7 @@ public class MemberController {
 	@Autowired
 	private MemberService mService;
 	@Autowired
-	private ImgFileProcess fileProcess;
+	private ProfileFileProcess fileProcess;
 
 	/**
 	 * @작성자 : 엄영준
