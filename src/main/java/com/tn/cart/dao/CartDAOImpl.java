@@ -28,6 +28,12 @@ public class CartDAOImpl implements CartDAO {
 		
 		return ses.selectList(NS + ".getCartList", userId);
 	}
+	
+	@Override
+	public float getPointRate(String userId) throws Exception {
+		
+		return ses.selectOne(NS + ".getPoingRate", userId);
+	}
 
 	@Override
 	public int deleteOneCart(String cartId) throws Exception {
@@ -58,4 +64,5 @@ public class CartDAOImpl implements CartDAO {
 		
 		return ses.delete(NS + ".deleteSelectedItems", cartIds);
 	}
+
 }

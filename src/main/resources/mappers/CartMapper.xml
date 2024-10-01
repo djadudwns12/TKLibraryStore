@@ -38,4 +38,12 @@
 			#{cartId}
 		</foreach>
 	</delete>
+	
+	<!-- 회원의 등급에 따른 적립률을 가져오는 쿼리문 -->
+	<select id="getPoingRate" resultType="float">
+		select cRate
+		from Member m inner join ClassDef cd
+		on m.userClass = cd.className
+		where m.userId = #{userId}
+	</select>
 </mapper>

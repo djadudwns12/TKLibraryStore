@@ -15,5 +15,7 @@ public interface CartService {
 
 	boolean deleteCartsByIds(List<Integer> cartIds) throws Exception;
 
+	float getPointRate(String userId) throws Exception;
+
 
 }

@@ -45,11 +45,14 @@ public class CartController {
 		ResponseEntity result = null;
 		
 		String userId = ((MemberVO)sess.getAttribute("loginMember")).getUserId();
+		System.out.println("현재 페이지에 들어온 유저의 아이디 : " + userId);
 		
 		try {
 			List<CartDTO> list = cService.getCartList(userId);
+			float pointRate = cService.getPointRate(userId);
 			
 			model.addAttribute("cartList", list);
+			model.addAttribute("pointRate", pointRate);
 		} catch (Exception e) {
 			e.printStackTrace();	
 		}		

@@ -25,6 +25,15 @@ public class CartServiceImpl implements CartService {
 		
 		return list;
 	}
+	
+	@Override
+	public float getPointRate(String userId) throws Exception {
+		System.out.println("CartServiceImpl : " + userId + "의 적립률을 가져오자.");
+		
+		float pointRate = cDao.getPointRate(userId);
+		
+		return pointRate;
+	}
 
 	@Override
 	public boolean deleteCartById(String cartId) throws Exception {
@@ -70,6 +79,7 @@ public class CartServiceImpl implements CartService {
 	    
 	    return result;
 	}
+
 	
 
 }

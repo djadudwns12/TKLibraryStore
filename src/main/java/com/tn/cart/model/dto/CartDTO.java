@@ -25,5 +25,4 @@ public class CartDTO {
 	private int price;
     private int salePrice;
     private String thumbNail;
-    private float pointRate;
 }
