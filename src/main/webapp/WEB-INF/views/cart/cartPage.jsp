@@ -180,6 +180,7 @@
 				</tr>
 			</thead>
 			<tbody>
+				<span id="pointRate" style="display: none;">${pointRate}</span> <!-- pointRate 추가 -->
 				<c:set var="totalPrice" value="0" />
 				<c:set var="totalSalePrice" value="0" />
 				<c:set var="totalPay" value="0" />
@@ -188,11 +189,14 @@
 					<c:set var="totalPrice"
 						value="${totalPrice + cart.price * cart.qty}" />
 					<c:set var="totalSalePrice"
-						value="${totalSalePrice + (cart.price*cart.qty - cart.salePrice*cart.qty)}" />
+						value="${totalSalePrice + (cart.price*0.9)}" />
 					<c:set var="totalPay"
-						value="${totalPay + cart.salePrice * cart.qty}" />
+						value="${totalPay + totalSalePrice * cart.qty}" />
 					<c:set var="totalPoint"
-						value="${totalPoint + (cart.salePrice * cart.qty * 0.02)}" />
+						value="${totalPoint + (totalPay * pointRate)}" />
+					<script>
+						console.log(${fn:escapeXml(pointRate)});
+					</script>
 					<!-- 소수점 이하 제거 -->
 					<c:set var="totalPoint"
 						value="${fn:substringBefore(totalPoint, '.')}" />
@@ -296,7 +300,7 @@
 	<!-- JavaScript 코드 -->
 	<script>
     $(document).ready(function() {
-    	// 수량 증가 함수
+        // 수량 증가 함수
         function increaseQty(cartId) {
             let qtyInput = document.getElementById('qtyInput-' + cartId);
             let currentQty = parseInt(qtyInput.value);
@@ -307,7 +311,7 @@
                 updateTotals();
                 updateQtyInDB(cartId, qtyInput.value);  // AJAX로 수량 업데이트
             } else {
-            	// 재고 부족 모달 표시
+                // 재고 부족 모달 표시
                 $('#stockModal').modal('show');
             }
         }
@@ -363,19 +367,24 @@
             let totalPay = 0;
             let totalPoint = 0;
 
+            // pointRate를 DOM에서 가져오기
+            const pointRate = parseFloat(document.getElementById('pointRate').innerText) || 0; // 기본값 0
+
             const selectedItems = document.querySelectorAll('.selectItem:checked');
             selectedItems.forEach(item => {
-                const price = parseInt(item.getAttribute('data-price'));
-                const salePrice = parseInt(item.getAttribute('data-salePrice'));
+                const price = parseInt(item.getAttribute('data-price')) || 0;  // NaN 방지
+                const salePrice = parseInt(item.getAttribute('data-salePrice')) || 0;  // NaN 방지
                 const cartId = item.getAttribute('data-cart-id');
-                const qty = parseInt(document.getElementById('qtyInput-' + cartId).value);
+                const qtyInput = document.getElementById('qtyInput-' + cartId);
+                const qty = qtyInput ? parseInt(qtyInput.value) || 0 : 0;  // NaN 방지 및 요소 존재 확인
 
                 totalPrice += price * qty;
-                totalSalePrice += (price - salePrice) * qty;
+                totalSalePrice += (price * 0.9) * qty;  // 10% 할인 적용
                 totalPay += salePrice * qty;
-                totalPoint += salePrice * 0.02 * qty;
+                totalPoint += salePrice * pointRate * qty; // pointRate 적용
             });
 
+            // 결과를 DOM에 반영
             document.getElementById('totalPrice').innerText = totalPrice.toLocaleString() + "원";
             document.getElementById('totalSalePrice').innerText = totalSalePrice.toLocaleString() + "원";
             document.getElementById('totalPay').innerText = totalPay.toLocaleString() + "원";
@@ -456,97 +465,96 @@
 
         // 초기화 함수 호출
         init();
-    
-    
-    function saveQty(cartId) {
-        let qtyInput = document.getElementById('qtyInput-' + cartId);
 
-        if (!qtyInput) {
-            console.error("입력 필드를 찾을 수 없습니다: cartId=", cartId);
-            alert("수량 입력 필드를 찾을 수 없습니다.");
-            return;
-        }
+        function saveQty(cartId) {
+            let qtyInput = document.getElementById('qtyInput-' + cartId);
 
-        let qty = parseInt(qtyInput.value); 
-
-        if (isNaN(qty)) {
-            alert("유효한 수량이 아닙니다.");
-            return;
-        }
-
-        console.log("Received CartID:", cartId);
-        console.log("Quantity:", qty);
-
-        $.ajax({
-            url: '/cart/updateQty',
-            type: 'POST',
-            data: {
-                cartId: cartId,
-                qty: qty
-            },
-            success: function(response) {
-                if (response.success) {
-                    console.log("수량이 성공적으로 업데이트되었습니다.");
-                    alert("해당 상품의 수량을 변경했습니다.");
-                } else {
-                    alert("수량 업데이트에 실패했습니다. 다시 시도해주세요.");
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX 요청 중 오류 발생:", error);
-                alert("에러가 발생했습니다: " + error);
+            if (!qtyInput) {
+                console.error("입력 필드를 찾을 수 없습니다: cartId=", cartId);
+                alert("수량 입력 필드를 찾을 수 없습니다.");
+                return;
             }
-        });
-    }
-    
-    let selectedCartIds = []; // 선택된 cartId를 저장할 변수
 
-    /* 선택 삭제 버튼 눌렀을 때 */
-    $('#deleteSelectedButton').on('click', function() {
-        // 선택된 체크박스의 cartId 수집
-        selectedCartIds = [];
-        $('.selectItem:checked').each(function() {
-            selectedCartIds.push($(this).data('cart-id'));
-        });
+            let qty = parseInt(qtyInput.value); 
 
-        if (selectedCartIds.length === 0) {
-            alert("삭제할 상품을 선택해주세요.");
-            return;
-        }
-
-        // 모달 띄우기
-        $('#confirmDeleteModal').modal('show');
-    });
-
-    // 삭제 버튼 클릭 시 처리
-    $('#confirmDeleteButton').on('click', function() {
-        // AJAX 요청으로 서버에 삭제 요청 보내기
-        $.ajax({
-            url: '/cart/deleteSelected',
-            type: 'POST',
-            contentType: 'application/json', // JSON 형식으로 전송
-            data: JSON.stringify(selectedCartIds), // 데이터 JSON 문자열로 변환
-            success: function(response) {
-                if (response.success) {
-                    // 삭제 성공 시 항목 제거
-                    selectedCartIds.forEach(function(cartId) {
-                        // 해당 cartId를 가진 행 제거
-                        $('input[data-cart-id="' + cartId + '"]').closest('tr').remove();
-                    });
-                } else {
-                    alert('삭제 중 오류가 발생했습니다.');
-                }
-                // 모달 닫기
-                $('#confirmDeleteModal').modal('hide');
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX 요청 중 오류 발생:", error);
-                alert("에러가 발생했습니다: " + error);
-                // 모달 닫기
-                $('#confirmDeleteModal').modal('hide');
+            if (isNaN(qty)) {
+                alert("유효한 수량이 아닙니다.");
+                return;
             }
+
+            console.log("Received CartID:", cartId);
+            console.log("Quantity:", qty);
+
+            $.ajax({
+                url: '/cart/updateQty',
+                type: 'POST',
+                data: {
+                    cartId: cartId,
+                    qty: qty
+                },
+                success: function(response) {
+                    if (response.success) {
+                        console.log("수량이 성공적으로 업데이트되었습니다.");
+                        alert("해당 상품의 수량을 변경했습니다.");
+                    } else {
+                        alert("수량 업데이트에 실패했습니다. 다시 시도해주세요.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX 요청 중 오류 발생:", error);
+                    alert("에러가 발생했습니다: " + error);
+                }
+            });
+        }
+        
+        let selectedCartIds = []; // 선택된 cartId를 저장할 변수
+
+        /* 선택 삭제 버튼 눌렀을 때 */
+        $('#deleteSelectedButton').on('click', function() {
+            // 선택된 체크박스의 cartId 수집
+            selectedCartIds = [];
+            $('.selectItem:checked').each(function() {
+                selectedCartIds.push($(this).data('cart-id'));
+            });
+
+            if (selectedCartIds.length === 0) {
+                alert("삭제할 상품을 선택해주세요.");
+                return;
+            }
+
+            // 모달 띄우기
+            $('#confirmDeleteModal').modal('show');
         });
-    });
+
+        // 삭제 버튼 클릭 시 처리
+        $('#confirmDeleteButton').on('click', function() {
+            // AJAX 요청으로 서버에 삭제 요청 보내기
+            $.ajax({
+                url: '/cart/deleteSelected',
+                type: 'POST',
+                contentType: 'application/json', // JSON 형식으로 전송
+                data: JSON.stringify(selectedCartIds), // 데이터 JSON 문자열로 변환
+                success: function(response) {
+                    if (response.success) {
+                        // 삭제 성공 시 항목 제거
+                        selectedCartIds.forEach(function(cartId) {
+                            // 해당 cartId를 가진 행 제거
+                            $('input[data-cart-id="' + cartId + '"]').closest('tr').remove();
+                        });
+                    } else {
+                        alert('삭제 중 오류가 발생했습니다.');
+                    }
+                    // 모달 닫기
+                    $('#confirmDeleteModal').modal('hide');
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX 요청 중 오류 발생:", error);
+                    alert("에러가 발생했습니다: " + error);
+                    // 모달 닫기
+                    $('#confirmDeleteModal').modal('hide');
+                }
+            });
+        });
 
         $("#paymentButton").on("click", function(event) {
             console.log("결제 버튼 클릭됨"); // 클릭 이벤트 확인
@@ -561,24 +569,21 @@
                 cartIds.push($(item).attr('data-cart-id'));
             });
 
-            
-
-         // 총액 정보 가져오기
+            // 총액 정보 가져오기
             let totalPrice = parseInt(document.getElementById('totalPrice').innerText.replace(/,/g, ''));
             let totalSalePrice = parseInt(document.getElementById('totalSalePrice').innerText.replace(/,/g, ''));
             let totalPay = parseInt(document.getElementById('totalPay').innerText.replace(/,/g, ''));
             let totalPoint = parseInt(document.getElementById('totalPoint').innerText.replace(/,/g, ''));
 
-    
             let orderInfo = {
-                    'totalPrice': totalPrice,
-                    'totalSalePrice': totalSalePrice,
-                    'totalPay': totalPay,
-                    'totalPoint': totalPoint,
-                    'cartIds': cartIds
-                };
+                'totalPrice': totalPrice,
+                'totalSalePrice': totalSalePrice,
+                'totalPay': totalPay,
+                'totalPoint': totalPoint,
+                'cartIds': cartIds
+            };
 
-           // 선택된 bookNos 로그 출력
+            // 선택된 bookNos 로그 출력
             console.log("선택된 orderInfo : ", orderInfo);
             
             // AJAX 요청
@@ -589,15 +594,15 @@
                 contentType : "application/json; charset=utf-8",
                 data: JSON.stringify(orderInfo),
                 success: function(response) {
-                  
+                    // 결제 성공 후 처리 로직
                 },
                 error: function() {
-               
+                    // 결제 오류 처리 로직
                 }
             });
         });
     });
-    </script>
+</script>
 
 </body>
 </html>
