@@ -14,9 +14,10 @@ import com.tn.cart.model.dto.OrderInfoDTO;
 @RequestMapping("/order")
 public class OrderController {
 	
-	@PostMapping("/payment")
+	@PostMapping(value = "/payment", produces = "application/json; charset=utf-8")
 	public ResponseEntity<Map<String, Boolean>> processPayment(@RequestBody OrderInfoDTO orderInfoDTO) {
-	    // 결제 처리 로직
+	    System.out.println("payment 진입확인");
+	    System.out.println(orderInfoDTO.toString());
 	    return ResponseEntity.ok().body(Map.of("success", true));
 	}
 	
