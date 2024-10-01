@@ -36,6 +36,9 @@
 	<context:component-scan base-package="com.tn.cart.service" />
 	<context:component-scan base-package="com.tn.booklist.controller" />
 	
+	<!-- Order -->
+	<context:component-scan base-package="com.tn.order.controller" />
+	
 	<!-- 인터셉터가 동작하는 매핑 주소 설정 -->
 	<beans:bean id="loginInterceptor" class="com.tn.interceptor.LoginInterceptor" />
 	<!-- 로그인후에 들어가도록 하는 권한 인터셉터 -->
@@ -53,6 +56,7 @@
 			<mapping path="/qa/**" />
 			<mapping path="/admin/**" />
 			<mapping path="/cart/**" />
+			<mapping path="/order/**" />
 			
 			<beans:ref bean="authInterceptor"/>
 		
