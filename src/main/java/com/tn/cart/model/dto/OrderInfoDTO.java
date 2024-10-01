@@ -17,10 +17,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class OrderInfoDTO {
-	private int totalPrice;
-	private int totalSalePrice;
-	private int totalPay;
-	private int totalPoint;
-	private List<Integer> bookNos;
-	
+	private String totalPrice;
+	private String totalSalePrice;
+	private String totalPay;
+	private String totalPoint;
+	private List<String> bookNos;
 }
