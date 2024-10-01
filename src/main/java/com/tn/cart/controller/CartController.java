@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.tn.cart.model.dto.CartDTO;
 import com.tn.cart.model.vo.MyResponseWithData;
 import com.tn.cart.service.CartService;
+import com.tn.member.model.vo.MemberVO;
 
 
 @Controller
@@ -39,9 +40,11 @@ public class CartController {
 	private CartService cService;
 	
 	@RequestMapping("/cartPage")
-	public String goCart(@RequestParam("userId") String userId, Model model) {
+	public String goCart(Model model,HttpSession sess) {
 		
 		ResponseEntity result = null;
+		
+		String userId = ((MemberVO)sess.getAttribute("loginMember")).getUserId();
 		
 		try {
 			List<CartDTO> list = cService.getCartList(userId);
