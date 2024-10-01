@@ -120,7 +120,7 @@
 				</thead>
 				<tbody>
 					<c:forEach var="cart" items="${cartList}">
-						<tr>
+						<tr class="cartItem">
 							<td class="common-td"><input type="checkbox"
 								class="selectItem" onclick="updateTotals()"
 								data-price="${cart.price}" data-salePrice="${cart.salePrice}"
@@ -220,10 +220,8 @@
 
 		<div
 			style="display: flex; justify-content: center; align-items: center;">
-			<button type="button" class="btn btn-success"
-				style="background: #7FAD39;">
-				<a href="/pay/payment" class="button-link">결제하기</a>
-			</button>
+			<button type="button" id="paymentButton" class="btn btn-success"
+				style="background: #7FAD39;">주문하기</button>
 		</div>
 	</div>
 
@@ -293,7 +291,7 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<!-- JavaScript 코드 -->
 	<script>
     $(document).ready(function() {
@@ -546,6 +544,57 @@
                 // 모달 닫기
                 $('#confirmDeleteModal').modal('hide');
             }
+        });
+    });
+    
+    $(document).ready(function() {
+        $("#paymentButton").on("click", function(event) {
+            console.log("결제 버튼 클릭됨"); // 클릭 이벤트 확인
+
+            // 체크된 tr 태그에서 bookNo 가져오기
+            let bookNos = [];
+            console.log($("tr input[type='checkbox']:checked"));
+            
+            $("tr.cartItem input[type='checkbox']:checked").each(function(i, item) {
+                console.log(i ,'번째 아이템 : ', item);
+                
+                bookNos.push($(item).attr('data-cart-id'));
+            });
+
+            
+
+         // 총액 정보 가져오기
+            let totalPrice = parseInt(document.getElementById('totalPrice').innerText.replace(/,/g, ''));
+            let totalSalePrice = parseInt(document.getElementById('totalSalePrice').innerText.replace(/,/g, ''));
+            let totalPay = parseInt(document.getElementById('totalPay').innerText.replace(/,/g, ''));
+            let totalPoint = parseInt(document.getElementById('totalPoint').innerText.replace(/,/g, ''));
+
+    
+            let orderInfo = {
+                    'totalPrice': totalPrice,
+                    'totalSalePrice': totalSalePrice,
+                    'totalPay': totalPay,
+                    'totalPoint': totalPoint,
+                    'bookNos': bookNos
+                };
+
+           // 선택된 bookNos 로그 출력
+            console.log("선택된 orderInfo : ", orderInfo);
+            
+            // AJAX 요청
+            $.ajax({  
+                url: "/order/payment",
+                type: "POST",
+                dataType : "json",
+                contentType : "application/json; charset=utf-8",
+                data: JSON.stringify(orderInfo),
+                success: function(response) {
+                  
+                },
+                error: function() {
+               
+                }
+            });
         });
     });
     </script>
