@@ -105,7 +105,7 @@ input[type="button"] {
 <script type="text/javascript">
 	$(function() {
 		let status = '${status}'
-		if (status == 'fail') {
+		if (status == 'loginFail') {
 			$('.modal-body').text('로그인 실패 다시로그인 하여 주세요');
 			$('#myModal').show();
 		}

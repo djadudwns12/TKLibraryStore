@@ -77,9 +77,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		
 			
 		}
-		
-		
-		
 		super.postHandle(request, response, handler, modelAndView);
 	}
 

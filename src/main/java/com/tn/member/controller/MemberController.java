@@ -111,10 +111,10 @@ public class MemberController {
 				System.out.println(loginMember);
 				// 로그인 한 유저 세션에 저장하기
 				session.setAttribute("loginMember", loginMember);
-				model.addAttribute("status", "success");
+				model.addAttribute("status", "loginSuccess");
 			} else { // 로그인 실패시
 				System.out.println("로그인 실패");
-				model.addAttribute("status", "fail");
+				model.addAttribute("status", "loginFail");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
