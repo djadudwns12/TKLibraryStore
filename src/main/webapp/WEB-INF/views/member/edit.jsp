@@ -14,8 +14,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
+.register-box{
+	display : flex;
+	justify-content: center;
+}
+
 .input-group{
 	display: flex;
+	text-align: center;
 }
 .input-group label{
 	display :inline-block;
@@ -35,6 +41,16 @@
 	margin-left:10px; 
 	border-color:#7fad38; 
 	background-color:#7fad38;
+}
+.profileImageContainer {
+	display: flex;
+	justify-content: space-around;
+	border: 2px dashed #cccccc;
+    padding: 20px;
+    text-align: center;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    cursor: pointer;
 }
 </style>
 <script>
@@ -97,11 +113,16 @@ $(function() {
             	<input type="hidden" id="phoneNumCheck" value="checked"/>
             	<div id="phoneNumError" style="color: red;"></div>
             </div>
-
-			<div class="d-grid gap-2" style="text-align:right;">
-					<button type="submit" class="btn btn-primary" onclick="return isValid();" style="border-color:#7fad38; background-color:#7fad38;">수정완료</button>
-					<button type="reset" class="btn btn-danger" >되돌리기</button>
-					
+			<div id="profileImageContainer">
+		        <p id ="sign">프로필 사진을 변경하려면 드래그 앤 드롭하세요.</p>
+		        <img id="profilePreview" src="${loginMember.userImg}" alt="프로필 사진 미리보기">
+		        <span class="badge bg-danger" id="delPreview" onclick="deleteProfileImage();" style="color:white">이미지 삭제</span>
+		        <input type="file" id="profileImageInput" style="display: none;" accept="image/*">
+		    	
+		    </div>
+		    <div class="d-grid gap-2" style="text-align:right;">
+				<button type="submit" class="btn btn-primary" onclick="return isValid();" style="border-color:#7fad38; background-color:#7fad38;">수정완료</button>
+				<button type="reset" class="btn btn-danger" >되돌리기</button>
 			</div>
 		</form>
 	
