@@ -151,8 +151,7 @@ public class MemberController {
 	 */
 
 	@RequestMapping(value = "/edit")
-	public void getEditMemeberInfo(HttpSession ses,  Model model) { // 
-//		String userId = "dooly"; // 회원정보수정 페이지 완료하면 로그인 정보 가져오기!
+	public void getEditMemeberInfo(HttpSession ses,  Model model) { 
 		try {
 			MemberVO loginMember = mService.getEditMemberInfo(((MemberVO)ses.getAttribute("loginMember")).getUserId());
 			System.out.println(loginMember.toString());
@@ -175,11 +174,14 @@ public class MemberController {
 	 *
 	 */
 	@RequestMapping(value = "/mypage")
-	public void saveEditInfo(MemberDTO loginMember, RedirectAttributes redirectAttributes,Model model,HttpSession sess) {
+	public void saveEditInfo(MemberDTO editMember, RedirectAttributes redirectAttributes,Model model,HttpSession sess) {
 
 		try {
-			mService.saveEditInfo(loginMember);
+			MemberVO loginMember = (MemberVO) sess.getAttribute("loginMember");
 			model.addAttribute("loginMember", (MemberVO) sess.getAttribute("loginMember"));
+			System.out.println(loginMember.toString());
+			mService.saveEditInfo(editMember);
+			System.out.println("MemberController::editInfo :" + editMember.toString());
 			redirectAttributes.addAttribute("status", "editSuccess");
 		} catch (Exception e) {
 			e.printStackTrace();
