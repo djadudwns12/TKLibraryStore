@@ -121,11 +121,12 @@ table.table th {
         height: auto;
     }
 }
+.userInfoDiv{
+	padding: 100px;
+}
 </style>
 <script type="text/javascript">
 	$(function() {
-		//let qaList = $('.userInfoDiv');
-		//$('#main_content').html(qaList);
 		// 이미지 슬라이더
 		new Swiper('.swiper-container', {
 
@@ -148,8 +149,30 @@ table.table th {
 				prevEl : '.swiper-button-prev', // 이번 버튼 클래스명
 			},
 		});
+		
+		// 마이페이메뉴 수정
+		mypageNav();
+		
 
-	})
+	});
+	function mypageNav(){
+		let inputHTML = `<li onclick="showHide()"><h5><b>내정보보기<span class="showInfo">▼</span><span class="hideInfo">◀</span></b></h5></li>
+			<li class="myInfo"><a href="/member/edit">ㅤ> 수정</a></li>
+			<li class="myInfo"><a href="/member/myPage">ㅤ> 주소록 관리</a></li>
+			<li><a href="#"><h5><b>찜</b></h5></a></li>
+			<li><a href="/cart/cartPage"><h5><b>장바구니</b></h5></a></li>
+			<li><a href="#"><h5><b>알림</b></h5></a></li>
+			<li><a href="#"><h5><b>나의 회원등급</b></h5></a></li>
+			<li><a href="#"><h5><b>나의 포인트 적립기록</b></h5></a></li>
+			<li><a href="#"><h5><b>나의 리뷰</b></h5></a></li>
+			<li><a href="/qa/qaList"><h5><b>1:1문의</b></h5></a></li>`;
+		$('#categoryList').html(inputHTML);
+	}
+	
+	
+	
+	
+	
 </script>
 </head>
 
@@ -182,7 +205,7 @@ table.table th {
 
             <!-- Points Table -->
             <div class="pointlog">
-            	<h6>최근주문내역</h6>
+            	<h6>최근적립내역</h6>
                 <table class="table">
                     <thead>
                         <tr>

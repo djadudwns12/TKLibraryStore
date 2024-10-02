@@ -43,7 +43,22 @@ div#category_young {
 	display: flex;
 	justify-content: flex-start;
 }
+
 </style>
+<script type="text/javascript">
+$(function(){
+	$('#low_class').next().hide();
+	$('.showInfo').show();
+	$('.hideInfo').hide();
+	
+})
+function showHide(){
+	$('.myInfo').toggle('myInfoHide');
+	$('.showInfo').toggle();
+	$('.hideInfo').toggle();
+}
+</script>
+
 
 
 </head>
@@ -233,7 +248,7 @@ div#category_young {
 						<input type="hidden" class="categoryNo">
 						<div id="category_young">
 							<select id="high_class" onchange="category(this)">
-								<option value="-1">선택</option>
+								<option value="">선택</option>
 								<option value="05">인문</option>
 							</select>
 							<!-- 중분류 -->
