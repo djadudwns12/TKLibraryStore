@@ -53,6 +53,8 @@
 			$('#sortByWhat').val(selectSort).prop('selected', true);
 			let pagingSize= '${pagingInfo.viewPostCntPerPage}'
 			$('.pagingSize').val(pagingSize).prop('selected',true);
+			let searchWord = '${search.searchWord}'
+			$('.searchWord').val(searchWord);
 			
 		}
 		
@@ -125,7 +127,9 @@
 		                popularList.empty();
 		                $.each(data, function(index, keyword) {
 		                	var index = index+1
-		                    popularList.append('<li>' + index + "　　" + keyword + '</li>');
+		                    //popularList.append('<li>' + index + "　　" + keyword + '</li>');
+		                	popularList.append('<li class="recentSearchs"><a href= "/admin/productAdmin?searchType=title&searchWord=' + keyword + '";>' +  index + "　　" + keyword + '</a></li>');
+		                	
 		                });
 				},
 				error : function(data) {
