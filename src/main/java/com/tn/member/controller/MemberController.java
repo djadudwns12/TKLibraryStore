@@ -101,7 +101,7 @@ public class MemberController {
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public void login(@RequestParam("userId") String userId, @RequestParam("userPwd") String userPwd,
-			HttpSession session) {
+			HttpSession session,Model model) {
 		System.out.println(userId + ": " + userPwd);
 		// 로그인 시키는 메서드
 		try {
@@ -111,8 +111,10 @@ public class MemberController {
 				System.out.println(loginMember);
 				// 로그인 한 유저 세션에 저장하기
 				session.setAttribute("loginMember", loginMember);
+				model.addAttribute("status", "success");
 			} else { // 로그인 실패시
 				System.out.println("로그인 실패");
+				model.addAttribute("status", "fail");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
