@@ -7,6 +7,7 @@ import java.util.Map;
 import org.mariadb.jdbc.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tn.admin.model.vo.*;
 import com.tn.admin.dao.ProductAdminDAO;
@@ -18,6 +19,7 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 	private ProductAdminDAO pDao;
 	
 	@Override
+	@Transactional
 	public Map<String, Object> listAll(PagingInfoDTO dto, SearchCriteriaDTO searchCriteria, String sortBy) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		List<ProductVO> list = null;
@@ -37,8 +39,16 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 			}
 						
 		} else {
+			
+			// 최초검색이기 때문에 여기에만 searchCount+1 해주는 메서드를 만들었습니다.
 			if(sortBy.equals("default")) {
+				// 1) 리스트를 불러옵니다
 				list = pDao.selectAllBoard(pi, searchCriteria);
+				
+				// 2) 해당 검색어가 searchWord에 존재하는지 확인 후 존재하면 +1, 없으면 insert
+				pDao.insertOrUpdateSearchKeyword(searchCriteria.getSearchWord());
+				
+				
 				System.out.println("sortby default 일때");
 			} else {
 				list = pDao.selectAllBoard(pi, searchCriteria, sortBy);
@@ -131,6 +141,13 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 	public int registSave(ProductVO product,BoardUpFileVODTO fileInfo) throws Exception {
 		
 		return pDao.registSave(product, fileInfo);
+	}
+
+
+	@Override
+	public List<String> getPopularKeywords(int limit) throws Exception {
+		
+		return pDao.getPopularKeywords(limit);
 	}
 	
 	

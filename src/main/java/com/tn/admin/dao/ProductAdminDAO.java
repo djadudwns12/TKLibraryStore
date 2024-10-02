@@ -40,5 +40,11 @@ public interface ProductAdminDAO {
 
 	int registSave(ProductVO product, BoardUpFileVODTO fileInfo) throws Exception;
 
+	void insertOrUpdateSearchKeyword(String searchWord) throws Exception;
+
+	List<String> getPopularKeywords(int limit)throws Exception;
+
+	
+
 
 }

@@ -23,9 +23,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -82,6 +84,7 @@ public class AdminController {
 	public String home(Locale locale, Model model) {
 		return "/admin/home";
 	}
+	// ================================================= 한준형 ===========================================================
 
 	@RequestMapping("/productAdmin")
 	// response 객체를 사용할 시에는 반환값 void를 사용해선 안된다. freshAttribute 관련문제
@@ -127,7 +130,13 @@ public class AdminController {
 		            
 		            
 		            List<String> historyList = new ArrayList<>(List.of(searchHistory.split(",")));
-		            	            
+		            
+					if(historyList.contains(searchWord)) {
+		            	
+						historyList.remove(searchWord);
+										   
+					}
+
 		            historyList.add(0, searchWord); // 가장 앞에 추가
 		                
 		            	            
@@ -156,6 +165,7 @@ public class AdminController {
 			model.addAttribute("productList", list); // 데이터 바인딩
 			model.addAttribute("pagingInfo", pi);
 			model.addAttribute("search", searchCriteria);
+			model.addAttribute("ra",sortBy);
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -282,6 +292,24 @@ public class AdminController {
 		BoardUpFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, contentType, originalFileName,fileSize);
 		return fileInfo;
 	}
+	
+	@GetMapping("/popularKeywords")
+    @ResponseBody
+    public List<String> getPopularKeywords(@RequestParam(value = "limit", defaultValue = "10") int limit) {
+        List<String> kewords = null;
+		
+		try {
+			kewords =  pService.getPopularKeywords(limit);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return kewords;
+    }
+	
+	// ================================================= 한준형 ===========================================================
+	
 	//========================================최미설===================================//
 	// 회원관리페이지
 	@RequestMapping("/memberadmin")
@@ -453,4 +481,6 @@ public class AdminController {
 		}
 		
 		// 엄영준(end) =============================================================================================================
+		
+		
 }

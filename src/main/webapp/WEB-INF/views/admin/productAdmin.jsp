@@ -21,6 +21,7 @@
 <script>
 	$(function() {
 
+		isSelect();
 		$('.pagingSize')
 				.change(
 						function() {
@@ -47,7 +48,14 @@
 									+ $(this).val()
 									+ '&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
 						});
-
+		function isSelect() {
+			let selectSort ='${ra}'
+			$('#sortByWhat').val(selectSort).prop('selected', true);
+			let pagingSize= '${pagingInfo.viewPostCntPerPage}'
+			$('.pagingSize').val(pagingSize).prop('selected',true);
+			
+		}
+		
 		
 		<!-- 최근 검색어 기능 구현 -->
 		
@@ -99,6 +107,39 @@
                 $("#recentSearchesList").append('<li class="recentSearchs"><a href= "/admin/productAdmin?searchType=title&searchWord=' + keyword + '";>' + keyword + '</a></li>');
             });
         }
+        
+        <!-- 인기 검색어 기능 구현 -->
+        // 인기 검색어 목록 불러오기
+        function loadPopularKeywords() {
+        	
+        	$
+			.ajax({
+				url : "/admin/popularKeywords",
+				type : "get",
+				dataType : "json",
+				data : {
+					limit : 5
+				},
+				success : function(data) {
+					 var popularList = $('#popularSearchesList');
+		                popularList.empty();
+		                $.each(data, function(index, keyword) {
+		                	var index = index+1
+		                    popularList.append('<li>' + index + "　　" + keyword + '</li>');
+		                });
+				},
+				error : function(data) {
+					console.log(data);
+
+				},
+			});
+        	
+        	        	            
+        }
+
+        // 페이지 로드 시 인기 검색어 불러오기
+        loadPopularKeywords();
+        
     });
 	
 
@@ -484,7 +525,7 @@ a:visited {
 
 
 
-
+				<div style="overflow-x: auto;">
 				<table>
 					<thead>
 						<tr>
@@ -537,7 +578,7 @@ a:visited {
 
 					</tbody>
 				</table>
-
+				</div>
 			</div>
 			<div class="pagination justify-content-center" style="margin: 20px 0">
 
@@ -598,11 +639,7 @@ a:visited {
 							<h5>인기 검색어</h5>
 							<ul id="popularSearchesList">
 								<!-- 인기 검색어가 동적으로 삽입될 곳 -->
-								<li>1위</li>
-								<li>2위</li>
-								<li>3위</li>
-								<li>4위</li>
-								<li>5위</li>
+								
 							</ul>
 						</div>
 						

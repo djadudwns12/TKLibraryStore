@@ -27,6 +27,8 @@ public interface ProductAdminService {
 
 	int registSave(ProductVO product, BoardUpFileVODTO fileInfo) throws Exception;
 
+	List<String> getPopularKeywords(int limit) throws Exception;
+
 
 
 

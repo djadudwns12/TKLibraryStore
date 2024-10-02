@@ -114,6 +114,19 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		
 		return ses.insert(NS + ".registSave", params);
 	}
+	@Override
+	public void insertOrUpdateSearchKeyword(String searchWord) throws Exception {
+		ses.insert(NS + ".insertOrUpdateSearchKeyword",searchWord);
+		
+	}
+	@Override
+	public List<String> getPopularKeywords(int limit) throws Exception {
+		
+		return ses.selectList(NS + ".getPopularKeywords", limit);
+	}
+	
+	
+	
 	
 
 }
