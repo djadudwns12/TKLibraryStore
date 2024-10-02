@@ -128,6 +128,10 @@ body {
 	}
 	$(function () {
 		
+		// 페이지 로딩시 선택한 선택한것이 선택되어 있도록 하는 함수
+		isSelect()
+		
+		
 		$('.pagingSize').change(function(){
 			console.log($(this).val());
 			
@@ -149,6 +153,11 @@ body {
 		});
 				
 	});
+	
+	function isSelect(){
+		let selectSort = '${ra}'
+		$('#sortByWhat').val(selectSort).prop('selected',true);
+	}
 </script>
 
 
@@ -262,13 +271,13 @@ body {
                <c:forEach var="i" begin="${pagingInfo.startPageNoCurBlock }"
                   end="${pagingInfo.endPageNoCurBlock }">
                   <c:choose>
-                     <c:when test="${param.pageNo == i }">
+                     <c:when test="${pagingInfo.pageNo == i }">
                         <li class="page-item active" id="${i}"><a class="page-link"
-                           href="/admin/qaAnswerView?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
+                           href="/admin/qaAnswerView?pageNo=${i}&pagingSize=${pagingInfo.viewPostCntPerPage}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
                      </c:when>
                      <c:otherwise>
                         <li class="page-item" id="${i}"><a class="page-link"
-                           href="/admin/qaAnswerView?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
+                           href="/admin/qaAnswerView?pageNo=${i}&pagingSize=${pagingInfo.viewPostCntPerPage}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
                      </c:otherwise>
                   </c:choose>
                </c:forEach>

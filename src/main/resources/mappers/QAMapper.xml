@@ -14,7 +14,7 @@
 	</select>
 	<!-- 관리자 페이지에서 모든 QA목록을 페이징하여 가지고 오는 쿼리문 -->
 	<select id="selectAllQAList" resultType="QAVO">
-		select * from QA limit #{startRowIndex} ,#{viewPostCntPerPage};
+		select * from QA order by qAnswerYN = 'N' desc limit #{startRowIndex} ,#{viewPostCntPerPage}
 	</select>
 	<!-- 관리자 페이지에서 모든 QA목록의 개수를 가지고 오는 쿼리문 -->
 	<select id="selectAllQAListCnt" resultType="int">
