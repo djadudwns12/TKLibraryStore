@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.tn.booklist.model.dto.PagingInfo;
+import com.tn.booklist.model.vo.BookDetailInfo;
 import com.tn.booklist.model.vo.BooklistVO;
 
 @Repository
@@ -27,6 +28,12 @@ public class BooklistDAOImpl implements BooklistDAO {
 	public int getTotalPostCnt() throws Exception {
 		
 		return ses.selectOne(NS + ".selectTotalCnt");
+	}
+
+	@Override
+	public List<BookDetailInfo> selectAllByBookNo(int bookNo) throws Exception {
+		
+		return ses.selectList(NS + ".selectBookDetailInfoByBookNo", bookNo);
 	}
 
 }

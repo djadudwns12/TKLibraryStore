@@ -7,7 +7,7 @@
   
   <!-- 전체 책 리스트를 출간일 내림차순 정렬해 가져오는 쿼리문 -->
   <select id="getAllBooklist" resultType = "com.tn.booklist.model.vo.BooklistVO">
-  	SELECT thumbNail, title, author, publisher, pubDate, price, salePrice, introduction, zzim, reviewCnt
+  	SELECT bookNo, thumbNail, title, author, publisher, pubDate, price, salePrice, introduction, zzim, reviewCnt
 	FROM BookList order by pubDate desc 
 	limit #{startRowIndex}, #{viewPostCntPerPage} 
   </select>
@@ -17,5 +17,9 @@
  	select count(*) from BookList
   </select>
  
+	<!-- 책의 상세정보를 가져오는 쿼리문 -->
+	<select id="selectBookDetailInfoByBookNo" resultType="com.tn.booklist.model.vo.BookDetailInfo">
+		select * from BookList where bookNo = #{bookNo}
+	</select>
  
  </mapper>
