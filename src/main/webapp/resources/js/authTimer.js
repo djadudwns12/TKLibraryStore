@@ -1,5 +1,5 @@
 function startTimer() {
-    let timer = 3; 
+    let timer = 180; 
     let timerInterval = setInterval(() => {
         let min = Math.floor(timer / 60);  
         let sec = String(timer % 60).padStart(2, '0'); 
