@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tn.mapper.QAMapper">
+
+	<!-- Q&A목록을 가지고오는 쿼리문 -->
+	<select id="selectByUserIdQAList" resultType="QAVO">
+		select * from QA where qWriter=#{userId};
+	</select>
+	<!-- QA 상세보기 보여주는 쿼리문 -->
+	<select id="selectQADetail" resultType="QAVO">
+		select * from QA where qNo=#{qNo};
+	</select>
+	<!-- 관리자 페이지에서 모든 QA목록을 페이징하여 가지고 오는 쿼리문 -->
+	<select id="selectAllQAList" resultType="QAVO">
+		select * from QA limit #{startRowIndex} ,#{viewPostCntPerPage};
+	</select>
+	<!-- 관리자 페이지에서 모든 QA목록의 개수를 가지고 오는 쿼리문 -->
+	<select id="selectAllQAListCnt" resultType="int">
+		select count(*) from QA;
+	</select>
+	<!-- 관리자 페이지에서 검색한 모든 QA목록을 개수를 페이징하여 가지고 오는 쿼리문 -->
+	<select id="selectSearchAllQAListCnt" resultType="int">
+		select count(*) from QA where
+		<choose>
+			<when test="searchType == 'title'">
+				qTitle like #{searchWord}
+			</when>
+			<when test="searchType == 'writer'">
+				qWriter like #{searchWord}
+			</when>
+		</choose>
+	</select>
+
+	<!-- 모든 QA목록을 정렬하여 페이징하여 가지고 오는 쿼리문 -->
+	<select id="sortByselectQAList" resultType="QAVO">
+		select * from QA
+		<choose>
+			<when test="sortBy == 'title'">
+				order by qTitle
+			</when>
+			<when test="sortBy == 'writer'">
+				order by qWriter
+			</when>
+		</choose>
+		limit #{startRowIndex} ,#{viewPostCntPerPage}
+	</select>
+
+	<!-- 모든 QA목록을 검색후 페이징하여 가지고 오는 쿼리문 -->
+	<select id="searchCriteriaselectQAList" resultType="QAVO">
+		select * from QA where
+		<choose>
+			<when test="searchType == 'title'">
+				qTitle like #{searchWord}
+			</when>
+			<when test="searchType == 'writer'">
+				qWriter like #{searchWord}
+			</when>
+		</choose>
+		limit #{startRowIndex} ,#{viewPostCntPerPage}
+	</select>
+
+	<!-- 모든 QA목록을 검색후 정렬하여 페이징하여 가지고 오는 쿼리문 -->
+	<select id="searchCriteriasortByselectQAList" resultType="QAVO">
+		select * from QA where
+		<choose>
+			<when test="searchType == 'title'">
+				order by qTitle
+			</when>
+			<when test="searchType == 'writer'">
+				order by qWriter
+			</when>
+		</choose>
+		<choose>
+			<when test="sortBy == 'title'">
+				order by qTitle
+			</when>
+			<when test="sortBy == 'writer'">
+				order by qWriter
+			</when>
+		</choose>
+		limit #{startRowIndex} ,#{viewPostCntPerPage}
+	</select>
+
+	<!-- 고객이 qa를 남기는 쿼리문 -->
+	<insert id="insertQA">
+		INSERT INTO QA (qWriter, qTitle, qContent, qType, qAnswerYN) VALUES
+		(#{qWriter}, #{qTitle}, #{qContent}, '질문', 'N');
+	</insert>
+	
+	<!-- 관리자가 답변을 남기는 쿼리문 -->
+	<update id="saveQaAnswer">
+		update QA set qAnswer = #{qAnswer} , qAnswerYN = 'Y' where qNo = #{qNo}
+	</update>
+</mapper>

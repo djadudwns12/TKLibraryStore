@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,27 +13,39 @@
 <title>Ogani | Template</title>
 
 <!-- Google Font -->
+<script type="text/javascript" src="/resources/js/category.js"></script>
 <link
 	href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
 	rel="stylesheet">
-
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- Css Styles -->
-<link rel="stylesheet" href="resources/template/css/jquery-ui.min.css"
+<link rel="stylesheet" href="/resources/template/css/jquery-ui.min.css"
+	type="text/css">
+<link rel="stylesheet" href="/resources/template/css/bootstrap.min.css"
+	type="text/css">
+<link rel="stylesheet" href="/resources/template/css/elegant-icons.css"
+	type="text/css">
+<link rel="stylesheet" href="/resources/template/css/nice-select.css"
+	type="text/css">
+<link rel="stylesheet" href="/resources/template/css/slicknav.min.css"
 	type="text/css">
 <link rel="stylesheet"
-	href="resources/template/css/owl.carousel.min.css" type="text/css">
-<link rel="stylesheet" href="resources/template/css/bootstrap.min.css"
-	type="text/css">
+	href="/resources/template/css/owl.carousel.min.css" type="text/css">
 <link rel="stylesheet"
-	href="resources/template/css/font-awesome.min.css" type="text/css">
-<link rel="stylesheet" href="resources/template/css/elegant-icons.css"
+	href="/resources/template/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="/resources/template/css/style.css"
 	type="text/css">
-<link rel="stylesheet" href="resources/template/css/nice-select.css"
+<link rel="stylesheet" href="/resources/template/css/style.css"
 	type="text/css">
-<link rel="stylesheet" href="resources/template/css/slicknav.min.css"
-	type="text/css">
-<link rel="stylesheet" href="resources/template/css/style.css"
-	type="text/css">
+<style>
+div#category_young {
+	display: flex;
+	justify-content: flex-start;
+}
+</style>
+
+
 </head>
 
 <body>
@@ -46,7 +58,9 @@
 	<div class="humberger__menu__overlay"></div>
 	<div class="humberger__menu__wrapper">
 		<div class="humberger__menu__logo">
-			<a href="#"><img src="resources/template/img/logo.png" alt=""></a>
+			<a href="#"><img
+				src="${pageContext.request.contextPath}/resources/template/img/logo.png"
+				alt=""></a>
 		</div>
 		<div class="humberger__menu__cart">
 			<ul>
@@ -59,7 +73,9 @@
 		</div>
 		<div class="humberger__menu__widget">
 			<div class="header__top__right__language">
-				<img src="resources/template/img/language.png" alt="">
+				<img
+					src="${pageContext.request.contextPath}/resources/template/img/language.png"
+					alt="">
 				<div>English</div>
 				<span class="arrow_carrot-down"></span>
 				<ul>
@@ -108,7 +124,8 @@
 				<div class="col-lg-3">
 					<div class="header__logo">
 						<a href="./index.html"><img
-							src="resources/template/img/logo.png" alt=""></a>
+							src="${pageContext.request.contextPath}/resources/template/img/logo.png"
+							alt=""></a>
 					</div>
 				</div>
 				<div class="col-lg-6">
@@ -131,8 +148,29 @@
 				<div class="col-lg-3">
 					<div class="header__cart">
 						<ul>
+							<c:if test="${sessionScope.loginMember == null}">
+								<li><a
+									href="${pageContext.request.contextPath}/member/loginPage"><i
+										class="fa fa-user">로그인</i></a></li>
+							</c:if>
+							<c:if test="${sessionScope.loginMember != null}">
+								<li><a
+									href="${pageContext.request.contextPath}/member/logout"><i
+										class="fa fa-user">로그아웃</i></a></li>
+							</c:if>
+							<!-- 마이페이지 이동 -->
+							<li><a
+								href="${pageContext.request.contextPath}/member/mypage"><i
+									class="fa fa-user"></i></a></li>
+
+							<!-- 관리자페이지이동 -->
+							<c:if test="${sessionScope.loginMember.userId == 'admin'}">
+								<li><a href="${pageContext.request.contextPath}/admin/home"><i
+										class="fa fa-user-secret"></i></a></li>
+							</c:if>
 							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-							<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+							<li><a href="/cart/cartPage"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+							<li><a href="/qa/qaList"><i class="fa fa-question-circle"></i></a></li>
 						</ul>
 					</div>
 				</div>
@@ -145,7 +183,7 @@
 	<!-- Header Section End -->
 
 	<!-- Hero Section Begin -->
-	<section class="hero">
+	<section class="hero hero-normal">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-3">
@@ -153,18 +191,19 @@
 						<div class="hero__categories__all">
 							<i class="fa fa-bars"></i> <span>All departments</span>
 						</div>
-						<ul>
-							<li><a href="#">Fresh Meat</a></li>
+						<ul id="categoryList" style="display: none">
+							<c:if test="${loginMember != null}">
+								<li><a href="/member/myPage">마이페이지</a></li>
+							</c:if>
 							<li><a href="#">Vegetables</a></li>
 							<li><a href="#">Fruit & Nut Gifts</a></li>
 							<li><a href="#">Fresh Berries</a></li>
-							<li><a href="#">Ocean Foods</a></li>
-							<li><a href="#">Butter & Eggs</a></li>
-							<li><a href="#">Fastfood</a></li>
-							<li><a href="#">Fresh Onion</a></li>
-							<li><a href="#">Papaya & Crisps</a></li>
-							<li><a href="#">Oatmeal</a></li>
-							<li><a href="#">Fresh Bananas</a></li>
+							<li><a href="#">Vegetables</a></li>
+							<li><a href="#">Fruit & Nut Gifts</a></li>
+							<li><a href="#">Fresh Berries</a></li>
+							<li><a href="#">Vegetables</a></li>
+							<li><a href="#">Fruit & Nut Gifts</a></li>
+							<li><a href="#">Fresh Berries</a></li>
 						</ul>
 					</div>
 				</div>
@@ -189,6 +228,25 @@
 							</div>
 						</div>
 					</div>
+					<!-- 카테고리 -->
+					<div class="categoryArea" style="display: none;">
+						<input type="hidden" class="categoryNo">
+						<div id="category_young">
+							<select id="high_class" onchange="category(this)">
+								<option value="-1">선택</option>
+								<option value="05">인문</option>
+							</select>
+							<!-- 중분류 -->
+							<select id="mid_class" onchange="category(this)">
+								<option value="-1">선택</option>
+							</select>
+							<!-- 소분류 -->
+							<select id="low_class" onchange="category(this)">
+								<option value="-1">선택</option>
+							</select>
+						</div>
+						<div id="main_content"></div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -196,14 +254,23 @@
 	<!-- Hero Section End -->
 
 	<!-- Js Plugins -->
-	<script src="resources/template/js/jquery-3.3.1.min.js"></script>
-	<script src="resources/template/js/bootstrap.min.js"></script>
-	<script src="resources/template/js/jquery.nice-select.min.js"></script>
-	<script src="resources/template/js/jquery-ui.min.js"></script>
-	<script src="resources/template/js/jquery.slicknav.js"></script>
-	<script src="resources/template/js/mixitup.min.js"></script>
-	<script src="resources/template/js/owl.carousel.min.js"></script>
-	<script src="resources/template/js/main.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/template/js/jquery-3.3.1.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/template/js/bootstrap.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/template/js/jquery.nice-select.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/template/js/jquery-ui.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/template/js/jquery.slicknav.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/template/js/mixitup.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/template/js/owl.carousel.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/template/js/main.js"></script>
 </body>
+
 
 </html>

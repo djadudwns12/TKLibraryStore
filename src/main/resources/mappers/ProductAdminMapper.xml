@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tn.mapper.ProductAdminMapper">
+  	
+  	<select id="getProduct" resultType="com.tn.admin.model.vo.ProductVO">
+  		select * from BookList order by bookNo limit #{startRowIndex}, #{viewPostCntPerPage};
+  	</select>
+  	
+  	<select id="selectTotalCount" resultType="int">
+		select count(*) from BookList;
+		
+	</select>
+	
+		<!-- 검색어가 있을 경우의 데이터 갯수 가져오기 -->
+	<select id="selectTotalCountWithSearchCriteria" resultType="int">
+		select count(*) from BookList
+		<choose>
+			<when test="searchType == 'title'">
+				where title like #{searchWord}
+			</when>
+			<when test="searchType == 'author'">
+				where author like #{searchWord}
+			</when>
+			<when test="searchType == 'introduction'">
+				where introduction like #{searchWord}
+			</when>
+			<when test="searchType == 'genre'">
+				where genre like #{searchWord}
+			</when>
+			<when test="searchType == 'publisher'">
+				where publisher like #{searchWord}
+			</when>
+		</choose>
+	</select>
+	
+	<!-- 조건별 정렬 -->
+	<select id="getProductBySortby" resultType="com.tn.admin.model.vo.ProductVO">
+	
+		select * from BookList 
+		<choose>
+		<when test="sortBy == 'salePrice'">
+				order by salePrice
+			</when>
+			<when test="sortBy == 'inven'">
+				order by inven
+			</when>
+			<when test="sortBy == 'zzim'">
+				order by  zzim
+			</when>
+			<when test="sortBy == 'reviewCnt'">
+				order by  reviewCnt
+			</when>
+			<when test="sortBy == 'pubDate'">
+				order by  pubDate
+			</when>
+					 
+		</choose>		
+		desc limit #{startRowIndex}, #{viewPostCntPerPage};
+	</select>
+	
+	<!-- 검색어가 있을 때 리스트가져오기 -->
+	<select id="getSearchProductWithPaging"
+		resultType="com.tn.admin.model.vo.ProductVO">
+		select * from BookList
+		<choose>
+			<when test="searchType == 'title'">
+				where title like #{searchWord}
+			</when>
+			<when test="searchType == 'author'">
+				where author like #{searchWord}
+			</when>
+			<when test="searchType == 'introduction'">
+				where introduction like #{searchWord}
+			</when>
+			<when test="searchType == 'genre'">
+				where genre like #{searchWord}
+			</when>
+			<when test="searchType == 'publisher'">
+				where publisher like #{searchWord}
+			</when>
+		</choose>
+		 limit #{startRowIndex}, #{viewPostCntPerPage}
+	</select>
+	
+	<!-- 검색어가 있을 때 정렬 조건 적용 -->
+	<!-- select * from BookList where title like '마음' order by salePrice desc limit desc limit #{startRowIndex}, #{viewPostCntPerPage}  -->
+	<select id="getProductBySbSc"
+		resultType="com.tn.admin.model.vo.ProductVO">
+		select * from BookList
+		<choose>
+			<when test="searchType == 'title'">
+				where title like #{searchWord}
+				<choose>
+					<when test="sortBy == 'salePrice'">
+						order by salePrice
+					</when>
+					<when test="sortBy == 'inven'">
+						order by inven
+					</when>
+					<when test="sortBy == 'zzim'">
+						order by  zzim
+					</when>
+					<when test="sortBy == 'reviewCnt'">
+						order by  reviewCnt
+					</when>
+					<when test="sortBy == 'pubDate'">
+						order by  pubDate
+					</when>
+					
+				</choose>
+			</when>
+			<when test="searchType == 'author'">
+				where author like #{searchWord}
+				<choose>
+					<when test="sortBy == 'salePrice'">
+						order by salePrice
+					</when>
+					<when test="sortBy == 'inven'">
+						order by inven
+					</when>
+					<when test="sortBy == 'zzim'">
+						order by  zzim
+					</when>
+					<when test="sortBy == 'reviewCnt'">
+						order by  reviewCnt
+					</when>
+					<when test="sortBy == 'pubDate'">
+						order by  pubDate
+					</when>
+					
+				</choose>
+			</when>
+			<when test="searchType == 'introduction'">
+				where introduction like #{searchWord}
+				<choose>
+					<when test="sortBy == 'salePrice'">
+						order by salePrice
+					</when>
+					<when test="sortBy == 'inven'">
+						order by inven
+					</when>
+					<when test="sortBy == 'zzim'">
+						order by  zzim
+					</when>
+					<when test="sortBy == 'reviewCnt'">
+						order by  reviewCnt
+					</when>
+					<when test="sortBy == 'pubDate'">
+						order by  pubDate
+					</when>
+					
+				</choose>
+			</when>
+			<when test="searchType == 'genre'">
+				where genre like #{searchWord}
+				<choose>
+					<when test="sortBy == 'salePrice'">
+						order by salePrice
+					</when>
+					<when test="sortBy == 'inven'">
+						order by inven
+					</when>
+					<when test="sortBy == 'zzim'">
+						order by  zzim
+					</when>
+					<when test="sortBy == 'reviewCnt'">
+						order by  reviewCnt
+					</when>
+					<when test="sortBy == 'pubDate'">
+						order by  pubDate
+					</when>
+					
+				</choose>
+			</when>
+			<when test="searchType == 'publisher'">
+				where publisher like #{searchWord}
+				<choose>
+					<when test="sortBy == 'salePrice'">
+						order by salePrice
+					</when>
+					<when test="sortBy == 'inven'">
+						order by inven
+					</when>
+					<when test="sortBy == 'zzim'">
+						order by  zzim
+					</when>
+					<when test="sortBy == 'reviewCnt'">
+						order by  reviewCnt
+					</when>
+					<when test="sortBy == 'pubDate'">
+						order by  pubDate
+					</when>
+					
+				</choose>
+			</when>
+		</choose>
+	
+		 desc limit #{startRowIndex}, #{viewPostCntPerPage}
+	</select>
+	
+	<delete id="deleteProduct">
+		delete from BookList where bookNo = #{delNo}
+	</delete>
+	
+	<update id="soldOutProduct">
+		update BookList set inven = 0 where bookNo=#{sdNo}
+	</update>
+	
+	<select id="readBookInfo" resultType="com.tn.admin.model.vo.ProductVO">
+		select * from BookList where bookNo = #{bookNo}
+	</select>
+	
+	
+	<update id="saveImgInfo">
+		update BookList set thumbNail=#{fileName}, base64ProfileImg=#{base64Img} where bookNo=#{bookNo};
+	</update> 
+	
+	<update id = "updateProduct">
+		update BookList set 
+		title=#{title}, author=#{author}, publisher=#{publisher}, pubDate=#{pubDate},
+		genre=#{genre}, price=#{price}, salePrice=#{salePrice}, inven=#{inven}, introduction=#{introduction}		
+		where bookNo=#{bookNo};
+	</update>
+	
+	<insert id="registSave">
+		insert into BookList
+		(title, author, publisher, pubDate, genre, price, salePrice, inven, thumbNail, introduction, base64ProfileImg)
+		values
+		(#{title}, #{author}, #{publisher}, #{pubDate}, #{genre}, #{price}, #{salePrice},
+		#{inven}, #{fileName}, #{introduction}, #{base64ProfileImg})
+	</insert>
+  </mapper>

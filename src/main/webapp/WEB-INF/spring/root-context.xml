@@ -33,9 +33,9 @@
 	<bean id="sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
-		<!-- <property name="configLocation"
-			value="classpath:/mybatis-config.xml"> root / 으로 표시 // 시 에러
-		</property> -->
+		<property name="configLocation"
+			value="classpath:/mybatis-config.xml"><!--  root / 으로 표시 // 시 에러 -->
+		</property>
 		<property name="mapperLocations"
 			value="classpath:mappers/**/*Mapper.xml">
 		</property>
@@ -55,7 +55,25 @@
 	
 	<context:component-scan	base-package="com.tn.member.service" />
 	<context:component-scan	base-package="com.tn.member.dao" />
+	<context:component-scan	base-package="com.tn.booklist.service" />
+	<context:component-scan	base-package="com.tn.booklist.dao" />
+	
+	<context:component-scan	base-package="com.tn.review.service" />
+	<context:component-scan	base-package="com.tn.review.dao" />
 		
+	<context:component-scan	base-package="com.tn.cart.service" />
+	<context:component-scan	base-package="com.tn.cart.dao" />
+	<context:component-scan	base-package="com.tn.cart.vo" />
+	
+
+
+	<context:component-scan	base-package="com.tn.admin" />
+	
+	<context:component-scan	base-package="com.tn.qa" />
+	<context:component-scan	base-package="com.tn.category.service" />
+	<context:component-scan	base-package="com.tn.category.dao" />
+	<context:component-scan	base-package="com.tn.util" />
+
 		
 		
 </beans>
