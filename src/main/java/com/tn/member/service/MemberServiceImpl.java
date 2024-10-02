@@ -108,9 +108,11 @@ public class MemberServiceImpl implements MemberService {
 
 //-----------------------------------------박근영-------------------------------------------------
 	@Override
+	@Transactional(rollbackFor = Exception.class) // 모든 예외 발생 시 롤백하도록 설정
 	public boolean registerMember(RegisterDTO registerDTO, ImgFileVODTO fileInfo) throws Exception {
 		boolean result = false;
-		if(dao.insertMember(registerDTO, fileInfo) == 1) {
+		String address = registerDTO.getKeyword() + " " + registerDTO.getAddressDetail();
+		if(dao.insertMember(registerDTO, fileInfo) == 1 && dao.insertAddress(registerDTO, address) == 1) {
 			result = true;
 		}else {
 			result = false;

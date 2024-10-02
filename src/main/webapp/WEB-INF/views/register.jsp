@@ -53,6 +53,9 @@ body {
 .sendButton-container input {
     width: calc(100% - 110px); /* 버튼 옆의 필드 크기 */
 }
+.sendSmsButton-container input {
+    width: calc(100% - 110px); /* 버튼 옆의 필드 크기 */
+}
 
 .button-container button {
     width: 100px; /* 버튼 크기 */
@@ -72,7 +75,10 @@ body {
     display: flex;
     justify-content: space-between;
 }
-
+.sendSmsButton-container {
+    display: flex;
+    justify-content: space-between;
+}
 
 .button-disabled {
     width: 100px; /* 버튼 크기 */
@@ -300,7 +306,7 @@ input[readonly] {
         <input type="text" id="userName" name="userName" placeholder="이름을 입력해주세요." required>
     </div>
     
-    <div class="form-group sendButton-container">
+    <div class="form-group sendSmsButton-container">
         <input type="tel" id="phone" name="phone" placeholder="휴대폰 번호 입력" required>
          <button type="button" class="button-disabled"  id="sendSMSBtn">문자 전송</button>
     </div>
@@ -441,7 +447,10 @@ function clearError(obj) {
     
     
     $('#phone').on("input", function () {
-        let tmpPhone = $("#phone").val();
+        let EditTmpPhone = $("#phone").val();
+        let tmpPhone = autoFormatPhone(EditTmpPhone);
+        $("#phone").val(tmpPhone)
+        
         let phoneRegExp = /^(01[016789]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
         if (!phoneRegExp.test(tmpPhone)) {
         	//$("#button-disabled").attr("cl", "button-disabled");
@@ -627,6 +636,25 @@ function deleteProfileImage() {
 
   
 let code ='';
+
+
+
+function autoFormatPhone(phone) {
+    phone = phone.replace(/[^0-9]/g, "");  // 숫자 외의 문자를 모두 제거
+
+    // 숫자의 개수에 따라 포맷팅
+    if (phone.length < 4) {
+        return phone;
+    } else if (phone.length < 8) {
+        return phone.replace(/(\d{3})(\d{1,4})/, "$1-$2");
+    } else {
+        return phone.replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3");
+    }
+}
+
+
+
+
   
 function sendSMS() {
 
@@ -658,13 +686,13 @@ function sendSMS() {
 				alert("SMS 전송 성공: 인증 코드 - " + response);
 		      
 			      let htmlStr = '';  // 변수 초기화
-			      htmlStr += `<div class="form-group sendButton-container">`;
+			      htmlStr += `<div class="form-group sendSmsButton-container">`;
 			      htmlStr += `<input type="text" id="verification" name="verification" placeholder="인증번호 입력" required>`;
 			      htmlStr += `<button type="button" id="verificationBtn" class="button-active" onclick="verificationCode();">인증번호 확인</button>`;
 			      htmlStr += `</div>`;
 
-			      // .sendButton-container 뒤에 htmlStr을 추가
-			      $('.sendButton-container').after(htmlStr); 
+			      // .sendSmsButton-container 뒤에 htmlStr을 추가
+			      $('.sendSmsButton-container').after(htmlStr); 
 			      $('#sendSMSBtn').removeAttr("onclick");
 			      startTimer();
 			      code = response;
@@ -966,6 +994,7 @@ async function register() {
                 // 상태 코드 200: 성공 처리
                 200: function () {
                     alert('가입 성공!');
+                    window.location.href = '/member/loginPage';
                 },
                 // 상태 코드 406: 실패 처리
                 406: function () {

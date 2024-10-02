@@ -71,7 +71,17 @@ public class MemberDAOImpl implements MemberDAO  {
 	public int selectId(String tmpUserId) throws Exception {
 		return sess.selectOne(NS + ".selectCompareId", tmpUserId);
 	}
+	
+	@Override
+	public int insertAddress(RegisterDTO registerDTO, String address) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("registerDTO", registerDTO);
+		paramMap.put("address", address);
+		return sess.insert(NS + ".insertRegisterAddress", paramMap);
+	}
+
 //-----------------------------------------박근영-------------------------------------------------
+
 
 
 	

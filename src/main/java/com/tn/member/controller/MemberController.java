@@ -342,6 +342,7 @@ public class MemberController {
 	private ImgFileVODTO fileSave(MultipartFile imgFile, String userId, HttpServletRequest request) throws IOException { // 파일의 기본정보 가져옴 
 		
 		String originalFileName = imgFile.getOriginalFilename();
+		System.out.println("여긴는" + originalFileName);
 		byte[] upfile = imgFile.getBytes(); // 파일의 실제 데이터를 읽어옴
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/profileImgs");
 		
