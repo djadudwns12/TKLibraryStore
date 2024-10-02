@@ -52,48 +52,47 @@
 }
 
 .quantity-control {
-    display: inline-flex;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow: hidden; /* 경계선에 맞춰서 내용이 잘리지 않도록 */
+	display: inline-flex;
+	align-items: center;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	overflow: hidden; /* 경계선에 맞춰서 내용이 잘리지 않도록 */
 }
 
 .quantity-control button {
-    background-color: #f8f9fa; /* 버튼 배경색 */
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 18px; /* 버튼 크기 */
-    transition: background-color 0.3s;
+	background-color: #f8f9fa; /* 버튼 배경색 */
+	border: none;
+	padding: 5px 10px;
+	cursor: pointer;
+	font-size: 18px; /* 버튼 크기 */
+	transition: background-color 0.3s;
 }
 
 .quantity-control button:hover {
-    background-color: #e2e6ea; /* 버튼 마우스 오버 시 색상 */
+	background-color: #e2e6ea; /* 버튼 마우스 오버 시 색상 */
 }
 
 .quantity-control input {
-    width: 40px; /* 수량 입력창 너비 */
-    text-align: center; /* 텍스트 중앙 정렬 */
-    border: none;
-    outline: none; /* 포커스 시 경계선 제거 */
-    font-size: 18px; /* 입력 텍스트 크기 */
+	width: 40px; /* 수량 입력창 너비 */
+	text-align: center; /* 텍스트 중앙 정렬 */
+	border: none;
+	outline: none; /* 포커스 시 경계선 제거 */
+	font-size: 18px; /* 입력 텍스트 크기 */
 }
 
-
 .change-btn {
-    background-color: #7FAD39; /* 원하시는 배경색으로 변경 가능 */
-    color: white;
-    border: none;
-    border-radius: 5px; /* 귀여운 느낌을 위해 둥글게 */
-    padding: 5px 10px; /* 여백을 적게 설정 */
-    font-size: 12px; /* 작게 설정 */
-    transition: background-color 0.3s;
-    margin-top:0.5em;
+	background-color: #7FAD39; /* 원하시는 배경색으로 변경 가능 */
+	color: white;
+	border: none;
+	border-radius: 5px; /* 귀여운 느낌을 위해 둥글게 */
+	padding: 5px 10px; /* 여백을 적게 설정 */
+	font-size: 12px; /* 작게 설정 */
+	transition: background-color 0.3s;
+	margin-top: 0.5em;
 }
 
 .change-btn:hover {
-    background-color: #6FAF2E; /* 호버 시 색상 변경 */
+	background-color: #6FAF2E; /* 호버 시 색상 변경 */
 }
 </style>
 </head>
@@ -103,8 +102,9 @@
 	<c:import url="../header.jsp"></c:import>
 
 	<div class="container">
-		<button type="button" class="btn btn-outline-danger">선택삭제</button>
-		<div style="max-height: 300px; overflow-y: auto;">
+		<button type="button" class="btn btn-outline-danger"
+			id="deleteSelectedButton">선택삭제</button>
+		<div style="max-height: 500px; overflow-y: auto;">
 			<table class="table table-hover">
 				<thead>
 					<tr style="text-align: center;">
@@ -118,13 +118,9 @@
 						<th>선택</th>
 					</tr>
 				</thead>
-			</table>
-		</div>
-		<div style="max-height: 500px; overflow-y: auto;">
-			<table class="table table-hover">
 				<tbody>
 					<c:forEach var="cart" items="${cartList}">
-						<tr>
+						<tr class="cartItem">
 							<td class="common-td"><input type="checkbox"
 								class="selectItem" onclick="updateTotals()"
 								data-price="${cart.price}" data-salePrice="${cart.salePrice}"
@@ -145,19 +141,20 @@
 										groupingUsed="true" />
 									원
 								</div>
+							</td>
 							<td class="common-td">
 								<div class="quantity-control">
 									<button type="button" class="decrease-btn"
 										data-cart-id="${cart.cartId}">-</button>
-									<input type="text" id="qtyInput-${cart.cartId}" value="${cart.qty}" size="2" readonly />
+									<input type="text" id="qtyInput-${cart.cartId}"
+										value="${cart.qty}" size="2" readonly /> <input type="hidden"
+										id="inven-${cart.cartId}" value="${cart.inven}" />
 									<script>
-                						console.log("생성된 qtyInput ID:", 'qtyInput-${cart.cartId}');
-            						</script>
+                                console.log("생성된 qtyInput ID:", 'qtyInput-${cart.cartId}');
+                                console.log("cartId : ", '${cart.cartId}', "재고수량 : ", '${cart.inven}');
+                            </script>
 									<button type="button" class="increase-btn"
 										data-cart-id="${cart.cartId}">+</button>
-								</div>
-								<div>
-									<button type="button" class="change-btn" onclick="saveQty(${cart.cartId})">변경</button>
 								</div>
 							</td>
 							<td class="common-td"><img
@@ -183,6 +180,7 @@
 				</tr>
 			</thead>
 			<tbody>
+				<span id="pointRate" style="display: none;">${pointRate}</span> <!-- pointRate 추가 -->
 				<c:set var="totalPrice" value="0" />
 				<c:set var="totalSalePrice" value="0" />
 				<c:set var="totalPay" value="0" />
@@ -191,11 +189,11 @@
 					<c:set var="totalPrice"
 						value="${totalPrice + cart.price * cart.qty}" />
 					<c:set var="totalSalePrice"
-						value="${totalSalePrice + (cart.price*cart.qty - cart.salePrice*cart.qty)}" />
+						value="${totalSalePrice + (cart.price*0.9)}" />
 					<c:set var="totalPay"
-						value="${totalPay + cart.salePrice * cart.qty}" />
+						value="${totalPay + totalSalePrice * cart.qty}" />
 					<c:set var="totalPoint"
-						value="${totalPoint + (cart.salePrice * cart.qty * 0.02)}" />
+						value="${totalPoint + (totalPay * pointRate)}" />
 					<!-- 소수점 이하 제거 -->
 					<c:set var="totalPoint"
 						value="${fn:substringBefore(totalPoint, '.')}" />
@@ -223,10 +221,8 @@
 
 		<div
 			style="display: flex; justify-content: center; align-items: center;">
-			<button type="button" class="btn btn-success"
-				style="background: #7FAD39;">
-				<a href="/pay/payment" class="button-link">결제하기</a>
-			</button>
+			<button type="button" id="paymentButton" class="btn btn-success"
+				style="background: #7FAD39;">주문하기</button>
 		</div>
 	</div>
 
@@ -249,6 +245,46 @@
 		</div>
 	</div>
 
+	<!-- 재고 부족 모달 -->
+	<div class="modal" id="stockModal" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">재고 부족</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body">
+					<p>재고가 부족합니다.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 삭제 확인 모달 -->
+	<div class="modal fade" id="confirmDeleteModal" tabindex="-1"
+		aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="confirmDeleteModalLabel">삭제 확인</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">선택한 상품을 삭제하시겠습니까?</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-danger"
+						id="confirmDeleteButton">삭제</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<c:import url="../footer.jsp"></c:import>
 
 	<!-- jQuery 및 Bootstrap JS를 body 끝 부분에 배치 -->
@@ -256,7 +292,8 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<!-- JavaScript 코드 -->
 	<script>
     $(document).ready(function() {
@@ -264,13 +301,16 @@
         function increaseQty(cartId) {
             let qtyInput = document.getElementById('qtyInput-' + cartId);
             let currentQty = parseInt(qtyInput.value);
-            qtyInput.value = currentQty + 1;
+            let maxQty = parseInt(document.getElementById('inven-' + cartId).value);
 
-            // 수량이 변경되었으므로, 합계를 업데이트합니다.
-            updateTotals();
-
-            // 서버에 수량 업데이트를 위한 AJAX 호출을 추가할 수 있습니다.
-            console.log("수량 증가: cartId=", cartId, "수량=", qtyInput.value);
+            if (currentQty < maxQty) {
+                qtyInput.value = currentQty + 1;
+                updateTotals();
+                updateQtyInDB(cartId, qtyInput.value);  // AJAX로 수량 업데이트
+            } else {
+                // 재고 부족 모달 표시
+                $('#stockModal').modal('show');
+            }
         }
 
         // 수량 감소 함수 (1보다 작은 값은 허용하지 않음)
@@ -279,13 +319,31 @@
             let currentQty = parseInt(qtyInput.value);
             if (currentQty > 1) {
                 qtyInput.value = currentQty - 1;
-
-                // 수량이 변경되었으므로, 합계를 업데이트합니다.
                 updateTotals();
+                updateQtyInDB(cartId, qtyInput.value);  // AJAX로 수량 업데이트
             } else {
                 alert("수량은 1보다 작을 수 없습니다.");
             }
-            console.log("수량 감소: cartId=", cartId, "수량=", qtyInput.value);
+        }
+
+        // AJAX로 DB에 수량 업데이트
+        function updateQtyInDB(cartId, newQty) {
+            $.ajax({
+                url: '/cart/updateQty',
+                type: 'POST',
+                data: { cartId: cartId, qty: newQty },
+                success: function(response) {
+                    if (response.success) {
+                        console.log("수량이 성공적으로 업데이트되었습니다.");
+                    } else {
+                        alert("수량 업데이트에 실패했습니다. 다시 시도해주세요.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX 요청 중 오류 발생:", error);
+                    alert("에러가 발생했습니다: " + error);
+                }
+            });
         }
 
         // 이벤트 위임으로 수량 증가/감소 버튼 핸들러
@@ -306,19 +364,24 @@
             let totalPay = 0;
             let totalPoint = 0;
 
+            // pointRate를 DOM에서 가져오기
+            const pointRate = parseFloat(document.getElementById('pointRate').innerText) || 0; // 기본값 0
+
             const selectedItems = document.querySelectorAll('.selectItem:checked');
             selectedItems.forEach(item => {
-                const price = parseInt(item.getAttribute('data-price'));
-                const salePrice = parseInt(item.getAttribute('data-salePrice'));
+                const price = parseInt(item.getAttribute('data-price')) || 0;  // NaN 방지
+                const salePrice = parseInt(item.getAttribute('data-salePrice')) || 0;  // NaN 방지
                 const cartId = item.getAttribute('data-cart-id');
-                const qty = parseInt(document.getElementById('qtyInput-' + cartId).value);
+                const qtyInput = document.getElementById('qtyInput-' + cartId);
+                const qty = qtyInput ? parseInt(qtyInput.value) || 0 : 0;  // NaN 방지 및 요소 존재 확인
 
                 totalPrice += price * qty;
-                totalSalePrice += (price - salePrice) * qty;
+                totalSalePrice += (price * 0.9) * qty;  // 10% 할인 적용
                 totalPay += salePrice * qty;
-                totalPoint += salePrice * 0.02 * qty;
+                totalPoint += salePrice * pointRate * qty; // pointRate 적용
             });
 
+            // 결과를 DOM에 반영
             document.getElementById('totalPrice').innerText = totalPrice.toLocaleString() + "원";
             document.getElementById('totalSalePrice').innerText = totalSalePrice.toLocaleString() + "원";
             document.getElementById('totalPay').innerText = totalPay.toLocaleString() + "원";
@@ -399,49 +462,144 @@
 
         // 초기화 함수 호출
         init();
-    });
-    
-    function saveQty(cartId) {
-        let qtyInput = document.getElementById('qtyInput-' + cartId);
 
-        if (!qtyInput) {
-            console.error("입력 필드를 찾을 수 없습니다: cartId=", cartId);
-            alert("수량 입력 필드를 찾을 수 없습니다.");
-            return;
-        }
+        function saveQty(cartId) {
+            let qtyInput = document.getElementById('qtyInput-' + cartId);
 
-        let qty = parseInt(qtyInput.value); 
-
-        if (isNaN(qty)) {
-            alert("유효한 수량이 아닙니다.");
-            return;
-        }
-
-        console.log("Received CartID:", cartId);
-        console.log("Quantity:", qty);
-
-        $.ajax({
-            url: '/cart/updateQty',
-            type: 'POST',
-            data: {
-                cartId: cartId,
-                qty: qty
-            },
-            success: function(response) {
-                if (response.success) {
-                    console.log("수량이 성공적으로 업데이트되었습니다.");
-                    alert("해당 상품의 수량을 변경했습니다.");
-                } else {
-                    alert("수량 업데이트에 실패했습니다. 다시 시도해주세요.");
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX 요청 중 오류 발생:", error);
-                alert("에러가 발생했습니다: " + error);
+            if (!qtyInput) {
+                console.error("입력 필드를 찾을 수 없습니다: cartId=", cartId);
+                alert("수량 입력 필드를 찾을 수 없습니다.");
+                return;
             }
+
+            let qty = parseInt(qtyInput.value); 
+
+            if (isNaN(qty)) {
+                alert("유효한 수량이 아닙니다.");
+                return;
+            }
+
+            console.log("Received CartID:", cartId);
+            console.log("Quantity:", qty);
+
+            $.ajax({
+                url: '/cart/updateQty',
+                type: 'POST',
+                data: {
+                    cartId: cartId,
+                    qty: qty
+                },
+                success: function(response) {
+                    if (response.success) {
+                        console.log("수량이 성공적으로 업데이트되었습니다.");
+                        alert("해당 상품의 수량을 변경했습니다.");
+                    } else {
+                        alert("수량 업데이트에 실패했습니다. 다시 시도해주세요.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX 요청 중 오류 발생:", error);
+                    alert("에러가 발생했습니다: " + error);
+                }
+            });
+        }
+        
+        let selectedCartIds = []; // 선택된 cartId를 저장할 변수
+
+        /* 선택 삭제 버튼 눌렀을 때 */
+        $('#deleteSelectedButton').on('click', function() {
+            // 선택된 체크박스의 cartId 수집
+            selectedCartIds = [];
+            $('.selectItem:checked').each(function() {
+                selectedCartIds.push($(this).data('cart-id'));
+            });
+
+            if (selectedCartIds.length === 0) {
+                alert("삭제할 상품을 선택해주세요.");
+                return;
+            }
+
+            // 모달 띄우기
+            $('#confirmDeleteModal').modal('show');
         });
-    }
-    </script>
+
+        // 삭제 버튼 클릭 시 처리
+        $('#confirmDeleteButton').on('click', function() {
+            // AJAX 요청으로 서버에 삭제 요청 보내기
+            $.ajax({
+                url: '/cart/deleteSelected',
+                type: 'POST',
+                contentType: 'application/json', // JSON 형식으로 전송
+                data: JSON.stringify(selectedCartIds), // 데이터 JSON 문자열로 변환
+                success: function(response) {
+                    if (response.success) {
+                        // 삭제 성공 시 항목 제거
+                        selectedCartIds.forEach(function(cartId) {
+                            // 해당 cartId를 가진 행 제거
+                            $('input[data-cart-id="' + cartId + '"]').closest('tr').remove();
+                        });
+                    } else {
+                        alert('삭제 중 오류가 발생했습니다.');
+                    }
+                    // 모달 닫기
+                    $('#confirmDeleteModal').modal('hide');
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX 요청 중 오류 발생:", error);
+                    alert("에러가 발생했습니다: " + error);
+                    // 모달 닫기
+                    $('#confirmDeleteModal').modal('hide');
+                }
+            });
+        });
+
+        $("#paymentButton").on("click", function(event) {
+            console.log("결제 버튼 클릭됨"); // 클릭 이벤트 확인
+
+            // 체크된 tr 태그에서 bookNo 가져오기
+            let cartIds = [];
+            console.log($("tr input[type='checkbox']:checked"));
+            
+            $("tr.cartItem input[type='checkbox']:checked").each(function(i, item) {
+                console.log(i ,'번째 아이템 : ', item);
+                
+                cartIds.push($(item).attr('data-cart-id'));
+            });
+
+            // 총액 정보 가져오기
+            let totalPrice = parseInt(document.getElementById('totalPrice').innerText.replace(/,/g, ''));
+            let totalSalePrice = parseInt(document.getElementById('totalSalePrice').innerText.replace(/,/g, ''));
+            let totalPay = parseInt(document.getElementById('totalPay').innerText.replace(/,/g, ''));
+            let totalPoint = parseInt(document.getElementById('totalPoint').innerText.replace(/,/g, ''));
+
+            let orderInfo = {
+                'totalPrice': totalPrice,
+                'totalSalePrice': totalSalePrice,
+                'totalPay': totalPay,
+                'totalPoint': totalPoint,
+                'cartIds': cartIds
+            };
+
+            // 선택된 bookNos 로그 출력
+            console.log("선택된 orderInfo : ", orderInfo);
+            
+            // AJAX 요청
+            $.ajax({  
+                url: "/order/payment",
+                type: "POST",
+                dataType : "json",
+                contentType : "application/json; charset=utf-8",
+                data: JSON.stringify(orderInfo),
+                success: function(response) {
+                    // 결제 성공 후 처리 로직
+                },
+                error: function() {
+                    // 결제 오류 처리 로직
+                }
+            });
+        });
+    });
+</script>
 
 </body>
 </html>
