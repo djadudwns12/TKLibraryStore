@@ -52,7 +52,6 @@ public class BookListController {
 			PagingInfo pi = (PagingInfo) result.get("pagingInfo");
 			
 			list = (List<BooklistVO>) result.get("listAll");
-//			List<BooklistVO> listAll = bService.getAllBooklist(dto);
 			
 			model.addAttribute("listAll", list);
 			model.addAttribute("pagingInfo", pi);
@@ -63,7 +62,6 @@ public class BookListController {
 			model.addAttribute("exception", "error");
 		}
 		
-//		return "/bookList/listAll";
 	}
 	
 	// 책 상세페이지를 불러오는 메서드 
@@ -96,6 +94,13 @@ public class BookListController {
 		return returnBDetail;
 		
 	}
+	
+
+	// 수량 선택해 장바구니 버튼을 누르면 카트에 상품이 담기는 메서드
+	// (1) 선택한 수량이 장바구니에 적용돼야 한다
+	// (2) 장바구니 담기 버튼을 누르면 회원의 카트에 상품이 추가(update)돼야 한다.(PK, qty, userId)
+	// (3) 로그인하지 않은 유저는 로그인페이지로 이동하도록 유도해야 한다.
+     
 
 	
 }
