@@ -60,7 +60,7 @@
 		<!-- auth인터셉터 -->
 		<interceptor>
 
-			<mapping path="/cart/" />
+			<mapping path="/cart/cartPage" />
 			<mapping path="/order/" />
 			<mapping path="/qa/qaList" />
 			<mapping path="/admin/" />
