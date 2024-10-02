@@ -21,4 +21,8 @@
   	<update id="updateEditMember">
   		update Member set userPwd=#{userPwd}, userBirth=#{userBirth}, phoneNum=#{phoneNum}, email=#{email} where userId=#{userId}
   	</update>
+  	<!-- 관리자페이지에 회원목록을 불러오는 쿼리문 -->
+  	<select id="getMemberList" resultType="com.tn.member.model.vo.MemberVO">
+  		select * from Member order by userId;
+  	</select>
   </mapper>

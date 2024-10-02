@@ -3,6 +3,7 @@ package com.tn.admin.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -31,8 +32,14 @@ import com.tn.admin.model.vo.MyResponseWithoutData;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
+import com.tn.admin.service.MemberAdminService;
 import com.tn.admin.service.ProductAdminService;
 import com.tn.admin.utils.FileProcess;
+import com.tn.member.model.vo.MemberVO;
+import com.tn.member.service.MemberService;
+import com.tn.order.model.vo.OrderVO;
+import com.tn.review.model.VO.ReviewVO;
+import com.tn.review.service.ReviewService;
 
 /**
  * Handles requests for the application home page.
@@ -44,7 +51,10 @@ public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	@Autowired
 	private ProductAdminService pService;
-	
+	@Autowired
+	private MemberAdminService mService;
+	@Autowired
+	private ReviewService rService;
 	
 	@Autowired
 	private FileProcess fileProcess;
@@ -193,5 +203,56 @@ public class AdminController {
 		BoardUpFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, contentType, originalFileName, fileSize);
 		return fileInfo;
 	}
+	//========================================최미설===================================//
+	// 회원관리페이지
+	@RequestMapping("/memberadmin")
+	public void memberList(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+			@RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize, @RequestParam(value="sortBy", defaultValue = "default") String sortBy,
+			SearchCriteriaDTO searchCriteria) {
+		Map<String, Object> memberList = null;
+
+		PagingInfoDTO pDTO = PagingInfoDTO.builder()
+				.pageNo(pageNo)
+				.pagingSize(pagingSize)
+				.build(); 
+		
+		List<MemberVO> list = null;
+		Map<String, Object> result = null;
+		try {
+			result = mService.getAllMember(pDTO, searchCriteria, sortBy);
+			list = (List<MemberVO>) result.get("memberList");
+			PagingInfo pi = (PagingInfo) result.get("pagingInfo");
+			
+			model.addAttribute("pagingInfo", pi); // 데이터 바인딩
+			model.addAttribute("memberList", list); // 데이터 바인딩
+			model.addAttribute("search", searchCriteria); // 데이터 바인딩
+		} catch (Exception e) {
+			e.printStackTrace(); 
+		}
+		System.out.println("MemberAdminController : " + result.toString());
+		
+	}
 	
+	// 회원관리페이지-회원정보상세보기
+	@RequestMapping("/memberDetail")
+	public String memberDetail(@RequestParam("userId")String userId, Model model) {
+		System.out.println("일단 서비스단에는 오네요.....");
+		MemberVO memberDetail; // 회원정보
+		List<OrderVO> recentOrder = null; // 최근주문내역
+		List<ReviewVO> recentReview = null; // 최근리뷰
+		try {
+			memberDetail = mService.getMemberInfo(userId);
+			recentOrder = mService.getRecentOrder(userId);
+			recentReview = rService.getRecentReview(userId);
+			model.addAttribute("memberDetail", memberDetail);
+			model.addAttribute("recentOrder", recentOrder);
+			model.addAttribute("recentReview", recentReview);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "/admin/memberDetail";
+	}
+	
+	
+
 }
