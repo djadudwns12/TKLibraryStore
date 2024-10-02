@@ -169,11 +169,8 @@ div#category_young {
 										class="fa fa-user-secret"></i></a></li>
 							</c:if>
 							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-							<li><a
-								href="/cart/cartPage?userId=<%=request.getAttribute("userId")%>"><i
-									class="fa fa-shopping-bag"></i> <span>3</span></a></li>
-							<li><a href="/qa/qaList"><i
-									class="fa fa-question-circle"></i></a></li>
+							<li><a href="/cart/cartPage"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+							<li><a href="/qa/qaList"><i class="fa fa-question-circle"></i></a></li>
 						</ul>
 					</div>
 				</div>

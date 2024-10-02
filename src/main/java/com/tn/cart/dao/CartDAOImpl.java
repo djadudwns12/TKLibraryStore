@@ -20,11 +20,6 @@ public class CartDAOImpl implements CartDAO {
 	private final SqlSession ses;
 	private static final String NS = "com.tn.mapper.cartMapper";
 	
-	@Override
-	public int insertCart(CartDTO cDto) throws Exception {
-		
-		return ses.insert(NS + ".putCart", cDto);
-	}
 
 	@Override
 	public List<CartDTO> selectCartList(String userId) throws Exception {
@@ -33,11 +28,17 @@ public class CartDAOImpl implements CartDAO {
 		
 		return ses.selectList(NS + ".getCartList", userId);
 	}
+	
+	@Override
+	public float getPointRate(String userId) throws Exception {
+		
+		return ses.selectOne(NS + ".getPoingRate", userId);
+	}
 
 	@Override
 	public int deleteOneCart(String cartId) throws Exception {
 		
-		System.out.println("CartDAOImpl / " + cartId + "¹øÀ» »èÁ¦ÇÏÀÚ~~~");
+		System.out.println("CartDAOImpl / " + cartId + "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½~~~");
 		
 		return ses.delete(NS + ".deleteCartWithId", cartId);
 	}
@@ -45,14 +46,23 @@ public class CartDAOImpl implements CartDAO {
 	@Override
 	public int updateQty(int cartId, int qty) throws Exception {
 		
-		System.out.println("CartDAOImpl / " + cartId + "¹øÀÇ ¼ö·®À» " + qty + "°³·Î ¼öÁ¤ÇÏÀÚ~~~~~~~");
+		System.out.println("CartDAOImpl / " + cartId + "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ " + qty + "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½~~~~~~~");
 		
-		// ÆÄ¶ó¹ÌÅÍ¸¦ Map¿¡ ÀúÀå
+		// ï¿½Ä¶ï¿½ï¿½ï¿½Í¸ï¿½ Mapï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	    Map<String, Object> params = new HashMap<>();
 	    params.put("cartId", cartId);
 	    params.put("qty", qty);
 
-	    // Mapper¿¡ MapÀ» Àü´Þ
+	    // Mapperï¿½ï¿½ Mapï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	    return ses.update(NS + ".updateQty", params);
 	}
+
+	@Override
+	public int deleteCartsByIds(List<Integer> cartIds) throws Exception {
+		
+		System.out.println("CartDAOImpl : ì‚­ì œí•  cartId - " + cartIds);
+		
+		return ses.delete(NS + ".deleteSelectedItems", cartIds);
+	}
+
 }

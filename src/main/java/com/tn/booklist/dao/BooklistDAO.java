@@ -24,6 +24,5 @@ public interface BooklistDAO {
 	int countCategoryBooklist(String category) throws Exception;
 //	====================================================엄영준 END=============================================================
 
-	
 
 }

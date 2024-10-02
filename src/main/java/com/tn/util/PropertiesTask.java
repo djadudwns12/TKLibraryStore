@@ -5,6 +5,7 @@ import java.io.Reader;
 import java.util.Properties;
 
 import org.apache.ibatis.io.Resources;
+import org.springframework.stereotype.Component;
 
 /**
  * @작성자 : 802-01
@@ -15,6 +16,7 @@ import org.apache.ibatis.io.Resources;
  * @클래스명 : PropertiesTask
  * @description : classpath:dbconfig.properties 파일에서 넘겨 받은 key의 value를 반환하도록.
  */
+@Component
 public class PropertiesTask {
 	public static String getPropertiesValue(String key) throws IOException {
 		String resources = "dbconfig.properties";

@@ -60,6 +60,7 @@ public class BooklistServiceImpl implements BooklistService {
 		return pi;
 	}
 
+
 	private PagingInfo makePagingInfo(PagingInfoDTO dto,int totalCount) throws Exception {
 		PagingInfo pi = new PagingInfo(dto);
 		
@@ -105,4 +106,5 @@ public class BooklistServiceImpl implements BooklistService {
 		return result;
 	}
 //	====================================================엄영준 END=============================================================
+
 }

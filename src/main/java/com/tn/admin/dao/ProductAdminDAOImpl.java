@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
@@ -66,27 +67,52 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		
 	}
 	@Override
-	public int deleteProduct(int[] arr) {
-		int delCount = 0;
-		for(int delNo : arr) {
-			delCount += ses.delete(NS + ".deleteProduct", delNo);
-				
-		}		
-		return delCount;
+	public int deleteProduct(int delNo) throws Exception {
+		
+		return  ses.delete(NS + ".deleteProduct", delNo);
 	}
 	@Override
-	public int soldOutProduct(int[] arr) throws Exception {
-		int sdCount = 0;
-		for (int sdNo : arr) {
-			sdCount += ses.update(NS + ".soldOutProduct",sdNo);
-		}
-		System.out.println(sdCount);
-		return sdCount;
+	public int soldOutProduct(int sdNo) throws Exception {
+		
+		return ses.update(NS + ".soldOutProduct",sdNo);
 	}
 	@Override
 	public ProductVO readBookInfo(int bookNo) throws Exception {
 		
 		return ses.selectOne(NS +".readBookInfo",bookNo);
+	}
+	@Override
+	public int saveImgInfo(BoardUpFileVODTO fileInfo,int bookNo) {
+		
+		Map<String,Object> params = new HashMap<String, Object>();
+		params.put("fileName", "/resources/bookImgs/" + fileInfo.getFileName());
+		params.put("base64Img", fileInfo.getBase64Img());
+		params.put("bookNo", bookNo);
+		
+		return ses.update(NS + ".saveImgInfo",params);
+	}
+	@Override
+	public int updateProduct(ProductVO product) throws Exception {
+		
+		return ses.update(NS + ".updateProduct", product);
+	}
+	@Override
+	public int registSave(ProductVO product, BoardUpFileVODTO fileInfo) throws Exception {
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("fileName", "/resources/bookImgs/" + fileInfo.getFileName());
+		params.put("base64ProfileImg", fileInfo.getBase64Img());
+		params.put("title", product.getTitle());
+		params.put("author", product.getAuthor());
+		params.put("publisher", product.getPublisher());
+		params.put("pubDate", product.getPubDate());
+		params.put("genre", product.getGenre());
+		params.put("price", product.getPrice());
+		params.put("salePrice", product.getSalePrice());
+		params.put("inven", product.getInven());
+		params.put("introduction", product.getIntroduction());
+		
+		return ses.insert(NS + ".registSave", params);
 	}
 	
 

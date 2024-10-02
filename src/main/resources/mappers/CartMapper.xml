@@ -10,20 +10,40 @@
 	</insert>
 
 	<!-- 특정 회원의 카트 리스트를 가져오는 쿼리문 -->
-	<select id="getCartList" resultType="com.tn.cart.model.dto.CartDTO">
-		SELECT b.thumbNail, b.title, b.price, b.salePrice, b.inven, c.qty, c.cartId
+	<select id="getCartList"
+		resultType="com.tn.cart.model.dto.CartDTO">
+		SELECT b.thumbNail, b.title, b.price, b.salePrice, b.inven,
+		c.qty, c.cartId
 		FROM Cart c
 		INNER JOIN BookList b ON c.bookNo = b.bookNo
-		WHERE c.userId = #{userId}
+		WHERE c.userId = #{userId} order by cartId desc
 	</select>
-	
+
 	<!-- 카트에서 개별삭제하는 쿼리문(삭제 아이콘 클릭시) -->
 	<delete id="deleteCartWithId">
 		delete from Cart where cartId = #{cartId}
 	</delete>
-	
+
 	<!-- 수량 업데이트하는 쿼리문 -->
 	<update id="updateQty" parameterType="map">
-		update Cart set qty = #{qty} where cartId = #{cartId}
+		update Cart set qty =
+		#{qty} where cartId = #{cartId}
 	</update>
+
+	<!-- 선택된 cartId들을 삭제하는 쿼리문 -->
+	<delete id="deleteSelectedItems">
+		DELETE FROM Cart
+		WHERE cartId IN
+		<foreach item="cartId" collection="list" open="(" separator="," close=")">
+			#{cartId}
+		</foreach>
+	</delete>
+	
+	<!-- 회원의 등급에 따른 적립률을 가져오는 쿼리문 -->
+	<select id="getPoingRate" resultType="float">
+		select cRate
+		from Member m inner join ClassDef cd
+		on m.userClass = cd.className
+		where m.userId = #{userId}
+	</select>
 </mapper>

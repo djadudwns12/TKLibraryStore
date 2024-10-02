@@ -22,7 +22,6 @@
 		select * from BookList where bookNo = #{bookNo}
 	</select>
 	
-	
 	<!-- ====================================================엄영준============================================================= -->
 	<!-- 카테고리화된 것을 페이징 하여 가지고 가는 것 -->
 	<select id="selectCategoryBooklist" resultType="com.tn.booklist.model.vo.BooklistVO">

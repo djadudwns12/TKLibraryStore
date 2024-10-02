@@ -58,6 +58,9 @@
 	<context:component-scan	base-package="com.tn.booklist.service" />
 	<context:component-scan	base-package="com.tn.booklist.dao" />
 	
+	<context:component-scan	base-package="com.tn.review.service" />
+	<context:component-scan	base-package="com.tn.review.dao" />
+	
 		
 		
 
@@ -65,7 +68,7 @@
 	<context:component-scan	base-package="com.tn.cart.service" />
 	<context:component-scan	base-package="com.tn.cart.dao" />
 	<context:component-scan	base-package="com.tn.cart.vo" />
-	<context:component-scan	base-package="com.tn.cart.dto" />
+	
 
 
 	<context:component-scan	base-package="com.tn.admin" />
@@ -73,8 +76,8 @@
 	<context:component-scan	base-package="com.tn.qa" />
 	<context:component-scan	base-package="com.tn.category.service" />
 	<context:component-scan	base-package="com.tn.category.dao" />
+	<context:component-scan	base-package="com.tn.util" />
 
-		
 		
 		
 </beans>

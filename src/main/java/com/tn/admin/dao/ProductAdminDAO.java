@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
@@ -27,11 +28,17 @@ public interface ProductAdminDAO {
 	// 검색했을 때 정렬기준 설정
 	List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria, String sortBy);
 
-	int deleteProduct(int[] arr) throws Exception;
+	int deleteProduct(int delNo) throws Exception;
 
-	int soldOutProduct(int[] arr) throws Exception;
+	int soldOutProduct(int sdNo) throws Exception;
 
 	ProductVO readBookInfo(int bookNo) throws Exception;
+
+	int saveImgInfo(BoardUpFileVODTO fileInfo, int bookNo) throws Exception;
+
+	int updateProduct(ProductVO product)throws Exception;
+
+	int registSave(ProductVO product, BoardUpFileVODTO fileInfo) throws Exception;
 
 
 }
