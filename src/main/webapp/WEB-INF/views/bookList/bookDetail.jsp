@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,8 +29,28 @@
 	$(function() {
 		let bDetail = $('.bDetail');
 		$('#main_content').html(bDetail);
+
 	});
+
+	function checkLogin() {
+		let user = '${sessionScope.loginMember.userId}';
+
+		if (user == '') {
+			alert('로그인이 필요한 메뉴입니다');
+
+		} else {
+			location.href = '/cart/cartPage?userId="${userId}"';
+		}
+	}
 </script>
+
+<style>
+.primary-btn {
+	justify-content: space-between;
+	color: #7FAD38;
+	border: 0;
+}
+</style>
 <body>
 
 	<c:import url="../header.jsp"></c:import>
@@ -63,31 +84,40 @@
 								<div class="information">
 									<p>&nbsp;</p>
 
-									<p><b>정가</b> <span>${bookInfo.price}</span></p>
-									<p><b>할인가</b> <span>${bookInfo.salePrice} </span></p>
-									<p><b>배송예정일</b> <span>주문일로부터 3일 이내</span></p>
-									<p><b>적립</b> <span>책 정가의 10%</span></p>
+									<p>
+										<b>정가</b> <span><fmt:formatNumber
+												value="${bookInfo.price}" type="currency" /></span>
+									</p>
+									<p>
+										<b>할인가</b> <span><fmt:formatNumber
+												value="${bookInfo.salePrice}" type="currency" /></span>
+									</p>
+									<p>
+										<b>배송예정일</b> <span>주문일로부터 3일 이내</span>
+									</p>
+									<p>
+										<b>적립</b> <span>책 정가의 10%</span>
+									</p>
 
-									<!-- 
-		                        	<ul>
-			                            <li><b>정가</b> <span>${bookInfo.price}</span></li>
-			                            <li><b>할인가</b> <span>${bookInfo.salePrice} </span></li>
-			                            <li><b>배송예정일</b> <span>주문일로부터 3일 이내</span></li>
-			                            <li><b>적립</b> <span>책 정가의 10%</span></li>
-		                        	</ul>	 -->
-		                        	
 								</div>
-								<a href="/cart/cartPage" class="primary-btn">장바구니 담기</a>
-								<div class="product__details__quantity">
-									<div class="quantity">
-										<div class="pro-qty">
-											<input type="text" value="1">
-										</div>
-									</div>
-								</div>
-								<a href="/order" class="primary-btn">바로주문</a> <a href="#"
-									class="heart-icon"><span class="icon_heart_alt"></span></a>
 
+								<div class="btns">
+									<p>
+										<span><b>수량</b></span> <input type="number" id="bookCnt"
+											value="1" min="1" style="width: 50px;" />
+									</p>
+									
+									
+									<p></p>
+									<button type="button" class="primary-btn"
+										onclick="location.href='/order'"
+										style="backgroundcolor: #d0e5b0;">바로주문</button>
+									<button type="button" class="primary-btn"
+										onclick="checkLogin();">장바구니 담기</button>
+
+
+
+								</div>
 							</div>
 						</div>
 						<div class="col-lg-12">
@@ -95,12 +125,9 @@
 								<ul class="nav nav-tabs" role="tablist">
 									<li class="nav-item"><a class="nav-link active"
 										data-toggle="tab" href="#tabs-1" role="tab"
-										aria-selected="true">Description</a></li>
+										aria-selected="true">책 소개</a></li>
 									<li class="nav-item"><a class="nav-link" data-toggle="tab"
-										href="#tabs-2" role="tab" aria-selected="false">Information</a>
-									</li>
-									<li class="nav-item"><a class="nav-link" data-toggle="tab"
-										href="#tabs-3" role="tab" aria-selected="false">Reviews <span>(1)</span></a>
+										href="#tabs-2" role="tab" aria-selected="false">구매 리뷰 <span>(1)</span></a>
 									</li>
 								</ul>
 								<div class="tab-content">
@@ -120,8 +147,36 @@
 				</div>
 		</div>
 		</section>
+
+		<!-- The Modal -->
+		<div class="modal" id="myModal" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title">떡잎서점</h4>
+						<button type="button" class="btn-close modalCloseBtn"
+							data-bs-dismiss="modal"></button>
+					</div>
+
+					<!-- Modal body -->
+					<div class="modal-body"></div>
+
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-info" onclick="">로그인</button>
+						<button type="button" class="btn btn-danger modalCloseBtn"
+							data-bs-dismiss="modal">취소</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
 	</div>
 	</div>
+
 
 	<c:import url="../footer.jsp"></c:import>
 
