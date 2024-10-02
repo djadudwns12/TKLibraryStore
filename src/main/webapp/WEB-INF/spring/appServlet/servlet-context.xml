@@ -52,6 +52,7 @@
 		<!-- auth인터셉터 -->
 		<interceptor>
 			<mapping path="/qa/**" />
+
 			<mapping path="/admin/**" />
 			<mapping path="/member/edit"/>
 			<beans:ref bean="authInterceptor"/>
