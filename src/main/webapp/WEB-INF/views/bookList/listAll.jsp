@@ -27,8 +27,8 @@
 <script>
 	$(function() {
 		// content 영역 설정 
-		let bList = $('.bList');
-		$('#main_content').html(bList);
+		/* let bList = $('.bList');
+		$('#main_content').html(bList); */
 		$('.categoryArea').show();
 	});
 	
@@ -38,6 +38,7 @@ div#category_young {
 	display: flex;
 	justify-content: flex-start;
 }
+
 </style>
 <body>
 
@@ -94,12 +95,13 @@ div#category_young {
 					</c:choose>
 				</c:forEach>
 				
-				<c:if test="${param.pageNo < pagingInfo.totalPageCnt}">
-					<li class="page-item"><a class="page-link" href="/bookList/listAll?pageNo=${param.pageNo + 1}&pagingSize=${param.pagingSize}">Next</a></li>
+				<c:if test="${pagingInfo.pageNo < pagingInfo.totalPageCnt}">
+					<li class="page-item"><a class="page-link" href="/bookList/listAll?pageNo=${pagingInfo.pageNo + 1}&pagingSize=${param.pagingSize}">Next</a></li>
 				</c:if>
 			
 			</ul>
 		</div>
+	</div>
     </section>
 	<c:import url="../footer.jsp"></c:import>
 
