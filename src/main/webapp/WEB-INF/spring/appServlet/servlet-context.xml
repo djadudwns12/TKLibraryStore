@@ -49,6 +49,8 @@
 	<beans:bean id="loginInterceptor" class="com.tn.interceptor.LoginInterceptor" />
 	<!-- 로그인후에 들어가도록 하는 권한 인터셉터 -->
 	<beans:bean id="authInterceptor" class="com.tn.interceptor.AuthInterceptor" />
+	<!-- Cart의 갯수를 모든 페이지에서 보여지도록 하는 인터셉터 -->
+	<beans:bean id="CartCountInterceptor" class="com.tn.interceptor.CartCountInterceptor" />
 	
 	<interceptors>
 		<interceptor>
@@ -65,10 +67,16 @@
 			<mapping path="/qa/qaList" />
 			<mapping path="/admin/" />
 			<mapping path="/member/edit"/>
-      <mapping path="/member/myPage" />
+      		<mapping path="/member/myPage" />
       
 			<beans:ref bean="authInterceptor"/>
 		
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/**"/>
+			
+			<beans:ref bean="CartCountInterceptor"/>
 		</interceptor>	
 	
 	</interceptors>
