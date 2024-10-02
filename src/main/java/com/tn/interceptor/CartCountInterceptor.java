@@ -27,14 +27,20 @@ public class CartCountInterceptor implements HandlerInterceptor {
             cartCount = cService.getCartCnt(userId);
         }
 
-        request.setAttribute("CartCnt", cartCount); // 모든 페이지에서 사용할 수 있도록 설정
+        // 중복 세팅을 방지하기 위해 attribute에 이미 존재하는지 체크
+        if (request.getAttribute("CartCnt") == null) {
+            request.setAttribute("CartCnt", cartCount); // 모든 페이지에서 사용할 수 있도록 설정
+        }
         return true;
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        if (modelAndView != null) {
-            modelAndView.addObject("CartCnt", request.getAttribute("CartCnt")); // 모델에 추가
+    	if (modelAndView != null) {
+            // CartCnt가 이미 설정되어 있는지 확인 후 추가
+            if (!modelAndView.getModel().containsKey("CartCnt")) {
+                modelAndView.addObject("CartCnt", request.getAttribute("CartCnt")); // 모델에 추가
+            }
         }
     }
 
