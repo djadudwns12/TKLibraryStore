@@ -76,7 +76,8 @@ function getBookList(){
             		inputHTML += `<td>${row.publisher}</td>`
             		let dd = longodate(row.pubDate);
             		inputHTML += `<td>${dd}</td>`
-            		inputHTML += `<td>${row.salePrice}</td>`
+            		let price = parseInt(row.salePrice).toLocaleString('ko-KR',{ style: "currency", currency: "KRW" });
+            		inputHTML += `<td>${price}</td>`
             		inputHTML += '</tr>'
             	});
             	
@@ -145,9 +146,10 @@ function getBookListPaging(pageNo,pageSize){
             		inputHTML += `<td>${row.title}</td>`
             		inputHTML += `<td>${row.author}</td>`
             		inputHTML += `<td>${row.publisher}</td>`
-            		let pubDate = longodate(row.pubDate);
-            		inputHTML += `<td>${pubDate}</td>`
-            		inputHTML += `<td>${row.salePrice}</td>`
+            		let dd = longodate(row.pubDate);
+            		inputHTML += `<td>${dd}</td>`
+            		let price = parseInt(row.salePrice).toLocaleString('ko-KR',{ style: "currency", currency: "KRW" });
+            		inputHTML += `<td>${price}</td>`
             		inputHTML += '</tr>'
             	});
             	
