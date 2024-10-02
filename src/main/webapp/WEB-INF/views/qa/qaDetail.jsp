@@ -71,8 +71,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript">
     $(function() {
-        let qaList = $('.qaContent');
-        $('#main_content').html(qaList);
+       // let qaList = $('.qaContent');
+       // $('#main_content').html(qaList);
     });
 </script>
 

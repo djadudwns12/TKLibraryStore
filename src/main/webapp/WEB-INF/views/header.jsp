@@ -160,7 +160,7 @@ div#category_young {
 							</c:if>
 							<!-- 마이페이지 이동 -->
 							<li><a
-								href="${pageContext.request.contextPath}/member/myPage"><i
+								href="${pageContext.request.contextPath}/member/mypage"><i
 									class="fa fa-user"></i></a></li>
 
 							<!-- 관리자페이지이동 -->

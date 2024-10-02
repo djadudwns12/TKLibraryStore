@@ -124,8 +124,8 @@ table.table th {
 </style>
 <script type="text/javascript">
 	$(function() {
-		let qaList = $('.userInfoDiv');
-		$('#main_content').html(qaList);
+		//let qaList = $('.userInfoDiv');
+		//$('#main_content').html(qaList);
 		// 이미지 슬라이더
 		new Swiper('.swiper-container', {
 

@@ -23,9 +23,9 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function() {
-		let qaList = $('.qaContent');
+		//let qaList = $('.qaContent');
 		
-		$('#main_content').html(qaList);
+		//$('#main_content').html(qaList);
 		
 		// 저장 성공 시 성공메세지 띄우는 함수
 		msgStatus();

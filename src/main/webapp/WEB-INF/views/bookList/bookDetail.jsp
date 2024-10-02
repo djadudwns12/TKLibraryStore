@@ -28,8 +28,8 @@
 </head>
 <script>
 	$(function() {
-		let bDetail = $('.bDetail');
-		$('#main_content').html(bDetail);
+		//let bDetail = $('.bDetail');
+		//$('#main_content').html(bDetail);
 
 	});
 

@@ -119,22 +119,22 @@ public class MemberController {
 			e.printStackTrace();
 		}
 	}
-	/**
-	 * @작성자 : 엄영준
-	 * @작성일 : 2024. 9. 27. 
-	 * @클래스명 : tnbookstore
-	 * @메서드명 : gotomyPage
-	 * @param
-	 * @param
-	 * @return : void
-	 * @throws 
-	 * @description : 마이페이지로 이동하는 메서드
-	 *
-	 */
-	@RequestMapping("/myPage")
-	public void gotoMyPage(Model model,HttpSession sess) {
-		model.addAttribute("loginMember", (MemberVO)sess.getAttribute("loginMember"));
-	}
+//	/**
+//	 * @작성자 : 엄영준
+//	 * @작성일 : 2024. 9. 27. 
+//	 * @클래스명 : tnbookstore
+//	 * @메서드명 : gotomyPage
+//	 * @param
+//	 * @param
+//	 * @return : void
+//	 * @throws 
+//	 * @description : 마이페이지로 이동하는 메서드
+//	 *
+//	 */
+//	@RequestMapping("/myPage")
+//	public void gotoMyPage(Model model,HttpSession sess) {
+//		model.addAttribute("loginMember", (MemberVO)sess.getAttribute("loginMember"));
+//	}
 //-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
 
 
@@ -175,10 +175,11 @@ public class MemberController {
 	 *
 	 */
 	@RequestMapping(value = "/mypage")
-	public void saveEditInfo(MemberDTO loginMember, RedirectAttributes redirectAttributes) {
+	public void saveEditInfo(MemberDTO loginMember, RedirectAttributes redirectAttributes,Model model,HttpSession sess) {
 
 		try {
 			mService.saveEditInfo(loginMember);
+			model.addAttribute("loginMember", (MemberVO) sess.getAttribute("loginMember"));
 			redirectAttributes.addAttribute("status", "editSuccess");
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -62,7 +62,7 @@
 
 			<mapping path="/cart/" />
 			<mapping path="/order/" />
-			<mapping path="/qa/" />
+			<mapping path="/qa/qaList" />
 			<mapping path="/admin/" />
 			<mapping path="/member/edit"/>
       <mapping path="/member/myPage" />

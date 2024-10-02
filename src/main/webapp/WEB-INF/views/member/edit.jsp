@@ -39,9 +39,9 @@
 </style>
 <script>
 $(function() {
-	let qaList = $('.register-box');
+	//let qaList = $('.register-box');
 	
-	$('#main_content').html(qaList);
+	//$('#main_content').html(qaList);
 })
 </script> 
 
