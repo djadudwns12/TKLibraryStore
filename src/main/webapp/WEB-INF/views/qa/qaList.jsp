@@ -26,7 +26,21 @@
 		let qaList = $('.qaContent');
 		
 		$('#main_content').html(qaList);
-	})
+		
+		// 저장 성공 시 성공메세지 띄우는 함수
+		msgStatus();
+		
+	});
+	
+	function msgStatus() {
+		let status = '${param.status}';
+		if(status == 'success'){
+			alert('저장성공');
+		}else if(status == 'fail'){
+			alert('저장실패');
+		}
+		
+	}
 </script>
 
 <body>
@@ -48,12 +62,13 @@
 						<tr onclick="location.href='/qa/qaDetail?qNo=${qa.qNo}'">
 							<td>${qa.qTitle}</td>
 							<td>${qa.qDate}</td>
-							<td>${qa.qAnswer}</td>
+							<td>${qa.qAnswerYN}</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
+		<a href="/qa/qaSaveForm"><button>Q&A남기기</button></a>
 	</div>
 
 

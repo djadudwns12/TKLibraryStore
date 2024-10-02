@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -84,6 +85,7 @@
 								<div class="information">
 									<p>&nbsp;</p>
 
+
 									<p>
 										<b>정가</b> <span><fmt:formatNumber
 												value="${bookInfo.price}" type="currency" /></span>
@@ -125,9 +127,18 @@
 								<ul class="nav nav-tabs" role="tablist">
 									<li class="nav-item"><a class="nav-link active"
 										data-toggle="tab" href="#tabs-1" role="tab"
+
+										aria-selected="true">Description</a></li>
+									<li class="nav-item"><a class="nav-link" data-toggle="tab"
+										href="#tabs-2" role="tab" aria-selected="false">Information</a>
+									</li>
+									<li class="nav-item"><a class="nav-link" data-toggle="tab"
+										href="#tabs-3" role="tab" aria-selected="false">Reviews <span>(1)</span></a>
+
 										aria-selected="true">책 소개</a></li>
 									<li class="nav-item"><a class="nav-link" data-toggle="tab"
 										href="#tabs-2" role="tab" aria-selected="false">구매 리뷰 <span>(1)</span></a>
+
 									</li>
 								</ul>
 								<div class="tab-content">
@@ -147,6 +158,7 @@
 				</div>
 		</div>
 		</section>
+
 
 		<!-- The Modal -->
 		<div class="modal" id="myModal" style="display: none;">
@@ -176,7 +188,6 @@
 
 	</div>
 	</div>
-
 
 	<c:import url="../footer.jsp"></c:import>
 

@@ -1,6 +1,8 @@
 package com.tn.booklist.controller;
 
+import java.lang.invoke.StringConcatFactory;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -10,8 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -60,6 +65,42 @@ public class BookListController {
 			
 			e.printStackTrace();
 			model.addAttribute("exception", "error");
+
+		}
+		
+	}
+//	====================================================================엄영준(start)===========================================================================
+	@RequestMapping("/category/{categoryNo}")
+	public ResponseEntity<Map<String, Object>> bookCategory(@PathVariable("categoryNo") String category
+															,@RequestParam(value ="pageNo",defaultValue = "1") int pageNo 
+															, @RequestParam(value = "pageSize",defaultValue = "10") int pagingSize) {
+		ResponseEntity<Map<String, Object>> result = null;
+		
+		PagingInfoDTO dto = PagingInfoDTO.builder()
+				.pageNo(pageNo)
+				.PagingSize(pagingSize)
+				.build();
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		
+		try {
+			resultMap = bService.getCategoryBooklist(dto,category);
+			
+			result = new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			result = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return result;
+	}
+	
+	
+	
+//	====================================================================엄영준(end)=============================================================================
+=======
 		}
 		
 	}
@@ -100,7 +141,6 @@ public class BookListController {
 	// (1) 선택한 수량이 장바구니에 적용돼야 한다
 	// (2) 장바구니 담기 버튼을 누르면 회원의 카트에 상품이 추가(update)돼야 한다.(PK, qty, userId)
 	// (3) 로그인하지 않은 유저는 로그인페이지로 이동하도록 유도해야 한다.
-     
 
 	
 }

@@ -29,14 +29,21 @@
 		// content 영역 설정 
 		let bList = $('.bList');
 		$('#main_content').html(bList);
-		
+		$('.categoryArea').show();
 	});
 	
 </script>
+<style>
+div#category_young {
+	display: flex;
+	justify-content: flex-start;
+}
+</style>
 <body>
 
 	<c:import url="../header.jsp"></c:import>
 
+<section class="product spad">
 	<div class="bList">
 		<div class="container">
 			<table class="table">
@@ -93,10 +100,7 @@
 			
 			</ul>
 		</div>
-		
-
-	</div>
-
+    </section>
 	<c:import url="../footer.jsp"></c:import>
 
 

@@ -1,7 +1,10 @@
 package com.tn.qa.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.tn.admin.model.vo.PagingInfoDTO;
+import com.tn.admin.model.vo.SearchCriteriaDTO;
 import com.tn.qa.model.vo.QAVO;
 
 public interface QAService {
@@ -35,6 +38,9 @@ public interface QAService {
 	QAVO getDetail(int qNo) throws Exception;
 
 	/**
+	 * @param sortBy 
+	 * @param searchCriteria 
+	 * @param dto 
 	 * @작성자 : 엄영준
 	 * @작성일 : 2024. 9. 25. 
 	 * @클래스명 : tnbookstore
@@ -46,6 +52,10 @@ public interface QAService {
 	 * @description : 모든 Q&A 목록 불러오기
 	 *
 	 */
-	List<QAVO> getAllQAList() throws Exception;
+	Map<String, Object> getAllQAList(PagingInfoDTO dto, SearchCriteriaDTO searchCriteria, String sortBy) throws Exception;
+
+	int qaSave(QAVO qa) throws Exception;
+
+	int qaAnswerSave(QAVO qa) throws Exception;
 
 }

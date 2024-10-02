@@ -38,6 +38,8 @@ import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.service.MemberAdminService;
 import com.tn.admin.service.ProductAdminService;
+import com.tn.qa.model.vo.QAVO;
+import com.tn.qa.service.QAService;
 
 import com.tn.util.BookFileProcess;
 
@@ -57,6 +59,10 @@ public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	@Autowired
 	private ProductAdminService pService;
+
+	@Autowired
+	private QAService qaService;
+
 
 
 
@@ -353,4 +359,98 @@ public class AdminController {
 	}
 	
 
+	
+	// 엄영준(start) =============================================================================================================
+	// 관리자 페이지 qa게시판 
+		/**
+		 * @작성자 : 엄영준
+		 * @작성일 : 2024. 10. 1. 
+		 * @클래스명 : tnbookstore
+		 * @메서드명 : qaAnswerView
+		 * @param
+		 * @param
+		 * @return : String
+		 * @throws 
+		 * @description : 관리자페이지의 qa게시판으로 이동하는 메서드
+		 *
+		 */
+		@RequestMapping("/qaAnswerView")
+		public String qaAnswerView(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+				@RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize, 
+				@RequestParam(value="ra", defaultValue = "default") String sortBy, SearchCriteriaDTO searchCriteria) {
+			
+			// 페이징 정보를 가지고 있는 DTO
+			PagingInfoDTO dto = PagingInfoDTO.builder().pageNo(pageNo).pagingSize(pagingSize).build();
+			Map<String, Object> result = null;
+			
+			List<QAVO> list = new ArrayList<QAVO>();
+			try {
+				result = qaService.getAllQAList(dto, searchCriteria, sortBy);
+				
+				PagingInfo pi = (PagingInfo) result.get("pagingInfo");			
+				list = (List<QAVO>) result.get("list");
+				//System.out.println(pi.toString());
+				
+				model.addAttribute("productList", list); // 데이터 바인딩
+				model.addAttribute("pagingInfo", pi);
+				model.addAttribute("search", searchCriteria);
+				
+				
+				model.addAttribute("qaList", list);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return "/admin/qaAnswerView";
+		}
+		
+		/**
+		 * @작성자 : 엄영준
+		 * @작성일 : 2024. 10. 1. 
+		 * @클래스명 : tnbookstore
+		 * @메서드명 : qaAnswer
+		 * @param
+		 * @param
+		 * @return : void
+		 * @throws 
+		 * @description admin/qaAnswer.jsp로 이동시키는 메서드
+		 *
+		 */
+		@RequestMapping("/qaAnswer")
+		public void qaAnswer(@RequestParam("qNo") int qNo,Model model) {
+			 try {
+				QAVO qa = qaService.getDetail(qNo);
+				model.addAttribute("qa", qa);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		@RequestMapping("/qaAnswerSave")
+		public String qaAnswerSave(QAVO qa,Model model) {
+			String returnPage = "redirect:/admin/qaAnswer";
+			try {
+				int result = qaService.qaAnswerSave(qa);
+				
+				
+				
+				if(result == 1) {
+					model.addAttribute("status", "success");
+					returnPage = "redirect:/admin/qaAnswerView";
+				}else {
+					model.addAttribute("status", "fail");
+				}
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				model.addAttribute("status", "fail");
+			}
+			
+			return returnPage;
+			
+		}
+		
+		// 엄영준(end) =============================================================================================================
 }

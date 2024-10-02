@@ -144,7 +144,7 @@
                                 <p>How To Contribute</p>
                             </a> </li>
                         <!-- 관리자 1:1 문의 답변하는 링크이동 -->
-                        <li class="nav-item"> <a href="/qa/qaAnswerView" class="nav-link"> <i class="nav-icon bi bi-question-circle-fill"></i>
+                        <li class="nav-item"> <a href="/admin/qaAnswerView" class="nav-link"> <i class="nav-icon bi bi-question-circle-fill"></i>
                                 <p>FAQ</p>
                             </a> </li>
                         <li class="nav-item"> <a href="./docs/license.html" class="nav-link"> <i class="nav-icon bi bi-patch-check-fill"></i>

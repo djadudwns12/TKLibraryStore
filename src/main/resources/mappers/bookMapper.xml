@@ -21,5 +21,16 @@
 	<select id="selectBookDetailInfoByBookNo" resultType="com.tn.booklist.model.vo.BookDetailInfo">
 		select * from BookList where bookNo = #{bookNo}
 	</select>
+	
+	<!-- ====================================================엄영준============================================================= -->
+	<!-- 카테고리화된 것을 페이징 하여 가지고 가는 것 -->
+	<select id="selectCategoryBooklist" resultType="com.tn.booklist.model.vo.BooklistVO">
+		select * from BookList where genre like #{category} limit #{startRowIndex}, #{viewPostCntPerPage} 
+	</select>
+	<!-- 카테고리화된 것을 페이징 하기 위해 전체 개수를 구하는 것 -->
+	<select id="countCategoryBooklist" resultType="int">
+		select count(*) from BookList where genre like #{category} 
+	</select>
+	<!-- ====================================================엄영준 END=============================================================  -->
  
  </mapper>

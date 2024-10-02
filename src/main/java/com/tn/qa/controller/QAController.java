@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tn.admin.model.vo.SearchCriteriaDTO;
 import com.tn.admin.model.vo.PagingInfo;
@@ -80,28 +81,35 @@ public class QAController {
 		}
 		
 	}
-	
-	
-	
-	@RequestMapping(value = "/save", method = RequestMethod.GET)
-	public String qaSave(HttpSession sess) {
-		// 회원정보에서 사용자 id불러오기
-		String userId = ((MemberVO)sess.getAttribute("loginMember")).getUserId();
-		// 회원이 남긴 QA정보가지고 오기
-//		qaService.getQAList(userId);
+	@RequestMapping("/qaSaveForm")
+	public void qaSaveForm() {
 		
-		return "/admin/home";
 	}
-	@RequestMapping("/qaAnswerView")
-	public String qaAnswerView(Model model) {
-		List<QAVO> list = new ArrayList<QAVO>();
+	
+	@RequestMapping(value = "/qaSave", method = RequestMethod.GET)
+	public String qaSave(HttpSession sess,QAVO qa,RedirectAttributes red) {
+		// 회원정보에서 사용자 id불러오기
+		System.out.println(qa.toString());
+		String userId = ((MemberVO)sess.getAttribute("loginMember")).getUserId();
+		
+		qa.setqWriter(userId);
+		
+		
 		try {
-			list = qaService.getAllQAList();
-			model.addAttribute("qaList", list);
+			int result = qaService.qaSave(qa);
+			if(result ==1) {
+				System.out.println("저장성공");
+				red.addAttribute("status", "success");
+			}else {
+				red.addAttribute("status", "fail");
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			red.addAttribute("status", "fail");
 		}
-		return "/admin/qaAnswerView";
+		
+		return "redirect:/qa/qaList";
 	}
+	
 }

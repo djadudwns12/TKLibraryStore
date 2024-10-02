@@ -61,6 +61,25 @@ public class BooklistServiceImpl implements BooklistService {
 	}
 
 
+	private PagingInfo makePagingInfo(PagingInfoDTO dto,int totalCount) throws Exception {
+		PagingInfo pi = new PagingInfo(dto);
+		
+		pi.setTotalPostCnt(totalCount);
+		
+		pi.setTotalPageCnt();	//전체 페이지 수 세팅
+		pi.setStartRowIndex();	// 현재 페이지에서 보여주기 시작할 rowIndex 세팅
+		
+		
+		// 페이징 블럭 만들기
+		pi.setPageBlockNoCurPage();
+		pi.setStartPageNoCurBlock();
+		pi.setEndPageNoCurBlock();
+		
+		
+		System.out.println(pi.toString());
+		return pi;
+	}
+
 	@Override
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
 	public List<BookDetailInfo> read(int bookNo, String ipAddr) throws Exception {
@@ -69,5 +88,23 @@ public class BooklistServiceImpl implements BooklistService {
 				
 		return bookInfo;
 	}
+
+//	====================================================엄영준=============================================================
+	@Override
+	public Map<String, Object> getCategoryBooklist(PagingInfoDTO dto, String category) throws Exception {
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		int totalCount = bDao.countCategoryBooklist(category+"%");
+		
+		PagingInfo pi = makePagingInfo(dto,totalCount);
+		
+		List<BooklistVO> lst = bDao.selectCategoryBooklist(pi,category);
+		
+		result.put("pi", pi);
+		result.put("list", lst);
+		
+		return result;
+	}
+//	====================================================엄영준 END=============================================================
 
 }
