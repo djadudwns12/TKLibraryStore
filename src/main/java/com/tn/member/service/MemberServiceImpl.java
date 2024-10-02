@@ -12,6 +12,8 @@ import com.tn.member.dao.MemberDAO;
 
 import com.tn.member.dao.MemberDAOImpl;
 import com.tn.member.model.dto.MemberDTO;
+import com.tn.member.model.dto.RegisterDTO;
+import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
 
 import java.io.IOException;
@@ -102,6 +104,31 @@ public class MemberServiceImpl implements MemberService {
         int code = 100000 + random.nextInt(900000); 
         return code;
     }
+
+
+//-----------------------------------------박근영-------------------------------------------------
+	@Override
+	public boolean registerMember(RegisterDTO registerDTO, ImgFileVODTO fileInfo) throws Exception {
+		boolean result = false;
+		if(dao.insertMember(registerDTO, fileInfo) == 1) {
+			result = true;
+		}else {
+			result = false;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean compareId(String tmpUserId) throws Exception {
+		boolean result = false;
+		if (dao.selectId(tmpUserId) == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
+//-----------------------------------------박근영-------------------------------------------------
 
 		
 

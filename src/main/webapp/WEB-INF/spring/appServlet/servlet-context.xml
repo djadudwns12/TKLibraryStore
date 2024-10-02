@@ -21,20 +21,25 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!-- 수신된 Multipart의 데이터를 순서대로 재조립, 파일 업로드 제한 : 10MB -->
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="10485760"></beans:property>
+	</beans:bean>
+	
+	
 	<context:component-scan base-package="com.tn.controller" />
 	<context:component-scan base-package="com.tn.qa.controller" /> <!-- Q&A게시판 controller : 엄영준 -->
 	<context:component-scan base-package="com.tn.category.controller" />
 	<context:component-scan base-package="com.tn.member.controller" />
 	<context:component-scan base-package="com.tn.admin.controller" />
 	<context:component-scan base-package="com.tn.controller" /> <!-- 최미설 : No mapping found error in dispatcher servlet 오류나서 홈 컨트롤러 만들었어요 지워도 됨 -->
+	<context:component-scan base-package="com.tn.order.controller" />
 	<context:component-scan base-package="com.tn.review.controller" />  
+
 	
 	<!-- Cart -->
 	<context:component-scan base-package="com.tn.cart.controller" />
-	<context:component-scan base-package="com.tn.cart.dao" />
-	<context:component-scan base-package="com.tn.cart.model.dto" />
-	<context:component-scan base-package="com.tn.cart.model.vo" />
-	<context:component-scan base-package="com.tn.cart.service" />
 	<context:component-scan base-package="com.tn.booklist.controller" />
 	
 	<!-- 인터셉터가 동작하는 매핑 주소 설정 -->
@@ -51,9 +56,9 @@
 		
 		<!-- auth인터셉터 -->
 		<interceptor>
-			<mapping path="/qa/**" />
+			<mapping path="/qa/" />
 
-			<mapping path="/admin/**" />
+			<mapping path="/admin/" />
 			<mapping path="/member/edit"/>
 			<beans:ref bean="authInterceptor"/>
 		

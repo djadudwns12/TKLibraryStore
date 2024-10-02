@@ -5,9 +5,13 @@ import java.util.Map;
 
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.member.model.dto.MemberDTO;
+
+import com.tn.member.model.dto.RegisterDTO;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
 
 @Service
@@ -29,6 +33,13 @@ public interface MemberService {
 
   public ResponseEntity<Integer> sendOne(String phone) throws Exception;
 
-  
+
+//-----------------------------------------박근영-------------------------------------------------
+	// 회원정보 저장 메서드
+	boolean registerMember(RegisterDTO registerDTO, ImgFileVODTO fileInfo) throws Exception;
+	// 중복아이디 비교 메서드
+	boolean compareId(String tmpUserId) throws Exception;
+//-----------------------------------------박근영-------------------------------------------------
+
 
 }
