@@ -201,7 +201,7 @@
 	</select>
 	
 	<delete id="deleteProduct">
-		delete from BookList where bookNo = ${delNo}
+		delete from BookList where bookNo = #{delNo}
 	</delete>
 	
 	<update id="soldOutProduct">
@@ -212,4 +212,23 @@
 		select * from BookList where bookNo = #{bookNo}
 	</select>
 	
+	
+	<update id="saveImgInfo">
+		update BookList set thumbNail=#{fileName}, base64ProfileImg=#{base64Img} where bookNo=#{bookNo};
+	</update> 
+	
+	<update id = "updateProduct">
+		update BookList set 
+		title=#{title}, author=#{author}, publisher=#{publisher}, pubDate=#{pubDate},
+		genre=#{genre}, price=#{price}, salePrice=#{salePrice}, inven=#{inven}, introduction=#{introduction}		
+		where bookNo=#{bookNo};
+	</update>
+	
+	<insert id="registSave">
+		insert into BookList
+		(title, author, publisher, pubDate, genre, price, salePrice, inven, thumbNail, introduction, base64ProfileImg)
+		values
+		(#{title}, #{author}, #{publisher}, #{pubDate}, #{genre}, #{price}, #{salePrice},
+		#{inven}, #{fileName}, #{introduction}, #{base64ProfileImg})
+	</insert>
   </mapper>

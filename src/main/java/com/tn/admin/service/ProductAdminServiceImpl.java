@@ -9,11 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tn.admin.model.vo.*;
-import com.tn.admin.model.vo.PagingInfo;
-import com.tn.admin.model.vo.PagingInfoDTO;
-import com.tn.admin.model.vo.SearchCriteriaDTO;
 import com.tn.admin.dao.ProductAdminDAO;
-import com.tn.admin.model.vo.ProductVO;
 
 @Service
 public class ProductAdminServiceImpl implements ProductAdminService {
@@ -87,14 +83,26 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 	@Override
 	public int deleteProduct(int[] arr) throws Exception {
 				
-		return pDao.deleteProduct(arr);
+		int delCount = 0;
+		for(int delNo : arr) {
+			delCount += pDao.deleteProduct(delNo);
+		}
+		return delCount;
+		
 	}
 
 
 	@Override
 	public int soldOutProduct(int[] arr) throws Exception {
 		
-		return pDao.soldOutProduct(arr);
+		int sdCount = 0;
+		for(int sdNo : arr) {
+			sdCount += pDao.soldOutProduct(sdNo);
+		}
+		
+		System.out.println(sdCount);
+		return sdCount;
+		
 	}
 
 
@@ -102,6 +110,27 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 	public ProductVO read(int bookNo) throws Exception {
 		
 		return pDao.readBookInfo(bookNo);
+	}
+
+
+	@Override
+	public int saveImgInfo(BoardUpFileVODTO fileInfo, int bookNo) throws Exception {
+		
+		return pDao.saveImgInfo(fileInfo, bookNo);
+	}
+
+
+	@Override
+	public int modifyProduct(ProductVO product) throws Exception {
+		
+		return pDao.updateProduct(product);
+	}
+
+
+	@Override
+	public int registSave(ProductVO product,BoardUpFileVODTO fileInfo) throws Exception {
+		
+		return pDao.registSave(product, fileInfo);
 	}
 	
 	

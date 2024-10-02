@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.member.dao.MemberDAO;
 
 import com.tn.member.dao.MemberDAOImpl;
@@ -59,7 +60,6 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean saveEditInfo(MemberDTO editMember) throws Exception {
-		System.out.println("Service : ȸ���������� ���� >> " + editMember.toString() );
 		boolean result = false;
 		if(dao.updateEditMember(editMember) == 1) {
 			result = true;
@@ -105,7 +105,7 @@ public class MemberServiceImpl implements MemberService {
         return code;
     }
 
-	
+
 //-----------------------------------------박근영-------------------------------------------------
 	@Override
 	public boolean registerMember(RegisterDTO registerDTO, ImgFileVODTO fileInfo) throws Exception {
@@ -129,6 +129,7 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 //-----------------------------------------박근영-------------------------------------------------
+
 		
 
 
