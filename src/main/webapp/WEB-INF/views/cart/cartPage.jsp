@@ -122,9 +122,8 @@
 					<c:forEach var="cart" items="${cartList}">
 						<tr class="cartItem">
 							<td class="common-td"><input type="checkbox"
-								class="selectItem" onclick="updateTotals()"
-								data-price="${cart.price}" data-salePrice="${cart.salePrice}"
-								data-cart-id="${cart.cartId}"></td>
+								class="selectItem" data-price="${cart.price}"
+								data-salePrice="${cart.salePrice}" data-cart-id="${cart.cartId}"></td>
 							<td class="thumbnail"><img src="${cart.thumbNail}"
 								style="width: 70px;" /></td>
 							<td class="common-td">${cart.title}</td>
@@ -180,24 +179,34 @@
 				</tr>
 			</thead>
 			<tbody>
-				<span id="pointRate" style="display: none;">${pointRate}</span> <!-- pointRate 추가 -->
+				<span id="pointRate" style="display: none;">${pointRate}</span>
+				<!-- pointRate 추가 -->
 				<c:set var="totalPrice" value="0" />
 				<c:set var="totalSalePrice" value="0" />
-				<c:set var="totalPay" value="0" />
 				<c:set var="totalPoint" value="0" />
+
 				<c:forEach var="cart" items="${cartList}">
+					<!-- 총 상품 금액 (할인 전) -->
 					<c:set var="totalPrice"
 						value="${totalPrice + cart.price * cart.qty}" />
-					<c:set var="totalSalePrice"
-						value="${totalSalePrice + (cart.price*0.9)}" />
-					<c:set var="totalPay"
-						value="${totalPay + totalSalePrice * cart.qty}" />
-					<c:set var="totalPoint"
-						value="${totalPoint + (totalPay * pointRate)}" />
-					<!-- 소수점 이하 제거 -->
-					<c:set var="totalPoint"
-						value="${fn:substringBefore(totalPoint, '.')}" />
+
+
 				</c:forEach>
+
+				<!-- 총 할인가 계산 (상품 가격의 10% 할인 적용) -->
+				<c:set var="totalSalePrice"
+					value="${totalSalePrice + totalPrice * 0.1}" />
+
+				<!-- 결제 예정 금액 (총 상품 금액 - 할인된 금액) -->
+				<c:set var="totalPay" value="${totalPrice - totalSalePrice}" />
+
+				<!-- 적립 예정 포인트 계산 (결제 예정 금액 * pointRate) -->
+				<c:set var="totalPoint" value="${totalPay * pointRate}" />
+
+				<!-- 소수점 이하 제거 -->
+				<c:set var="totalPoint"
+					value="${fn:substringBefore(totalPoint, '.')}" />
+
 				<tr>
 					<td class="common-td"><strong id="totalPrice"> <fmt:formatNumber
 								value="${totalPrice}" type="number" groupingUsed="true" />원
@@ -376,7 +385,7 @@
                 const qty = qtyInput ? parseInt(qtyInput.value) || 0 : 0;  // NaN 방지 및 요소 존재 확인
 
                 totalPrice += price * qty;
-                totalSalePrice += (price * 0.9) * qty;  // 10% 할인 적용
+                totalSalePrice += (price * 0.1) * qty;  // 10% 할인 적용
                 totalPay += salePrice * qty;
                 totalPoint += salePrice * pointRate * qty; // pointRate 적용
             });
