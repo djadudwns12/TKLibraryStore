@@ -37,14 +37,17 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tn.member.model.dto.MemberDTO;
+import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.member.model.vo.ProfileResponseWithoutData;
-import com.tn.member.model.vo.ProfileUpImgVODTO;
+import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.service.MemberService;
 import com.tn.member.service.SendMailService;
 
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.tn.util.ProfileFileProcess;
 import com.tn.util.PropertiesTask;
 
 import lombok.RequiredArgsConstructor;
@@ -62,6 +65,8 @@ public class MemberController {
 
 	@Autowired
 	private MemberService mService;
+	@Autowired
+	private ProfileFileProcess fileProcess;
 
 	/**
 	 * @작성자 : 엄영준
@@ -112,7 +117,7 @@ public class MemberController {
 			e.printStackTrace();
 		}
 	}
-
+	// -----------------------------------------최미설-------------------------------------------------
 	/**
 	 * @작성자 : 최미설
 	 * @작성일 : 2024. 9. 6.
@@ -125,12 +130,12 @@ public class MemberController {
 	 */
 
 	@RequestMapping(value = "/edit")
-	public void getEditMemeberInfo(Model model) { // @RequestParam("userId") String userId
-		String userId = "dooly"; // 회원정보수정 페이지 완료하면 로그인 정보 가져오기!
+	public void getEditMemeberInfo(HttpSession ses,  Model model) { // 
+//		String userId = "dooly"; // 회원정보수정 페이지 완료하면 로그인 정보 가져오기!
 		try {
-			MemberVO editMemberInfo = mService.getEditMemberInfo(userId);
-			System.out.println(editMemberInfo.toString());
-			model.addAttribute("editMemberInfo", editMemberInfo);
+			MemberVO loginMember = mService.getEditMemberInfo(((MemberVO)ses.getAttribute("loginMember")).getUserId());
+			System.out.println(loginMember.toString());
+			model.addAttribute("loginMember", loginMember);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,10 +154,10 @@ public class MemberController {
 	 *
 	 */
 	@RequestMapping(value = "/mypage")
-	public void saveEditInfo(MemberDTO editMember, RedirectAttributes redirectAttributes) {
+	public void saveEditInfo(MemberDTO loginMember, RedirectAttributes redirectAttributes) {
 
 		try {
-			mService.saveEditInfo(editMember);
+			mService.saveEditInfo(loginMember);
 			redirectAttributes.addAttribute("status", "editSuccess");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -258,66 +263,71 @@ public class MemberController {
 	}
 
 // -----------------------------------------박근영-------------------------------------------------
+	@PostMapping(value = "/checkedDupl")
+	public ResponseEntity<String> checkedDupl(@RequestParam(value = "tmpUserId") String tmpUserId){
+		ResponseEntity<String> result = null;
+		try {
+			if(mService.compareId(tmpUserId)) {
+				result = new ResponseEntity<String>("duplicate", HttpStatus.OK);
+				
+			} else {
+				result = new ResponseEntity<String>("notDuplicate", HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+		}
+		
+		
+		
+		return result;
+		
+	}
+	
+	
+	
+	@PostMapping(value = "/register")
+	public ResponseEntity<Void> register(
+	        @RequestParam(value = "imgFile", required = false) MultipartFile imgFile, // 파일 처리
+	        HttpServletRequest request, // request 객체로 전송된 파일 접근
+	        @ModelAttribute RegisterDTO registerDTO) { // 일반 폼 필드 수신
+		
+		String userId = registerDTO.getUserId();
+		ResponseEntity<Void> result = null;
 
-	/*
-	 * @RequestMapping(value = "/upfiles", method = RequestMethod.POST, produces =
-	 * "application/json; charset=UTF-8;") public
-	 * ResponseEntity<ProfileResponseWithoutData>
-	 * saveBoardFile(@RequestParam("file") MultipartFile file, HttpServletRequest
-	 * request) { System.out.println("파일 전송됨... 이제 저장해야 함......");
-	 * 
-	 * ResponseEntity<ProfileResponseWithoutData> result = null;
-	 * 
-	 * try { ProfileUpImgVODTO fileInfo = fileSave(file, request);
-	 * 
-	 * this.uploadFileList.add(fileInfo);
-	 * 
-	 * // 7월 17일 가장 먼저 해야 할 코드 : front에서 업로드한 파일을 지웠을때 백엔드에서도 지워야 한다.
-	 * System.out.println(
-	 * "=================================================================");
-	 * System.out.println("현재 파일리스트에 있는 파일들"); for (UpProfileImgVODTO f :
-	 * this.uploadFileList) { System.out.println(f.toString()); }
-	 * System.out.println(
-	 * "=================================================================");
-	 * 
-	 * String tmp = null; if (fileInfo.getThumbFileName() != null) { // 이미지 tmp =
-	 * fileInfo.getThumbFileName(); } else { tmp =
-	 * fileInfo.getNewFileName().substring(fileInfo.getNewFileName().lastIndexOf(
-	 * File.separator) + 1); }
-	 * 
-	 * ProfileResponseWithoutData mrw =
-	 * ProfileResponseWithoutData.builder().code(200).msg("success").newFileName(
-	 * tmp) .build();
-	 * 
-	 * // 저장된 새로운 파일이름을 json으로 return 시키도록 하자... result = new
-	 * ResponseEntity<ProfileResponseWithoutData>(mrw, HttpStatus.OK);
-	 * 
-	 * } catch (IOException e) { e.printStackTrace();
-	 * 
-	 * result = new
-	 * ResponseEntity<ProfileResponseWithoutData>(HttpStatus.NOT_ACCEPTABLE);
-	 * 
-	 * }
-	 * 
-	 * return result;
-	 * 
-	 * }
-	 * 
-	 * private ProfileUpImgVODTO fileSave(MultipartFile file, HttpServletRequest
-	 * request) throws IOException { // 파일의 기본정보 가져옴 String contentType =
-	 * file.getContentType(); String originalFileName = file.getOriginalFilename();
-	 * 
-	 * byte[] upfile = file.getBytes(); // 파일의 실제 데이터를 읽어옴
-	 * 
-	 * String realPath =
-	 * request.getSession().getServletContext().getRealPath("/resources/profileImgs"
-	 * );
-	 * 
-	 * // 실제파일 저장(이름변경, base64, thumbnail) ProfileUpImgVODTO fileInfo =
-	 * fileProcess.saveFileToRealPath(upfile, realPath, contentType,
-	 * originalFileName); return fileInfo; }
-	 */
+		try {
+			if(imgFile != null && !imgFile.isEmpty()) {
+			ImgFileVODTO fileInfo = fileSave(imgFile, userId, request);
+			
+			if(mService.registerMember(registerDTO, fileInfo)) {
+				result = new ResponseEntity<Void>(HttpStatus.OK);
+			}
+			
+			}
+			
+			System.out.println("결과를 보냅니다 파일 저장 완료");
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			result = new ResponseEntity<Void>(HttpStatus.NOT_ACCEPTABLE);
+		}
 
+		return result;
+	}
+	
+	  
+	private ImgFileVODTO fileSave(MultipartFile imgFile, String userId, HttpServletRequest request) throws IOException { // 파일의 기본정보 가져옴 
+		
+		String originalFileName = imgFile.getOriginalFilename();
+		byte[] upfile = imgFile.getBytes(); // 파일의 실제 데이터를 읽어옴
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/profileImgs");
+		
+		ImgFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, userId, originalFileName); 
+		return fileInfo; 
+		}
+	  
+	 
 	@RequestMapping(value = "/register")
 	public String registerMember() {
 
@@ -369,6 +379,6 @@ public class MemberController {
 		}
 	}
 
-	// -----------------------------------------박근영-------------------------------------------------
+// -----------------------------------------박근영-------------------------------------------------
 
 }

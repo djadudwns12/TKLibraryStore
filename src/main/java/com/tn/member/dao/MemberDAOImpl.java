@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 
 
 import com.tn.member.model.dto.MemberDTO;
+import com.tn.member.model.dto.RegisterDTO;
+import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
 
 @Repository
@@ -32,8 +34,7 @@ public class MemberDAOImpl implements MemberDAO  {
 
 	@Override
 	public MemberVO getEditMemberInfo(String userId) throws Exception {
-		
-		System.out.println("ȸ���������� : �α����� " + userId + "�� ������ �ҷ�����");
+
 		return sess.selectOne(NS + ".getEditMemberInfo", userId);
 	}
 
@@ -51,6 +52,28 @@ public class MemberDAOImpl implements MemberDAO  {
 	
 		return sess.selectOne(NS+".getLoginMember", loginMember);
 	}
+
+
+
+
+
+	
+//-----------------------------------------박근영-------------------------------------------------
+	@Override
+	public int insertMember(RegisterDTO registerDTO, ImgFileVODTO fileInfo) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("registerDTO", registerDTO);
+		paramMap.put("fileInfo", fileInfo);
+		return sess.insert(NS + ".insertRegisterMember", paramMap);
+	}
+	
+	@Override
+	public int selectId(String tmpUserId) throws Exception {
+		return sess.selectOne(NS + ".selectCompareId", tmpUserId);
+	}
+//-----------------------------------------박근영-------------------------------------------------
+
+
 	
 	
 }

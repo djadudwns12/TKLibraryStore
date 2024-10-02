@@ -31,5 +31,6 @@ public class ProductVO {
 	private String introduction;
 	private int zzim;
 	private int reviewCnt;
+	private String base64ProfileImg;
 	
 }

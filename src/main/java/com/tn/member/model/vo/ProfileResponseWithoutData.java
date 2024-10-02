@@ -17,6 +17,5 @@ import lombok.ToString;
 @ToString
 public class ProfileResponseWithoutData {
 	private int code;
-	private String newFileName;
 	private String msg;
 }

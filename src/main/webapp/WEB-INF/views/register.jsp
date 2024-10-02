@@ -50,7 +50,7 @@ body {
     width: calc(100% - 110px); /* 버튼 옆의 필드 크기 */
 }
 
-.smsButton-container input {
+.sendButton-container input {
     width: calc(100% - 110px); /* 버튼 옆의 필드 크기 */
 }
 
@@ -68,7 +68,7 @@ body {
     background-color: #45a049;
 }
 
-.smsButton-container {
+.sendButton-container {
     display: flex;
     justify-content: space-between;
 }
@@ -120,6 +120,23 @@ body {
     background-color: #f0f8ff; /* 드래그 시 배경색 변경 */
 }
 
+#delPreview {
+    width: 70px; /* 버튼 크기 */
+    
+    padding: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.5em;
+    cursor: pointer;
+    display:none;
+}
+
+#delPreview:hover {
+    background-color: #45a049;
+}
+
 .submit-btn {
     width: 100%;
     padding: 10px;
@@ -143,9 +160,17 @@ body {
     font-size: 12px;
     position: relative; 
     top: -10px;
+    margin-top: 5px;
     
 }
 
+#confirmId {
+    font-size: 12px;
+    position: relative; 
+    top: -10px;
+    margin-top: 5px;
+    
+}
 
 /* The Modal (background) */
 .modal {
@@ -251,42 +276,43 @@ input[readonly] {
 </head>
 <body>
 <form class="form-container">
-    <div class="form-group button-container">
+    <div class="form-group sendButton-container">
         <input type="text" id="userId" name="userId" placeholder="아이디 입력 (4~8자)" required>
-        <button type="button">중복 확인</button>
+        <button type="button" class="button-disabled" id="checkedDuplBtn">중복 확인</button>
     </div>
     
-    <div id="userIdError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
+    <div id="userIdError"></div> <!-- 에러 메시지 표시할 div -->
+    <div id="confirmId"></div>
     
     <div class="form-group">
         <input type="password" id="password" name="password" placeholder="비밀번호 입력 (문자, 숫자, 특수문자 포함 8~20자)" required>
     </div>
     
-    <div id="passwordError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
+    <div id="passwordError"></div> <!-- 에러 메시지 표시할 div -->
     
     <div class="form-group">
-        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호 재입력" required>
+        <input type="password" id="confirmPassword" placeholder="비밀번호 재입력" required>
     </div>
     
-    <div id="confirmPasswordError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
+    <div id="confirmPasswordError"></div> <!-- 에러 메시지 표시할 div -->
     
     <div class="form-group">
         <input type="text" id="userName" name="userName" placeholder="이름을 입력해주세요." required>
     </div>
     
-    <div class="form-group smsButton-container">
+    <div class="form-group sendButton-container">
         <input type="tel" id="phone" name="phone" placeholder="휴대폰 번호 입력" required>
-         <button type="button" class="button-disabled"  id="sendSMSButton">문자 전송</button>
+         <button type="button" class="button-disabled"  id="sendSMSBtn">문자 전송</button>
     </div>
     
-    <div id="phoneError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
+    <div id="phoneError"></div> <!-- 에러 메시지 표시할 div -->
     <div id="timer"></div>
     
     <div class="form-group">
         <input type="email" id="email" name="email" placeholder="email@example.com" required>
     </div>
     
-    <div id="emailError" style="color: red; margin-top: 5px;"></div> <!-- 에러 메시지 표시할 div -->
+    <div id="emailError"></div> <!-- 에러 메시지 표시할 div -->
     
     <div class="form-group">
         <label for="birthday">생년월일</label>
@@ -326,6 +352,7 @@ input[readonly] {
     <div id="profileImageContainer">
         <p id ="sign">프로필 사진을 드래그 앤 드롭하세요.</p>
         <img id="profilePreview" alt="프로필 사진 미리보기">
+        <button type="button" id="delPreview" onclick="deleteProfileImage();">이미지 삭제</button>
         <input type="file" id="profileImageInput" style="display: none;" accept="image/*">
     </div>
     
@@ -339,7 +366,7 @@ input[readonly] {
         <label for="terms">회원 가입 조항에 동의합니다.</label>
     </div>
 
-    <button type="submit" class="submit-btn" id="submitBtn" disabled>가입하기</button>
+    <button type="submit" class="submit-btn" id="submitBtn" >가입하기</button>
     
 </form>
 
@@ -370,36 +397,25 @@ function clearError(obj) {
 	  
 	    // 아이디에 키보드가 눌려졌을때 발생하는 이벤트
 	    // **on**은 이벤트 리스너를 지정하는 메서드입니다. 즉, 특정 태그(HTML 요소)에 대해 어떤 이벤트가 발생했을 때, 그 이벤트에 반응하여 함수를 실행하도록 연결해 줍니다. on("input")은 "input" 이벤트가 발생했을 때라는 의미입니다.
-	    $('#userId').on('input', function () {
-	      let tmpUserId = $('#userId').val();
-	      if (tmpUserId.length < 4 || tmpUserId.length > 8) {
-	        outputError("아이디는 4~8자로 입력하세요.", $('#userId'));
-	      } else {
-	    	  clearError($("#userId"));
-	/*         $.ajax({
-	          url: "/member/isDuplicate", // 데이터가 송수신될 서버의 주소
-	          type: "post", // 통신 방식 : GET, POST, PUT, DELETE, PATCH
-	          dataType: "json", // 수신 받을 데이터의 타입 (text, xml, json)
-	          data: {
-	            tmpUserId: tmpUserId,
-	          },
-	          success: function (data) {
-	            // 비동기 통신에 성공하면 자동으로 호출될 callback function
-	            console.log(data);
-	            if (data.msg == "duplicate") {
-	              outputError("중복된 아이디입니다.", $("#userId"));
-	              $("#idValid").val("");
-	              $("#userId").focus();
-	            } else if (data.msg == "not duplicate") {
-	              clearError($("#userId")); // error 메시지 클리어
-	              $("#idValid").val("checked");
-	            }
-	          },
-	          error: function (data) {
-	            console.log(data);
-	          },
-	        }); */
-	      }
+	$('#userId').on('input', function () {
+		$('#confirmId').hide();
+		let tmpUserId = $('#userId').val();
+		if (tmpUserId.length < 4 || tmpUserId.length > 8) {
+			outputError("아이디는 4~8자로 입력하세요.", $('#userId'));
+			$('#checkedDuplBtn').removeClass("button-active").addClass("button-disabled")
+			$('#checkedDuplBtn').removeAttr("onclick", "checkedDupl()")
+			
+		} else {
+			
+			clearError($("#userId"));
+			$('#checkedDuplBtn').removeClass("button-disabled").addClass("button-active")
+			$('#checkedDuplBtn').attr("onclick", "checkedDupl()")
+			
+			// 올바른 방식으로 `onclick` 설정
+            //$('#confirmId').prop("onclick", function() { send(); }); // send 함수가 호출되도록 설정
+			// jQuery의 권장 방식: on() 메서드 사용
+			// $('#confirmId').on("click", send);
+		}
 	    });
 	  
     $('#password').on("input", function () {
@@ -431,28 +447,30 @@ function clearError(obj) {
         	//$("#button-disabled").attr("cl", "button-disabled");
         	$('.button-active').removeClass("button-active").addClass("button-disabled");
 			outputError("휴대폰 번호 형식이 아닙니다.", $('#phone'));
-			$('#sendSMSButton').removeAttr("onclick");
+			$('#sendSMSBtn').removeAttr("onclick");
         } else {
         	 //$("#button-disabled").attr("id", "button-active");
         	 // 순수 JavaScript  : 추가: document.getElementById("element").classList.add("className"); 제거  : .classList.remove 토글 : .classList.toggle
         	 //클래스가 있으면 제거, 없으면 추가 (toggle 기능) : $("#element").toggleClass("className");
         	 $('.button-disabled').removeClass("button-disabled").addClass("button-active");
 			clearError($('#phone'));
-			 $('#sendSMSButton').attr("onclick", "sendSMS()");
+			 $('#sendSMSBtn').attr("onclick", "sendSMS()");
 			//addEventListener: 이벤트를 추가할 때, 동일한 이벤트에 대해 여러 개의 리스너를 추가할 수 있습니다. 즉, 동일한 이벤트에 대해 여러 개의 핸들러를 등록할 수 있으며, 나중에 필요하면 특정 리스너만 제거할 수도 있습니다.
 			//setAttribute: onclick과 같은 속성에 이벤트를 직접 추가합니다. 이 방법은 한 번에 하나의 이벤트 핸들러만 추가할 수 있습니다. 즉, 만약 동일한 이벤트에 대해 새로운 핸들러를 추가하려면, 이전 핸들러는 덮어쓰여집니다.
-			//document.getElementById("sendSMSButton").setAttribute("onclick", "sendSMS()");
-			//$("#sendSMSButton").attr("onclick", "sendSMS()");
+			//document.getElementById("sendSMSBtn").setAttribute("onclick", "sendSMS()");
+			//$("#sendSMSBtn").attr("onclick", "sendSMS()");
 			//이벤트 리스너 사용
 			//추가
-			//document.getElementById("sendSMSButton").addEventListener("click", sendSMS);
-			//$("#sendSMSButton").attr("onclick", "sendSMS()");
-			//document.getElementById("sendSMSButton").setAttribute("onclick", "sendSMS()");
+			//document.getElementById("sendSMSBtn").addEventListener("click", sendSMS);
+			//$("#sendSMSBtn").attr("onclick", "sendSMS()");
+			//document.getElementById("sendSMSBtn").setAttribute("onclick", "sendSMS()");
 			//제거
-			// $("#sendSMSButton").removeAttr("onclick");
-			//document.getElementById("sendSMSButton").removeAttribute("onclick");
+			// $("#sendSMSBtn").removeAttr("onclick");
+			//document.getElementById("sendSMSBtn").removeAttribute("onclick");
         }
       }); 
+    
+    
     
     
     $('#email').on("input", function () {
@@ -465,7 +483,12 @@ function clearError(obj) {
         }
       });
     
+    
+    
+    
+    
 
+    
 		
 		// 유저가 fileUploadArea에 파일을 드래그&드랍 하면...
 		$('#profileImageContainer').on("drop dragenter dragover", function(evt){   
@@ -487,121 +510,120 @@ function clearError(obj) {
 						alert("1개의 이미지만 가능합니다.");
 						
 					} else {
+						
 					
 						// 해당 파일 업로드
-						showPreview(files[0])
+						showPreview(files[0]);
+						
 						
 					}
 			}
-				
+			
 			
 		});
+			
+			  $('#terms').change(function() {
+			        $('#submitBtn').prop('disabled', !$(this).is(':checked'));
+			    });
+				
+			
+		
 
-  
+	
+		$("form").on("submit", function (evt) {
+			  // 모든 Error 태그가 숨겨져 있는지 확인
+			  let allErrorsHidden = true;
+
+			  // .hide()된 요소는 jQuery에서 is(":visible")로 검사하여 보이지 않으면 false 반환
+			  //$ 기호는 **"끝나는"**이라는 의미입니다. , ^ 기호는 **"시작하는"**이라는 의미입니다.
+			  $("div[id$='Error']").each(function () {
+			    if ($(this).is(":visible")) {
+			      allErrorsHidden = false;
+			    }
+			  });
+
+			  // Error 태그가 하나라도 보이면 submit 방지
+			  if (!allErrorsHidden) {
+			    evt.preventDefault(); // submit 방지
+			    alert("잘못된 입력이 있습니다. 입력을 다시 확인하세요.");
+			  } else {
+				  evt.preventDefault();
+				  register();
+			  }
+			});
 
   });
 		
 		
+let uploadedFile = null;
+  
+async function checkedDupl() {
+    try {
+        let tmpUserId = $('#userId').val();
+        let response = await $.ajax({
+            url : '/member/checkedDupl',
+            type : 'post',
+            data : {tmpUserId : tmpUserId},  // 여기에 `:`를 사용해야 함
+            dataType : "text",  // `dataType` 오타 수정: "dataType"으로 해야 함
+            cache: false,
+            success : function(data){
+                if(data == "notDuplicate") {
+                    $('#confirmId').html("사용 가능한 아이디입니다.");
+                    $('#confirmId').css("color", "green");
+                    $('#confirmId').show();
+                    
+                } else if(data == "duplicate") {
+                    $('#confirmId').html("중복된 아이디입니다.");
+                    $('#confirmId').css("color", "red");
+                    $('#confirmId').show();
+                }
+            },
+            error : function(data){
+                alert('중복 확인 요청 중 문제가 발생했습니다. 다시 시도해 주세요.');
+            }
+        });
+    } catch (error) {  // 이 부분을 함수 내부로 이동
+        console.log("비동기 처리 중 오류 발생:", error);
+        alert('다시 시도해 주세요.');
+    }
+}
+
+
+  
+  
+  
+  
+ 
+
 		
 		
 // 넘겨진 file이 이미지 파일이라면 미리보기 하여 출력한다.
 function showPreview(imgFile) {
-	let fileType = imgFile.type.toLowerCase();
-	// 파일 읽기 위한 FileReader 객체 생성
 	const reader = new FileReader();
-	reader.readAsDataURL(imgFile);
+	
 	
 	// 파일을 다 읽으면 실행되는 콜백 함수
 	reader.onload = function(evt) {
 		$('#profilePreview').attr('src', evt.target.result); // 읽어온 파일 데이터(URL 형식)
 		$('#profilePreview').show();
 		$('#sign').hide();
+		$('#delPreview').show();
+		uploadedFile = imgFile;
 	};
 	// 파일을 읽어서 DataURL로 변환 (이미지 형식의 데이터를 읽어옴)
 	reader.readAsDataURL(imgFile);
-		
-		
-		
-		} 
-	
-		
-	// 실제로 유저가 업로드한 파일을 컨트롤러단에 전송하여 저장되도록 하는 함수
-	function fileUpload(file) {
-		let result = false;
-		let fd = new FormData();  // FormData 객체 생성 : form태그와 같은 역할의 객체
-		fd.append("file", file);
-		
-		$.ajax({
-	         url : '/member/upfiles',             // 데이터가 송수신될 서버의 주소
-	         type : 'post',                                     // 통신 방식 : GET, POST, PUT, DELETE, PATCH   
-	         dataType : 'json',					// 수신 받을 데이터의 타입 (text, xml, json)
-			 data : fd,					// 보낼 데이터
-	         // processData :  false  -> 데이터를 쿼리스트링 형태로 보내지 안겠다는 설정
-	         // contentType 의 디폴트 값이 "application/x-www-form-urlencoded"인데, 파일을 전송하는 방식이기에 "multipart/form-data"로 되어야 하므로..
-	         processData: false,
-	         contentType : false,
-	         async : false,      // 비동기 통신 : false
-	         success : function (data) {                       // 비동기 통신에 성공하면 자동으로 호출될 callback function
-	            console.log(data);
-	         	if (data.msg == 'success') {
-	         		showPreview(file, data.newFileName);  // 파일 미리보기
-	         	}
-	         
-	         }, error : function (data) {
-	        	 console.log(data);
-	        	 if (data == 'fail') {
-	        		 alert ('파일을 업로드 하지 못했습니다');
-	        		 
-	        		 for(let i = 0; i < upfiles.length; i++) {
-	        			 if (upfile[i].name == file.name) {
-	        				 upfiles.splice(i, 1);  // 배열에서 삭제
-	        			 }
-	        		 }
-	        	 }
-	         }
-	      });
-	}
-	
-	
-	async function fileUpload(file) {
-	    let result = false;
-	    let fd = new FormData();  // FormData 객체 생성 : form태그와 같은 역할의 객체
-	    fd.append("file", file);
 
-	    try {
-	        let response = await $.ajax({
-	            url: '/member/upfiles',             // 데이터가 송수신될 서버의 주소
-	            type: 'post',                                     // 통신 방식 : GET, POST, PUT, DELETE, PATCH
-	            dataType: 'json',                  // 수신 받을 데이터의 타입 (text, xml, json)
-	            data: fd,                          // 보낼 데이터
-	            processData: false,                 // 데이터를 쿼리스트링 형태로 보내지 않겠다는 설정
-	            contentType: false,                 // "multipart/form-data"로 전송되도록 설정
-	            //async: true                         // 비동기 통신을 true로 설정 (기본 값)
-	        });
-
-	        // 성공 시 처리
-	        console.log(response);
-	        if (response.msg == 'success') {
-	            showPreview(file, response.newFileName);  // 파일 미리보기
-	        }
-
-	    } catch (error) {
-	        // 에러 처리
-	        console.error(error);
-	        if (error === 'fail') {
-	            alert('파일을 업로드하지 못했습니다');
-
-	            // 배열에서 파일 제거
-	            for (let i = 0; i < upfiles.length; i++) {
-	                if (upfiles[i].name == file.name) {
-	                    upfiles.splice(i, 1);  // 배열에서 삭제
-	                }
-	            }
-	        }
-	    }
-	}
+} 
+	
+		
+function deleteProfileImage() {
+	uploadedFile = null;
+	$('#profilePreview').removeAttr('src').hide();
+	$('#sign').show();
+	$('#delPreview').hide();
 	
 	
+}
 
   
 let code ='';
@@ -636,14 +658,14 @@ function sendSMS() {
 				alert("SMS 전송 성공: 인증 코드 - " + response);
 		      
 			      let htmlStr = '';  // 변수 초기화
-			      htmlStr += `<div class="form-group smsButton-container">`;
+			      htmlStr += `<div class="form-group sendButton-container">`;
 			      htmlStr += `<input type="text" id="verification" name="verification" placeholder="인증번호 입력" required>`;
 			      htmlStr += `<button type="button" id="verificationBtn" class="button-active" onclick="verificationCode();">인증번호 확인</button>`;
 			      htmlStr += `</div>`;
 
-			      // .smsButton-container 뒤에 htmlStr을 추가
-			      $('.smsButton-container').after(htmlStr); 
-			      $('#sendSMSButton').removeAttr("onclick");
+			      // .sendButton-container 뒤에 htmlStr을 추가
+			      $('.sendButton-container').after(htmlStr); 
+			      $('#sendSMSBtn').removeAttr("onclick");
 			      startTimer();
 			      code = response;
 			      
@@ -656,8 +678,12 @@ function sendSMS() {
 		  }
 		});
 	
-	}
 	
+	
+	
+	
+	
+	}
 	
 let completed = false;	
 	
@@ -673,7 +699,7 @@ function verificationCode() {
 		$('#verificationBtn').removeClass("button-active").addClass("button-disabled");
 		$('#verificationBtn').html('인증완료');
 		$('#verificationBtn').removeAttr("onclick");
-		$('#sendSMSButton').removeAttr("onclick");
+		$('#sendSMSBtn').removeAttr("onclick");
 		
 	} else {
 		alert('인증번호가 다릅니다.');
@@ -681,7 +707,9 @@ function verificationCode() {
 	
 	
 }
-
+	
+	
+	
 
 	
 function startTimer() {
@@ -719,6 +747,10 @@ function startTimer() {
     }, 1000);  // 1000ms (1초)마다 실행
 }
 
+
+	
+	
+	
 	
 	
 	
@@ -842,7 +874,8 @@ function changePage(page) {
 	}
 	
 	
-
+	
+	
 	
 	//특수문자, 특정문자열(sql예약어의 앞뒤공백포함) 제거
 	function checkSearchedWord(obj){
@@ -894,6 +927,8 @@ function changePage(page) {
 	}
 	
 	
+	
+
 
 function serializeDiv(divId) {
 		
@@ -906,37 +941,46 @@ function serializeDiv(divId) {
 	    });
 	    return formData.join('&');
 	}
+	
+	
+	
+async function register() {
+    let form = $("form")[0];  // 폼 요소를 선택
+    let fd = new FormData(form);  // FormData 객체 생성
+    fd.append("imgFile", uploadedFile);
+    
+/* 	    for (var pair of fd.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]);
+    } */
+
+    try {
+        let response = await $.ajax({
+            url: '/member/register',             // 데이터가 송수신될 서버의 주소
+            type: 'post',                                     // 통신 방식 : GET, POST, PUT, DELETE, PATCH
+            data: fd,                          // 보낼 데이터
+            cache: false,
+            processData: false,                 // 데이터를 쿼리스트링 형태로 보내지 않겠다는 설정
+            contentType: false,                 // "multipart/form-data"로 전송되도록 설정
+            //async: true                         // 비동기 통신을 true로 설정 (기본 값)
+            statusCode: {
+                // 상태 코드 200: 성공 처리
+                200: function () {
+                    alert('가입 성공!');
+                },
+                // 상태 코드 406: 실패 처리
+                406: function () {
+                    alert('가입 실패');
+                }
+            }
+        });
+
+    } catch (error) {
+        console.log("에러 발생: ", error);
+        alert('입력된 회원가입 정보를 확인 후 가입해 주세요');
+    }
+}
 
 
-
-
-$(document).ready(function() {
-    $('#terms').change(function() {
-        $('#submitBtn').prop('disabled', !$(this).is(':checked'));
-    });
-});
-
-
-
-
-$("form").on("submit", function (e) {
-	  // 모든 Error 태그가 숨겨져 있는지 확인
-	  let allErrorsHidden = true;
-
-	  // .hide()된 요소는 jQuery에서 is(":visible")로 검사하여 보이지 않으면 false 반환
-	  //$ 기호는 **"끝나는"**이라는 의미입니다. , ^ 기호는 **"시작하는"**이라는 의미입니다.
-	  $("div[id$='Error']").each(function () {
-	    if ($(this).is(":visible")) {
-	      allErrorsHidden = false;
-	    }
-	  });
-
-	  // Error 태그가 하나라도 보이면 submit 방지
-	  if (!allErrorsHidden) {
-	    e.preventDefault(); // submit 방지
-	    alert("잘못된 입력이 있습니다. 입력을 다시 확인하세요.");
-	  }
-	});
 
 </script>
 </body>

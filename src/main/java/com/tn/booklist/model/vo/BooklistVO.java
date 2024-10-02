@@ -1,5 +1,6 @@
 package com.tn.booklist.model.vo;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import lombok.AccessLevel;
@@ -19,10 +20,11 @@ import lombok.ToString;
 @ToString
 public class BooklistVO {
 	
+	private int bookNo;
 	private String title;
 	private String author;
 	private String publisher;
-	private Timestamp pubDate;
+	private Date pubDate;
 	private String genre;
 	private int price;
 	private int salePrice;
