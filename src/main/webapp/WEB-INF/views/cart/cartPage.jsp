@@ -194,9 +194,6 @@
 						value="${totalPay + totalSalePrice * cart.qty}" />
 					<c:set var="totalPoint"
 						value="${totalPoint + (totalPay * pointRate)}" />
-					<script>
-						console.log(${fn:escapeXml(pointRate)});
-					</script>
 					<!-- 소수점 이하 제거 -->
 					<c:set var="totalPoint"
 						value="${fn:substringBefore(totalPoint, '.')}" />
