@@ -112,7 +112,7 @@ public class MemberController {
 			e.printStackTrace();
 		}
 	}
-
+	// -----------------------------------------최미설-------------------------------------------------
 	/**
 	 * @작성자 : 최미설
 	 * @작성일 : 2024. 9. 6.
@@ -125,12 +125,12 @@ public class MemberController {
 	 */
 
 	@RequestMapping(value = "/edit")
-	public void getEditMemeberInfo(Model model) { // @RequestParam("userId") String userId
-		String userId = "dooly"; // 회원정보수정 페이지 완료하면 로그인 정보 가져오기!
+	public void getEditMemeberInfo(HttpSession ses,  Model model) { // 
+//		String userId = "dooly"; // 회원정보수정 페이지 완료하면 로그인 정보 가져오기!
 		try {
-			MemberVO editMemberInfo = mService.getEditMemberInfo(userId);
-			System.out.println(editMemberInfo.toString());
-			model.addAttribute("editMemberInfo", editMemberInfo);
+			MemberVO loginMember = mService.getEditMemberInfo(((MemberVO)ses.getAttribute("loginMember")).getUserId());
+			System.out.println(loginMember.toString());
+			model.addAttribute("loginMember", loginMember);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,10 +149,10 @@ public class MemberController {
 	 *
 	 */
 	@RequestMapping(value = "/mypage")
-	public void saveEditInfo(MemberDTO editMember, RedirectAttributes redirectAttributes) {
+	public void saveEditInfo(MemberDTO loginMember, RedirectAttributes redirectAttributes) {
 
 		try {
-			mService.saveEditInfo(editMember);
+			mService.saveEditInfo(loginMember);
 			redirectAttributes.addAttribute("status", "editSuccess");
 		} catch (Exception e) {
 			e.printStackTrace();

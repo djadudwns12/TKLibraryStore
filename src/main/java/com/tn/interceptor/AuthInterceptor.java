@@ -15,7 +15,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("auth 인터셉터 preHandle");
+		System.out.println("auth 인터셉터 preHandle" );
 		
 		boolean goController = false; // 컨트롤러로 보낼지를 결정하는 변수
 		

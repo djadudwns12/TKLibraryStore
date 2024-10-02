@@ -1,43 +1,20 @@
 function startTimer() {
-	let timer = 59;
-	let timerInterval = setInterval(displayTime, 1000);
+    let timer = 180; 
+    let timerInterval = setInterval(() => {
+        let min = Math.floor(timer / 60);  
+        let sec = String(timer % 60).padStart(2, '0'); 
 
+        $('.timer').html(`남은시간 : ${min}:${sec}`);
 
-  function displayTime() {
-    // 시간이 0보다 작거나 인증이 성공 되었으면..
-
-        if (timer < 0 ) {
-            // alert('time is up!');
-            clearInterval(timerInterval);
-            $('#authBtn').prop('disabled', true);
-
-            if($('#emailValid').val() != 'checked') {
-              // 백엔드에 인증시간이 만료되었음을 알려야 한다!!!!
-              $.ajax({
-                url: "/member/clearAuthCode", // 데이터가 송수신될 서버의 주소
-                type: "post", // 통신 방식 : GET, POST, PUT, DELETE, PATCH
-                dataType: "text", // 수신 받을 데이터의 타입 (text, xml, json)
-                success: function (data) {
-                  // 비동기 통신에 성공하면 자동으로 호출될 callback function
-                  console.log(data);
-                  if (data == 'success') {
-                    alert("인증시간이 만료되었습니다. 이메일 주소를 다시 입력하시고, 재 인증 시도 하세요");
-                    $('#emailAuth').remove();
-                    $("#email").focus();
-                    clearInterval(timerInterval);
-                  }
-                  
-                }
-              });
-            }
-            
-        } else {
-            let min = Math.floor(timer / 60);
-            let sec = String(timer % 60).padStart(2, '0');
-            let remainTime = min + ":" + sec;
-            $('.timer').html(remainTime);
-            --timer; 
-        }
-    }
-
+        if (timer <= 0) {
+            // clearInterval: setInterval에 의해 설정된 반복 실행을 중단
+            // 이 메서드는 setInterval 함수의 반환 값인 ID(timerInterval)를 사용하여 해당 반복을 중단함
+            clearInterval(timerInterval);  // 더 이상 타이머가 작동하지 않도록 반복 중지
+			alert('인증 시간이 만료되었습니다. 다시 시도하세요.');
+            $('#emailAuth').remove();
+            $("#email").focus();
+        } 
+       	--timer; // 1초 감소
+ 
+    }, 1000);  // 1000ms (1초)마다 실행
 }

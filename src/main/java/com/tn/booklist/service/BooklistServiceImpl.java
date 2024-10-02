@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import com.tn.booklist.dao.BooklistDAO;
 import com.tn.booklist.model.dto.PagingInfo;
 import com.tn.booklist.model.dto.PagingInfoDTO;
+import com.tn.booklist.model.vo.BookDetailInfo;
 import com.tn.booklist.model.vo.BooklistVO;
 
 @Service
@@ -26,20 +27,24 @@ public class BooklistServiceImpl implements BooklistService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<BooklistVO> getAllBooklist(PagingInfoDTO dto) throws Exception {
+	public Map<String, Object> getAllBooklist(PagingInfoDTO dto) throws Exception {
 		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		PagingInfo pi = makePagingInfo(dto);
 		
 		List<BooklistVO> lst = bDao.selectAllBook(pi);
 		
-		return lst;
+		resultMap.put("pagingInfo", pi);
+		resultMap.put("listAll", lst);
+		
+		return resultMap;
 	}
 	
 	
 	private PagingInfo makePagingInfo(PagingInfoDTO dto) throws Exception {
 		PagingInfo pi = new PagingInfo(dto);
 		
-		bDao.getTotalPostCnt();
+		pi.setTotalPostCnt(bDao.getTotalPostCnt());
 		
 		pi.setTotalPageCnt();	//전체 페이지 수 세팅
 		pi.setStartRowIndex();	// 현재 페이지에서 보여주기 시작할 rowIndex 세팅
@@ -53,6 +58,16 @@ public class BooklistServiceImpl implements BooklistService {
 		
 		System.out.println(pi.toString());
 		return pi;
+	}
+
+
+	@Override
+	@Transactional(readOnly = true, rollbackFor = Exception.class)
+	public List<BookDetailInfo> read(int bookNo, String ipAddr) throws Exception {
+		
+		List<BookDetailInfo> bookInfo = bDao.selectAllByBookNo(bookNo);
+				
+		return bookInfo;
 	}
 
 }

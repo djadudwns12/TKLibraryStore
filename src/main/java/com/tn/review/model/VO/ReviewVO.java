@@ -1,6 +1,5 @@
-package com.tn.booklist.model.vo;
+package com.tn.review.model.VO;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import lombok.AccessLevel;
@@ -11,28 +10,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 @Getter
 @Setter
 @ToString
-public class BooklistVO {
+@Builder
+public class ReviewVO {
 	
+	private int reviewNo;
+	private String reviewWriter;
+	private String reviewContent;
+	private Timestamp reviewDate;
+	private int reviewScore;
 	private int bookNo;
+	
+	// BookList에서 조인문으로 참조하여 가져오는 내용
 	private String title;
-	private String author;
-	private String publisher;
-	private Date pubDate;
-	private String genre;
-	private int price;
-	private int salePrice;
-	private int inven;
 	private String thumbNail;
-	private String introduction;
-	private int zzim;
-	private int reviewCnt;
-
-
 }

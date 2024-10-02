@@ -27,6 +27,7 @@
 	<context:component-scan base-package="com.tn.member.controller" />
 	<context:component-scan base-package="com.tn.admin.controller" />
 	<context:component-scan base-package="com.tn.controller" /> <!-- 최미설 : No mapping found error in dispatcher servlet 오류나서 홈 컨트롤러 만들었어요 지워도 됨 -->
+	<context:component-scan base-package="com.tn.review.controller" />  
 	
 	<!-- Cart -->
 	<context:component-scan base-package="com.tn.cart.controller" />
@@ -51,8 +52,9 @@
 		<!-- auth인터셉터 -->
 		<interceptor>
 			<mapping path="/qa/**" />
-			<!-- <mapping path="/admin/**" /> -->
-			
+
+			<mapping path="/admin/**" />
+			<mapping path="/member/edit"/>
 			<beans:ref bean="authInterceptor"/>
 		
 		</interceptor>	
