@@ -104,11 +104,12 @@
 	<div class="container">
 		<button type="button" class="btn btn-outline-danger"
 			id="deleteSelectedButton">선택삭제</button>
+		<form>
 		<div style="max-height: 500px; overflow-y: auto;">
 			<table class="table table-hover">
 				<thead>
 					<tr style="text-align: center;">
-						<th><input type="checkbox" id="selectAll"
+						<th><input type="checkbox" id="selectAll" class="selectAll"
 							onclick="toggleSelectAll(this)" /></th>
 						<th>이미지</th>
 						<th>제목</th>
@@ -125,19 +126,19 @@
 								class="selectItem" data-price="${cart.price}"
 								data-salePrice="${cart.salePrice}" data-cart-id="${cart.cartId}"></td>
 							<td class="thumbnail"><img src="${cart.thumbNail}"
-								style="width: 70px;" /></td>
-							<td class="common-td">${cart.title}</td>
+								style="width: 70px;" name="thumbNail" /></td>
+							<td class="common-td" name="title">${cart.title}</td>
 							<td class="common-td">
-								<div>
+								<div name="price">
 									<fmt:formatNumber value="${cart.price}" type="number"
-										groupingUsed="true" />
+										groupingUsed="true"/>
 									원
 								</div>
 							</td>
 							<td class="common-td">
-								<div>
+								<div name="salePrice">
 									<fmt:formatNumber value="${cart.salePrice}" type="number"
-										groupingUsed="true" />
+										groupingUsed="true"/>
 									원
 								</div>
 							</td>
@@ -146,7 +147,7 @@
 									<button type="button" class="decrease-btn"
 										data-cart-id="${cart.cartId}">-</button>
 									<input type="text" id="qtyInput-${cart.cartId}"
-										value="${cart.qty}" size="2" readonly /> <input type="hidden"
+										value="${cart.qty}" size="2" readonly name="cartQty"/> <input type="hidden"
 										id="inven-${cart.cartId}" value="${cart.inven}" />
 									<script>
                                 console.log("생성된 qtyInput ID:", 'qtyInput-${cart.cartId}');
@@ -208,26 +209,26 @@
 					value="${fn:substringBefore(totalPoint, '.')}" />
 
 				<tr>
-					<td class="common-td"><strong id="totalPrice"> <fmt:formatNumber
-								value="${totalPrice}" type="number" groupingUsed="true" />원
+					<td class="common-td" name="totalPrice"><strong id="totalPrice"> <fmt:formatNumber
+								value="${totalPrice}" type="number" groupingUsed="true"/>원
 					</strong></td>
 					<td class="common-td"><strong>-</strong></td>
 					<td class="common-td"><strong>0원</strong></td>
 					<td class="common-td"><strong>-</strong></td>
-					<td class="common-td"><strong id="totalSalePrice"> <fmt:formatNumber
+					<td class="common-td" name="totalSalePrice"><strong id="totalSalePrice"> <fmt:formatNumber
 								value="${totalSalePrice}" type="number" groupingUsed="true" />원
 					</strong></td>
 					<td class="common-td"><strong>=</strong></td>
-					<td class="common-td"><strong id="totalPay"> <fmt:formatNumber
+					<td class="common-td" name="totalPay"><strong id="totalPay"> <fmt:formatNumber
 								value="${totalPay}" type="number" groupingUsed="true" />원
 					</strong></td>
-					<td class="common-td"><strong id="totalPoint"> <fmt:formatNumber
+					<td class="common-td" name="totalPoint"><strong id="totalPoint"> <fmt:formatNumber
 								value="${totalPoint}" type="number" groupingUsed="true" />P
 					</strong></td>
 				</tr>
 			</tbody>
 		</table>
-
+		</form>
 		<div
 			style="display: flex; justify-content: center; align-items: center;">
 			<button type="button" id="paymentButton" class="btn btn-success"
@@ -283,7 +284,7 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
-				<div class="modal-body">선택한 상품을 삭제하시겠습니까?</div>
+				<div class="modal-body">선택한 상품들을 삭제하시겠습니까?</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
@@ -532,7 +533,7 @@
             $('#confirmDeleteModal').modal('show');
         });
 
-        // 삭제 버튼 클릭 시 처리
+        // 선택 삭제 버튼 클릭 시 처리
         $('#confirmDeleteButton').on('click', function() {
             // AJAX 요청으로 서버에 삭제 요청 보내기
             $.ajax({
@@ -547,6 +548,14 @@
                             // 해당 cartId를 가진 행 제거
                             $('input[data-cart-id="' + cartId + '"]').closest('tr').remove();
                         });
+                        
+                     	// 모든 체크박스 다시 선택
+                        $('.selectItem').prop('checked', true);
+                        $('.selectAll').prop('checked', true);
+                        
+                     	// 총합 업데이트 함수 호출
+                        updateTotals();
+                        
                     } else {
                         alert('삭제 중 오류가 발생했습니다.');
                     }
