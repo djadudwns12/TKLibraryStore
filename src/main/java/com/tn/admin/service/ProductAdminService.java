@@ -29,6 +29,8 @@ public interface ProductAdminService {
 
 	List<String> getPopularKeywords(int limit) throws Exception;
 
+	List<String> searchRecommend(String searchWord) throws Exception;
+
 
 
 

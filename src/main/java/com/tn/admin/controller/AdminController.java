@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -307,6 +308,33 @@ public class AdminController {
 		
 		return kewords;
     }
+	
+	
+	@GetMapping("/searchRecommend")
+    @ResponseBody
+    public Map<String, Object> searchRecommend(@RequestParam("searchWord") String searchWord) {
+		Map<String, Object> response = new HashMap<>();
+		List<String> rcSearch = null;
+		try {
+			rcSearch = pService.searchRecommend(searchWord);
+		
+			if(pService.searchRecommend(searchWord).size() > 0) {
+				// 검색어가 포함된 상품이 있다
+				response.put("msg", "isPresent");
+	            response.put("data", rcSearch);				
+			}else {
+				// 검색어가 포함된 상품이 없다
+				response.put("msg", "notPresent");
+			}
+					
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return response;
+    }
+	
 	
 	// ================================================= 한준형 ===========================================================
 	

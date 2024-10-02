@@ -6,7 +6,8 @@
 
 	<select id="getProduct"
 		resultType="com.tn.admin.model.vo.ProductVO">
-		select * from BookList order by bookNo limit #{startRowIndex},
+		select * from BookList order by bookNo limit
+		#{startRowIndex},
 		#{viewPostCntPerPage};
 	</select>
 
@@ -226,9 +227,12 @@
 
 	<update id="updateProduct">
 		update BookList set
-		title=#{title}, author=#{author}, publisher=#{publisher}, pubDate=#{pubDate},
-		genre=#{genre}, price=#{price}, salePrice=#{salePrice},
-		inven=#{inven}, introduction=#{introduction}
+		title=#{title}, author=#{author},
+		publisher=#{publisher}, pubDate=#{pubDate},
+		genre=#{genre},
+		price=#{price}, salePrice=#{salePrice},
+		inven=#{inven},
+		introduction=#{introduction}
 		where bookNo=#{bookNo};
 	</update>
 
@@ -250,10 +254,18 @@
 		on duplicate key update
 		searchCount = searchCount + 1;
 	</insert>
-	
+
 	<select id="getPopularKeywords" resultType="String">
-        SELECT searchWord FROM Search
-        ORDER BY searchCount DESC
-        LIMIT #{limit};
-    </select>
+		SELECT searchWord FROM Search
+		ORDER BY searchCount DESC
+		LIMIT #{limit};
+	</select>
+
+	<select id="searchRecommend" resultType="String">
+		SELECT title
+		FROM BookList
+		WHERE REPLACE(title, ' ', '') LIKE #{searchKeyword}
+		ORDER BY zzim DESC
+		LIMIT 10;
+	</select>
 </mapper>

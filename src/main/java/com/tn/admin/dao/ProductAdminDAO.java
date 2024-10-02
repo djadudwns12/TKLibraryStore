@@ -44,6 +44,8 @@ public interface ProductAdminDAO {
 
 	List<String> getPopularKeywords(int limit)throws Exception;
 
+	List<String> searchRecommend(String searchWord)throws Exception;
+
 	
 
 

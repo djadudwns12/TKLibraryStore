@@ -149,6 +149,15 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		
 		return pDao.getPopularKeywords(limit);
 	}
+
+
+	@Override
+	public List<String> searchRecommend(String searchWord) throws Exception {
+		
+		return pDao.searchRecommend(searchWord);
+	}
+
+
 	
 	
 

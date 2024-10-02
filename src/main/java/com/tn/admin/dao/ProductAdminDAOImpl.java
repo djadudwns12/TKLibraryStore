@@ -124,6 +124,12 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		
 		return ses.selectList(NS + ".getPopularKeywords", limit);
 	}
+	@Override
+	public List<String> searchRecommend(String searchWord) throws Exception {
+		
+		String searchKeyword = "%"+searchWord+"%";
+		return ses.selectList(NS + ".searchRecommend", searchKeyword);
+	}
 	
 	
 	
