@@ -7,6 +7,8 @@ import com.tn.order.model.vo.OrderInfo;
 
 public interface OrderService {
 
-	OrderInfo orderInfo (String userId, OrderDTO orderDTO) throws Exception;
+	OrderInfo otherOrderInfo (String userId, OrderInfo orderInfo) throws Exception;
+
+
 
 }

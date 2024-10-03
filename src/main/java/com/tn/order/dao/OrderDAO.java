@@ -12,7 +12,7 @@ public interface OrderDAO {
 	// 유저의 포인트 SELECT
 	int selectPoint(String userId);
 	// 주문한 책리스트 SELECT
-	List<OrderBookListVO> selectBookList(List<String> bookNos);
+//	List<OrderBookListVO> selectBookList(List<String> bookNos);
 	
 	
 

@@ -585,32 +585,99 @@
             });
 
 
- 
 
-            // 선택된 bookNos 로그 출력
+        });
+    });
+    
+    $(function () {
+        $("#paymentButton").on("click", function (event) {
+            console.log("결제 버튼 클릭됨");
+
+            let fd = new FormData();  
+
+            // 체크된거만 가져가기 위해서 반복문
+            $("tr.cartItem").has("input.selectItem:checked").each(function () {  
+                let thumbNail = $(this).find("img[name='thumbNail']").attr("src") || '';  
+                let title = $(this).find("td[name='title']").text().trim() || '';  
+                let priceText = $(this).find("div[name='price']").text().trim() || '';  
+                let price = priceText.replace(/[^\d]/g, ''); 
+
+                let salePriceText = $(this).find("div[name='salePrice']").text().trim() || ''; 
+                let salePrice = salePriceText.replace(/[^\d]/g, '');  
+
+                let cartQty = $(this).find("input[name='cartQty']").val() || '';  
+
+                
+                fd.append("thumbNail", thumbNail);
+                fd.append("title", title);
+                fd.append("price", price);
+                fd.append("salePrice", salePrice);
+                fd.append("cartQty", cartQty);
+
+                console.log("추출된 체크된 책 정보:", {
+                    thumbNail: thumbNail,
+                    title: title,
+                    price: price,
+                    salePrice: salePrice,
+                    cartQty: cartQty,
+                });
+            });
+
             
-            let form = $("form")[0];  
-            let fd = new FormData(form); 
-            
-            
-            for (let pair of fd.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
+            if (!fd.has("thumbNail")) {
+                alert("결제할 책을 선택해주세요.");
+                return; 
             }
-            // AJAX 요청
-             $.ajax({  
+
+            
+            let totalPriceText = $("td[name='totalPrice']").text().trim();
+            let totalPrice = totalPriceText.replace(/[^\d]/g, ''); 
+
+            let totalSalePriceText = $("td[name='totalSalePrice']").text().trim();  
+            let totalSalePrice = totalSalePriceText.replace(/[^\d]/g, '');  
+
+            let totalPayText = $("td[name='totalPay']").text().trim();
+            let totalPay = totalPayText.replace(/[^\d]/g, '');  
+
+            let totalPointText = $("td[name='totalPoint']").text().trim();
+            let totalPoint = totalPointText.replace(/[^\d]/g, '');  
+
+            
+            fd.append("totalPrice", totalPrice);
+            fd.append("totalSalePrice", totalSalePrice);
+            fd.append("totalPay", totalPay);
+            fd.append("totalPoint", totalPoint);
+
+            
+            console.log("총 결제 정보:", {
+                totalPrice: totalPrice,
+                totalSalePrice: totalSalePrice,
+                totalPay: totalPay,
+                totalPoint: totalPoint
+            });
+
+       
+            $.ajax({
                 url: "/order/payment",
                 type: "POST",
                 data: fd,
+                contentType: false,
+                processData: false,
                 cache: false,
-                success: function(response) {
-                    // 결제 성공 후 처리 로직
+                success: function (response) {
+                    console.log("성공:", response);
+                    window.location.href = "/order/payment";
+             
                 },
-                error: function() {
-                    // 결제 오류 처리 로직
+                error: function () {
+                    console.error("오류");
+           
                 }
             });
         });
     });
+
+
 </script>
 
 </body>

@@ -1,6 +1,7 @@
 package com.tn.order.model.vo;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,16 +19,18 @@ import lombok.ToString;
 @Builder
 public class OrderInfo {
 	
-	private String thumbNail;
-	private String title;
-	private String price;
-	private String salePrice;
-	private String cartQty;
-	private String totalPrice;
-	private String totalSalePrice;
-	private String totalPay;
-	private String totalPoint;
-	
+	private List<String> thumbNail;   // 여러 개의 썸네일을 리스트로 변경
+    private List<String> title;       // 여러 개의 책 제목을 리스트로 변경
+    private List<String> price;       // 여러 개의 가격을 리스트로 변경
+    private List<String> salePrice;   // 여러 개의 할인가를 리스트로 변경
+    private List<String> cartQty;     // 여러 개의 수량을 리스트로 변경
+    private String totalPrice;
+    private String totalSalePrice;
+    private String totalPay;
+    private String totalPoint;
+	private AddressVO defaultAddress;
+	private List<AddressVO> address;
+	private int userPoint;
 	
 
 }

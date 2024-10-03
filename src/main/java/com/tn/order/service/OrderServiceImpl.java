@@ -18,16 +18,30 @@ public class OrderServiceImpl implements OrderService {
 	private OrderDAO oDao;
 
 	@Override
-	public OrderInfo orderInfo(String userId, OrderDTO orderDTO) throws Exception {
+	public OrderInfo otherOrderInfo(String userId, OrderInfo orderInfo) throws Exception {
 		
 		List<AddressVO> addressList = oDao.selectAddress(userId);
+		
+		System.out.println("!!!!!!!!!!!!!!!!!" + addressList);
 		int userPoint = oDao.selectPoint(userId);
-		List<String> bookNos = orderDTO.getCartIds();
-		List<OrderBookListVO> bookList = oDao.selectBookList(bookNos);
+		AddressVO defaultAddress = null;
+		for (AddressVO address : addressList) {
+			if(address.getIsDefault().equals("Y")) {
+				defaultAddress = address;
+				break;
+			}
+		}
+		
+		orderInfo.setAddress(addressList);
+	    orderInfo.setDefaultAddress(defaultAddress);
+	    orderInfo.setUserPoint(userPoint);
+
+
+
 		
 		
 		
-		return null;
+		return orderInfo;
 	}
 	
 

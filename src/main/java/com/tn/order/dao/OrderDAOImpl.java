@@ -29,11 +29,11 @@ public class OrderDAOImpl implements OrderDAO {
 		return ses.selectOne(NS + ".selectUserPoint", userId);
 	}
 
-	@Override
-	public List<OrderBookListVO> selectBookList(List<String> bookNos) {
-		
-		return ses.selectList(NS + ".selectOrderBookList", bookNos);
-	}
+//	@Override
+//	public List<OrderBookListVO> selectBookList(List<String> bookNos) {
+//		
+//		return ses.selectList(NS + ".selectOrderBookList", bookNos);
+//	}
 //-----------------------------------------박근영-------------------------------------------------
 
 
