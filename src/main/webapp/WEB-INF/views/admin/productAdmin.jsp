@@ -69,6 +69,7 @@
         // 검색창 클릭 시 모달 띄우기
         searchInput.on("click", function () {
             // 검색창의 위치와 크기 정보 가져오기
+            recommendModal.hide();
             var offset = searchInput.offset();
             var width = searchInput.outerWidth();
 
@@ -566,9 +567,7 @@ a:visited {
 							<div class="keyBoard">
 								<i class="fas fa-keyboard"></i>
 							</div>
-							<div class="mic">
-								<i class="fas fa-microphone"></i>
-							</div>
+							
 
 						</div>
 						<input type="hidden" name="pageNo" value="${param.pageNo}" /> <input
@@ -629,7 +628,7 @@ a:visited {
 								<th>Genre</th>
 								<th>Price</th>
 								<th>SalePrice</th>
-								<th>Inven</th>
+								<th>Qty</th>
 								<th>ThumbNail</th>
 								<th>Zzim</th>
 								<th>ReviewCnt</th>
