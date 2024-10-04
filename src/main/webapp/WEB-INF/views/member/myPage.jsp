@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +50,7 @@ body {
 
 /* 이미지 슬라이더 */
 .swiper-container {
-    height: 420px;
+    height: 340px;
     border: 5px solid silver;
     border-radius: 7px;
     box-shadow: 0 0 20px #ccc inset;
@@ -64,7 +65,7 @@ body {
 
 .swiper-slide img {
     box-shadow: 0 0 5px #555;
-    max-width: 100%;
+    max-width: 80%;
 }
 
 .ex1 {
@@ -183,7 +184,7 @@ table.table th {
         <!-- Swiper Image Slider -->
         <div class="ex1">
             <div class="swiper-container">
-        	<h5>최근확인</h5>
+        	<h5>찜목록</h5>
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <img src="https://mblogthumb-phinf.pstatic.net/MjAxODEyMDhfMTQz/MDAxNTQ0MjMyMDE4NDU4.x8TtSN-Knc5CrNjwpb1ulTDLpEui7mTLYPqGNUjnDbQg.-9zaXZALDcAXbsdoOfiPngUMs5JRQ6KNVPi0MCoowAgg.PNG.8713232/image.png?type=w800" alt="Product Image 1">
@@ -234,9 +235,14 @@ table.table th {
             <!-- Recent Orders -->
             <div>
                 <h6>최근주문내역</h6>
-                <img src="https://mblogthumb-phinf.pstatic.net/MjAxODEyMDhfMTQz/MDAxNTQ0MjMyMDE4NDU4.x8TtSN-Knc5CrNjwpb1ulTDLpEui7mTLYPqGNUjnDbQg.-9zaXZALDcAXbsdoOfiPngUMs5JRQ6KNVPi0MCoowAgg.PNG.8713232/image.png?type=w800" alt="Recent Order 1" style="width: 100px;">
-                <img src="https://mblogthumb-phinf.pstatic.net/MjAxODEyMDhfMTQz/MDAxNTQ0MjMyMDE4NDU4.x8TtSN-Knc5CrNjwpb1ulTDLpEui7mTLYPqGNUjnDbQg.-9zaXZALDcAXbsdoOfiPngUMs5JRQ6KNVPi0MCoowAgg.PNG.8713232/image.png?type=w800" alt="Recent Order 2" style="width: 100px;">
-                <img src="https://mblogthumb-phinf.pstatic.net/MjAxODEyMDhfMTQz/MDAxNTQ0MjMyMDE4NDU4.x8TtSN-Knc5CrNjwpb1ulTDLpEui7mTLYPqGNUjnDbQg.-9zaXZALDcAXbsdoOfiPngUMs5JRQ6KNVPi0MCoowAgg.PNG.8713232/image.png?type=w800" alt="Recent Order 3" style="width: 100px;">
+                 
+                 
+                 <c:forEach var="order" items="${orderList}">
+                 	<img src="${order.thumbNail}" alt="Recent Order 1" style="width: 100px;">
+                 </c:forEach>
+                 
+                
+            
             </div>
 
             <!-- Recently Viewed Products -->
@@ -250,6 +256,9 @@ table.table th {
                 </ul>
             </div>
         </div>
+        
+       
+        
     </div>
 
     <jsp:include page="./../footer.jsp"></jsp:include>
