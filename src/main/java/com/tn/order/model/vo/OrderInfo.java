@@ -1,6 +1,7 @@
 package com.tn.order.model.vo;
 
-import java.sql.Timestamp;
+
+import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AccessLevel;
@@ -31,6 +32,7 @@ public class OrderInfo {
 	private AddressVO defaultAddress;
 	private List<AddressVO> address;
 	private int userPoint;
+	private String arrivalDate;
 	
 
 }
