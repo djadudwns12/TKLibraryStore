@@ -1,7 +1,14 @@
 package com.tn.admin.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -402,6 +409,110 @@ public class AdminController {
 		} 		
 		System.out.println("zzimCount의 값 ===========" + zzimCount);
 		return new ResponseEntity<>("없음", HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	// ----------------------------------------네이버 책검색
+	
+	@RequestMapping("/bookSearch")
+	public String showBookSearch() {
+		return "/bookSearch";
+	}
+	
+	@RequestMapping(value="/searchBook", produces = "application/json; charset=utf-8;")
+	public @ResponseBody String searchBook(@RequestParam("searchValue") String query) {
+		System.out.println(query + "책을 검색하자");
+	
+		String clientId = "A9ocfghRQUMc_xDTTgQG"; //애플리케이션 클라이언트 아이디
+        String clientSecret = "Jot71p0hsd"; 	  //애플리케이션 클라이언트 시크릿
+        
+        String text = null;
+        try {
+            text = URLEncoder.encode(query, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("검색어 인코딩 실패",e);
+        }
+        
+        String apiURL = "https://openapi.naver.com/v1/search/book.json?query=" + text;    // JSON 결과
+        
+        Map<String, String> requestHeaders = new HashMap<>();
+        requestHeaders.put("X-Naver-Client-Id", clientId);
+        requestHeaders.put("X-Naver-Client-Secret", clientSecret);
+        
+        String responseBody = get(apiURL,requestHeaders);		// 응답된 json
+
+
+        System.out.println(responseBody);
+        
+        return responseBody;
+	}
+	
+	private String get(String apiURL, Map<String, String> requestHeaders) {
+		HttpURLConnection con = connect(apiURL);
+		 try {
+	            con.setRequestMethod("GET");		// 통신방식 : GET
+	            
+	            // Map<String, String>(api서버에 접속하기위한 id, pwd)를 반복하기 위해 Map.entry<K,V>를 사용
+	            // 반복하며 request객체의 속성에 넣어줌
+	            for(Map.Entry<String, String> header :requestHeaders.entrySet()) {
+	                con.setRequestProperty(header.getKey(), header.getValue());
+	            }
+
+
+	            int responseCode = con.getResponseCode();		 // api서버에 접속하여 응답코드를 얻어옴
+	            
+	            if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
+	                return readBody(con.getInputStream());		// api서버가 응답하는 2진데이터를 얻어와 readBody() 호출 input은 내 컴퓨터의 기준에서임(들어온다)
+	            } else { // 오류 발생
+	                return readBody(con.getErrorStream());
+	            }
+	        } catch (IOException e) {
+	            throw new RuntimeException("API 요청과 응답 실패", e);
+	        } finally {
+	            con.disconnect();		// api 서버 접속 해제 (finally로 실패했을 경우에도 끊는다.)
+	        }		
+		
+	}
+	
+	private String readBody(InputStream body){
+		// InputStreamReader는 1byte씩 읽는다
+		// BufferedReader를 사용하기 위해 데이터를 우선 읽어준다.
+        
+		InputStreamReader streamReader = null;
+		try {
+			streamReader = new InputStreamReader(body, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			
+			e1.printStackTrace();
+		} 
+
+		try (BufferedReader lineReader = new BufferedReader(streamReader)) {
+            StringBuilder responseBody = new StringBuilder();	// StringBuilder 객체 생성(속도가 빠르다고 함)
+
+
+            String line;
+            while ((line = lineReader.readLine()) != null) {  	// 데이터의 끝이 아닐동안 반복하면서 읽음
+                responseBody.append(line);	
+            }
+
+
+            return responseBody.toString();		// json문자열 반환
+        } catch (IOException e) {
+            throw new RuntimeException("API 응답을 읽는 데 실패했습니다.", e);
+        }
+    }
+	
+	// apiURL 주소로 부터 그 조소의 서버에 접속 할 수 있는 connection객체를 얻어서 반환해주는
+	private HttpURLConnection connect(String apiURL) {
+		
+		 try {
+	            URL url = new URL(apiURL);		// 문자열로 된 서보의 주소를 URL객체로 만듦
+	            return (HttpURLConnection)url.openConnection();
+	        } catch (MalformedURLException e) {
+	            throw new RuntimeException("API URL이 잘못되었습니다. : " + apiURL, e);
+	        } catch (IOException e) {
+	            throw new RuntimeException("연결이 실패했습니다. : " + apiURL, e);
+	        }
+		
 	}
 	
 	// ================================================= 한준형 ===========================================================

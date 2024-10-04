@@ -653,7 +653,7 @@ a:visited {
 									<td><input type="checkbox" name="proCheck"
 										value=${product.bookNo } onclick="updateButton()"></td>
 									<td>${product.bookNo}</td>
-									<td>${product.title}</td>
+									<td><a href="/bookList/bookDetail?bookNo=${product.bookNo}">${product.title}</a></td>
 									<td>${product.author}</td>
 									<td>${product.publisher}</td>
 									<td>${product.pubDate}</td>
