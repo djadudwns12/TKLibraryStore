@@ -6,7 +6,7 @@
 
 	<!-- Q&A목록을 가지고오는 쿼리문 -->
 	<select id="selectByUserIdQAList" resultType="QAVO">
-		select * from QA where qWriter=#{userId};
+		select * from QA where qWriter=#{userId} order by qNo desc;
 	</select>
 	<!-- QA 상세보기 보여주는 쿼리문 -->
 	<select id="selectQADetail" resultType="QAVO">
