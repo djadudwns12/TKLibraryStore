@@ -46,6 +46,18 @@ public interface ProductAdminDAO {
 
 	List<String> searchRecommend(String searchWord)throws Exception;
 
+	int addZzim(String userId, int bookNo) throws Exception;
+
+	int incrementZzimCount(int bookNo) throws Exception;
+
+	int checkZzim(String userId, Long bookNo) throws Exception;
+
+	int removeZzim(String userId, int bookNo) throws Exception;
+
+	int decrementZzimCount(int bookNo) throws Exception;
+
+	String getZzimCount(String userId) throws Exception;
+
 	
 
 

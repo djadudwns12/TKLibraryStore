@@ -268,4 +268,29 @@
 		ORDER BY zzim DESC
 		LIMIT 10;
 	</select>
+	
+	<insert id="insertZzim">
+		insert into Zzim(userId,bookNo)values(#{userId},#{bookNo});
+	</insert>
+	
+	<update id="incrementZzimCount">
+		update BookList set zzim=zzim+1 where bookNo=#{bookNo};
+	</update>
+	
+	<delete id="deleteZzim">
+		delete from Zzim where bookNo=#{bookNo} and userId=#{userId}
+	</delete>
+	
+	<update id="decrementZzimCount">
+		update BookList set zzim=zzim-1 where bookNo=#{bookNo};
+	</update>
+	
+	<select id="checkZzim" resultType="int">
+		select count(*) from Zzim where bookNo=#{bookNo} and userId=#{userId};
+	</select>
+	
+	<select id="getZzimCount" resultType="String">
+		select count(*) from Zzim where userId=#{userId};
+	</select>
+	
 </mapper>

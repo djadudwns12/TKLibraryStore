@@ -71,11 +71,93 @@ $(function(){
 			}
 		
 	});
+	
+	let userId = '${sessionScope.loginMember.userId}' 
+	let bookNo = '${product.bookNo}'
+	let zzimed = false;
+	//  ------------------------찜기능
+	 $('.zzimHeart').on('click', function() {
+					
+		    if (!userId) {
+		        // 로그인 되어 있지 않으면 confirm 창 띄우기
+		        if (confirm("회원만 찜 가능합니다. 로그인하시겠습니까?")) {
+		            // yes 선택 시 로그인 페이지로 이동
+		            window.location.href = "/member/loginPage";
+		        }
+		    } else {
+		        // 로그인 되어 있으면 찜 기능 실행
+		        
+		        if (zzimed){
+		        	handleZzimRemove(userId,bookNo);
+		        	zzimed=false;
+		        }else{
+		        	handleZzim(userId, bookNo);	
+		        	zzimed=true;
+		        }
+		        
+		     	
+		    }
+		              
+	    });
+	
+	if (userId) {
+                
+        $.ajax({
+	        url: '/admin/zzimCheck',
+	        type: 'POST',
+	        data: { userId: userId, bookNo: bookNo },
+	        success: function(response) {
+	        	 console.log(response);
+	        	
+	        	// 클릭된 div 내의 img 태그의 src 속성 변경
+		        $('.zzimHeart').find('img').attr('src', '/resources/images/heart.png');
+	        	zzimed = true;
+	        	console.log(zzimed);
+	        },
+	        error: function(error) {
+	            console.log(userId+"회원이 좋아요 하지 않은 글");
+	        }
+	    });
+    }
+
+	
+	
 });
-	// upfiles.push(file);		//배열에 담기
-	//console.log(upfiles);
-	//해당 파일 ,업로드
-	//fileUpload(upfiles);
+	
+	function handleZzim(userId, bookNo) {
+	    $.ajax({
+	        url: '/admin/zzimAdd',
+	        type: 'POST',
+	        data: { userId: userId, bookNo: bookNo },
+	        success: function(response) {
+	            
+	        	alert("찜 목록에 추가되었습니다.");
+	        	// 클릭된 div 내의 img 태그의 src 속성 변경
+		        $('.zzimHeart').find('img').attr('src', '/resources/images/heart.png');
+	        },
+	        error: function(error) {
+	            alert("찜 추가에 실패했습니다.");
+	        }
+	    });
+	}
+	
+	function handleZzimRemove(userId, bookNo) {
+	    $.ajax({
+	        url: '/admin/zzimRemove',
+	        type: 'POST',
+	        data: { userId: userId, bookNo: bookNo },
+	        success: function(response) {
+	            
+	        	alert("찜 목록에서 삭제되었습니다.");
+	        	// 클릭된 div 내의 img 태그의 src 속성 변경
+		        $('.zzimHeart').find('img').attr('src', '/resources/images/emptyHeart.png');
+	        },
+	        error: function(error) {
+	            alert("찜 삭제에 실패했습니다.");
+	        }
+	    });
+	}
+	
 	
 	function validBook() {
 
@@ -174,7 +256,8 @@ $(function(){
 	  }
 	
 
-
+	 
+	  
 </script>
 
 
@@ -231,7 +314,26 @@ $(function(){
 	margin-left: 30px;
 }
 
+.zzimHeart {
+    width: 30px;            /* 가로 30px */
+    height: 30px;           /* 세로 30px */
+    border: 1px solid black; /* 검은색 테두리 */
+    border-radius: 5px;      /* 모서리를 둥글게 */
+    display: flex;           /* 내부 요소를 가운데 정렬 */
+    align-items: center;     /* 수직 가운데 정렬 */
+    justify-content: center; /* 수평 가운데 정렬 */
+    cursor: pointer;         /* 마우스 커서를 손가락 모양으로 변경 */
+}
 
+.zzimHeart img {
+    max-width: 60%;         /* 이미지를 div 크기에 맞게 조정 */
+    max-height: 60%;        /* 이미지를 div 크기에 맞게 조정 */
+}
+
+.zzimHeart:hover {
+    background-color: #f0f0f0; /* 마우스 오버 시 배경색을 밝은 회색으로 변경 */
+    
+}
 </style>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -282,28 +384,28 @@ $(function(){
 				<div class="content2">
 
 					<div class="mb-3">
-						<label for="genre" class="form-label">Genre</label>
-							<select class="form-control" id="genre" name="genre">
-								<option value="">장르 선택</option>
-								<optgroup label="인문">
-									<option value="050101">인문교양일반</option>
-								</optgroup>
-								<optgroup label="심리학">
-									<option value="050301">교양심리</option>
-									<option value="050302">심리이론</option>
-									<option value="050303">발달단계별심리</option>
-								</optgroup>
-								<optgroup label="교육학">
-									<option value="050501">교육학에세이</option>
-									<option value="050503">교육학이론</option>
-									<option value="050505">교육사</option>
-								</optgroup>
-								<optgroup label="유아교육">
-									<option value="050701">유아교육이론</option>
-									<option value="050703">유아교육방법</option>
-									<option value="050705">건강/생활지도</option>
-								</optgroup>
-							</select>
+						<label for="genre" class="form-label">Genre</label> <select
+							class="form-control" id="genre" name="genre">
+							<option value="">장르 선택</option>
+							<optgroup label="인문">
+								<option value="050101">인문교양일반</option>
+							</optgroup>
+							<optgroup label="심리학">
+								<option value="050301">교양심리</option>
+								<option value="050302">심리이론</option>
+								<option value="050303">발달단계별심리</option>
+							</optgroup>
+							<optgroup label="교육학">
+								<option value="050501">교육학에세이</option>
+								<option value="050503">교육학이론</option>
+								<option value="050505">교육사</option>
+							</optgroup>
+							<optgroup label="유아교육">
+								<option value="050701">유아교육이론</option>
+								<option value="050703">유아교육방법</option>
+								<option value="050705">건강/생활지도</option>
+							</optgroup>
+						</select>
 					</div>
 
 
@@ -334,14 +436,20 @@ $(function(){
 							value="${product.zzim}" readonly>
 					</div>
 
+					<div class="zzimHeart">
+						<img src="/resources/images/emptyHeart.png">
+					</div>
+
 				</div>
 
 				<div class="mb-3" style="width: 80%; margin-left: 30px;">
 					<label for="thumbNail" class="form-label">ThumbNail</label> <input
-						type="text" class="form-control imageText" id="thumbNail" name="thumbNail"
-						 value="${product.thumbNail}"
+						type="text" class="form-control imageText" id="thumbNail"
+						name="thumbNail" value="${product.thumbNail}"
 						style="width: 900px; margin-bottom: 50px;" readonly>
 				</div>
+
+
 				<div class="content3">
 					<div id="imageArea">
 						<img src="${product.thumbNail}">

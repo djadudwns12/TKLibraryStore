@@ -158,6 +158,62 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 	}
 
 
+	@Override
+	@Transactional
+	public boolean addZzim(String userId, int bookNo) throws Exception {
+		boolean result = false;
+		// 찜 테이블에 insert
+		if(pDao.addZzim(userId, bookNo) > 0) {
+			// bookList의 찜 +1
+			if(pDao.incrementZzimCount(bookNo) > 0) {
+				result = true;
+			}
+		}
+		
+		return result;
+	}
+	
+	@Override
+	@Transactional
+	public boolean removeZzim(String userId, int bookNo) throws Exception {
+		boolean result = false;
+		// 찜 테이블에 delete
+		if(pDao.removeZzim(userId, bookNo) > 0) {
+			// bookList의 찜 -1
+			if(pDao.decrementZzimCount(bookNo) > 0) {
+				result = true;
+			}
+		}
+		
+		return result;
+	}
+
+
+	@Override
+	public boolean checkZzim(String userId, Long bookNo) throws Exception {
+		
+		// userId가 bookNo 좋아요를 이미 눌렀다면 true 반환
+		boolean result = false;
+		System.out.println(pDao.checkZzim(userId, bookNo));
+		if( pDao.checkZzim(userId, bookNo) > 0) {
+			result = true;
+		}
+		
+		System.out.println(userId + "가"  + bookNo +"번글을 좋아요했는가? " + result );
+		return result;
+	}
+
+
+	@Override
+	public String getZzimCount(String userId) throws Exception {
+		
+		return pDao.getZzimCount(userId);
+	}
+
+
+	
+
+
 	
 	
 

@@ -130,6 +130,51 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		String searchKeyword = "%"+searchWord+"%";
 		return ses.selectList(NS + ".searchRecommend", searchKeyword);
 	}
+	@Override
+	public int addZzim(String userId, int bookNo) throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", userId);
+		params.put("bookNo", bookNo);
+		
+		return ses.insert(NS + ".insertZzim" , params);
+	}
+	@Override
+	public int incrementZzimCount(int bookNo) throws Exception {
+		
+		
+		return ses.update(NS + ".incrementZzimCount" , bookNo);
+	}
+	
+	@Override
+	public int removeZzim(String userId, int bookNo) throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", userId);
+		params.put("bookNo", bookNo);
+		
+		return ses.delete(NS + ".deleteZzim" , params);
+	}
+	
+	@Override
+	public int decrementZzimCount(int bookNo) throws Exception {
+		
+		return ses.update(NS + ".decrementZzimCount" , bookNo);
+	}
+	
+	@Override
+	public int checkZzim(String userId, Long bookNo) throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", userId);
+		params.put("bookNo", bookNo);
+		
+		return ses.selectOne(NS + ".checkZzim" , params);
+	}
+	@Override
+	public String getZzimCount(String userId) throws Exception {
+		
+		return ses.selectOne(NS + ".getZzimCount",userId);
+	}
+	
+	
 	
 	
 	

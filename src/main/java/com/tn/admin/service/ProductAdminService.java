@@ -31,6 +31,14 @@ public interface ProductAdminService {
 
 	List<String> searchRecommend(String searchWord) throws Exception;
 
+	boolean addZzim(String userId, int bookNo) throws Exception;
+
+	boolean checkZzim(String userId, Long bookNo)throws Exception;
+
+	boolean removeZzim(String userId, int bookNo) throws Exception;
+
+	String getZzimCount(String userId) throws Exception;
+
 
 
 

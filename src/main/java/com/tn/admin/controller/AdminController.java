@@ -25,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -335,6 +336,73 @@ public class AdminController {
 		return response;
     }
 	
+	// 찜 기능 테스트
+	
+	@PostMapping("/zzimAdd")
+	public ResponseEntity<String> addZzim(@RequestParam("userId") String userId, @RequestParam("bookNo") int bookNo) {
+	   
+	        try {
+				if(pService.addZzim(userId, bookNo)) { // zzim 테이블에 삽입
+					return new ResponseEntity<>("찜 추가 성공", HttpStatus.OK);
+				}else {
+					return new ResponseEntity<>("찜 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+				return new ResponseEntity<>("찜 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+	   
+	}
+	
+	@PostMapping("/zzimRemove")
+	public ResponseEntity<String> removeZzim(@RequestParam("userId") String userId, @RequestParam("bookNo") int bookNo) {
+	   
+	        try {
+				if(pService.removeZzim(userId, bookNo)) { // zzim 테이블에 삽입
+					return new ResponseEntity<>("찜 추가 성공", HttpStatus.OK);
+				}else {
+					return new ResponseEntity<>("찜 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+				return new ResponseEntity<>("찜 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+	   
+	}
+	
+	@PostMapping("/zzimCheck")
+	public ResponseEntity<String> checkZzim(@RequestParam("userId") String userId, @RequestParam("bookNo") Long bookNo) {
+	    boolean isZzim = false;
+		try {
+			if(isZzim = pService.checkZzim(userId, bookNo)) {
+				return new ResponseEntity<>("성공", HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return new ResponseEntity<>("실패", HttpStatus.INTERNAL_SERVER_ERROR);
+		} // 이미 찜했는지 확인
+		
+		System.out.println("isZzim의 값 ===========" + isZzim);
+		return new ResponseEntity<>("없음", HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@PostMapping("/zzimCount")
+	public ResponseEntity<String> zzimCount(@RequestParam("userId") String userId) {
+	    String zzimCount = "";
+		try {
+			zzimCount = pService.getZzimCount(userId);
+				return new ResponseEntity<>(zzimCount, HttpStatus.OK);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} 		
+		System.out.println("zzimCount의 값 ===========" + zzimCount);
+		return new ResponseEntity<>("없음", HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 	
 	// ================================================= 한준형 ===========================================================
 	
