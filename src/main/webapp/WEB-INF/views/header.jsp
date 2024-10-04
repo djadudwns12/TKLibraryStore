@@ -146,7 +146,7 @@ function showHide(){
 				<div class="col-lg-6">
 					<nav class="header__menu">
 						<ul>
-							<li class="active"><a href="./index.html">Home</a></li>
+							<li class="active"><a href="/">Home</a></li>
 							<li><a href="./shop-grid.html">Shop</a></li>
 							<li><a href="#">Pages</a>
 								<ul class="header__menu__dropdown">
@@ -162,17 +162,7 @@ function showHide(){
 				</div>
 				<div class="col-lg-3">
 					<div class="header__cart">
-						<ul>
-							<c:if test="${sessionScope.loginMember == null}">
-								<li><a
-									href="${pageContext.request.contextPath}/member/loginPage"><i
-										class="fa fa-user">로그인</i></a></li>
-							</c:if>
-							<c:if test="${sessionScope.loginMember != null}">
-								<li><a
-									href="${pageContext.request.contextPath}/member/logout"><i
-										class="fa fa-user">로그아웃</i></a></li>
-							</c:if>
+						<ul style="margin-right: -26px;">
 							<!-- 마이페이지 이동 -->
 							<li><a
 								href="${pageContext.request.contextPath}/member/mypage"><i
@@ -186,6 +176,14 @@ function showHide(){
 							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
 							<li><a href="/cart/cartPage"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
 							<li><a href="/qa/qaList"><i class="fa fa-question-circle"></i></a></li>
+							<c:if test="${sessionScope.loginMember == null}">
+								<li><a
+									href="${pageContext.request.contextPath}/member/loginPage"><button class="site-btn">로그인</button></a></li>
+							</c:if>
+							<c:if test="${sessionScope.loginMember != null}">
+								<li><a
+									href="${pageContext.request.contextPath}/member/logout"><button class="site-btn">로그아웃</button></a></li>
+							</c:if>
 						</ul>
 					</div>
 				</div>
