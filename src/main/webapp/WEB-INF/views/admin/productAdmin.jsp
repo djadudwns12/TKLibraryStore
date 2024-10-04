@@ -98,15 +98,21 @@
         });
 
         function getCookie(name) {
+        	// 앞에 세미콜론과 공백이 추가된 이유는, 쿠키가 첫 번째 위치에 있는 경우도 쉽게 찾을 수 있게 하기 위함입니다. 
+        	// 이 방식으로 모든 쿠키 항목 앞에 세미콜론이 있다고 가정해 처리할 수 있습니다.
             let value = "; " + document.cookie;
+            // name이라는 이름의 쿠키 분리
             let parts = value.split("; " + name + "=");
+            // parts.length가 1인경우는 "; " 만 있는 것이기때문에 해당 쿠키가 존재하지 않는것이다
+            // 따라서 parts.length === 2는 해당 쿠키가 존재하는 것을 의미하며 존재하면 해당 쿠키의 배열의 첫 번째 값을 반환
             if (parts.length === 2) return parts.pop().split(";").shift();
         }
 
         // 최근 검색어 쿠키 가져오기
         let recentSearch = getCookie("recentSearch");
         if (recentSearch) {
-            let searchArray = decodeURIComponent(recentSearch).split(',');
+        	// 쿠키 문자열의 +를 공백으로 대체후 ,을 기준으로 나눈다.
+        	let searchArray = decodeURIComponent(recentSearch.replace(/\+/g, ' ')).split(',');
 
             // 검색어 목록 표시
             searchArray.forEach(function(keyword) {
