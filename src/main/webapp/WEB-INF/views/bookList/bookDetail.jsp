@@ -30,6 +30,7 @@
 	$(function() {
 		//let bDetail = $('.bDetail');
 		//$('#main_content').html(bDetail);
+		setRecenyBook();
 
 	});
 
@@ -43,6 +44,34 @@
 			location.href = '/cart/cartPage?userId="${userId}"';
 		}
 	}
+	
+	// localStorege에 최근본 책 넣는 내용
+	function setRecenyBook(){
+		
+		let boll = $('#bs').val();
+		
+		let book = '${param.bookNo}';
+		alert(book);
+		let localbook = localStorage.getItem("localbook");
+
+		let bookList = new Set([]);
+		if(localbook == null){
+			// 로컬스토리지에 값을 넣어주기
+			bookList.add(book);
+			// set를 객체로 저장하는 함수(JSON.stringify(Array.from(bookList)))
+            localStorage.setItem("localbook", JSON.stringify(Array.from(bookList)));
+		}else{
+			console.log(localStorage.getItem("localbook"));
+			bookList =new Set(JSON.parse(localStorage.getItem("localbook")));
+			
+			bookList.add(book);
+			localStorage.setItem("localbook", JSON.stringify(Array.from(bookList)));
+			console.log(bookList)
+		}
+
+	}
+	
+	
 </script>
 
 <style>
@@ -69,6 +98,7 @@
 
 									<c:forEach var="bookInfo" items="${bookDetailInfo}">
 										<img class="bookImagelarge" src="${bookInfo.thumbNail}" alt="">
+										<input type="text" value="${bookInfo.bookNo}" id="bs">
 								</div>
 
 							</div>

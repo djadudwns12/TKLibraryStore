@@ -29,7 +29,6 @@ body {
     padding: 0;
     box-sizing: border-box;
 }
-
 .input-group {
     display: flex;
     margin-bottom: 10px;
@@ -168,6 +167,23 @@ table.table th {
 			<li><a href="#"><h5><b>나의 리뷰</b></h5></a></li>
 			<li><a href="/qa/qaList"><h5><b>1:1문의</b></h5></a></li>`;
 		$('#categoryList').html(inputHTML);
+	}
+	function viewRecentlyBook() {
+		let booklist = localStorage.getItem('localbook');
+
+        $.ajax({
+            url : "/bookList/recentBookList",
+            type : "GET",
+            dataType : "json",
+            success : function(data) {
+                console.log(data);
+            },
+            error : function(request, status, error) {
+                console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            }
+
+        })
+
 	}
 	
 	
