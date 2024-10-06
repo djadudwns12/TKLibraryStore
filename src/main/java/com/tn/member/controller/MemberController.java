@@ -286,6 +286,11 @@ public class MemberController {
 		return "redirect:/";
 	}
 
+	@RequestMapping("/deletemember")
+	public void deleteMember(HttpSession ses) {
+		System.out.println("MemberController deleteMember() : " + ses.getId());
+		 
+	}
 // -----------------------------------------박근영-------------------------------------------------
 	@PostMapping(value = "/checkedDupl")
 	public ResponseEntity<String> checkedDupl(@RequestParam(value = "tmpUserId") String tmpUserId){
