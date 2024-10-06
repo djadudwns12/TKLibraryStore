@@ -73,6 +73,13 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getMember(userId,userPwd);
 	}
   
+	
+	
+	
+	
+	
+//-----------------------------------------박근영-------------------------------------------------
+	//박근영
 	@Override
 	public ResponseEntity<Integer> sendOne(String phone) throws Exception {
 		System.out.println("샌드원 확인");
@@ -95,6 +102,7 @@ public class MemberServiceImpl implements MemberService {
 		
 	}
 		
+	//박근영
 	private int createCode() {
         // 간단한 예시로 6자리 숫자 코드 생성
 		//0.0(포함)부터 1.0(제외)
@@ -106,7 +114,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
-//-----------------------------------------박근영-------------------------------------------------
 	@Override
 	@Transactional(rollbackFor = Exception.class) // 모든 예외 발생 시 롤백하도록 설정
 	public boolean registerMember(RegisterDTO registerDTO, ImgFileVODTO fileInfo) throws Exception {
@@ -120,7 +127,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
-
+	//박근영
 	@Override
 	public boolean compareId(String tmpUserId) throws Exception {
 		boolean result = false;

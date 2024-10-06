@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 <title>주문/결제 페이지</title>
 <style>
 body {
@@ -196,13 +197,13 @@ body {
 
 
 /* 툴팁 */
-.tooltip {
+.questionTooltip {
 	position: relative;
 	display: inline-block;
 	cursor: pointer;
 }
 
-.tooltip .tooltiptext {
+.questionTooltip .tooltiptext {
 	width: 170px;
 	background-color: #BDBDBD;
 	color: #fff;
@@ -217,17 +218,16 @@ body {
 	font-size: 0.5em;
     }
 
-.tooltip:hover .tooltiptext {
+.questionTooltip:hover .tooltiptext {
 	opacity: 1;
 }
     
 .deliveryContainer {
 	display: flex;
 }
-.help-icon {
-	font-size: 14px;
-	
-	line-height: 1.9; /* 아이콘의 줄 높이 */
+span.help-icon {
+    font-size: 14px;
+    line-height: 1.9;
     padding-left: 5px;
 }
 
@@ -240,7 +240,7 @@ body {
 }
 
 /* The Modal (background) */
-.modal {
+.addressModal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -253,7 +253,7 @@ body {
 }
 
 /* Modal Content/Box */
-.modal-content {
+.addressModal-content {
     background-color: #ffffff;
     margin: 10% auto;
     padding: 20px;
@@ -270,19 +270,40 @@ body {
 }
 
 /* The Close Button */
-.close {
+span.addressModalClose {
     color: #aaa;
     float: right;
     font-size: 24px; /* 닫기 버튼 크기 조금 줄임 */
     font-weight: bold;
+
 }
 
-.close:hover, .close:focus {
+.addressModalClose:hover, .addressModalClose:focus {
     color: #4CAF50;
     text-decoration: none;
     cursor: pointer;
 }
 
+#list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#list th, #list td {
+    border: 1px solid #cccccc;
+    padding: 8px;
+    text-align: left;
+    font-size: 13px; 
+}
+
+#list th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+#list td {
+    font-size: 13px; /* 리스트 내부 텍스트 크기 */
+}
 
 </style>
 </head>
@@ -296,8 +317,8 @@ body {
 				<div class="section-title">배송지 정보</div>
 				<div class="address-info">
 					<div>
-						<span class="material-symbols-outlined nearby-icon">explore_nearby</span> <span>기본배송</span><br> <span>받는 사람 : ${orderInfo.defaultAddress.receiver_name} / 배송지 : ${orderInfo.defaultAddress.address_key}</span><br>
-						<span>${orderInfo.defaultAddress.address}</span>
+						<span class="material-symbols-outlined nearby-icon">explore_nearby</span> <span id="addressKey">${orderInfo.defaultAddress.address_key}</span><br> <span id="receiverName">받는 사람 : ${orderInfo.defaultAddress.receiver_name}</span><br>
+						<span id="deliveryAddress">${orderInfo.defaultAddress.address}</span>
 					</div>
 					<button class="button-change" onclick="addressChange();">변경</button>
 				</div>
@@ -349,7 +370,7 @@ body {
 				</c:forEach>
 				<div class="deliveryContainer">
 					<span class="delivery">배송 예정일</span>
-					<span class="tooltip"><span class="material-symbols-outlined help-icon">help</span><span class="tooltiptext">
+					<span class="questionTooltip"><span class="material-symbols-outlined help-icon">help</span><span class="tooltiptext">
 배송 예정일이란?<br><br>
 주문상품의 결제(입금)가 확인 된 날 기준으로 상품을 준비/포장하여 물류센터에서 택배사로 전달하는 예상 일정입니다.</span></span>
 					<span class="arrivalDate">${orderInfo.arrivalDate} - 도착예정</span>
@@ -361,10 +382,10 @@ body {
 				<div class="section-title">포인트</div>
 				<div class="point-info">
 					<div>
-						보유 포인트: <strong class="price">${orderInfo.userPoint}</strong>
+						보유 포인트: <strong class="price" id="userPoint" >${orderInfo.userPoint}</strong>
 					</div>
-					<input type="text" value="0" /> 원
-					<button>전액사용</button>
+					<input type="text"  id="userPointInput" value="0" /> 원
+					<button id="useAllPoints">전액사용</button>
 				</div>
 			</div>
 
@@ -399,33 +420,57 @@ body {
 				</p>
 				<hr>
 				<p class="total-price">
-					최종 결제 금액 <span class="price">${orderInfo.totalPay}</span>
+					최종 결제 금액 <span class="price" id="totalPay">${orderInfo.totalPay}</span>
 				</p>
 				<p>
 					적립 예정 포인트 <span class="price">${orderInfo.totalPoint}</span>
 				</p>
 			</div>
-			<button class="btn-submit">결제하기</button>
+			<button class="btn-submit" onclick="requestPayment();">결제하기</button>
 		</div>
 	</div>
-	
+	<c:import url="../footer.jsp"></c:import>
 	
 							<!-- The Modal -->
-						<div id="myModal" class="modal">
+						<div id="myModal" class="addressModal">
 							<!-- Modal content -->
-							<div class="modal-content">
-								<span class="close">&times;</span>
-								<div id="list"></div>
+							<div class="addressModal-content">
+								<span class="addressModalClose">&times;</span>
+								<div id="list">
+								
+								 <table>
+								<tr><th>배송지</th><th>받는 사람</th><th>전화 번호</th><th>주 소</th></tr>
+	    						
+	    						<c:forEach var="index" begin="0" end="${fn:length(orderInfo.address) - 1}">
+	    						<tr onclick="selectAddress(this);">
+	    							<td>${orderInfo.address[index].address_key}</td>
+	    							<td>${orderInfo.address[index].receiver_name}</td>
+	    							<td>${orderInfo.address[index].receiver_phone}</td>
+   									<td>${orderInfo.address[index].address}</td>
+   								</tr>
+								</c:forEach>
+	    												
+								</div>
 								<!-- Pagination Controls -->
 								<div id="pagination" class="pagination">
 									<!-- Pagination buttons will be added dynamically here -->
 								</div>
 							</div>
 						</div>
-	<c:import url="../footer.jsp"></c:import>
+						
+	
 	
 <script>
+
+let totalPay = null;
+
+let totalAmount = null;
+
 $(function(){
+	
+	totalPay = Number($('#totalPay').text().replace(/[^0-9]/g, ''));
+	totalAmount = Number($('#totalPay').text().replace(/[^0-9]/g, ''));
+	
 	$('.price').each(function(){ 
 		
 		let price = $(this).text();
@@ -443,14 +488,141 @@ $(function(){
 		
 	});
 	
+	$('#userPointInput').on('blur keydown', function() {
+		if (event.type === 'blur' || (event.type === 'keydown' && (event.key === 'Enter' || event.keyCode === 13))) {
+	  
+			let myPoints = Number($('#userPoint').text().replace(/[^0-9]/g, ''));
+		       
+		       
+			let inputValue = Number($(this).val().replace(/[^0-9]/g, ''));
+	
+			// 보유 포인트 초과
+			if (inputValue > myPoints) {
+				alert(`보유 포인트(\${myPoints}원)를 초과할 수 없습니다!`);
+				$(this).val(myPoints); 
+				pointPayment(myPoints);
+				deduct(myPoints);
+				return;
+			}
+			pointPayment(inputValue);
+			deduct(inputValue);
+		}
+	});
+
+	$('#useAllPoints').click(function() {
+		let myPoints = Number($('#userPoint').text().replace(/[^0-9]/g, ''));
+		$('#userPointInput').val(myPoints);
+		pointPayment(myPoints);
+		deduct(myPoints);
+		
+	});
+
+	
 	
 	
 });
+
+
+
 
 function addressChange() {
 	$("#myModal").css('display', 'block');
 	
 }
+
+let modal = $('#myModal'); 
+let span = $('.addressModalClose');    
+
+
+span.on('click', function() {
+  modal.hide(); 
+});
+
+
+$(window).on('click', function(event) {
+  if ($(event.target).is(modal)) { 
+    modal.hide(); 
+  }
+});
+
+
+function selectAddress(trElement) {
+    // 배열로 저장
+    let values = $(trElement).find('td').map(function() {
+        return $(this).text().trim(); 
+    }).get();
+
+
+    let addressKey = values[0];      // td 값
+    let receiverName = values[1];   
+    let receiverPhone = values[2];  
+    let address = values[3];         
+
+    
+    $('#addressKey').text(addressKey);
+    $('#receiverName').text(receiverName);
+    $('#deliveryAddress').text(address);
+
+    modal.hide();
+
+}
+
+function pointPayment(userPointInput) {
+	let formattedPrice = new Intl.NumberFormat().format(userPointInput); 
+	$('.usePoint').text("-" + formattedPrice + "원");
+	
+	
+}
+
+function deduct(userPointInput) {
+	
+	let deductTotalPay = totalPay - userPointInput;
+	console.log("최종 금액" + deductTotalPay);
+	let formattedPrice = new Intl.NumberFormat().format(deductTotalPay); 
+	$('#totalPay').text(formattedPrice);
+	totalAmount = Number((deductTotalPay).text().replace(/[^0-9]/g, ''));
+}
+
+// 서버에서 전달된 결제 정보를 받아옴
+
+
+async function requestPayment() { 
+	const paymentRequestData = {
+		    storeId: "${orderInfo.storeId}",
+		    channelKey: "${orderInfo.channelKey}",
+		    paymentId: "${orderInfo.paymentId}",
+		    totalAmount: totalAmount,
+		    orderName: "${orderInfo.orderName}",
+		    currency: "CURRENCY_KRW",
+		    payMethod: "EASY_PAY"
+		};
+
+
+	const response = await PortOne.requestPayment(paymentRequestData);
+	console.log(response);
+	  if (response.code != null) {
+		    // 오류 발생
+		    return alert(response.message);
+		  }
+
+		  // /payment/complete 엔드포인트를 구현해야 합니다. 다음 목차에서 설명합니다.
+		  const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
+		    method: "POST",
+		    headers: { "Content-Type": "application/json" },
+		    // paymentId와 주문 정보를 서버에 전달합니다
+		    body: JSON.stringify({
+    			paymentId: paymentRequestData.paymentId
+			})
+		  });
+		  if (notified.ok) {
+		        console.log(notified);
+		    } else {
+		    	console.log(notified.message);
+		        alert('결제 완료 요청에 실패했습니다.');
+		    }
+		}
+
+
 
 </script>
 </body>

@@ -306,8 +306,7 @@ public class MemberController {
 		
 	}
 	
-	
-	
+	//박근영
 	@PostMapping(value = "/register")
 	public ResponseEntity<Void> register(
 	        @RequestParam(value = "imgFile", required = false) MultipartFile imgFile, // 파일 처리
@@ -338,7 +337,7 @@ public class MemberController {
 		return result;
 	}
 	
-	  
+	//박근영
 	private ImgFileVODTO fileSave(MultipartFile imgFile, String userId, HttpServletRequest request) throws IOException { // 파일의 기본정보 가져옴 
 		
 		String originalFileName = imgFile.getOriginalFilename();
@@ -350,13 +349,14 @@ public class MemberController {
 		return fileInfo; 
 		}
 	  
-	 
+	 //박근영
 	@RequestMapping(value = "/register")
 	public String registerMember() {
 
 		return "register";
 	}
 
+	//박근영
 	@RequestMapping(value = "/coolsms", method = RequestMethod.POST)
 	public ResponseEntity<Integer> coolSms(@RequestParam("phone") String phone) {
 		System.out.println("컨트롤 확인");
@@ -370,6 +370,7 @@ public class MemberController {
 
 	}
 
+	//박근영
 	@RequestMapping(value = "/getAddr")
 	public void getAddrApi(HttpServletRequest req, HttpServletResponse response) {
 		try {

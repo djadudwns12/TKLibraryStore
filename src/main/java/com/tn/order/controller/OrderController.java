@@ -61,6 +61,7 @@ public class OrderController {
     public String showPaymentPage(HttpSession session, Model model) {
         // 세션에서 데이터 가져오기
         OrderInfo orderInfo = (OrderInfo) session.getAttribute("orderInfo");
+        System.out.println(orderInfo);
         if (orderInfo == null) {
             return "redirect:/cart/cartPage";
         }

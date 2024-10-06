@@ -56,9 +56,7 @@
 	
 	<select id="selectUserPoint" resultType="int">
 		SELECT userPoint FROM Member WHERE userId = #{userId}
-	</select>
-	
-	
+	</select>	
 <!-- 박근영 -->
 
   	<!-- 관리자페이지에 회원목록을 불러오는 쿼리문 -->

@@ -33,6 +33,10 @@ public class OrderInfo {
 	private List<AddressVO> address;
 	private int userPoint;
 	private String arrivalDate;
+	private String storeId;
+	private String channelKey;
+	private String orderName;
+	private String paymentId;
 	
 
 }
