@@ -52,6 +52,8 @@
 	
 	<interceptors>
 		<interceptor>
+			<mapping path="/member/deletemember"/>
+			<mapping path="/member/deleteconfirm"/>
 			<mapping path="/member/loginPage"/>
 			<mapping path="/member/login"/>
 			<beans:ref bean="loginInterceptor" />
@@ -64,8 +66,7 @@
 			<mapping path="/order/" />
 			<mapping path="/qa/qaList" />
 			<mapping path="/admin/" />
-			<mapping path="/member/edit"/>
-     		<mapping path="/member/mypage" />
+			<mapping path="/member/" />
       
 			<beans:ref bean="authInterceptor"/>
 		

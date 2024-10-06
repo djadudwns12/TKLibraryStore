@@ -20,6 +20,9 @@ public interface MemberDAO {
 	
 	// 회원수정페이지에서 수정된 회원정보를 저장하는 메서드
 	int updateEditMember(MemberDTO editMember) throws Exception;
+	
+	// 회원탈퇴
+	int deleteMember(String userId) throws Exception;
 
 //-----------------------------------------박근영-------------------------------------------------
 	// 회원정보 INSERT(가입)
@@ -27,6 +30,8 @@ public interface MemberDAO {
 	// ID 중복확인 SELECT
 	public int selectId(String tmpUserId) throws Exception;
 //-----------------------------------------박근영-------------------------------------------------
+
+
 
 
 }

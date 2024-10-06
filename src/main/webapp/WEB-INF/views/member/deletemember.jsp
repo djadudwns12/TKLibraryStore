@@ -36,8 +36,48 @@
 </head>
 <body>
 	<jsp:include page="./../header.jsp"></jsp:include>
-	
-
+	<div class="register-box pwdConfirm">
+		<div class="card pwdConfirmCard" style="padding:10px">
+			<p class="register-box-msg">회원 탈퇴</p>
+			<div> 정말로 탈퇴하시겠습니까? </div>
+			<button type="button" class="btn" onclick="deleteConfirm()" style="border-color:#7fad38; background-color:#7fad38; color:white;">회원탈퇴</button>
+			<button type="button" class="btn btn-secondary" onclick="location.href='/member/edit'">돌아가기</button>
+		</div>
+	</div>
 	<jsp:include page="./../footer.jsp"></jsp:include>
+	
+	<!-- The Modal -->
+	<div class="modal" id="myModal" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">떡잎서점</h4>
+					<button type="button" class="btn-close modalCloseBtn" data-bs-dismiss="modal"></button>
+				</div>
+			
+				<!-- Modal body -->
+				<div class="modal-body"></div>
+			
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-info" data-bs-dismiss="modal" style="border-color:#7fad38; background-color:#7fad38; color:white;" onclick="location.href='/member/deleteconfirm';">확인</button>
+				</div>
+			</div>
+		</div>
+	</div>
+<script>
+	//onclick="location.href='/member/deleteconfirm?userId=${param.userId}';"
+	function deleteConfirm(){
+		$('#myModal').show(500);
+		$(function() {
+			// Close, X 버튼 클릭하면 모달창 종료
+			$('.modalCloseBtn').click(function() {
+				$('#myModal').hide(100);
+			});
+		});
+		$('.modal-body').html("그동안 이용해주셔서 감사합니다.");
+	}
+</script>
 </body>
 </html>

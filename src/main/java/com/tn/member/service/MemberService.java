@@ -28,7 +28,8 @@ public interface MemberService {
 	// 로그인 시키는 메서드
 	MemberVO loginMember(String userId, String userPwd) throws Exception;
 	
-
+	// 회원탈퇴
+	boolean deleteMember(String userId) throws Exception;
 	
 
   public ResponseEntity<Integer> sendOne(String phone) throws Exception;
@@ -40,6 +41,8 @@ public interface MemberService {
 	// 중복아이디 비교 메서드
 	boolean compareId(String tmpUserId) throws Exception;
 //-----------------------------------------박근영-------------------------------------------------
+
+
 
 
 }

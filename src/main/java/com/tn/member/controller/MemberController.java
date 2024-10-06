@@ -287,9 +287,26 @@ public class MemberController {
 	}
 
 	@RequestMapping("/deletemember")
-	public void deleteMember(HttpSession ses) {
-		System.out.println("MemberController deleteMember() : " + ses.getId());
-		 
+	public void deleteMember() {
+	}
+	
+	@RequestMapping("/deleteconfirm")
+	public String deleteMember(HttpSession ses) {
+		System.out.println("MemberController deleteMember() : " + ses.getAttribute("loginMember") + ">>" + ses.getId());
+		// 회원수정페이지 하단에 '회원탈퇴 버튼을 눌러서 페이지 이동
+		// 회원탈퇴 페이지에서 안내문 하단의 체크박스 체크 후 버튼을 누르면 회원탈퇴 처리
+		try {
+			MemberVO memberVO = (MemberVO)ses.getAttribute("loginMember");
+			String userId = memberVO.getUserId();
+			System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제함..");
+			mService.deleteMember(userId);
+			logout(ses); // 로그아웃 및 세션에 저장된 회원정보 무효화
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			loginPage();
+		} 
+		return "index";
+		
 	}
 // -----------------------------------------박근영-------------------------------------------------
 	@PostMapping(value = "/checkedDupl")
