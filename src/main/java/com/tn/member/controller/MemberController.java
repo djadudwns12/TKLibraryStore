@@ -118,6 +118,7 @@ public class MemberController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 //	/**
 //	 * @작성자 : 엄영준
@@ -292,7 +293,7 @@ public class MemberController {
 	
 	@RequestMapping("/deleteconfirm")
 	public String deleteMember(HttpSession ses) {
-		System.out.println("MemberController deleteMember() : " + ses.getAttribute("loginMember") + ">>" + ses.getId());
+		System.out.println("MemberController deleteMember() : " + ses.getAttribute("loginMember"));
 		// 회원수정페이지 하단에 '회원탈퇴 버튼을 눌러서 페이지 이동
 		// 회원탈퇴 페이지에서 안내문 하단의 체크박스 체크 후 버튼을 누르면 회원탈퇴 처리
 		try {
@@ -301,11 +302,12 @@ public class MemberController {
 			System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제함..");
 			mService.deleteMember(userId);
 			logout(ses); // 로그아웃 및 세션에 저장된 회원정보 무효화
+			return "redirect:/";
 		} catch (Exception e) {
 			e.printStackTrace(); 
-			loginPage();
+			return "redirect:/member/loginPage";
 		} 
-		return "index";
+		
 		
 	}
 // -----------------------------------------박근영-------------------------------------------------

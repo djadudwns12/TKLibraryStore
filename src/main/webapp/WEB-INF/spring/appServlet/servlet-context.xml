@@ -52,8 +52,6 @@
 	
 	<interceptors>
 		<interceptor>
-			<mapping path="/member/deletemember"/>
-			<mapping path="/member/deleteconfirm"/>
 			<mapping path="/member/loginPage"/>
 			<mapping path="/member/login"/>
 			<beans:ref bean="loginInterceptor" />
