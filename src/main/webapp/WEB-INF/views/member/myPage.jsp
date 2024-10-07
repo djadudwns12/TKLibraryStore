@@ -194,7 +194,7 @@ table.table th {
 </head>
 
 <body>
-    <jsp:include page="./../header.jsp"></jsp:include>
+    <jsp:include page="../header.jsp"></jsp:include>
 
     <div class="register-box userInfoDiv">
         <!-- Swiper Image Slider -->
@@ -277,6 +277,6 @@ table.table th {
         
     </div>
 
-    <jsp:include page="./../footer.jsp"></jsp:include>
+    <jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>
