@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tn.cart.model.dto.CartDTO;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.order.model.dto.OrderDTO;
+import com.tn.order.model.dto.PaymentInfoDTO;
 import com.tn.order.model.vo.AddressVO;
 import com.tn.order.model.vo.OrderInfo;
 import com.tn.order.service.OrderService;
@@ -40,6 +41,7 @@ public class OrderController {
 	
 
 // -----------------------------------------박근영-------------------------------------------------
+	//박근영
 	@RequestMapping(value = "/payment", method = RequestMethod.POST)
 	public ResponseEntity<Void> payment(@ModelAttribute OrderInfo orderInfo, HttpSession session)  {
 		System.out.println(orderInfo.toString());
@@ -57,6 +59,7 @@ public class OrderController {
 
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+	//박근영
     @GetMapping("/payment")
     public String showPaymentPage(HttpSession session, Model model) {
         // 세션에서 데이터 가져오기
@@ -67,6 +70,16 @@ public class OrderController {
         }
         model.addAttribute("orderInfo", orderInfo);
         return "/order/payment"; 
+    }
+    //박근영
+    @PostMapping("paymentInfo")
+    public ResponseEntity<String> PaymentInfo(@RequestBody PaymentInfoDTO paymentInfoDTO, HttpSession session) {
+    	String userId = ((MemberVO)session.getAttribute("loginMember")).getUserId();
+    	System.out.println("paymentInfo" + paymentInfoDTO.toString());
+    	//카트테이블에서 삭제, 멤머 포인트 차감한값으로 update, 포인트 로그에 사용으로 기록 남기기, order 에 insert
+    	// 멤버 테이블에 구매 금액 업데이트
+    	boolean apply = oService.paymentInfoApply(paymentInfoDTO, userId);
+		return new ResponseEntity<String>("/cart/cartPage", HttpStatus.OK);
     }
 	
 	

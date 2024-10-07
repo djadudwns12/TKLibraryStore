@@ -13,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import com.tn.order.dao.OrderDAO;
+import com.tn.order.model.dto.PaymentInfoDTO;
 import com.tn.order.model.vo.AddressVO;
 import com.tn.order.model.vo.OrderInfo;
 import com.tn.util.PropertiesTask;
@@ -23,6 +24,11 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderDAO oDao;
 
+	
+	
+	
+	
+// -----------------------------------------박근영-------------------------------------------------
 	@Override
 	public OrderInfo otherOrderInfo(String userId, OrderInfo orderInfo) throws Exception {
 		
@@ -54,14 +60,21 @@ public class OrderServiceImpl implements OrderService {
 	    orderInfo.setChannelKey(PropertiesTask.getPropertiesValue("channelKey"));
 	    orderInfo.setOrderName(orderName);
 	    orderInfo.setPaymentId(paymentId);
-	    
 
-		
-		
-		
 		return orderInfo;
 	}
-	
+
+	@Override
+	public boolean paymentInfoApply(PaymentInfoDTO paymentInfoDTO, String userId) {
+		//카트테이블에서 삭제, 멤머 포인트 차감한값으로 update, 포인트 로그에 사용으로 기록 남기기, order 에 insert
+    	// 멤버 테이블에 구매 금액 업데이트
+		paymentInfoDTO.setUserId(userId);
+		
+		oDao.insertPaymentInfo(paymentInfoDTO);
+		
+		return false;
+	}
+// -----------------------------------------박근영-------------------------------------------------
 
 
 }

@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.tn.order.model.dto.PaymentInfoDTO;
 import com.tn.order.model.vo.AddressVO;
 import com.tn.order.model.vo.OrderBookListVO;
 
@@ -27,6 +28,11 @@ public class OrderDAOImpl implements OrderDAO {
 	@Override
 	public int selectPoint(String userId) {
 		return ses.selectOne(NS + ".selectUserPoint", userId);
+	}
+
+	@Override
+	public int insertPaymentInfo(PaymentInfoDTO paymentInfoDTO) {
+		return ses.insert(NS + ".insertPaymentComplete");
 	}
 
 //	@Override

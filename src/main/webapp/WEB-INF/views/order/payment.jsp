@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="com.google.gson.Gson" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -462,14 +463,20 @@ span.addressModalClose {
 	
 <script>
 
-let totalPay = null;
+let totalPay = null; //변경하지 않는 최종 결제 금액(포인트 차감에 사용)
 
-let totalAmount = null;
+let remainingPoint = null; // 결제 후 insert할 남은 포인트 금액
+
+let finalInputPoint = null; // 결제 후 insert할 최종 사용 포인트
+
+let totalAmount = null; // 포인트 차감후 실제 결제되는 결제 금액
+
+
 
 $(function(){
 	
 	totalPay = Number($('#totalPay').text().replace(/[^0-9]/g, ''));
-	totalAmount = Number($('#totalPay').text().replace(/[^0-9]/g, ''));
+	totalAmount =Number($('#totalPay').text().replace(/[^0-9]/g, ''));
 	
 	$('.price').each(function(){ 
 		
@@ -503,6 +510,12 @@ $(function(){
 				pointPayment(myPoints);
 				deduct(myPoints);
 				return;
+			} else if(totalPay < inputValue){
+				alert(`결제 금액(\${totalPay}원)를 초과할 수 없습니다!`);
+				$(this).val(myPoints); 
+				pointPayment(myPoints);
+				deduct(myPoints);
+				
 			}
 			pointPayment(inputValue);
 			deduct(inputValue);
@@ -575,18 +588,31 @@ function pointPayment(userPointInput) {
 }
 
 function deduct(userPointInput) {
-	
+	finalInputPoint = userPointInput; // 결제 정보에 insert 할때 보낼 차감에 사용된 최종 포인트
 	let deductTotalPay = totalPay - userPointInput;
+	
+	let myPoints = Number($('#userPoint').text().replace(/[^0-9]/g, ''));
+	
+	remainingPoint = myPoints - userPointInput; // 결제후 member에서 update에 사용할 남은 포인트 
+	
 	console.log("최종 금액" + deductTotalPay);
+	
 	let formattedPrice = new Intl.NumberFormat().format(deductTotalPay); 
 	$('#totalPay').text(formattedPrice);
-	totalAmount = Number((deductTotalPay).text().replace(/[^0-9]/g, ''));
+	totalAmount = deductTotalPay;
+	
 }
 
 // 서버에서 전달된 결제 정보를 받아옴
 
 
 async function requestPayment() { 
+	 const orderTitleList = [
+	      <c:forEach var="title" items="${orderInfo.title}">
+	         '${title}'<c:if test="${!status.last}">, </c:if>
+	      </c:forEach>
+	   ];
+	console.log(orderTitleList);
 	const paymentRequestData = {
 		    storeId: "${orderInfo.storeId}",
 		    channelKey: "${orderInfo.channelKey}",
@@ -597,29 +623,39 @@ async function requestPayment() {
 		    payMethod: "EASY_PAY"
 		};
 
-
+	console.log("진입확인"+ totalAmount);
 	const response = await PortOne.requestPayment(paymentRequestData);
 	console.log(response);
+	
 	  if (response.code != null) {
 		    // 오류 발생
 		    return alert(response.message);
 		  }
 
 		  // /payment/complete 엔드포인트를 구현해야 합니다. 다음 목차에서 설명합니다.
-		  const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
+		  const notified = await fetch("/order/paymentInfo", {
 		    method: "POST",
-		    headers: { "Content-Type": "application/json" },
+		    headers: { 
+		    	"Content-Type": "application/json" 
+		    	},
 		    // paymentId와 주문 정보를 서버에 전달합니다
 		    body: JSON.stringify({
-    			paymentId: paymentRequestData.paymentId
+		    	totalAmount: totalAmount,
+		    	remainingPoint: remainingPoint,
+		    	finalInputPoint: finalInputPoint,
+    			paymentId: paymentRequestData.paymentId,
+    			orderName: paymentRequestData.orderName,
+    			titleName: orderTitleList
 			})
 		  });
 		  if (notified.ok) {
-		        console.log(notified);
+				const redirectUrl =await notified.text();
+		        window.location = redirectUrl;
 		    } else {
 		    	console.log(notified.message);
 		        alert('결제 완료 요청에 실패했습니다.');
 		    }
+
 		}
 
 
