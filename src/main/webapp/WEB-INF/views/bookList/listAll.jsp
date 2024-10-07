@@ -27,8 +27,8 @@
 <script>
 	$(function() {
 		// content 영역 설정 
-		/* let bList = $('.bList');
-		$('#main_content').html(bList); */
+		// let bList = $('.bList'); 
+		// $('#main_content').html(bList);
 		$('.categoryArea').show();
 	});
 	
@@ -39,6 +39,12 @@ div#category_young {
 	justify-content: flex-start;
 }
 
+table {
+	text-align: center;	
+	vertical-align: middle;
+	
+}
+
 </style>
 <body>
 
@@ -47,15 +53,17 @@ div#category_young {
 <section class="product spad">
 	<div class="bList">
 		<div class="container">
-			<table class="table">
+			<table class="table" >
 				<thead>
 					<tr>
-						<th></th>
+						<th class="thumbNail" style="width: 200px;"></th>
 						<th>제목</th>
 						<th>작가</th>
 						<th>출판사</th>
 						<th>출간일</th>
 						<th>가격</th>
+						<th>찜</th>
+						<th>리뷰</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -71,6 +79,8 @@ div#category_young {
 							<td>${list.publisher}</td>
 							<td>${list.pubDate}</td>
 							<td><span><fmt:formatNumber value="${list.salePrice}" type="currency" /></span></td>
+							<td>${list.zzim}</td>
+							<td>${list.reviewCnt}</td>
 						</tr>
 
 					</c:forEach>
