@@ -16,6 +16,7 @@ import com.tn.order.dao.OrderDAO;
 import com.tn.order.model.dto.PaymentInfoDTO;
 import com.tn.order.model.vo.AddressVO;
 import com.tn.order.model.vo.OrderInfo;
+import com.tn.order.model.vo.PaymentInfoVO;
 import com.tn.util.PropertiesTask;
 
 @Service
@@ -65,12 +66,14 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public boolean paymentInfoApply(PaymentInfoDTO paymentInfoDTO, String userId) {
+	public boolean paymentInfoApply(PaymentInfoDTO paymentInfoDTO) {
 		//카트테이블에서 삭제, 멤머 포인트 차감한값으로 update, 포인트 로그에 사용으로 기록 남기기, order 에 insert
     	// 멤버 테이블에 구매 금액 업데이트
-		paymentInfoDTO.setUserId(userId);
 		
-		oDao.insertPaymentInfo(paymentInfoDTO);
+		List<PaymentInfoVO> bookNo = oDao.selectBookNo(paymentInfoDTO);
+		System.out.println(bookNo);
+		//oDao.insertPaymentInfo(paymentInfoDTO);
+		
 		
 		return false;
 	}

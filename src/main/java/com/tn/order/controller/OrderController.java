@@ -78,7 +78,8 @@ public class OrderController {
     	System.out.println("paymentInfo" + paymentInfoDTO.toString());
     	//카트테이블에서 삭제, 멤머 포인트 차감한값으로 update, 포인트 로그에 사용으로 기록 남기기, order 에 insert
     	// 멤버 테이블에 구매 금액 업데이트
-    	boolean apply = oService.paymentInfoApply(paymentInfoDTO, userId);
+    	paymentInfoDTO.setUserId(userId);
+    	boolean result = oService.paymentInfoApply(paymentInfoDTO);
 		return new ResponseEntity<String>("/cart/cartPage", HttpStatus.OK);
     }
 	
