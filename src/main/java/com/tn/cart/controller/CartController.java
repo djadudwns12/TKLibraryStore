@@ -61,13 +61,16 @@ public class CartController {
 	
 	@PostMapping("/deleteCart")
 	@ResponseBody
-	public Map<String, Object> deleteCart(@RequestParam("cartId") String cartId) {
+	public Map<String, Object> deleteCart(@RequestParam("cartId") String cartId,HttpSession session) {
 	    System.out.println("���� ��û����: " + cartId); // �α� �߰�
 	    Map<String, Object> response = new HashMap<>();
 	    
 	    try {
 	        cService.deleteCartById(cartId);
 	        response.put("success", true);
+	        int cartCount = cService.getCartCnt(((MemberVO)session.getAttribute("loginMember")).getUserId());
+	        response.put("CartCnt", cartCount);
+
 	    } catch (Exception e) {
 	        e.printStackTrace(); // ���� �α� �߰�
 	        response.put("success", false);
@@ -99,7 +102,7 @@ public class CartController {
 	}
 	
 	@PostMapping("/deleteSelected")
-	public ResponseEntity<Map<String, Object>> deleteSelected(@RequestBody List<Integer> cartIds) {
+	public ResponseEntity<Map<String, Object>> deleteSelected(@RequestBody List<Integer> cartIds,HttpSession session) {
 		
 		System.out.println("Controller : 체크박스 선택된 " + cartIds + "번 목록들 삭제하기");
 	    
@@ -107,6 +110,9 @@ public class CartController {
 		try {
 	        cService.deleteCartsByIds(cartIds); // 서비스 호출
 	        response.put("success", true);
+	        int cartCount = cService.getCartCnt(((MemberVO)session.getAttribute("loginMember")).getUserId());
+	        response.put("CartCnt", cartCount);
+
 	    } catch (Exception e) {
 	        e.printStackTrace(); // 오류 발생 시 로그 출력
 	        response.put("success", false);
