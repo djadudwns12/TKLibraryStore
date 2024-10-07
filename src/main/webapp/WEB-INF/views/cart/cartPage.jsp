@@ -125,8 +125,8 @@
                      <td class="common-td"><input type="checkbox"
                         class="selectItem" data-price="${cart.price}"
                         data-salePrice="${cart.salePrice}" data-cart-id="${cart.cartId}"></td>
-                     <td class="thumbnail"><img src="${cart.thumbNail}"
-                        style="width: 70px;" name="thumbNail" /></td>
+                     <td class="thumbnail"><a href="/bookList/bookDetail?bookNo=${cart.bookNo}"><img src="${cart.thumbNail}"
+                        style="width: 70px;" name="thumbNail" /></a></td>
                      <td class="common-td" name="title">${cart.title}</td>
                      <td class="common-td">
                         <div name="price">
