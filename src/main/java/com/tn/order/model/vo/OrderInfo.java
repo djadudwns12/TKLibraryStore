@@ -37,6 +37,7 @@ public class OrderInfo {
 	private String channelKey;
 	private String orderName;
 	private String paymentId;
+	private List<String> cartId;
 	
 
 }

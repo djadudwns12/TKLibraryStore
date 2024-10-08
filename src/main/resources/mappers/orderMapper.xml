@@ -19,7 +19,7 @@ VALUES ('배송중', 'geunyeon', '강남구', null, 3, 3, 300, 25); -->
 
  	<select id="selectOrderBookNo" resultType="com.tn.order.model.vo.PaymentInfoVO">
 		SELECT bookNo FROM BookList WHERE bookNo IN <foreach item="title" 
-		collection="paymentInfoDTO.titleName" open="(" separator="," close=")" >#{title}</foreach>
+		collection="titleName" open="(" separator="," close=")" >#{title}</foreach>
 	</select>
 <!-- 박근영 -->
   </mapper>

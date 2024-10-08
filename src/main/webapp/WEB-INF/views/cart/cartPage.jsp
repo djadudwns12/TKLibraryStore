@@ -589,8 +589,18 @@
         });
     });
     
+    
+
+    
     $(function () {
+        const cartIdList = [
+    	      <c:forEach var="cart" items="${cartList}">
+    	         '${cart.cartId}'<c:if test="${!status.last}">, </c:if>
+    	      </c:forEach>
+    	   ];
         $("#paymentButton").on("click", function (event) {
+			
+
             console.log("결제 버튼 클릭됨");
 
             let fd = new FormData();  
@@ -613,13 +623,15 @@
                 fd.append("price", price);
                 fd.append("salePrice", salePrice);
                 fd.append("cartQty", cartQty);
-
+                fd.append("cartId", cartIdList);
+                
                 console.log("추출된 체크된 책 정보:", {
                     thumbNail: thumbNail,
                     title: title,
                     price: price,
                     salePrice: salePrice,
                     cartQty: cartQty,
+                    
                 });
             });
 

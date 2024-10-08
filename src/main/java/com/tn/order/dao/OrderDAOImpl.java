@@ -40,6 +40,7 @@ public class OrderDAOImpl implements OrderDAO {
 
 	@Override
 	public List<PaymentInfoVO> selectBookNo(PaymentInfoDTO paymentInfoDTO) {
+		System.out.println(paymentInfoDTO);
 		return ses.selectList(NS + ".selectOrderBookNo" , paymentInfoDTO);
 	}
 

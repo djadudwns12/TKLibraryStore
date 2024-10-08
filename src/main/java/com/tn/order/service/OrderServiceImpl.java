@@ -71,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
     	// 멤버 테이블에 구매 금액 업데이트
 		
 		List<PaymentInfoVO> bookNo = oDao.selectBookNo(paymentInfoDTO);
-		System.out.println(bookNo);
+		System.out.println("북엔오 확인"+ bookNo);
 		//oDao.insertPaymentInfo(paymentInfoDTO);
 		
 		
