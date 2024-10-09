@@ -544,6 +544,16 @@ public class AdminController {
 	
 		return new ResponseEntity<>("실패", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	//재입고 목록 페이지로 이동
+	@RequestMapping("/restockList")
+	public String restockList(@RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+			@RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize, Model model) {
+		
+		
+		return "/admin/restockList";
+	}
+	
 	// ================================================= 한준형 ===========================================================
 	
 	//========================================최미설===================================//
