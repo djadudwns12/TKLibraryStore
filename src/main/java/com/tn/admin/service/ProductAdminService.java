@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
+import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
 
 @Service
@@ -38,6 +39,8 @@ public interface ProductAdminService {
 	boolean removeZzim(String userId, int bookNo) throws Exception;
 
 	String getZzimCount(String userId) throws Exception;
+
+	int insertRestockBook(RestockVO restockBook)throws Exception;
 
 
 

@@ -293,4 +293,7 @@
 		select count(*) from Zzim where userId=#{userId};
 	</select>
 	
+	<insert id="insertRestockBook">
+		insert into Restock (title,author,image,timestamp) values('#{title}','#{author}','#{image}','#{timestamp}')
+	</insert>
 </mapper>

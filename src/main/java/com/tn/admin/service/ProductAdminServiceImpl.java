@@ -211,6 +211,13 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 	}
 
 
+	@Override
+	public int insertRestockBook(RestockVO restockBook) throws Exception{
+		
+		return pDao.insertRestockBook(restockBook);
+	}
+
+
 	
 
 

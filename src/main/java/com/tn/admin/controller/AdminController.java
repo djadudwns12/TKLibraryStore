@@ -33,6 +33,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,6 +48,7 @@ import com.tn.admin.model.vo.MyResponseWithoutData;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
+import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.service.MemberAdminService;
 import com.tn.admin.service.ProductAdminService;
 import com.tn.qa.model.vo.QAVO;
@@ -515,6 +517,33 @@ public class AdminController {
 		
 	}
 	
+	//---------------------------------------------------책검색 끝
+	
+	// 재입고
+
+	@PostMapping("/restock")
+    public ResponseEntity<String> restockBook(@RequestBody Map<String, Object> requestData) {
+        // 요청으로부터 받은 데이터
+        String title = (String) requestData.get("title");
+        String author = (String) requestData.get("author");
+        String image = (String) requestData.get("image");
+        String timestamp = (String) requestData.get("timestamp");
+
+        RestockVO restockBook = new RestockVO(title, author, image, timestamp); 
+        
+       
+        try {
+        	if(pService.insertRestockBook(restockBook) > 0){
+        		return new ResponseEntity<>("성공", HttpStatus.OK);
+        	}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} 		
+	
+		return new ResponseEntity<>("실패", HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 	// ================================================= 한준형 ===========================================================
 	
 	//========================================최미설===================================//

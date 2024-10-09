@@ -16,27 +16,7 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-	$(function() {
-		$('#searchBtn').click(function() {
-			let searchValue = $('#searchValue').val();
 
-			if (searchValue != '') {
-				$.ajax({
-					url : '/admin/searchBook',
-					type : 'GET',
-					data : {
-						"searchValue" : searchValue
-					},
-					dataType : 'json',
-					success : function(data) {
-						console.log(data);
-
-					}
-
-				});
-			}
-		});
-	});
 </script>
 
 
@@ -88,8 +68,7 @@ img {
 				<h4>상품 통계</h4>
 			</div>
 
-			<input type="text" placeholder="검색할 책을 입력하세요." id="searchValue" />
-			<button id="searchBtn">검색</button>
+			
 			<div class="content2">
 				<div>
 					<img src="/resources/images/TKlogo.png">

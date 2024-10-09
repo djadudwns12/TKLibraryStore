@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.ProductVO;
+import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
 
 @Repository
@@ -172,6 +173,11 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 	public String getZzimCount(String userId) throws Exception {
 		
 		return ses.selectOne(NS + ".getZzimCount",userId);
+	}
+	@Override
+	public int insertRestockBook(RestockVO restockBook) throws Exception {
+		
+		return ses.insert(NS + ".insertRestockBook" , restockBook);
 	}
 	
 	

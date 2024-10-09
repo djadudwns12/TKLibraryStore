@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.ProductVO;
+import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
 
 @Repository
@@ -57,6 +58,8 @@ public interface ProductAdminDAO {
 	int decrementZzimCount(int bookNo) throws Exception;
 
 	String getZzimCount(String userId) throws Exception;
+
+	int insertRestockBook(RestockVO restockBook) throws Exception;
 
 	
 

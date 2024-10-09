@@ -65,6 +65,7 @@
         var recentModal = $("#recentSearchModal");
         var recommendModal = $("#recommendSearchModal");
         var searchInput = $("#searchWord");
+        var restockModal = $("#restockModal");
 
         // 검색창 클릭 시 모달 띄우기
         searchInput.on("click", function () {
@@ -87,6 +88,7 @@
         $(".close").on("click", function () {
             recentModal.hide();  // 모달 닫기
             recommendModal.hide();
+            restockModal.hide();
         });
 
         // 모달 외부 클릭 시 모달 닫기
@@ -94,6 +96,7 @@
             if (!$(event.target).closest("#recentSearchModal, #searchWord").length) {
             	recentModal.hide();  // 모달 닫기
                 recommendModal.hide();
+               
             }
         });
 
@@ -204,7 +207,7 @@
 		               
 		                if (data.msg === "notPresent") {
 		                	$("#searchRecommend").empty();
-		                  $("#searchRecommend").append('<li> 일치하는 상품이 없습니다.</li>')
+		                  $("#searchRecommend").append('<li> 일치하는 상품이 없습니다. </li><input type="button" value= "입고 신청" style="margin-top:20px;" onclick="showRestockModal(\'' + searchWord + '\')" />');
 		                  
 		                  // 일치하는 책이 있을 때
 		                } else if (data.msg === "isPresent") {
@@ -222,9 +225,80 @@
 			}
 		});
         
+        $('#searchBtn').click(function() {
+			let searchValue = $('#searchValue').val();
+
+			if (searchValue != '') {
+				$.ajax({
+					url : '/admin/searchBook',
+					type : 'GET',
+					data : {
+						"searchValue" : searchValue
+					},
+					dataType : 'json',
+					success : function(data) {
+						
+						if(data.total==0){
+							$("#restockList").empty();
+			                $("#restockList").append('<li> 일치하는 상품이 없습니다. </li>');
+						}else if(data.total > 0){
+							$("#restockList").empty();
+							console.log(data.items);
+							
+							data.items.forEach(function(item) {
+								  let itemWithoutDescription = { ...item };
+								  delete itemWithoutDescription.description; // \n때문인지 넘겨줄때 오류가 나서 description 속성 삭제
+								  
+		                		 $("#restockList").append('<div class="restockLI"><li><img src="'+item.image+'" style="width : 50px; height: 80px;">'+item.title+'<span style="font-size: 10px; color: gray;">  '+item.author+'</span></li><input type="button" style="width:50px; justify-content:flex-end; text-align:center;" value="신청" onclick=\'restockBook(' + JSON.stringify(itemWithoutDescription) + ')\'/></div>');
+		                	 });
+						}
+
+					}
+
+				});
+			}
+		});
     });
 	
-
+	function restockBook(item) {
+		console.log(item.title);
+		console.log(item.author);
+		console.log(item.image);
+		
+		//ajax로 해당 책 정보를 현재시간과 함께 보내준다
+		
+		const currentTime = new Date().toLocaleString();
+		
+		$.ajax({
+		    url: '/admin/restock', // 서버의 엔드포인트 URL
+		    type: 'POST', // 요청 방식 (POST)
+		    contentType: 'application/json', // 데이터 타입을 JSON으로 설정
+		    data: JSON.stringify({
+		      title: item.title,
+		      author: item.author,
+		      image: item.image,
+		      timestamp: currentTime // 현재 시간 추가
+		    }),
+		    success: function(response) {
+		      // 성공 시 처리
+		      console.log('서버로 데이터 전송 성공:', response);
+		      alert('재입고 신청되었습니다!');
+		    },
+		    error: function(error) {
+		      // 에러 발생 시 처리
+		      console.error('데이터 전송 중 오류 발생:', error);
+		    }
+		  });
+		
+	}
+	
+	// 재입고 모달 출력
+	function showRestockModal(searchWord) {
+		$('#restockModal').show();
+		$('#searchValue').val(searchWord);
+	}
+	
+	
 	function pagingInfo() {
 		let productList = '${param.productList}';
 		console.log(productList);
@@ -445,9 +519,9 @@ body {
 	position: absolute; /* 검색창 아래 고정 */
 	z-index: 1;
 	width: 100%; /* 검색창과 동일한 가로 길이 */
-	max-height: 300px; /* 모달 최대 높이 설정 */
+	
 	overflow-y: auto; /* 스크롤 가능 */
-	height: fit-content;
+	height: auto;
 }
 
 /* 모달 내부 콘텐츠 스타일 */
@@ -473,8 +547,9 @@ body {
 	height: 100%;
 	margin: 0 20px; /* 좌우 여백 */
 }
+
 .recent-searches, .popular-searches {
-    width: 45%; /* 두 영역을 나누어 균형 있게 배치 */
+	width: 45%; /* 두 영역을 나누어 균형 있게 배치 */
 }
 
 h5 {
@@ -520,15 +595,23 @@ a:visited {
 }
 
 .rcContent-top {
-    display: flex;
-    justify-content: space-between; /* 두 요소 사이에 공간을 분배 */
-    align-items: center; /* 세로 방향에서 가운데 정렬 */
-    margin-bottom: 20px;
+	display: flex;
+	justify-content: space-between; /* 두 요소 사이에 공간을 분배 */
+	align-items: center; /* 세로 방향에서 가운데 정렬 */
+	margin-bottom: 20px;
 }
 
 .rcContent-top h6 {
-    margin: 0; /* 기본 마진 제거 */
+	margin: 0; /* 기본 마진 제거 */
 }
+
+.restockLI{
+	margin-bottom:10px;
+	display:flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
 </style>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -573,7 +656,7 @@ a:visited {
 							<div class="keyBoard">
 								<i class="fas fa-keyboard"></i>
 							</div>
-							
+
 
 						</div>
 						<input type="hidden" name="pageNo" value="${param.pageNo}" /> <input
@@ -653,7 +736,8 @@ a:visited {
 									<td><input type="checkbox" name="proCheck"
 										value=${product.bookNo } onclick="updateButton()"></td>
 									<td>${product.bookNo}</td>
-									<td><a href="/bookList/bookDetail?bookNo=${product.bookNo}">${product.title}</a></td>
+									<td><a
+										href="/bookList/bookDetail?bookNo=${product.bookNo}">${product.title}</a></td>
 									<td>${product.author}</td>
 									<td>${product.publisher}</td>
 									<td>${product.pubDate}</td>
@@ -716,6 +800,7 @@ a:visited {
 				</ul>
 			</div>
 
+			<!-- 모달 영역 시작 -->
 			<div id="recentSearchModal" class="modal">
 				<div class="modal-content">
 					<div class="content-top">
@@ -746,18 +831,24 @@ a:visited {
 			<div id="recentSearchModal" class="modal">
 				<div class="modal-content">
 					<div class="rccontent-top">
-						<div><h5>최근 검색 기록</h5></div>
-						<div><h5>인기 검색어</h5></div>
-						<div><span class="close" style="margin-left: 500px; height: 10px;">&times;</span></div>
-						
-						
-						
-					
+						<div>
+							<h5>최근 검색 기록</h5>
+						</div>
+						<div>
+							<h5>인기 검색어</h5>
+						</div>
+						<div>
+							<span class="close" style="margin-left: 500px; height: 10px;">&times;</span>
+						</div>
+
+
+
+
 					</div>
 					<div class="content-body">
 						<!-- 최근 검색 기록 영역 -->
 						<div class="recent-searches">
-							
+
 							<ul id="recentSearchesList">
 								<!-- 검색 기록이 동적으로 삽입될 곳 -->
 							</ul>
@@ -768,7 +859,7 @@ a:visited {
 
 						<!-- 인기 검색어 영역 -->
 						<div class="popular-searches">
-							
+
 							<ul id="popularSearchesList">
 								<!-- 인기 검색어가 동적으로 삽입될 곳 -->
 							</ul>
@@ -779,18 +870,18 @@ a:visited {
 
 			<div id="recommendSearchModal" class="modal">
 				<div class="modal-content">
-					<div class="rcContent-top" >
-						
+					<div class="rcContent-top">
+
 						<div>
 							<h6>추천 검색어</h6>
 						</div>
 						<div>
-							<span class="close" style=" height: 10px; ">&times;</span>
+							<span class="close" style="height: 10px;">&times;</span>
 						</div>
 					</div>
 					<div class="content-body">
 						<div class="recommend-searches">
-							
+
 							<ul id="searchRecommend">
 								<!-- 추천 검색어가 동적으로 삽입될 곳 -->
 							</ul>
@@ -798,6 +889,38 @@ a:visited {
 
 					</div>
 
+				</div>
+			</div>
+
+			<div class="modal" id="restockModal" style="height: 800px;">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+
+						<!-- Modal Header -->
+						<div class="modal-header">
+							<h4 class="modal-title">입고 신청</h4>
+							<button type="button" class="btn-close close" data-bs-dismiss="modal"></button>
+						</div>
+
+						<!-- Modal body -->
+						<div class="modal-body" >
+							<div style="display:flex;">
+								<input type="text" style="width:330px; margin-right: 20px;"placeholder="검색할 책을 입력하세요." id="searchValue" />
+								<button  class="btn btn-outline-dark btn" id="searchBtn" >검색</button>
+							</div>
+							<ul id="restockList" >
+								<!-- 추천 검색어가 동적으로 삽입될 곳 -->
+							</ul>
+							
+						</div>
+
+						<!-- Modal footer -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger close"
+								data-bs-dismiss="modal">Close</button>
+						</div>
+
+					</div>
 				</div>
 			</div>
 
