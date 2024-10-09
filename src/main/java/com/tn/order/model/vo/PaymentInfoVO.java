@@ -2,6 +2,8 @@ package com.tn.order.model.vo;
 
 
 
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

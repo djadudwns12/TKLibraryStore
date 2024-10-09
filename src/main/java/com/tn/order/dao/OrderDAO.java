@@ -14,6 +14,7 @@ public interface OrderDAO {
 	List<AddressVO> selectAddress(String userId);
 	// 유저의 포인트 SELECT
 	int selectPoint(String userId);
+	
 	// 결제 정보를 INSERT
 	int insertPaymentInfo(PaymentInfoDTO paymentInfoDTO);
 	// BookNo SELECT

@@ -35,12 +35,13 @@ public class OrderDAOImpl implements OrderDAO {
 
 	@Override
 	public int insertPaymentInfo(PaymentInfoDTO paymentInfoDTO) {
-		return ses.insert(NS + ".insertPaymentComplete");
+		return ses.insert(NS + ".insertPaymentComplete", paymentInfoDTO);
 	}
 
 	@Override
 	public List<PaymentInfoVO> selectBookNo(PaymentInfoDTO paymentInfoDTO) {
-		System.out.println(paymentInfoDTO);
+		System.out.println("DTO 확인: " + paymentInfoDTO);
+		System.out.println("cartId 확인: " + paymentInfoDTO.getCartId());
 		return ses.selectList(NS + ".selectOrderBookNo" , paymentInfoDTO);
 	}
 

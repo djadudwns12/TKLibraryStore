@@ -17,6 +17,7 @@ import lombok.ToString;
 @Builder
 @ToString
 public class PaymentInfoDTO {
+	// ------ 박근영 ---------
 	private String totalAmount;
 	private String remainingPoint;
 	private String finalInputPoint;
@@ -24,5 +25,8 @@ public class PaymentInfoDTO {
 	private String orderName;
 	private List<String> titleName;
 	private String userId;
+	private List<String> cartId;
+	private String address;
+	// ------ 박근영 ---------
 
 }

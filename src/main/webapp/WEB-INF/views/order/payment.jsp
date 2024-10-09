@@ -612,6 +612,12 @@ async function requestPayment() {
 	         '${title}'<c:if test="${!status.last}">, </c:if>
 	      </c:forEach>
 	   ];
+	 const cartIdList = [
+	      <c:forEach var="cartId" items="${orderInfo.cartId}">
+	         '${cartId}'<c:if test="${!status.last}">, </c:if>
+	      </c:forEach>
+	   ];
+	 const address = $('#deliveryAddress').text();
 	console.log(orderTitleList);
 	const paymentRequestData = {
 		    storeId: "${orderInfo.storeId}",
@@ -645,7 +651,9 @@ async function requestPayment() {
 		    	finalInputPoint: finalInputPoint,
     			paymentId: paymentRequestData.paymentId,
     			orderName: paymentRequestData.orderName,
-    			titleName: orderTitleList
+    			titleName: orderTitleList,
+    			cartId: cartIdList,
+    			address: address
 			})
 		  });
 		  if (notified.ok) {

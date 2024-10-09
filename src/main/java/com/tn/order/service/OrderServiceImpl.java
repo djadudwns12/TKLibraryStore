@@ -69,9 +69,14 @@ public class OrderServiceImpl implements OrderService {
 	public boolean paymentInfoApply(PaymentInfoDTO paymentInfoDTO) {
 		//카트테이블에서 삭제, 멤머 포인트 차감한값으로 update, 포인트 로그에 사용으로 기록 남기기, order 에 insert
     	// 멤버 테이블에 구매 금액 업데이트
+		System.out.println(paymentInfoDTO.getCartId().get(0));
+		
+		oDao.insertPaymentInfo(paymentInfoDTO);
 		
 		List<PaymentInfoVO> bookNo = oDao.selectBookNo(paymentInfoDTO);
-		System.out.println("북엔오 확인"+ bookNo);
+		
+		
+		System.out.println("북엔오 확인"+ bookNo.toString());
 		//oDao.insertPaymentInfo(paymentInfoDTO);
 		
 		
