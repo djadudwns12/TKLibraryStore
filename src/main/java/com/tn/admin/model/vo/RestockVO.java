@@ -18,6 +18,7 @@ import lombok.ToString;
 @ToString
 public class RestockVO {
 	
+	private String restockNo;
 	private String title;
 	private String author;
 	private String image;

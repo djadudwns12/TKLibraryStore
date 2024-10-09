@@ -42,6 +42,8 @@ public interface ProductAdminService {
 
 	int insertRestockBook(RestockVO restockBook)throws Exception;
 
+	Map<String, Object> restockList(PagingInfoDTO dto, SearchCriteriaDTO searchCriteria) throws Exception;
+
 
 
 

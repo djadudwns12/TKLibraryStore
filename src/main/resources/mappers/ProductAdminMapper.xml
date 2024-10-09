@@ -296,4 +296,16 @@
 	<insert id="insertRestockBook">
 		insert into Restock (title,author,image,timestamp) values(#{title},#{author},#{image},#{timestamp})
 	</insert>
+	
+	<select id="restockList" resultType="com.tn.admin.model.vo.RestockVO">
+		select * from Restock order by restockNo desc limit
+		#{startRowIndex},
+		#{viewPostCntPerPage};
+	</select>
+	
+	<select id="selectTotalRestockCount" resultType="int">
+		select count(*) from
+		Restock;
+
+	</select>
 </mapper>

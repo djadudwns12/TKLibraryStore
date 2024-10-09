@@ -218,6 +218,40 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 	}
 
 
+	@Override
+	public Map<String, Object> restockList(PagingInfoDTO dto, SearchCriteriaDTO searchCriteria) throws Exception {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		List<RestockVO> list = null;
+		PagingInfo pi = makeRestockPagingInfo(dto,searchCriteria);
+		
+		list = pDao.restockList(pi);
+		
+		resultMap.put("pagingInfo", pi);
+		resultMap.put("restockList", list);
+		
+		return resultMap;
+	}
+	
+	private PagingInfo makeRestockPagingInfo(PagingInfoDTO dto, SearchCriteriaDTO sc) throws Exception {
+		PagingInfo pi = new PagingInfo(dto);
+		
+		
+		pi.setTotalPostCnt(pDao.getTotalRestockCnt());		// 전체 데이터 수 세팅
+		
+			
+		pi.setTotalPageCnt();								// 전체 페이지 수 세팅
+		pi.setStartRowIndex();							// 현재 페이지에서 보여주기 시작할 rowIndex세팅
+		
+		//페이징 블럭 만들기
+		pi.setPageBlockNoCurPage();
+		pi.setStartPageNoCurBlock();
+		pi.setEndPageNoCurBlock();
+		
+		
+		return pi;
+	}
+
+
 	
 
 

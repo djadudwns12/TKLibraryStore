@@ -35,8 +35,9 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		SearchCriteriaDTO sc2 = new SearchCriteriaDTO(sc.getSearchType(),"%" + sc.getSearchWord() + "%");
 		return ses.selectOne(NS + ".selectTotalCountWithSearchCriteria", sc2);
 	}
+	
 	@Override
-	public List<ProductVO> getList(PagingInfo pi, String sortBy) {
+	public List<ProductVO> getList(PagingInfo pi, String sortBy) throws Exception {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("sortBy", sortBy);
 		params.put("startRowIndex",pi.getStartRowIndex());
@@ -44,8 +45,9 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		
 		return ses.selectList(NS + ".getProductBySortby",params);
 	}
+	
 	@Override
-	public List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria) {
+	public List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria) throws Exception{
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("searchType", searchCriteria.getSearchType());
 		params.put("searchWord", "%" +searchCriteria.getSearchWord()+ "%");
@@ -55,7 +57,7 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		return ses.selectList(NS + ".getSearchProductWithPaging", params);
 	}
 	@Override
-	public List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria, String sortBy) {
+	public List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria, String sortBy) throws Exception {
 		Map<String, Object> params = new HashMap<String, Object>();
 		System.out.println("다오까진 잘 옴-=============");
 		params.put("sortBy", sortBy);
@@ -178,6 +180,16 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 	public int insertRestockBook(RestockVO restockBook) throws Exception {
 		
 		return ses.insert(NS + ".insertRestockBook" , restockBook);
+	}
+	@Override
+	public List<RestockVO> restockList(PagingInfo pi) throws Exception {
+		
+		return ses.selectList(NS + ".restockList",pi);
+	}
+	@Override
+	public int getTotalRestockCnt() throws Exception {
+		
+		return ses.selectOne(NS + ".selectTotalRestockCount");
 	}
 	
 	

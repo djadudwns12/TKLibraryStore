@@ -282,7 +282,7 @@
 		    success: function(response) {
 		      // 성공 시 처리
 		      console.log('서버로 데이터 전송 성공:', response);
-		      alert('재입고 신청되었습니다!');
+		      alert('입고 신청되었습니다!');
 		    },
 		    error: function(error) {
 		      // 에러 발생 시 처리

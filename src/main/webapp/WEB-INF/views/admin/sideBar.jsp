@@ -72,8 +72,8 @@
                         <li class="nav-item"> <a href="./docs/browser-support.html" class="nav-link"> <i class="nav-icon bi bi-browser-edge"></i>
                                 <p>상품 통계</p>
                             </a> </li>
-                        <li class="nav-item"> <a href="./docs/how-to-contribute.html" class="nav-link"> <i class="nav-icon bi bi-hand-thumbs-up-fill"></i>
-                                <p>또 뭐넣지</p>
+                        <li class="nav-item"> <a href="/admin/restockList" class="nav-link"> <i class="nav-icon bi bi-hand-thumbs-up-fill"></i>
+                                <p>입고신청리스트</p>
                             </a> </li>
                         <li class="nav-item"> <a href="./docs/faq.html" class="nav-link"> <i class="nav-icon bi bi-question-circle-fill"></i>
                                 <p>FAQ</p>

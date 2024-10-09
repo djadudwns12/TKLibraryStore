@@ -25,9 +25,9 @@ public interface ProductAdminDAO {
 	List<ProductVO> getList(PagingInfo pi, String sortBy) throws Exception;
 
 	//검색어만 있을 때 목록 
-	List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria);
+	List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria) throws Exception;
 	// 검색했을 때 정렬기준 설정
-	List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria, String sortBy);
+	List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria, String sortBy) throws Exception;
 
 	int deleteProduct(int delNo) throws Exception;
 
@@ -60,6 +60,10 @@ public interface ProductAdminDAO {
 	String getZzimCount(String userId) throws Exception;
 
 	int insertRestockBook(RestockVO restockBook) throws Exception;
+
+	List<RestockVO> restockList(PagingInfo pi) throws Exception;
+
+	int getTotalRestockCnt() throws Exception;
 
 	
 

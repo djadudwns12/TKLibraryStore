@@ -185,6 +185,34 @@ public class AdminController {
 		
 		return "admin/productAdmin";
 	}
+	
+	//재입고 목록 페이지로 이동
+		@RequestMapping("/restockList")
+		public String restockList(@RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+				@RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize, SearchCriteriaDTO searchCriteria, Model model) {
+			
+			PagingInfoDTO dto = PagingInfoDTO.builder().pageNo(pageNo).pagingSize(pagingSize).build();
+			// System.out.println(dto.getPagingSize() + "페이징정보?" + dto.getPageNo());
+			Map<String, Object> result = null;
+			
+			
+			
+			try {
+				result = pService.restockList(dto, searchCriteria);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			PagingInfo pi = (PagingInfo) result.get("pagingInfo");
+			List<RestockVO> list = (List<RestockVO>) result.get("restockList");
+			
+					
+			
+			model.addAttribute("restockList", list); // 데이터 바인딩
+			model.addAttribute("pagingInfo", pi);
+			
+			return "/admin/restockList";
+		}
 
 	@RequestMapping(value = "/deleteProduct", method = RequestMethod.POST)
 	public ResponseEntity<MyResponseWithData> deleteProduct(@RequestParam(value = "delNo") int[] arr) {
@@ -528,8 +556,8 @@ public class AdminController {
         String author = (String) requestData.get("author");
         String image = (String) requestData.get("image");
         String timestamp = (String) requestData.get("timestamp");
-
-        RestockVO restockBook = new RestockVO(title, author, image, timestamp); 
+        String restockNo = "";
+        RestockVO restockBook = new RestockVO(restockNo,title, author, image, timestamp); 
         
        
         try {
@@ -545,14 +573,7 @@ public class AdminController {
 		return new ResponseEntity<>("실패", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	//재입고 목록 페이지로 이동
-	@RequestMapping("/restockList")
-	public String restockList(@RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
-			@RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize, Model model) {
-		
-		
-		return "/admin/restockList";
-	}
+	
 	
 	// ================================================= 한준형 ===========================================================
 	
