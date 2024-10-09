@@ -51,7 +51,7 @@
                         
                         
                         
-                        <li class="nav-header">상품 관리</li>
+                        <li class="nav-header">상품 관리</span></li>
                         <li class="nav-item"> <a href="/admin/productAdmin" class="nav-link"> <i class="nav-icon bi bi-download"></i>
                                 <p>상품 목록</p>
                             </a> </li>
@@ -75,12 +75,7 @@
                         <li class="nav-item"> <a href="/admin/restockList" class="nav-link"> <i class="nav-icon bi bi-hand-thumbs-up-fill"></i>
                                 <p>입고신청리스트</p>
                             </a> </li>
-                        <li class="nav-item"> <a href="./docs/faq.html" class="nav-link"> <i class="nav-icon bi bi-question-circle-fill"></i>
-                                <p>FAQ</p>
-                            </a> </li>
-                        <li class="nav-item"> <a href="./docs/license.html" class="nav-link"> <i class="nav-icon bi bi-patch-check-fill"></i>
-                                <p>License</p>
-                            </a> </li>
+                        
                             
                             
                             
