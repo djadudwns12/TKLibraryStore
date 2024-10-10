@@ -84,8 +84,8 @@
 				      <tr>
 				        <th>주문일</th>
 				        <th>주문번호</th>
-<!-- 				        <th>제목</th>
-				        <th>수량</th> -->
+				        <th>제목</th>
+				        <th>수량</th>
 				        <th>주문상태</th>
 				      </tr>
 				    </thead>
@@ -99,8 +99,8 @@
 						      <tr>
 						        <td>${recentOrder.orderDate}</td>
 						        <td>${recentOrder.orderNo}</td>
-<%-- 						        <td>${recentOrder.title}</td>
-						        <td>${recentOrder.qty}</td> --%>
+						        <td>${recentOrder.title}</td>
+						        <td>${recentOrder.qty}</td>
 						        <td>${recentOrder.orderStatus}</td>
 						      </tr>
 							</c:forEach>
@@ -195,7 +195,7 @@
 }
 .review {
 	display: flex;
-	justify-content: flex-start;
+	justify-content: space-between;
 	margin-top: 10px; 
 	margin-left: 30px; 
 	width: 80%;"

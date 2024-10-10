@@ -119,7 +119,9 @@
 	</select>
 	
 	<select id="getRecentOrder" resultType="com.tn.order.model.vo.OrderVO">
-		select * from `Order` 
+		select o.*, b.title from `Order` as o 
+		left join BookList b
+		on b.bookNo = o.bookNo 
 		where orderWho=#{userId}
 	</select>
 	

@@ -118,7 +118,6 @@ public class MemberController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 //	/**
 //	 * @작성자 : 엄영준
@@ -152,7 +151,8 @@ public class MemberController {
 	 */
 
 	@RequestMapping(value = "/edit")
-	public void getEditMemeberInfo(HttpSession ses,  Model model) { 
+	public void getEditMemeberInfo(HttpSession ses,  Model model) { // 
+//		String userId = "dooly"; // 회원정보수정 페이지 완료하면 로그인 정보 가져오기!
 		try {
 			MemberVO loginMember = mService.getEditMemberInfo(((MemberVO)ses.getAttribute("loginMember")).getUserId());
 			System.out.println(loginMember.toString());
@@ -175,14 +175,11 @@ public class MemberController {
 	 *
 	 */
 	@RequestMapping(value = "/mypage")
-	public void saveEditInfo(MemberDTO editMember, RedirectAttributes redirectAttributes,Model model,HttpSession sess) {
+	public void saveEditInfo(MemberDTO loginMember, RedirectAttributes redirectAttributes,Model model,HttpSession sess) {
 
 		try {
-			MemberVO loginMember = (MemberVO) sess.getAttribute("loginMember");
+			mService.saveEditInfo(loginMember);
 			model.addAttribute("loginMember", (MemberVO) sess.getAttribute("loginMember"));
-			System.out.println(loginMember.toString());
-			mService.saveEditInfo(editMember);
-			System.out.println("MemberController::editInfo :" + editMember.toString());
 			redirectAttributes.addAttribute("status", "editSuccess");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -287,29 +284,6 @@ public class MemberController {
 		return "redirect:/";
 	}
 
-	@RequestMapping("/deletemember")
-	public void deleteMember() {
-	}
-	
-	@RequestMapping("/deleteconfirm")
-	public String deleteMember(HttpSession ses) {
-		System.out.println("MemberController deleteMember() : " + ses.getAttribute("loginMember"));
-		// 회원수정페이지 하단에 '회원탈퇴 버튼을 눌러서 페이지 이동
-		// 회원탈퇴 페이지에서 안내문 하단의 체크박스 체크 후 버튼을 누르면 회원탈퇴 처리
-		try {
-			MemberVO memberVO = (MemberVO)ses.getAttribute("loginMember");
-			String userId = memberVO.getUserId();
-			System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제함..");
-			mService.deleteMember(userId);
-			logout(ses); // 로그아웃 및 세션에 저장된 회원정보 무효화
-			return "redirect:/";
-		} catch (Exception e) {
-			e.printStackTrace(); 
-			return "redirect:/member/loginPage";
-		} 
-		
-		
-	}
 // -----------------------------------------박근영-------------------------------------------------
 	@PostMapping(value = "/checkedDupl")
 	public ResponseEntity<String> checkedDupl(@RequestParam(value = "tmpUserId") String tmpUserId){

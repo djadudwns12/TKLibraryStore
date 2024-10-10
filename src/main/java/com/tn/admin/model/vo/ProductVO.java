@@ -23,7 +23,7 @@ public class ProductVO {
 	private String author;
 	private String publisher;
 	private Date pubDate;
-	private String genre;
+	private int genre;
 	private int price;
 	private int salePrice;
 	private int inven;
