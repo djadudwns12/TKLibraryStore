@@ -26,10 +26,12 @@ public class BookDetailInfo {
 	private String genre;
 	private int price;
 	private int salePrice;
+	private int inven;
 	private String thumbNail;
 	private String introduction;
 	private int zzim;
 	private int reviewCnt;
+	
 	private String base64ProFileImg;
 	
 	private String userId;

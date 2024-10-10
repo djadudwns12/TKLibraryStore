@@ -1,6 +1,7 @@
 package com.tn.order.dao;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -13,11 +14,13 @@ import com.tn.order.model.vo.AddressVO;
 import com.tn.order.model.vo.OrderBookListVO;
 import com.tn.order.model.vo.PaymentInfoVO;
 
+
 @Repository
 public class OrderDAOImpl implements OrderDAO {
 	
 	@Autowired
 	private SqlSession ses;
+
 	
 	private String NS = "com.tn.mapper.orderMapper";
 	
@@ -51,6 +54,7 @@ public class OrderDAOImpl implements OrderDAO {
 //		return ses.selectList(NS + ".selectOrderBookList", bookNos);
 //	}
 //-----------------------------------------박근영-------------------------------------------------
+
 
 
 

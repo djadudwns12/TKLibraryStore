@@ -3,12 +3,14 @@ package com.tn.member.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
 
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
 
+@Repository
 public interface MemberDAO {
 	
 	public List<Map<String, String>> getMember();
@@ -20,6 +22,9 @@ public interface MemberDAO {
 	
 	// 회원수정페이지에서 수정된 회원정보를 저장하는 메서드
 	int updateEditMember(MemberDTO editMember) throws Exception;
+	
+	// 회원탈퇴
+	int deleteMember(String userId) throws Exception;
 
 //-----------------------------------------박근영-------------------------------------------------
 	// 회원정보 INSERT(가입시)

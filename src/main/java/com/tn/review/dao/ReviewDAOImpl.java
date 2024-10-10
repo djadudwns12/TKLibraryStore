@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.tn.review.model.DTO.ReviewDTO;
 import com.tn.review.model.VO.ReviewVO;
 
 @Repository
@@ -20,5 +21,12 @@ public class ReviewDAOImpl implements ReviewDAO {
 		
 		return ses.selectList(NS + ".getRecentReview", userId);
 	}
+
+	@Override
+	public int insertNewReview(ReviewDTO reviewDTO) {
+		
+		return ses.insert(NS + ".insertNewReview", reviewDTO);
+	}
+
 
 }
