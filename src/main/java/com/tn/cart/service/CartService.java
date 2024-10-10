@@ -17,5 +17,7 @@ public interface CartService {
 
 	float getPointRate(String userId) throws Exception;
 
+	int getCartCnt(String userId) throws Exception;
+
 
 }

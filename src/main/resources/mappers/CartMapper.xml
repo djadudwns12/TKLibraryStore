@@ -12,7 +12,7 @@
 	<!-- 특정 회원의 카트 리스트를 가져오는 쿼리문 -->
 	<select id="getCartList"
 		resultType="com.tn.cart.model.dto.CartDTO">
-		SELECT b.thumbNail, b.title, b.price, b.salePrice, b.inven,
+		SELECT b.bookNo, b.thumbNail, b.title, b.price, b.salePrice, b.inven,
 		c.qty, c.cartId
 		FROM Cart c
 		INNER JOIN BookList b ON c.bookNo = b.bookNo
@@ -45,5 +45,10 @@
 		from Member m inner join ClassDef cd
 		on m.userClass = cd.className
 		where m.userId = #{userId}
+	</select>
+	
+	<!-- 회원의 카트 목록의 갯수를 가져오는 쿼리문 -->
+	<select id="countCartList" resultType="int">
+		select count(*) from Cart where userId = #{userId}
 	</select>
 </mapper>

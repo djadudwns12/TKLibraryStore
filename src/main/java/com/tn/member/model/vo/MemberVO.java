@@ -36,7 +36,7 @@ public class MemberVO {
 	private String phoneNum;
 	private String email;
 	private String userTotalPay;
-	private int userPoint;
+	private String userPoint;
 	private String userClass;
 	private String userImg; 
 	
