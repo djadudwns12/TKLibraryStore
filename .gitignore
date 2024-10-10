@@ -156,6 +156,10 @@ $RECYCLE.BIN/
 # csv 파일
 *.csv
 
+# 안올릴파일
+myPage.jsp
+orderMapper.xml
+
 
 # config.properties 제외
 config.properties
