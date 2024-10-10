@@ -1,4 +1,8 @@
-package com.tn.member.model.dto;
+package com.tn.order.model.vo;
+
+
+
+import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,13 +18,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class MemberDTO {
-	private String userId;
-	private String userPwd;
-	private String userName;
-	private java.sql.Date userBirth;
-	private String phoneNum;
-	private String email;
-	private String userImg;
-	private int userPoint;
+public class PaymentInfoVO {
+	// -------- 박근영 --------
+	private int bookNo;
+	// -------- 박근영 --------
+	
+
 }

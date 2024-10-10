@@ -33,4 +33,19 @@
 	</select>
 	<!-- ====================================================엄영준 END=============================================================  -->
  
+ 
+ 
+ 
+<!-- 박근영 -->
+	<select id="selectOrderBookList">
+		SELECT title, price, salePrice, thumbNail FROM BookList WHERE bookNo IN <foreach item="bookNo" 
+		collection="bookNos" open="(" separator="," close=")" >#{bookNo}</foreach>
+	</select>
+<!-- 박근영 -->
+ 
+ 
+ 
+ 
+ 
+ 
  </mapper>

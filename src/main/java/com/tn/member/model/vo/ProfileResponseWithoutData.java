@@ -16,6 +16,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ProfileResponseWithoutData {
+	// -------- 박근영 --------
 	private int code;
 	private String msg;
 }
