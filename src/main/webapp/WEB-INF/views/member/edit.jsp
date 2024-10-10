@@ -117,7 +117,7 @@ $(function() {
             	<input type="hidden" id="phoneNumCheck" value="checked"/>
             	<div id="phoneNumError" style="color: red;"></div>
             </div>
-            
+<!--      프로필사진 추가 ㅇ안 됨;;      
 			<div class="input-group mb-3" id="profileImageContainer">
 				<label>프로필사진</label>
 		        <div id="imageDropBox">
@@ -129,7 +129,7 @@ $(function() {
 		        </div>
 		        
 		    	
-		    </div>
+		    </div> --> 
 		    <div class="d-grid gap-2" style="text-align:right;">
 				<button type="submit" class="btn btn-primary saveEditInfo" onclick="return isValid();" style="border-color:#7fad38; background-color:#7fad38;">수정완료</button>
 				<button type="reset" class="btn btn-danger" >되돌리기</button>
