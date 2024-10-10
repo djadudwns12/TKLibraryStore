@@ -14,8 +14,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
+.register-box{
+	display : flex;
+	justify-content: center;
+}
+
 .input-group{
 	display: flex;
+	text-align: center;
 }
 .input-group label{
 	display :inline-block;
@@ -35,6 +41,20 @@
 	margin-left:10px; 
 	border-color:#7fad38; 
 	background-color:#7fad38;
+}
+#profileImageContainer {
+	display: flex;
+	justify-content: space-around;
+
+}
+#imageDropBox {
+	border: 2px dashed #cccccc;
+    padding: 20px;
+    text-align: center;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    cursor: pointer;
+
 }
 </style>
 <script>
@@ -97,11 +117,22 @@ $(function() {
             	<input type="hidden" id="phoneNumCheck" value="checked"/>
             	<div id="phoneNumError" style="color: red;"></div>
             </div>
-
-			<div class="d-grid gap-2" style="text-align:right;">
-					<button type="submit" class="btn btn-primary" onclick="return isValid();" style="border-color:#7fad38; background-color:#7fad38;">수정완료</button>
-					<button type="reset" class="btn btn-danger" >되돌리기</button>
-					
+<!--      프로필사진 추가 ㅇ안 됨;;      
+			<div class="input-group mb-3" id="profileImageContainer">
+				<label>프로필사진</label>
+		        <div id="imageDropBox">
+		        	<div id="dropBoxText" >프로필 사진을 변경하려면 드래그 앤 드롭하세요.</div>
+		        	<input type="file" id="profileImageInput" style="display: none;" accept="image/*">
+		        	<img id="profilePreview" src="${loginMember.userImg}">
+			        <span class="badge bg-secondary" id="delPreview" onclick="defaultProfileImage();" style="color:white;">기본이미지</span>
+			        <span class="badge" id="resetPreview" onclick="resetProfileImage();" style="border-color:#7fad38; background-color:#7fad38; color:white;">변경취소</span>
+		        </div>
+		        
+		    	
+		    </div> --> 
+		    <div class="d-grid gap-2" style="text-align:right;">
+				<button type="submit" class="btn btn-primary saveEditInfo" onclick="return isValid();" style="border-color:#7fad38; background-color:#7fad38;">수정완료</button>
+				<button type="reset" class="btn btn-danger" >되돌리기</button>
 			</div>
 		</form>
 	
@@ -171,6 +202,81 @@ $(function(){
 			return true;
 		}
 	});
+	
+	// 이미지파일을 드래그드롭했을 때 프리뷰
+    $("#profileImageContainer").on("dragenter dragover", function(event) {
+        event.preventDefault(); // 기본 동작 방지 (파일 열기)
+    });
+
+    $("#profileImageContainer").on("drop", function(event) {
+        event.preventDefault(); // 기본 동작 방지
+
+        let files = event.originalEvent.dataTransfer.files;
+
+        if (files.length === 0) {
+            alert("파일을 드롭해주세요.");
+            return;
+        }
+
+        if (files[0].size > 1024 * 1024 * 10) {
+            alert('10MB 이하의 파일만 업로드할 수 있습니다...');
+            return;
+        } else if (!files[0].type.startsWith('image/')) {
+            alert("이미지 파일만 가능합니다.");
+            return;
+        } else if (files.length > 1) {
+            alert("1개의 이미지만 가능합니다.");
+            return;
+        } else {
+        	let reader = new FileReader();
+	        let userImg = files[0]; // 읽어올 파일 참조
+	        let imageType = ["image/jpeg", "image/png", "image/gif"];
+	
+	        // 파일 타입 확인
+	        if (imageType.indexOf(userImg.type) === -1) {
+	            alert("지원되지 않는 이미지 형식입니다.");
+	            return;
+	        }
+	
+	        // FileReader onload 콜백
+	        reader.onload = function(evt) {
+	            $('#profilePreview').attr('src', evt.target.result); // 이미지 소스 설정
+	            $('#profilePreview').show();
+	            $('#dropBoxText').hide(); // 이미지 업로드 시 숨길 요소
+	        };
+	
+	        // 이미지 파일을 DataURL로 읽기
+	        reader.readAsDataURL(userImg);
+	        const fileInput = $('#profileImageInput')[0];
+	        const formData = new FormData();
+	
+	        if (fileInput.files.length > 0) {
+	            formData.append('userImg', fileInput.files[0]);
+	
+	            $.ajax({
+	                url: '/member/edit',
+	                type: 'POST',
+	                data: formData,
+	                contentType: false,
+	                processData: false,
+	                success: function(response) {
+	                    alert(response);
+	                },
+	                error: function(jqXHR, textStatus, errorThrown) {
+	                    alert('업로드 실패: ' + textStatus);
+	                }
+	            });
+	        } else {
+	            alert('파일을 선택하세요.');
+	        }
+	     }        
+    });
+    
+/*     // 수정완료버튼을 누르면 프리뷰의 이미지를 저장함
+    $('.saveEditInfo').on("click", function (){
+    	
+    }); */
+
 });
 
 
@@ -339,6 +445,16 @@ function phoneNumValid(){
 		alert("휴대폰	번호를 확인해주세요.");
 		return false;
 	}
+}
+
+// 프로필사진 : 기본이미지로 변경
+function defaultProfileImage() {
+	$('#profilePreview').attr('src', '/resources/userImg/noImage.png');
+}
+
+// 프로필사진 : 변경 전 이미지로 변경
+function resetProfileImage() {
+	$('#profilePreview').attr('src', '${loginMember.userImg}');
 }
 </script>
 </body>
