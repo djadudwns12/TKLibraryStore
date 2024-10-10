@@ -70,16 +70,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 				
 				System.out.println(modelAndView.getViewName());
 			}else if(sess.getAttribute("loginMember") == null) {
-				modelAndView.addObject("status", "loginFail");
+				//modelAndView.addObject("status", "loginFail");
 				modelAndView.setViewName("member/loginPage");
 			}
 		
 		
 			
 		}
-		
-		
-		
 		super.postHandle(request, response, handler, modelAndView);
 	}
 

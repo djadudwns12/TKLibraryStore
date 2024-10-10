@@ -394,6 +394,7 @@ public class AdminController {
 				model.addAttribute("productList", list); // 데이터 바인딩
 				model.addAttribute("pagingInfo", pi);
 				model.addAttribute("search", searchCriteria);
+				model.addAttribute("ra", sortBy);
 				
 				
 				model.addAttribute("qaList", list);

@@ -43,7 +43,22 @@ div#category_young {
 	display: flex;
 	justify-content: flex-start;
 }
+
 </style>
+<script type="text/javascript">
+$(function(){
+	$('#low_class').next().hide();
+	$('.showInfo').show();
+	$('.hideInfo').hide();
+	
+})
+function showHide(){
+	$('.myInfo').toggle('myInfoHide');
+	$('.showInfo').toggle();
+	$('.hideInfo').toggle();
+}
+</script>
+
 
 
 </head>
@@ -131,7 +146,7 @@ div#category_young {
 				<div class="col-lg-6">
 					<nav class="header__menu">
 						<ul>
-							<li class="active"><a href="./index.html">Home</a></li>
+							<li class="active"><a href="/">Home</a></li>
 							<li><a href="./shop-grid.html">Shop</a></li>
 							<li><a href="#">Pages</a>
 								<ul class="header__menu__dropdown">
@@ -147,17 +162,7 @@ div#category_young {
 				</div>
 				<div class="col-lg-3">
 					<div class="header__cart">
-						<ul>
-							<c:if test="${sessionScope.loginMember == null}">
-								<li><a
-									href="${pageContext.request.contextPath}/member/loginPage"><i
-										class="fa fa-user">로그인</i></a></li>
-							</c:if>
-							<c:if test="${sessionScope.loginMember != null}">
-								<li><a
-									href="${pageContext.request.contextPath}/member/logout"><i
-										class="fa fa-user">로그아웃</i></a></li>
-							</c:if>
+						<ul style="margin-right: -26px;">
 							<!-- 마이페이지 이동 -->
 							<li><a
 								href="${pageContext.request.contextPath}/member/mypage"><i
@@ -175,6 +180,14 @@ div#category_young {
         						</c:if>
 							</li>
 							<li><a href="/qa/qaList"><i class="fa fa-question-circle"></i></a></li>
+							<c:if test="${sessionScope.loginMember == null}">
+								<li><a
+									href="${pageContext.request.contextPath}/member/loginPage"><button class="site-btn">로그인</button></a></li>
+							</c:if>
+							<c:if test="${sessionScope.loginMember != null}">
+								<li><a
+									href="${pageContext.request.contextPath}/member/logout"><button class="site-btn">로그아웃</button></a></li>
+							</c:if>
 						</ul>
 					</div>
 				</div>
@@ -237,7 +250,7 @@ div#category_young {
 						<input type="hidden" class="categoryNo">
 						<div id="category_young">
 							<select id="high_class" onchange="category(this)">
-								<option value="-1">선택</option>
+								<option value="">선택</option>
 								<option value="05">인문</option>
 							</select>
 							<!-- 중분류 -->

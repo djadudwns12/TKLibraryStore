@@ -23,10 +23,6 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function() {
-		//let qaList = $('.qaContent');
-		
-		//$('#main_content').html(qaList);
-		
 		// 저장 성공 시 성공메세지 띄우는 함수
 		msgStatus();
 		
@@ -49,6 +45,7 @@
 
 	<div class="qaContent">
 		<div class="container mt-3">
+			<a href="/qa/qaSaveForm" style="float: right;"><button class="site-btn" style="margin-bottom: 10px;">Q&A남기기</button></a>
 			<table class="table table-hover">
 				<thead>
 					<tr>
@@ -67,8 +64,8 @@
 					</c:forEach>
 				</tbody>
 			</table>
+			
 		</div>
-		<a href="/qa/qaSaveForm"><button>Q&A남기기</button></a>
 	</div>
 
 

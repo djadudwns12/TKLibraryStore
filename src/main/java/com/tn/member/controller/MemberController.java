@@ -3,6 +3,7 @@ package com.tn.member.controller;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -20,6 +21,7 @@ import java.util.Random;
 
 import javax.servlet.http.HttpSession;
 
+import org.aspectj.weaver.ast.Or;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.MemberVO;
@@ -43,6 +46,8 @@ import com.tn.member.model.vo.ProfileResponseWithoutData;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.service.MemberService;
 import com.tn.member.service.SendMailService;
+import com.tn.order.model.vo.OrderVO;
+import com.tn.order.service.OrderService;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,6 +70,8 @@ public class MemberController {
 
 	@Autowired
 	private MemberService mService;
+	@Autowired
+	private OrderService oService;
 	@Autowired
 	private ProfileFileProcess fileProcess;
 
@@ -101,7 +108,7 @@ public class MemberController {
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public void login(@RequestParam("userId") String userId, @RequestParam("userPwd") String userPwd,
-			HttpSession session) {
+			HttpSession session,Model model) {
 		System.out.println(userId + ": " + userPwd);
 		// 로그인 시키는 메서드
 		try {
@@ -111,8 +118,10 @@ public class MemberController {
 				System.out.println(loginMember);
 				// 로그인 한 유저 세션에 저장하기
 				session.setAttribute("loginMember", loginMember);
+				model.addAttribute("status", "loginSuccess");
 			} else { // 로그인 실패시
 				System.out.println("로그인 실패");
+				model.addAttribute("status", "loginFail");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -157,6 +166,7 @@ public class MemberController {
 			MemberVO loginMember = mService.getEditMemberInfo(((MemberVO)ses.getAttribute("loginMember")).getUserId());
 			System.out.println(loginMember.toString());
 			model.addAttribute("loginMember", loginMember);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -175,16 +185,33 @@ public class MemberController {
 	 *
 	 */
 	@RequestMapping(value = "/mypage")
-	public void saveEditInfo(MemberDTO loginMember, RedirectAttributes redirectAttributes,Model model,HttpSession sess) {
+	public String saveEditInfo(MemberDTO loginMember,Model model,HttpSession sess) {
 
 		try {
-			mService.saveEditInfo(loginMember);
+			// 회원정보 수정하는 부분
+			if(mService.saveEditInfo(loginMember)) {
+				// 회원정보를 수정하였을 경우 수정되 회원정보를 세션에 저장하여 사용하도록함.
+				sess.setAttribute("loginMember", loginMember);
+			}else {
+				loginMember.setUserId(((MemberVO)sess.getAttribute("loginMember")).getUserId());
+			}
+			// 회원정보를 불러오는 부분? 근데 왜 세션에서 불러옴? 뷰단에서 세션을 불러도될것으로 보임
 			model.addAttribute("loginMember", (MemberVO) sess.getAttribute("loginMember"));
-			redirectAttributes.addAttribute("status", "editSuccess");
+			
+			// 회원의 주문목록을 불러오는 메서드
+			List<BooklistVO> list = oService.getOrderList(loginMember);
+			
+			System.out.println(list);
+			
+			//model.addAttribute("orderList", list);
+			model.addAttribute("orderList", list);
+			model.addAttribute("status", "editSuccess");
 		} catch (Exception e) {
 			e.printStackTrace();
-			redirectAttributes.addAttribute("status", "editFail");
+			model.addAttribute("status", "editFail");
 		}
+		
+		return "/member/mypage";
 
 	}
 

@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService {
         this.messageService = NurigoApp.INSTANCE.initialize(PropertiesTask.getPropertiesValue("coolSmsKey"), PropertiesTask.getPropertiesValue("coolSmsSecret"), "https://api.coolsms.co.kr");
   }  
 	
-  @Override
+  	@Override
 	@Transactional(readOnly = true)
 	public List<Map<String, String>> getMember() {
 		// TODO Auto-generated method stub

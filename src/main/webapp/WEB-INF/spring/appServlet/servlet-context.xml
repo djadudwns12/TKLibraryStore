@@ -74,7 +74,7 @@
 			<mapping path="/admin/restockList" />
 			
 			<mapping path="/member/edit"/>
-      		<mapping path="/member/myPage" />
+      <mapping path="/member/mypage" />
       
 			<beans:ref bean="authInterceptor"/>
 		
