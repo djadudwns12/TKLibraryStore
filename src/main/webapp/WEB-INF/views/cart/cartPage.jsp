@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -15,287 +15,297 @@
 <title>장바구니</title>
 
 <link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
+   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+   rel="stylesheet">
 <style>
 /* 모든 td에 공통 스타일 적용 (cart.thumbNail 제외) */
 .common-td {
-	text-align: center !important;
-	vertical-align: middle !important;
+   text-align: center !important;
+   vertical-align: middle !important;
 }
 
 /* 이미지 td 스타일 (다르게 적용 가능) */
 .thumbnail {
-	width: 80px;
+   width: 80px;
 }
 
 /* 버튼 */
 .button-link {
-	color: white;
-	text-decoration: none;
-	padding: 5px 10px;
-	border: none;
-	background-color: transparent;
-	display: inline-block;
-	font-size: 16px;
-	transition: transform 0.1s ease, box-shadow 0.1s ease;
+   color: white;
+   text-decoration: none;
+   padding: 5px 10px;
+   border: none;
+   background-color: transparent;
+   display: inline-block;
+   font-size: 16px;
+   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 /* 마우스 올렸을 때 */
 .button-link:hover {
-	color: #f0f0f0;
+   color: #f0f0f0;
 }
 
 /* 클릭 시 눌리는 효과 */
 .button-link:active {
-	transform: translateY(2px);
+   transform: translateY(2px);
 }
 
 .quantity-control {
-	display: inline-flex;
-	align-items: center;
-	border: 1px solid #ddd;
-	border-radius: 5px;
-	overflow: hidden; /* 경계선에 맞춰서 내용이 잘리지 않도록 */
+   display: inline-flex;
+   align-items: center;
+   border: 1px solid #ddd;
+   border-radius: 5px;
+   overflow: hidden; /* 경계선에 맞춰서 내용이 잘리지 않도록 */
 }
 
 .quantity-control button {
-	background-color: #f8f9fa; /* 버튼 배경색 */
-	border: none;
-	padding: 5px 10px;
-	cursor: pointer;
-	font-size: 18px; /* 버튼 크기 */
-	transition: background-color 0.3s;
+   background-color: #f8f9fa; /* 버튼 배경색 */
+   border: none;
+   padding: 5px 10px;
+   cursor: pointer;
+   font-size: 18px; /* 버튼 크기 */
+   transition: background-color 0.3s;
 }
 
 .quantity-control button:hover {
-	background-color: #e2e6ea; /* 버튼 마우스 오버 시 색상 */
+   background-color: #e2e6ea; /* 버튼 마우스 오버 시 색상 */
 }
 
 .quantity-control input {
-	width: 40px; /* 수량 입력창 너비 */
-	text-align: center; /* 텍스트 중앙 정렬 */
-	border: none;
-	outline: none; /* 포커스 시 경계선 제거 */
-	font-size: 18px; /* 입력 텍스트 크기 */
+   width: 40px; /* 수량 입력창 너비 */
+   text-align: center; /* 텍스트 중앙 정렬 */
+   border: none;
+   outline: none; /* 포커스 시 경계선 제거 */
+   font-size: 18px; /* 입력 텍스트 크기 */
 }
 
 .change-btn {
-	background-color: #7FAD39; /* 원하시는 배경색으로 변경 가능 */
-	color: white;
-	border: none;
-	border-radius: 5px; /* 귀여운 느낌을 위해 둥글게 */
-	padding: 5px 10px; /* 여백을 적게 설정 */
-	font-size: 12px; /* 작게 설정 */
-	transition: background-color 0.3s;
-	margin-top: 0.5em;
+   background-color: #7FAD39; /* 원하시는 배경색으로 변경 가능 */
+   color: white;
+   border: none;
+   border-radius: 5px; /* 귀여운 느낌을 위해 둥글게 */
+   padding: 5px 10px; /* 여백을 적게 설정 */
+   font-size: 12px; /* 작게 설정 */
+   transition: background-color 0.3s;
+   margin-top: 0.5em;
 }
 
 .change-btn:hover {
-	background-color: #6FAF2E; /* 호버 시 색상 변경 */
+   background-color: #6FAF2E; /* 호버 시 색상 변경 */
 }
 </style>
 </head>
 
 <body>
 
-	<c:import url="../header.jsp"></c:import>
+   <c:import url="../header.jsp"></c:import>
 
-	<div class="container">
-		<button type="button" class="btn btn-outline-danger"
-			id="deleteSelectedButton">선택삭제</button>
-		<div style="max-height: 500px; overflow-y: auto;">
-			<table class="table table-hover">
-				<thead>
-					<tr style="text-align: center;">
-						<th><input type="checkbox" id="selectAll"
-							onclick="toggleSelectAll(this)" /></th>
-						<th>이미지</th>
-						<th>제목</th>
-						<th>판매가</th>
-						<th>할인가</th>
-						<th>수량</th>
-						<th>선택</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="cart" items="${cartList}">
-						<tr class="cartItem">
-							<td class="common-td"><input type="checkbox"
-								class="selectItem" onclick="updateTotals()"
-								data-price="${cart.price}" data-salePrice="${cart.salePrice}"
-								data-cart-id="${cart.cartId}"></td>
-							<td class="thumbnail"><img src="${cart.thumbNail}"
-								style="width: 70px;" /></td>
-							<td class="common-td">${cart.title}</td>
-							<td class="common-td">
-								<div>
-									<fmt:formatNumber value="${cart.price}" type="number"
-										groupingUsed="true" />
-									원
-								</div>
-							</td>
-							<td class="common-td">
-								<div>
-									<fmt:formatNumber value="${cart.salePrice}" type="number"
-										groupingUsed="true" />
-									원
-								</div>
-							</td>
-							<td class="common-td">
-								<div class="quantity-control">
-									<button type="button" class="decrease-btn"
-										data-cart-id="${cart.cartId}">-</button>
-									<input type="text" id="qtyInput-${cart.cartId}"
-										value="${cart.qty}" size="2" readonly /> <input type="hidden"
-										id="inven-${cart.cartId}" value="${cart.inven}" />
-									<script>
+   <div class="container">
+      <button type="button" class="btn btn-outline-danger"
+         id="deleteSelectedButton">선택삭제</button>
+      <form>
+      <div style="max-height: 500px; overflow-y: auto;">
+         <table class="table table-hover">
+            <thead>
+               <tr style="text-align: center;">
+                  <th><input type="checkbox" id="selectAll" class="selectAll"
+                     onclick="toggleSelectAll(this)" /></th>
+                  <th>이미지</th>
+                  <th>제목</th>
+                  <th>판매가</th>
+                  <th>할인가</th>
+                  <th>수량</th>
+                  <th>선택</th>
+               </tr>
+            </thead>
+            <tbody>
+               <c:forEach var="cart" items="${cartList}">
+                  <tr class="cartItem">
+                     <td class="common-td"><input type="checkbox"
+                        class="selectItem" data-price="${cart.price}"
+                        data-salePrice="${cart.salePrice}" data-cart-id="${cart.cartId}"></td>
+                     <td class="thumbnail"><img src="${cart.thumbNail}"
+                        style="width: 70px;" name="thumbNail" /></td>
+                     <td class="common-td" name="title">${cart.title}</td>
+                     <td class="common-td">
+                        <div name="price">
+                           <fmt:formatNumber value="${cart.price}" type="number"
+                              groupingUsed="true"/>
+                           원
+                        </div>
+                     </td>
+                     <td class="common-td">
+                        <div name="salePrice">
+                           <fmt:formatNumber value="${cart.salePrice}" type="number"
+                              groupingUsed="true"/>
+                           원
+                        </div>
+                     </td>
+                     <td class="common-td">
+                        <div class="quantity-control">
+                           <button type="button" class="decrease-btn"
+                              data-cart-id="${cart.cartId}">-</button>
+                           <input type="text" id="qtyInput-${cart.cartId}"
+                              value="${cart.qty}" size="2" readonly name="cartQty"/> <input type="hidden"
+                              id="inven-${cart.cartId}" value="${cart.inven}" />
+                           <script>
                                 console.log("생성된 qtyInput ID:", 'qtyInput-${cart.cartId}');
                                 console.log("cartId : ", '${cart.cartId}', "재고수량 : ", '${cart.inven}');
                             </script>
-									<button type="button" class="increase-btn"
-										data-cart-id="${cart.cartId}">+</button>
-								</div>
-							</td>
-							<td class="common-td"><img
-								src="/resources/images/cart_delete.png" width="30px"
-								onclick="showDeleteModal('${cart.cartId}', this);"></td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-		</div>
+                           <button type="button" class="increase-btn"
+                              data-cart-id="${cart.cartId}">+</button>
+                        </div>
+                     </td>
+                     <td class="common-td"><img
+                        src="/resources/images/cart_delete.png" width="30px"
+                        onclick="showDeleteModal('${cart.cartId}', this);"></td>
+                  </tr>
+               </c:forEach>
+            </tbody>
+         </table>
+      </div>
 
-		<table class="table table-hover" name="totalExpectedPayment">
-			<thead>
-				<tr style="text-align: center;">
-					<th>총 상품금액</th>
-					<th></th>
-					<th>배송비</th>
-					<th></th>
-					<th>총 할인금액</th>
-					<th></th>
-					<th>결제예정금액</th>
-					<th>적립예정포인트</th>
-				</tr>
-			</thead>
-			<tbody>
-				<span id="pointRate" style="display: none;">${pointRate}</span> <!-- pointRate 추가 -->
-				<c:set var="totalPrice" value="0" />
-				<c:set var="totalSalePrice" value="0" />
-				<c:set var="totalPay" value="0" />
-				<c:set var="totalPoint" value="0" />
-				<c:forEach var="cart" items="${cartList}">
-					<c:set var="totalPrice"
-						value="${totalPrice + cart.price * cart.qty}" />
-					<c:set var="totalSalePrice"
-						value="${totalSalePrice + (cart.price*0.9)}" />
-					<c:set var="totalPay"
-						value="${totalPay + totalSalePrice * cart.qty}" />
-					<c:set var="totalPoint"
-						value="${totalPoint + (totalPay * pointRate)}" />
-					<!-- 소수점 이하 제거 -->
-					<c:set var="totalPoint"
-						value="${fn:substringBefore(totalPoint, '.')}" />
-				</c:forEach>
-				<tr>
-					<td class="common-td"><strong id="totalPrice"> <fmt:formatNumber
-								value="${totalPrice}" type="number" groupingUsed="true" />원
-					</strong></td>
-					<td class="common-td"><strong>-</strong></td>
-					<td class="common-td"><strong>0원</strong></td>
-					<td class="common-td"><strong>-</strong></td>
-					<td class="common-td"><strong id="totalSalePrice"> <fmt:formatNumber
-								value="${totalSalePrice}" type="number" groupingUsed="true" />원
-					</strong></td>
-					<td class="common-td"><strong>=</strong></td>
-					<td class="common-td"><strong id="totalPay"> <fmt:formatNumber
-								value="${totalPay}" type="number" groupingUsed="true" />원
-					</strong></td>
-					<td class="common-td"><strong id="totalPoint"> <fmt:formatNumber
-								value="${totalPoint}" type="number" groupingUsed="true" />P
-					</strong></td>
-				</tr>
-			</tbody>
-		</table>
+      <table class="table table-hover" name="totalExpectedPayment">
+         <thead>
+            <tr style="text-align: center;">
+               <th>총 상품금액</th>
+               <th></th>
+               <th>배송비</th>
+               <th></th>
+               <th>총 할인금액</th>
+               <th></th>
+               <th>결제예정금액</th>
+               <th>적립예정포인트</th>
+            </tr>
+         </thead>
+         <tbody>
+            <span id="pointRate" style="display: none;">${pointRate}</span>
+            <!-- pointRate 추가 -->
+            <c:set var="totalPrice" value="0" />
+            <c:set var="totalSalePrice" value="0" />
+            <c:set var="totalPoint" value="0" />
 
-		<div
-			style="display: flex; justify-content: center; align-items: center;">
-			<button type="button" id="paymentButton" class="btn btn-success"
-				style="background: #7FAD39;">주문하기</button>
-		</div>
-	</div>
+            <c:forEach var="cart" items="${cartList}">
+               <!-- 총 상품 금액 (할인 전) -->
+               <c:set var="totalPrice"
+                  value="${totalPrice + cart.price * cart.qty}" />
 
-	<!-- The Modal -->
-	<div class="modal" id="myModal" style="display: none;">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title"></h4>
-					<button type="button" class="btn-close modalCloseBtn"
-						data-bs-dismiss="modal"></button>
-				</div>
-				<div class="modal-body"></div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-info" id="deleteConfirmButton">삭제</button>
-					<button type="button" class="btn btn-danger modalCloseBtn"
-						onclick="$('#myModal').modal('hide');">취소</button>
-				</div>
-			</div>
-		</div>
-	</div>
 
-	<!-- 재고 부족 모달 -->
-	<div class="modal" id="stockModal" style="display: none;">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">재고 부족</h4>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-				</div>
-				<div class="modal-body">
-					<p>재고가 부족합니다.</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger"
-						data-bs-dismiss="modal">닫기</button>
-				</div>
-			</div>
-		</div>
-	</div>
+            </c:forEach>
 
-	<!-- 삭제 확인 모달 -->
-	<div class="modal fade" id="confirmDeleteModal" tabindex="-1"
-		aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="confirmDeleteModalLabel">삭제 확인</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">선택한 상품을 삭제하시겠습니까?</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-danger"
-						id="confirmDeleteButton">삭제</button>
-				</div>
-			</div>
-		</div>
-	</div>
+            <!-- 총 할인가 계산 (상품 가격의 10% 할인 적용) -->
+            <c:set var="totalSalePrice"
+               value="${totalSalePrice + totalPrice * 0.1}" />
 
-	<c:import url="../footer.jsp"></c:import>
+            <!-- 결제 예정 금액 (총 상품 금액 - 할인된 금액) -->
+            <c:set var="totalPay" value="${totalPrice - totalSalePrice}" />
 
-	<!-- jQuery 및 Bootstrap JS를 body 끝 부분에 배치 -->
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<!-- JavaScript 코드 -->
-	<script>
+            <!-- 적립 예정 포인트 계산 (결제 예정 금액 * pointRate) -->
+            <c:set var="totalPoint" value="${totalPay * pointRate}" />
+
+            <!-- 소수점 이하 제거 -->
+            <c:set var="totalPoint"
+               value="${fn:substringBefore(totalPoint, '.')}" />
+
+            <tr>
+               <td class="common-td" name="totalPrice"><strong id="totalPrice"> <fmt:formatNumber
+                        value="${totalPrice}" type="number" groupingUsed="true"/>원
+               </strong></td>
+               <td class="common-td"><strong>-</strong></td>
+               <td class="common-td"><strong>0원</strong></td>
+               <td class="common-td"><strong>-</strong></td>
+               <td class="common-td" name="totalSalePrice"><strong id="totalSalePrice"> <fmt:formatNumber
+                        value="${totalSalePrice}" type="number" groupingUsed="true" />원
+               </strong></td>
+               <td class="common-td"><strong>=</strong></td>
+               <td class="common-td" name="totalPay"><strong id="totalPay"> <fmt:formatNumber
+                        value="${totalPay}" type="number" groupingUsed="true" />원
+               </strong></td>
+               <td class="common-td" name="totalPoint"><strong id="totalPoint"> <fmt:formatNumber
+                        value="${totalPoint}" type="number" groupingUsed="true" />P
+               </strong></td>
+            </tr>
+         </tbody>
+      </table>
+      </form>
+      <div
+         style="display: flex; justify-content: center; align-items: center;">
+         <button type="button" id="paymentButton" class="btn btn-success"
+            style="background: #7FAD39;">주문하기</button>
+      </div>
+   </div>
+
+   <!-- The Modal -->
+   <div class="modal" id="myModal" style="display: none;">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title"></h4>
+               <button type="button" class="btn-close modalCloseBtn"
+                  data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-info" id="deleteConfirmButton">삭제</button>
+               <button type="button" class="btn btn-danger modalCloseBtn"
+                  onclick="$('#myModal').modal('hide');">취소</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- 재고 부족 모달 -->
+   <div class="modal" id="stockModal" style="display: none;">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title">재고 부족</h4>
+               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+               <p>재고가 부족합니다.</p>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-danger"
+                  data-bs-dismiss="modal">닫기</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- 삭제 확인 모달 -->
+   <div class="modal fade" id="confirmDeleteModal" tabindex="-1"
+      aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="confirmDeleteModalLabel">삭제 확인</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+            </div>
+            <div class="modal-body">선택한 상품들을 삭제하시겠습니까?</div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary"
+                  data-bs-dismiss="modal">취소</button>
+               <button type="button" class="btn btn-danger"
+                  id="confirmDeleteButton">삭제</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <c:import url="../footer.jsp"></c:import>
+
+   <!-- jQuery 및 Bootstrap JS를 body 끝 부분에 배치 -->
+   <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+   <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+   <!-- JavaScript 코드 -->
+   <script>
     $(document).ready(function() {
         // 수량 증가 함수
         function increaseQty(cartId) {
@@ -376,7 +386,7 @@
                 const qty = qtyInput ? parseInt(qtyInput.value) || 0 : 0;  // NaN 방지 및 요소 존재 확인
 
                 totalPrice += price * qty;
-                totalSalePrice += (price * 0.9) * qty;  // 10% 할인 적용
+                totalSalePrice += (price * 0.1) * qty;  // 10% 할인 적용
                 totalPay += salePrice * qty;
                 totalPoint += salePrice * pointRate * qty; // pointRate 적용
             });
@@ -523,7 +533,7 @@
             $('#confirmDeleteModal').modal('show');
         });
 
-        // 삭제 버튼 클릭 시 처리
+        // 선택 삭제 버튼 클릭 시 처리
         $('#confirmDeleteButton').on('click', function() {
             // AJAX 요청으로 서버에 삭제 요청 보내기
             $.ajax({
@@ -538,6 +548,14 @@
                             // 해당 cartId를 가진 행 제거
                             $('input[data-cart-id="' + cartId + '"]').closest('tr').remove();
                         });
+                        
+                        // 모든 체크박스 다시 선택
+                        $('.selectItem').prop('checked', true);
+                        $('.selectAll').prop('checked', true);
+                        
+                        // 총합 업데이트 함수 호출
+                        updateTotals();
+                        
                     } else {
                         alert('삭제 중 오류가 발생했습니다.');
                     }
@@ -566,39 +584,110 @@
                 cartIds.push($(item).attr('data-cart-id'));
             });
 
-            // 총액 정보 가져오기
-            let totalPrice = parseInt(document.getElementById('totalPrice').innerText.replace(/,/g, ''));
-            let totalSalePrice = parseInt(document.getElementById('totalSalePrice').innerText.replace(/,/g, ''));
-            let totalPay = parseInt(document.getElementById('totalPay').innerText.replace(/,/g, ''));
-            let totalPoint = parseInt(document.getElementById('totalPoint').innerText.replace(/,/g, ''));
 
-            let orderInfo = {
-                'totalPrice': totalPrice,
-                'totalSalePrice': totalSalePrice,
-                'totalPay': totalPay,
-                'totalPoint': totalPoint,
-                'cartIds': cartIds
-            };
 
-            // 선택된 bookNos 로그 출력
-            console.log("선택된 orderInfo : ", orderInfo);
-            
-            // AJAX 요청
-            $.ajax({  
+        });
+    });
+    
+    
+    
+
+    
+    $(function () {
+        const cartIdList = [
+            <c:forEach var="cart" items="${cartList}">
+                '${cart.cartId}'<c:if test="${!status.last}">, </c:if>
+            </c:forEach>
+        ];
+
+        $("#paymentButton").on("click", function (event) {
+            console.log("결제 버튼 클릭됨");
+
+            let fd = new FormData();  
+
+            // 체크된 항목에 대해서만 반복문으로 처리
+            $("tr.cartItem").has("input.selectItem:checked").each(function () {  
+                let thumbNail = $(this).find("img[name='thumbNail']").attr("src") || '';  
+                let title = $(this).find("td[name='title']").text().trim() || '';  
+                let priceText = $(this).find("div[name='price']").text().trim() || '';  
+                let price = priceText.replace(/[^\d]/g, ''); 
+
+                let salePriceText = $(this).find("div[name='salePrice']").text().trim() || ''; 
+                let salePrice = salePriceText.replace(/[^\d]/g, '');  
+
+                let cartQty = $(this).find("input[name='cartQty']").val() || '';  
+                let cartId = $(this).find("input.selectItem:checked").data("cart-id"); // 선택된 cartId 가져오기
+
+                // 각 선택된 상품의 정보를 FormData에 추가
+                fd.append("thumbNail", thumbNail);
+                fd.append("title", title);
+                fd.append("price", price);
+                fd.append("salePrice", salePrice);
+                fd.append("cartQty", cartQty);
+                fd.append("cartId", cartId);  // 각 개별 cartId 추가
+                
+                console.log("추출된 체크된 책 정보:", {
+                    thumbNail: thumbNail,
+                    title: title,
+                    price: price,
+                    salePrice: salePrice,
+                    cartQty: cartQty,
+                    cartId: cartId
+                });
+            });
+
+            // 체크된 항목이 없을 경우 경고
+            if (!fd.has("thumbNail")) {
+                alert("결제할 책을 선택해주세요.");
+                return; 
+            }
+
+            // 총 결제 정보 추출 및 추가
+            let totalPriceText = $("td[name='totalPrice']").text().trim();
+            let totalPrice = totalPriceText.replace(/[^\d]/g, ''); 
+
+            let totalSalePriceText = $("td[name='totalSalePrice']").text().trim();  
+            let totalSalePrice = totalSalePriceText.replace(/[^\d]/g, '');  
+
+            let totalPayText = $("td[name='totalPay']").text().trim();
+            let totalPay = totalPayText.replace(/[^\d]/g, '');  
+
+            let totalPointText = $("td[name='totalPoint']").text().trim();
+            let totalPoint = totalPointText.replace(/[^\d]/g, '');  
+
+            fd.append("totalPrice", totalPrice);
+            fd.append("totalSalePrice", totalSalePrice);
+            fd.append("totalPay", totalPay);
+            fd.append("totalPoint", totalPoint);
+
+            console.log("총 결제 정보:", {
+                totalPrice: totalPrice,
+                totalSalePrice: totalSalePrice,
+                totalPay: totalPay,
+                totalPoint: totalPoint
+            });
+
+            // AJAX로 전송
+            $.ajax({
                 url: "/order/payment",
                 type: "POST",
-                dataType : "json",
-                contentType : "application/json; charset=utf-8",
-                data: JSON.stringify(orderInfo),
-                success: function(response) {
-                    // 결제 성공 후 처리 로직
+                data: fd,
+                contentType: false,
+                processData: false,
+                cache: false,
+                success: function (response) {
+                    console.log("성공:", response);
+                    window.location.href = "/order/payment";
                 },
-                error: function() {
-                    // 결제 오류 처리 로직
+                error: function () {
+                    console.error("오류");
                 }
             });
         });
     });
+
+
+
 </script>
 
 </body>

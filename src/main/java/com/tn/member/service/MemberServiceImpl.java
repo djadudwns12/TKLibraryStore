@@ -66,16 +66,6 @@ public class MemberServiceImpl implements MemberService {
 		}		
 		return result;
 	}
-	
-	@Override
-	public boolean deleteMember(String userId) throws Exception {
-		boolean result = false;
-		if(dao.deleteMember(userId) == 1) {
-			result=true;
-			
-		}
-		return result;
-	}
 
 	@Override
 	public MemberVO loginMember(String userId, String userPwd) throws Exception {
@@ -138,8 +128,6 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
-
-
 //-----------------------------------------박근영-------------------------------------------------
 
 		
