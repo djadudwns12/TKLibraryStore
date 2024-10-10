@@ -14,7 +14,7 @@
   	
   	<!-- 회원정보수정을 위해 회원정보를 얻어오는 쿼리문 -->
   	<select id="getEditMemberInfo" resultType="com.tn.member.model.vo.MemberVO">
-  		select userPwd, userName, userBirth, phoneNum, email from Member where userId=#{userId}
+  		select * from Member where userId=#{userId}
   	</select>
   	
   	<!-- 수정된 회원정보를 DB에 저장한는 쿼리문 -->
@@ -22,6 +22,10 @@
   		update Member set userPwd=#{userPwd}, userBirth=#{userBirth}, phoneNum=#{phoneNum}, email=#{email} where userId=#{userId}
   	</update>
 
+	<!-- 회원탈퇴 -->
+	<delete id="deleteMember">
+		delete from Member where userId=#{userId}
+	</delete>
   	
 <!-- 박근영 -->
 	<!-- 회원 가입를 위하여 회원 정보를 DB에 저장하며, 회원가입시 프로필 이미지 등록 유무에 따른 inser문 if문으로 구별 -->

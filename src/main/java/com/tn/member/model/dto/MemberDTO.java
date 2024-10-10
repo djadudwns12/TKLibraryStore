@@ -22,7 +22,5 @@ public class MemberDTO {
 	private String phoneNum;
 	private String email;
 	private String userImg;
-	private String userPoint;
-	private String userClass;
-
+	private int userPoint;
 }
