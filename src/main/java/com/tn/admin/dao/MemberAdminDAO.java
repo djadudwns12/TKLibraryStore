@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.tn.admin.model.vo.MemberAgeVO;
+import com.tn.admin.model.vo.MemberClassVO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
@@ -41,7 +43,9 @@ public interface MemberAdminDAO {
 	List<OrderVO> getRecentOrder(String userId) throws Exception;
 	
 	// 회원의 나이대를 가지고 오는 메서드 
-	Map<String, Object> selectMemberAge() throws Exception;
+	List<MemberAgeVO> selectMemberAge() throws Exception;
+	// 회원등급을 가지고 오는  메서드
+	List<MemberClassVO> selectMemberClass() throws Exception;
 
 	
 	

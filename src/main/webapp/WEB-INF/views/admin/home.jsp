@@ -20,12 +20,14 @@
 	src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script>
+google.charts.load('current', {'packages':['corechart']});
+
 $(function(){
 	// 방문자 통계페이지데이터를 가지고 오는 쿼리문
 	getvisitHistory();
 })
 
-function getVisitorHistory(){
+function getvisitHistory(){
 	$.ajax({
 		url : '/admin/getVisitorHistory',
 		type : 'get',
@@ -34,11 +36,48 @@ function getVisitorHistory(){
 		dataType : 'json',
 		success : function(result) {
 			console.log(result);
+			drawMemberAge(result.memberAge)
+			//google.charts.setOnLoadCallback(drawMemberAge);
+			drawMemberClass(result.memberClass)
+			
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			alert('업로드 실패: ' + textStatus);
 		}
 	});
+}
+function drawMemberAge(arr) {	
+	let aa = [['회원연령대', '파이그래프']]
+	$.each(arr,function(i,item) {
+  		aa.push([item.age_group, item.user_count])
+	});
+	
+    var data = google.visualization.arrayToDataTable(aa);
+
+    var options = {
+      title: '나이'
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('MemberAge'));
+
+    chart.draw(data, options);
+    
+  }
+function drawMemberClass(arr){
+	let aa = [['회원등급별', '파이그래프']]
+	$.each(arr,function(i,item) {
+  		aa.push([item.userClass_group, item.user_count])
+	});
+	
+    var data = google.visualization.arrayToDataTable(aa);
+
+    var options = {
+      title: '회원등급'
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('MemberClass'));
+
+    chart.draw(data, options);
 }
 
 	
@@ -120,12 +159,12 @@ img {
 
 				<!-- 연령대그래프 그리기(Pie) -->
 				<div>
-					<img src="/resources/images/TKlogo.png">
+					<div id="MemberAge" style="width: 450px; height: 300px;"></div>
 				</div>
 
 				<!-- 회원등급그래프 그리기(Pie) -->
 				<div>
-					<img src="/resources/images/TKlogo.png">
+					<div id="MemberClass" style="width: 450px; height: 300px;"></div>
 				</div>
 			</div>
 

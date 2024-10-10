@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tn.admin.dao.MemberAdminDAO;
+import com.tn.admin.model.vo.MemberAgeVO;
+import com.tn.admin.model.vo.MemberClassVO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
@@ -101,7 +103,13 @@ public class MemberAdminServiceImpl implements MemberAdminService {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		
-		Map<String, Object> memberAgeMap = dao.selectMemberAge();
+		List<MemberAgeVO> memberAge = dao.selectMemberAge();
+		List<MemberClassVO> memberClass = dao.selectMemberClass();
+		
+//		System.out.println(memberAgeMap);
+		
+		resultMap.put("memberAge", memberAge);
+		resultMap.put("memberClass", memberClass);
 		
 		
 		
