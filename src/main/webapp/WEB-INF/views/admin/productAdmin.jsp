@@ -364,7 +364,7 @@
 							// 실행시키기 위해선 컨트롤러단에서 json데이터로 변환 후 데이터를 보내주어야한다.
 							alert(pro_check + "개의 상품을 삭제했습니다.");
 							location.href = '/admin/productAdmin?ra=${param.ra}&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
-
+	
 						},
 						error : function(data) {
 							console.log(data);
