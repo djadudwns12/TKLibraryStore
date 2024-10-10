@@ -14,7 +14,7 @@
   	
   	<!-- 회원정보수정을 위해 회원정보를 얻어오는 쿼리문 -->
   	<select id="getEditMemberInfo" resultType="com.tn.member.model.vo.MemberVO">
-  		select * from Member where userId=#{userId}
+  		select userPwd, userName, userBirth, phoneNum, email from Member where userId=#{userId}
   	</select>
   	
   	<!-- 수정된 회원정보를 DB에 저장한는 쿼리문 -->
@@ -22,10 +22,6 @@
   		update Member set userPwd=#{userPwd}, userBirth=#{userBirth}, phoneNum=#{phoneNum}, email=#{email} where userId=#{userId}
   	</update>
 
-	<!-- 회원탈퇴 -->
-	<delete id="deleteMember">
-		delete from Member where userId=#{userId}
-	</delete>
   	
 <!-- 박근영 -->
 	<!-- 회원 가입를 위하여 회원 정보를 DB에 저장하며, 회원가입시 프로필 이미지 등록 유무에 따른 inser문 if문으로 구별 -->
@@ -45,22 +41,10 @@
 	    )
 	</insert>
 	
-	<insert id="insertRegisterAddress">
-		INSERT INTO Address (userId, receiver_name, receiver_phone, address)
-		VALUES (#{registerDTO.userId}, #{registerDTO.userName}, #{registerDTO.phone}, #{address});
-	</insert>
-	
 	<select id="selectCompareId" resultType="int">
 		SELECT COUNT(*) FROM Member WHERE userId = #{tmpUserId}
 	</select>
 	
-	<select id="selectUserAddress" resultType="com.tn.order.model.vo.AddressVO">
-		SELECT receiver_name, address_key, receiver_phone, address, isDefault, request FROM Address WHERE userId = #{userId}
-	</select>
-	
-	<select id="selectUserPoint" resultType="int">
-		SELECT userPoint FROM Member WHERE userId = #{userId}
-	</select>	
 <!-- 박근영 -->
 
   	<!-- 관리자페이지에 회원목록을 불러오는 쿼리문 -->

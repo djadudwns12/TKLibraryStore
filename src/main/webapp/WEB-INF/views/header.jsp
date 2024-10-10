@@ -14,8 +14,6 @@
 
 <!-- Google Font -->
 <script type="text/javascript" src="/resources/js/category.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-
 <link
 	href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
 	rel="stylesheet">
@@ -40,37 +38,6 @@
 	type="text/css">
 <link rel="stylesheet" href="/resources/template/css/style.css"
 	type="text/css">
-
-<script>
-$(function(){
-	
-	let userId = '${sessionScope.loginMember.userId}' 
-	
-	if(userId){
-		var heartCount = 0;
-		$.ajax({
-	        url: '/admin/zzimCount',
-	        type: 'POST',
-	        data: { userId: userId },
-	        success: function(data) {
-	        	 console.log(data);
-	        	heartCount = data;
-	        	// 클릭된 div 내의 img 태그의 src 속성 변경
-		        $('#heartCount').text(heartCount);
-	        	
-	        },
-	        error: function(error) {
-	            console.log("heartCount 불러오지못함");
-	        }
-	    });
-	} else {
-		$('#heartCount').text(0);
-	}
-	
-});
-</script>
-
-
 <style>
 div#category_young {
 	display: flex;
@@ -201,8 +168,7 @@ div#category_young {
 								<li><a href="${pageContext.request.contextPath}/admin/home"><i
 										class="fa fa-user-secret"></i></a></li>
 							</c:if>
-
-              <li><a href="/member/mypage"><i class="fa fa-heart"></i> <span id="heartCount"></span></a></li>
+							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
 							<li><a href="/cart/cartPage"><i class="fa fa-shopping-bag"></i>
 								<c:if test="${sessionScope.CartCnt > 0}">
             						<span>${sessionScope.CartCnt}</span>

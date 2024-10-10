@@ -20,7 +20,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class RegisterDTO {
-	// 박근영//
+	
 	private String userId;
 	private String password;
 	private String userName;
@@ -29,7 +29,7 @@ public class RegisterDTO {
 	private String birthday;
 	private String keyword;
 	private String addressDetail;
-	// 박근영 //
+	
 	
 
 }
