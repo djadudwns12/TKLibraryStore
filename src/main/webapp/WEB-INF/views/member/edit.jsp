@@ -97,15 +97,28 @@ $(function() {
             	<input type="hidden" id="phoneNumCheck" value="checked"/>
             	<div id="phoneNumError" style="color: red;"></div>
             </div>
-
-			<div class="d-grid gap-2" style="text-align:right;">
-					<button type="submit" class="btn btn-primary" onclick="return isValid();" style="border-color:#7fad38; background-color:#7fad38;">수정완료</button>
-					<button type="reset" class="btn btn-danger" >되돌리기</button>
-					
+<!--      프로필사진 추가 ㅇ안 됨;;      
+			<div class="input-group mb-3" id="profileImageContainer">
+				<label>프로필사진</label>
+		        <div id="imageDropBox">
+		        	<div id="dropBoxText" >프로필 사진을 변경하려면 드래그 앤 드롭하세요.</div>
+		        	<input type="file" id="profileImageInput" style="display: none;" accept="image/*">
+		        	<img id="profilePreview" src="${loginMember.userImg}">
+			        <span class="badge bg-secondary" id="delPreview" onclick="defaultProfileImage();" style="color:white;">기본이미지</span>
+			        <span class="badge" id="resetPreview" onclick="resetProfileImage();" style="border-color:#7fad38; background-color:#7fad38; color:white;">변경취소</span>
+		        </div>
+		        
+		    	
+		    </div> --> 
+		    <div class="d-grid gap-2" style="text-align:right;">
+				<button type="submit" class="btn btn-primary saveEditInfo" onclick="return isValid();" style="border-color:#7fad38; background-color:#7fad38;">수정완료</button>
+				<button type="reset" class="btn btn-danger" >되돌리기</button>
+				<button type="button" class="btn btn-secondary" onclick="location.href='/member/deletemember';">회원탈퇴</button>
 			</div>
 		</form>
 	
 	</div>
+		
 	</div>
 	
 	<jsp:include page="./../footer.jsp"></jsp:include>
