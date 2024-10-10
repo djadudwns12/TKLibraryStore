@@ -32,10 +32,10 @@
 	$(function() {
 		//let bDetail = $('.bDetail');
 		//$('#main_content').html(bDetail);
-		
 
-		let userId = '${sessionScope.loginMember.userId}'
-		let bookNo = '${product.bookNo}'
+		let userId = '${sessionScope.loginMember.userId}';
+		let bookNo = '${product.bookNo}';
+		
 		let zzimed = false;
 		//  ------------------------찜기능
 		$('.zzimHeart').on('click', function() {
@@ -171,16 +171,48 @@
 		} else {
 			document.getElementById("totalPrice").style.display = "none";
 		}
+		
 	}
 
-	function checkLogin() {
-		let user = '${sessionScope.loginMember.userId}';
+	// 장바구니 버튼 누르면 (1)로그인여부 체크, (2)로그인했다면 장바구니에 담고, 장바구니 이동 여부 물어보기
+	function addCart() {
+		let userId = '${sessionScope.loginMember.userId}';
+		var bookNo = document.getElementById("bookNo").value;
+		var totalQty = document.getElementById("bqty").value;
+		
+		console.log(bookNo + ' 번 책 ' + totalQty + ' 권을 장바구니에 담자!');
 
-		if (user == '') {
-			alert('로그인이 필요한 메뉴입니다');
+		if (userId == '') {
+			alert('로그인이 필요한 메뉴입니다');	// '확인' 버튼 누르면 로그인 창으로 이동 
+			window.location.href = "/member/loginPage";
 
 		} else {
-			location.href = '/cart/cartPage?userId="${userId}"';
+			// (1) 해당 user의 장바구니에 겹치는 상품이 있는 경우: '장바구니에 이미 담은 상품입니다. 장바구니로 고고?'
+			$.ajax({
+		        url: '/cart/cartPage',
+		        type: 'POST',
+		        data: {
+		            userId: userId,
+		            qty: totalQty,  // 최종 선택한 수량
+		            bookNo: bookNo
+		        },
+		        success: function(response) {
+		        	if(reponse.success) {
+		        		alert('장바구니에 상품이 담겼습니다. 장바구니로 이동하시겠습니까?');
+		        		location.href='/cart/cartPage?userId="${userId}"';
+		        	} else {
+		        		alert('장바구니 담기에 실패했습니다. 다시 시도해주세요.');
+		        	}
+		            
+		        },
+		        error: function(error) {
+		        	console.log('AJAX로 데이터 송신 중 에러 발생');
+		            alert('에러가 발생했습니다. 다시 시도해주세요.');
+		        }
+		    });
+			
+			// (2-1) 장바구니에 겹치는 상품이 없는 경우: cart(userId, qty, booNo) 업데이트 
+			// (2-2) '장바구니에 상품이 담겼습니다. 장바구니로 고고?'
 		}
 	}
 	
@@ -281,7 +313,7 @@
 								<div class="product__details__pic__item">
 
 									<c:forEach var="bookInfo" items="${bookDetailInfo}">
-										<img class="bookImagelarge" src="${bookInfo.thumbNail}" alt="">
+										<img class="bookImagelarge" src="${bookInfo.thumbNail}">
 								</div>
 
 							</div>
@@ -294,7 +326,7 @@
 										class="fa fa-star"></i> <i class="fa fa-star"></i> <i
 										class="fa fa-star-half-o"></i> <span>(18 reviews)</span>
 								</div>
-								<div class="author">${bookInfo.author}</div>
+								<div class="author">${bookInfo.author} 지음</div>
 								<div class="information">
 									<p>&nbsp;</p>
 
@@ -304,7 +336,7 @@
 												value="${bookInfo.price}" type="currency" /></span>
 									</p>
 									<p>
-										<b>할인가</b> <span><fmt:formatNumber
+										<b>판매가</b> <span style="font-size:25px;"><fmt:formatNumber
 												value="${bookInfo.salePrice}" type="currency" /></span>
 									</p>
 									<p>
@@ -342,10 +374,10 @@
 										onclick="location.href='/order'"
 										style="background-color: #DA8359;">바로주문</button>
 									<button type="button" class="primary-btn"
-										onclick="checkLogin();">장바구니 담기</button>
+										onclick="addCart();">장바구니 담기</button>
 									<span class="zzimHeart"> <img
 										src="/resources/images/emptyHeart.png">
-									</span>
+									</span><input type="hidden" value="${bookInfo.bookNo}" id="bookNo">
 
 								</div>
 							</div>
@@ -373,7 +405,22 @@
 										<div class="product__details__tab__desc">
 											<h4>회원 리뷰</h4>
 											<p></p>
-											
+											<div class="reviewArea"
+												style="display: flex; align-items: center; gap: 5px;">
+												<div class="rating">
+													<i class="rating__star far fa-star"></i> <i
+														class="rating__star far fa-star"></i> <i
+														class="rating__star far fa-star"></i> <i
+														class="rating__star far fa-star"></i> <i
+														class="rating__star far fa-star"></i>
+												</div>
+												<textarea class="reviewForm" id="review" name="review"
+													placeholder="리뷰 내용을 작성해주세요" style="width: 80%;"></textarea>
+												<button type="submit" class="btn btn-primary"
+													style="background-color: #7FAD38; border: 0; width: 70px; height: 55px;"
+													onclick="return saveReview();">저장</button>
+											</div>
+											<p></p>
 										</div>
 									</div>
 
