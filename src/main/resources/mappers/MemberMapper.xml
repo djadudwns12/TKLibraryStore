@@ -45,10 +45,22 @@
 	    )
 	</insert>
 	
+	<insert id="insertRegisterAddress">
+		INSERT INTO Address (userId, receiver_name, receiver_phone, address)
+		VALUES (#{registerDTO.userId}, #{registerDTO.userName}, #{registerDTO.phone}, #{address});
+	</insert>
+	
 	<select id="selectCompareId" resultType="int">
 		SELECT COUNT(*) FROM Member WHERE userId = #{tmpUserId}
 	</select>
 	
+	<select id="selectUserAddress" resultType="com.tn.order.model.vo.AddressVO">
+		SELECT receiver_name, address_key, receiver_phone, address, isDefault, request FROM Address WHERE userId = #{userId}
+	</select>
+	
+	<select id="selectUserPoint" resultType="int">
+		SELECT userPoint FROM Member WHERE userId = #{userId}
+	</select>	
 <!-- 박근영 -->
 
   	<!-- 관리자페이지에 회원목록을 불러오는 쿼리문 -->

@@ -26,7 +26,23 @@
    	<property name="url" value="${db.url}"/>
    	<property name="username" value="${db.username}"/>
    	<property name="password" value="${db.password}"/>
-   </bean>
+   </bean> 
+   
+   <!-- 로그 출력위해 
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+		
+		<property name="url"
+			value="${db.log4jurl}">
+		</property>
+		
+   	<property name="username" value="${db.username}"/>
+   	<property name="password" value="${db.password}"/>
+	</bean> -->
+
+
    
   
    <!-- Mybatis 객체 -->
@@ -75,6 +91,9 @@
 	<context:component-scan	base-package="com.tn.category.service" />
 	<context:component-scan	base-package="com.tn.category.dao" />
 	<context:component-scan	base-package="com.tn.util" />
+	
+	<context:component-scan	base-package="com.tn.order.service" />
+	<context:component-scan	base-package="com.tn.order.dao" />
 
 		
 		

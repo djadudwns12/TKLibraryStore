@@ -1,5 +1,8 @@
-package com.tn.member.model.vo;
+package com.tn.order.model.vo;
 
+
+
+import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,8 +18,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ProfileResponseWithoutData {
+public class PaymentInfoVO {
 	// -------- 박근영 --------
-	private int code;
-	private String msg;
+	private int bookNo;
+	// -------- 박근영 --------
+	
+
 }

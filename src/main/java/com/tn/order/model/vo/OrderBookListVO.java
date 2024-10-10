@@ -1,6 +1,8 @@
-package com.tn.cart.model.dto;
+package com.tn.order.model.vo;
 
 import java.util.List;
+
+import com.tn.order.model.dto.OrderDTO;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,10 +18,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class OrderInfoDTO {
-	private String totalPrice;
-	private String totalSalePrice;
-	private String totalPay;
-	private String totalPoint;
-	private List<String> cartIds;
+public class OrderBookListVO {
+	
+	private String title;
+	private int price;
+	private int salePrice;
+	private String thumbNail;
+
 }

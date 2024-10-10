@@ -1,4 +1,5 @@
-package com.tn.member.model.vo;
+package com.tn.order.model.vo;
+
 
 
 import lombok.AccessLevel;
@@ -15,8 +16,15 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ProfileResponseWithoutData {
+public class AddressVO {
 	// -------- 박근영 --------
-	private int code;
-	private String msg;
+	private String receiver_name;
+	private String address_key;
+	private String receiver_phone;
+	private String address;
+	private String isDefault;
+	private String request;
+	// -------- 박근영 --------
+	
+
 }
