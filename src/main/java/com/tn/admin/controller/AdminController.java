@@ -1,13 +1,21 @@
 package com.tn.admin.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -23,9 +31,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -36,6 +48,7 @@ import com.tn.admin.model.vo.MyResponseWithoutData;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
+import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.service.MemberAdminService;
 import com.tn.admin.service.ProductAdminService;
 import com.tn.qa.model.vo.QAVO;
@@ -82,6 +95,7 @@ public class AdminController {
 	public String home(Locale locale, Model model) {
 		return "/admin/home";
 	}
+	// ================================================= 한준형 ===========================================================
 
 	@RequestMapping("/productAdmin")
 	// response 객체를 사용할 시에는 반환값 void를 사용해선 안된다. freshAttribute 관련문제
@@ -127,7 +141,13 @@ public class AdminController {
 		            
 		            
 		            List<String> historyList = new ArrayList<>(List.of(searchHistory.split(",")));
-		            	            
+		            
+					if(historyList.contains(searchWord)) {
+		            	
+						historyList.remove(searchWord);
+										   
+					}
+
 		            historyList.add(0, searchWord); // 가장 앞에 추가
 		                
 		            	            
@@ -156,6 +176,7 @@ public class AdminController {
 			model.addAttribute("productList", list); // 데이터 바인딩
 			model.addAttribute("pagingInfo", pi);
 			model.addAttribute("search", searchCriteria);
+			model.addAttribute("ra",sortBy);
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -164,6 +185,34 @@ public class AdminController {
 		
 		return "admin/productAdmin";
 	}
+	
+	//재입고 목록 페이지로 이동
+		@RequestMapping("/restockList")
+		public String restockList(@RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+				@RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize, SearchCriteriaDTO searchCriteria, Model model) {
+			
+			PagingInfoDTO dto = PagingInfoDTO.builder().pageNo(pageNo).pagingSize(pagingSize).build();
+			// System.out.println(dto.getPagingSize() + "페이징정보?" + dto.getPageNo());
+			Map<String, Object> result = null;
+			
+			
+			
+			try {
+				result = pService.restockList(dto, searchCriteria);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			PagingInfo pi = (PagingInfo) result.get("pagingInfo");
+			List<RestockVO> list = (List<RestockVO>) result.get("restockList");
+			
+					
+			
+			model.addAttribute("restockList", list); // 데이터 바인딩
+			model.addAttribute("pagingInfo", pi);
+			
+			return "/admin/restockList";
+		}
 
 	@RequestMapping(value = "/deleteProduct", method = RequestMethod.POST)
 	public ResponseEntity<MyResponseWithData> deleteProduct(@RequestParam(value = "delNo") int[] arr) {
@@ -282,6 +331,252 @@ public class AdminController {
 		BoardUpFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, contentType, originalFileName,fileSize);
 		return fileInfo;
 	}
+	
+	@GetMapping("/popularKeywords")
+    @ResponseBody
+    public List<String> getPopularKeywords(@RequestParam(value = "limit", defaultValue = "10") int limit) {
+        List<String> kewords = null;
+		
+		try {
+			kewords =  pService.getPopularKeywords(limit);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return kewords;
+    }
+	
+	
+	@GetMapping("/searchRecommend")
+    @ResponseBody
+    public Map<String, Object> searchRecommend(@RequestParam("searchWord") String searchWord) {
+		Map<String, Object> response = new HashMap<>();
+		List<String> rcSearch = null;
+		try {
+			rcSearch = pService.searchRecommend(searchWord);
+		
+			if(pService.searchRecommend(searchWord).size() > 0) {
+				// 검색어가 포함된 상품이 있다
+				response.put("msg", "isPresent");
+	            response.put("data", rcSearch);				
+			}else {
+				// 검색어가 포함된 상품이 없다
+				response.put("msg", "notPresent");
+			}
+					
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return response;
+    }
+	
+	// 찜 기능 테스트
+	
+	@PostMapping("/zzimAdd")
+	public ResponseEntity<String> addZzim(@RequestParam("userId") String userId, @RequestParam("bookNo") int bookNo) {
+	   
+	        try {
+				if(pService.addZzim(userId, bookNo)) { // zzim 테이블에 삽입
+					return new ResponseEntity<>("찜 추가 성공", HttpStatus.OK);
+				}else {
+					return new ResponseEntity<>("찜 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+				return new ResponseEntity<>("찜 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+	   
+	}
+	
+	@PostMapping("/zzimRemove")
+	public ResponseEntity<String> removeZzim(@RequestParam("userId") String userId, @RequestParam("bookNo") int bookNo) {
+	   
+	        try {
+				if(pService.removeZzim(userId, bookNo)) { // zzim 테이블에 삽입
+					return new ResponseEntity<>("찜 추가 성공", HttpStatus.OK);
+				}else {
+					return new ResponseEntity<>("찜 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+				return new ResponseEntity<>("찜 추가 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+	   
+	}
+	
+	@PostMapping("/zzimCheck")
+	public ResponseEntity<String> checkZzim(@RequestParam("userId") String userId, @RequestParam("bookNo") Long bookNo) {
+	    boolean isZzim = false;
+		try {
+			if(isZzim = pService.checkZzim(userId, bookNo)) {
+				return new ResponseEntity<>("성공", HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return new ResponseEntity<>("실패", HttpStatus.INTERNAL_SERVER_ERROR);
+		} // 이미 찜했는지 확인
+		
+		System.out.println("isZzim의 값 ===========" + isZzim);
+		return new ResponseEntity<>("없음", HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@PostMapping("/zzimCount")
+	public ResponseEntity<String> zzimCount(@RequestParam("userId") String userId) {
+	    String zzimCount = "";
+		try {
+			zzimCount = pService.getZzimCount(userId);
+				return new ResponseEntity<>(zzimCount, HttpStatus.OK);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} 		
+		System.out.println("zzimCount의 값 ===========" + zzimCount);
+		return new ResponseEntity<>("없음", HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	// ----------------------------------------네이버 책검색
+	
+	@RequestMapping("/bookSearch")
+	public String showBookSearch() {
+		return "/bookSearch";
+	}
+	
+	@RequestMapping(value="/searchBook", produces = "application/json; charset=utf-8;")
+	public @ResponseBody String searchBook(@RequestParam("searchValue") String query) {
+		System.out.println(query + "책을 검색하자");
+	
+		String clientId = "A9ocfghRQUMc_xDTTgQG"; //애플리케이션 클라이언트 아이디
+        String clientSecret = "Jot71p0hsd"; 	  //애플리케이션 클라이언트 시크릿
+        
+        String text = null;
+        try {
+            text = URLEncoder.encode(query, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("검색어 인코딩 실패",e);
+        }
+        
+        String apiURL = "https://openapi.naver.com/v1/search/book.json?query=" + text;    // JSON 결과
+        
+        Map<String, String> requestHeaders = new HashMap<>();
+        requestHeaders.put("X-Naver-Client-Id", clientId);
+        requestHeaders.put("X-Naver-Client-Secret", clientSecret);
+        
+        String responseBody = get(apiURL,requestHeaders);		// 응답된 json
+
+
+        System.out.println(responseBody);
+        
+        return responseBody;
+	}
+	
+	private String get(String apiURL, Map<String, String> requestHeaders) {
+		HttpURLConnection con = connect(apiURL);
+		 try {
+	            con.setRequestMethod("GET");		// 통신방식 : GET
+	            
+	            // Map<String, String>(api서버에 접속하기위한 id, pwd)를 반복하기 위해 Map.entry<K,V>를 사용
+	            // 반복하며 request객체의 속성에 넣어줌
+	            for(Map.Entry<String, String> header :requestHeaders.entrySet()) {
+	                con.setRequestProperty(header.getKey(), header.getValue());
+	            }
+
+
+	            int responseCode = con.getResponseCode();		 // api서버에 접속하여 응답코드를 얻어옴
+	            
+	            if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
+	                return readBody(con.getInputStream());		// api서버가 응답하는 2진데이터를 얻어와 readBody() 호출 input은 내 컴퓨터의 기준에서임(들어온다)
+	            } else { // 오류 발생
+	                return readBody(con.getErrorStream());
+	            }
+	        } catch (IOException e) {
+	            throw new RuntimeException("API 요청과 응답 실패", e);
+	        } finally {
+	            con.disconnect();		// api 서버 접속 해제 (finally로 실패했을 경우에도 끊는다.)
+	        }		
+		
+	}
+	
+	private String readBody(InputStream body){
+		// InputStreamReader는 1byte씩 읽는다
+		// BufferedReader를 사용하기 위해 데이터를 우선 읽어준다.
+        
+		InputStreamReader streamReader = null;
+		try {
+			streamReader = new InputStreamReader(body, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			
+			e1.printStackTrace();
+		} 
+
+		try (BufferedReader lineReader = new BufferedReader(streamReader)) {
+            StringBuilder responseBody = new StringBuilder();	// StringBuilder 객체 생성(속도가 빠르다고 함)
+
+
+            String line;
+            while ((line = lineReader.readLine()) != null) {  	// 데이터의 끝이 아닐동안 반복하면서 읽음
+                responseBody.append(line);	
+            }
+
+
+            return responseBody.toString();		// json문자열 반환
+        } catch (IOException e) {
+            throw new RuntimeException("API 응답을 읽는 데 실패했습니다.", e);
+        }
+    }
+	
+	// apiURL 주소로 부터 그 조소의 서버에 접속 할 수 있는 connection객체를 얻어서 반환해주는
+	private HttpURLConnection connect(String apiURL) {
+		
+		 try {
+	            URL url = new URL(apiURL);		// 문자열로 된 서보의 주소를 URL객체로 만듦
+	            return (HttpURLConnection)url.openConnection();
+	        } catch (MalformedURLException e) {
+	            throw new RuntimeException("API URL이 잘못되었습니다. : " + apiURL, e);
+	        } catch (IOException e) {
+	            throw new RuntimeException("연결이 실패했습니다. : " + apiURL, e);
+	        }
+		
+	}
+	
+	//---------------------------------------------------책검색 끝
+	
+	// 재입고
+
+	@PostMapping("/restock")
+    public ResponseEntity<String> restockBook(@RequestBody Map<String, Object> requestData) {
+        // 요청으로부터 받은 데이터
+        String title = (String) requestData.get("title");
+        String author = (String) requestData.get("author");
+        String image = (String) requestData.get("image");
+        String timestamp = (String) requestData.get("timestamp");
+        String restockNo = "";
+        RestockVO restockBook = new RestockVO(restockNo,title, author, image, timestamp); 
+        
+       
+        try {
+        	if(pService.insertRestockBook(restockBook) > 0){
+        		return new ResponseEntity<>("성공", HttpStatus.OK);
+        	}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} 		
+	
+		return new ResponseEntity<>("실패", HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	
+	
+	// ================================================= 한준형 ===========================================================
+	
 	//========================================최미설===================================//
 	// 회원관리페이지
 	@RequestMapping("/memberadmin")
@@ -308,14 +603,12 @@ public class AdminController {
 		} catch (Exception e) {
 			e.printStackTrace(); 
 		}
-		System.out.println("MemberAdminController : " + result.toString());
 		
 	}
 	
 	// 회원관리페이지-회원정보상세보기
 	@RequestMapping("/memberDetail")
 	public String memberDetail(@RequestParam("userId")String userId, Model model) {
-		System.out.println("일단 서비스단에는 오네요.....");
 		MemberVO memberDetail; // 회원정보
 		List<OrderVO> recentOrder = null; // 최근주문내역
 		List<ReviewVO> recentReview = null; // 최근리뷰
@@ -454,4 +747,6 @@ public class AdminController {
 		}
 		
 		// 엄영준(end) =============================================================================================================
+		
+		
 }

@@ -16,8 +16,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ImgFileVODTO {
-	
+	// -------- 박근영 --------
 	private String newFileName;
 	private String base64Img;
-	
+	// -------- 박근영 --------
 }

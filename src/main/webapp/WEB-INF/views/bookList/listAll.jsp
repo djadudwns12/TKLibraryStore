@@ -27,8 +27,9 @@
 <script>
 	$(function() {
 		// content 영역 설정 
-		//let bList = $('.bList');
-		//$('#main_content').html(bList);
+
+		// let bList = $('.bList'); 
+		// $('#main_content').html(bList);
 		$('.categoryArea').show();
 	});
 </script>
@@ -37,23 +38,52 @@ div#category_young {
 	display: flex;
 	justify-content: flex-start;
 }
+
+table {
+	text-align: center;	
+	vertical-align: middle;
+	
+}
+
 </style>
 <body>
 
 	<c:import url="../header.jsp"></c:import>
 
-	<section class="product spad">
-		<div class="bList">
-			<div class="container">
-				<table class="table">
-					<thead>
+
+	
+<section class="product spad">
+	<div class="bList">
+		<div class="container">
+			<table class="table" >
+				<thead>
+					<tr>
+						<th class="thumbNail" style="width: 200px;"></th>
+						<th>제목</th>
+						<th>작가</th>
+						<th>출판사</th>
+						<th>출간일</th>
+						<th>가격</th>
+						<th>찜</th>
+						<th>리뷰</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="list" items="${listAll}">
+
 						<tr>
-							<th></th>
-							<th>제목</th>
-							<th>작가</th>
-							<th>출판사</th>
-							<th>출간일</th>
-							<th>가격</th>
+							<td
+								onclick="location.href='/bookList/bookDetail?bookNo=${list.bookNo}';"><img
+								src="${list.thumbNail}"></td>
+							<td
+								onclick="location.href='/bookList/bookDetail?bookNo=${list.bookNo}';">${list.title}</td>
+							<td>${list.author}</td>
+							<td>${list.publisher}</td>
+							<td>${list.pubDate}</td>
+							<td><span><fmt:formatNumber value="${list.salePrice}" type="currency" /></span></td>
+							<td>${list.zzim}</td>
+							<td>${list.reviewCnt}</td>
+
 						</tr>
 					</thead>
 					<tbody>
@@ -98,15 +128,31 @@ div#category_young {
 						</c:choose>
 					</c:forEach>
 
-					<c:if test="${param.pageNo < pagingInfo.totalPageCnt}">
-						<li class="page-item"><a class="page-link"
-							href="/bookList/listAll?pageNo=${param.pageNo + 1}&pagingSize=${param.pagingSize}">Next</a></li>
-					</c:if>
-
-				</ul>
-			</div>
+		<div class="pagination justify-content-center" style="margin: 20px 0">
+			<ul class="pagination">
+				<c:if test="${param.pageNo > 1}">
+					<li class="page-item"><a class="page-link" href="/bookList/listAll?pageNo=${param.pageNo - 1}&pagingSize=${param.pagingSize}">Previous</a></li>
+				</c:if>
+				
+				<c:forEach var="i" begin="${pagingInfo.startPageNoCurBlock}" end="${pagingInfo.endPageNoCurBlock }">
+					<c:choose>
+						<c:when test="${param.pageNo == i}">
+							<li class="page-item active" id="${i}"><a class="page-link" href="/bookList/listAll?pageNo=${i}&pagingSize=${param.pagingSize}">${i}</a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="page-item" id="${i}"><a class="page-link" href="/bookList/listAll?pageNo=${i}&pagingSize=${param.pagingSize}">${i}</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+				
+				<c:if test="${pagingInfo.pageNo < pagingInfo.totalPageCnt}">
+					<li class="page-item"><a class="page-link" href="/bookList/listAll?pageNo=${pagingInfo.pageNo + 1}&pagingSize=${param.pagingSize}">Next</a></li>
+				</c:if>
+			
+			</ul>
 		</div>
-	</section>
+	</div>
+    </section>
 	<c:import url="../footer.jsp"></c:import>
 
 
