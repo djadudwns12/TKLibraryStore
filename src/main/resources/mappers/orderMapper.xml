@@ -3,20 +3,41 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.tn.mapper.OrderMapper">
-  
-  	<!--  멤버테이블에 포인트 업데이트 -->
-  	<update id="updatePoint">
-	  	update Member
-		set userPoint = userPoint + 100 <!-- 적립할 포인트... 수정 필요.... -->
-<!--	(
-		(select totalPay from 'Order'
-		where orderWho=#{userId} and orderNo=#{orderNo})*0.02
-		)-->
-		where userId=#{userId}
-  	</update>
-
-	<insert id="insertPointLog">
-		insert into PointLog(pWho, pWhen, pWhy, pScore) 
-		values (#{orderWho}, #{orderDate}, #{orderPK}, 100)<!-- 마지막값 적립된 포인트로 수정 필요 -->
+  	
+ 
+<!-- 박근영 -->
+	<select id="selectUserAddress" resultType="com.tn.order.model.vo.AddressVO">
+		SELECT receiver_name, address_key, receiver_phone, address, isDefault, request FROM Address WHERE userId = #{userId}
+	</select>
+	
+	<select id="selectUserPoint" resultType="int">
+		SELECT userPoint FROM Member WHERE userId = #{userId}
+	</select>	
+	
+	<insert id="insertPaymentComplete" parameterType="com.tn.order.model.dto.PaymentInfoDTO">
+	    INSERT INTO `Order` (orderStatus, orderWho, orderAddress, usePoint, totalPay, orderNo)
+	    VALUES (
+	        '배송중', 
+	        #{userId}, 
+	        #{address}, 
+	        <choose>
+	            <when test="finalInputPoint != null">
+	                #{finalInputPoint}
+	            </when>
+	            <otherwise>
+	                0
+	            </otherwise>
+	        </choose>,
+	        #{totalAmount}, 
+	        #{paymentId}
+	    );
 	</insert>
-</mapper> 
+
+
+
+ 	<select id="selectOrderBookNo" parameterType="com.tn.order.model.dto.PaymentInfoDTO" resultType="com.tn.order.model.vo.PaymentInfoVO">
+		SELECT bookNo FROM Cart WHERE cartId IN <foreach item="cartId" 
+		collection="cartId" open="(" separator="," close=")" >#{cartId}</foreach> AND userId = #{userId}
+	</select>
+<!-- 박근영 -->
+  </mapper>

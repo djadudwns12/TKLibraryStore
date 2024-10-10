@@ -22,7 +22,7 @@ public class OrderDAOImpl implements OrderDAO {
 	private SqlSession ses;
 
 	
-	private String NS = "com.tn.mapper.orderMapper";
+	private String NS = "com.tn.mapper.OrderMapper";
 	
 	
 //-----------------------------------------박근영-------------------------------------------------
