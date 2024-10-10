@@ -80,7 +80,7 @@ function showHide(){
 		<div class="humberger__menu__cart">
 			<ul>
 				<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-				<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+				<!-- <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li> -->
 			</ul>
 			<div class="header__cart__price">
 				item: <span>$150.00</span>
@@ -174,7 +174,11 @@ function showHide(){
 										class="fa fa-user-secret"></i></a></li>
 							</c:if>
 							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-							<li><a href="/cart/cartPage"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+							<li><a href="/cart/cartPage"><i class="fa fa-shopping-bag"></i>
+								<c:if test="${sessionScope.CartCnt > 0}">
+            						<span>${sessionScope.CartCnt}</span>
+        						</c:if>
+							</li>
 							<li><a href="/qa/qaList"><i class="fa fa-question-circle"></i></a></li>
 							<c:if test="${sessionScope.loginMember == null}">
 								<li><a

@@ -21,7 +21,7 @@ public class BooklistDAOImpl implements BooklistDAO {
 	@Autowired
 	private SqlSession ses;
 	
-	private static String NS = "com.tn.mappers.bookMapper";
+	private static String NS = "com.tn.mappers.BookMapper";
 
 	@Override
 	public List<BooklistVO> selectAllBook(PagingInfo pi) throws Exception {
