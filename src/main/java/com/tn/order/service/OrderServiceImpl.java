@@ -21,6 +21,7 @@ import com.tn.order.dao.OrderDAO;
 import com.tn.order.model.dto.PaymentInfoDTO;
 import com.tn.order.model.vo.AddressVO;
 import com.tn.order.model.vo.OrderInfo;
+import com.tn.order.model.vo.OrderVO;
 import com.tn.order.model.vo.PaymentInfoVO;
 import com.tn.util.PropertiesTask;
 
@@ -96,4 +97,34 @@ public class OrderServiceImpl implements OrderService {
 		return oDao.selectOrderList(loginMember);
 	}
 // -----------------------------------------엄영준-------------------------------------------------
+  
+// -----------------------------------------최미설-------------------------------------------------
+
+@Override
+public OrderVO getSinOrder(String userId) throws Exception {
+	return oDao.getSinOrder(userId);
+}
+
+@Override
+public boolean updatePoint(String userId, OrderVO sinOrder) throws Exception {
+	boolean result=false;
+	if(oDao.updatePoint(userId, sinOrder)==1) {
+		result=true;
+	}
+	return result;
+}
+
+@Override
+public boolean recordPointLog(String userId, OrderVO sinOrder) throws Exception {
+	boolean result=false;
+	if(oDao.recordPointLog(userId, sinOrder)==1) {
+		result=true;
+	}
+	return result;
+}
+//-----------------------------------------최미설-------------------------------------------------
+
+
+
+
 }

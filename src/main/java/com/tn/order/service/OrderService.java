@@ -34,5 +34,15 @@ public interface OrderService {
 	 */
 	List<BooklistVO> getOrderList(MemberDTO loginMember) throws Exception;
 // -----------------------------------------엄영준-------------------------------------------------
+	
+// -----------------------------------------최미설-------------------------------------------------
+	// 포인트 업데이트할 주문건 가져오기
+	OrderVO getSinOrder(String userId) throws Exception;	
+	// 포인트 업데이트
+	boolean updatePoint(String userId, OrderVO sinOrder) throws Exception;
+	// 포인트로그 추가
+	boolean recordPointLog(String userId, OrderVO sinOrder) throws Exception;
 
+//-----------------------------------------최미설-------------------------------------------------
+	
 }

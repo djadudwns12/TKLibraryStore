@@ -58,4 +58,25 @@
 		0,3;
 	</select>
 
+<!-- ==================================================최미설========================================================================== -->
+	<!-- 배송완료 주문건 가져오기 -->
+	<select id="getSinOrder" resultType="com.tn.order.model.vo.OrderVO">
+		select * from `Order` where orderWho=#{userId} and orderNo='92162920-2cd5-4ff9-ae87-7dd3ce4d2cms' and orderStatus="배송완료"
+	</select>
+	
+	<!-- 포인트 업데이트 -->
+	<update id="updatePoint">
+	update Member
+	set userPoint = userPoint + (select plannedPoint from `Order`
+	where orderWho=#{userId} and orderNo=#{orderNo} and orderStatus="배송완료")
+	where userId=#{userId}
+	</update>
+	
+	<!-- 포인트로그 추가 -->
+	<insert id="recordPointLog">
+		insert into PointLog(pWho, pWhy, pScore) 
+		values (#{userId}, #{pWhy}, #{pScore})
+	</insert>
+
+<!-- ==================================================최미설========================================================================== -->
 </mapper>

@@ -30,6 +30,7 @@ import com.tn.order.model.dto.OrderDTO;
 import com.tn.order.model.dto.PaymentInfoDTO;
 import com.tn.order.model.vo.AddressVO;
 import com.tn.order.model.vo.OrderInfo;
+import com.tn.order.model.vo.OrderVO;
 import com.tn.order.service.OrderService;
 
 @Controller
@@ -84,9 +85,51 @@ public class OrderController {
     	// 멤버 테이블에 구매 금액 업데이트
     	paymentInfoDTO.setUserId(userId);
     	boolean result = oService.paymentInfoApply(paymentInfoDTO);
+    	
 		return new ResponseEntity<String>("/cart/cartPage", HttpStatus.OK);
     }
 	
 	
 // -----------------------------------------박근영-------------------------------------------------
+    
+// -----------------------------------------최미설-------------------------------------------------
+    // Member테이블에 userPoint 업데이트 <= Order.plannedPoint
+    // updatePoint(paymentInfoDTO, session);
+    @RequestMapping("/pointTest")
+    public void pointTest(HttpSession session) {
+    	String userId = ((MemberVO)session.getAttribute("loginMember")).getUserId();
+    	// 주문내역에서 "배송완료"인 주문건 가져오기
+    	// if(스케줄러>=3일){}
+    	OrderVO sinOrder;
+		try {
+			sinOrder = oService.getSinOrder(userId);
+			updateUserPoint(sinOrder, userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+    	System.out.println("포인트테스트 진행.......");
+    }
+    // 스케줄러로 3일 이후 배송상태가 배송완료로 변경될 때 실행할 메서드
+    private void updateUserPoint (OrderVO sinOrder, String userId) {
+    	
+    	// int pPoint = paymentInfoDTO.getFinalInputPoint();
+    	boolean udPoint = false;
+		try {
+			// 1. 멤버테이블에 포인트 누적
+			if(oService.updatePoint(userId, sinOrder)) {
+				// 2. 포인트로그에 기록
+				oService.recordPointLog(userId, sinOrder);
+				System.out.println(userId + "유저의 포인트 업데이트!" );
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+    	
+    	
+    	
+    }
+ // -----------------------------------------최미설-------------------------------------------------
 }

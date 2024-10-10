@@ -32,5 +32,17 @@ public interface OrderDAO {
 // -----------------------------------------엄영준-------------------------------------------------	
   List<BooklistVO> selectOrderList(MemberDTO loginMember)throws Exception;
 // -----------------------------------------엄영준-------------------------------------------------	
+  
+//-----------------------------------------최미설-------------------------------------------------
+  // 배송완료 주문건 가져오기
+  OrderVO getSinOrder(String userId);
+  
+  // 포인트 업데이트
+  int updatePoint(String userId, OrderVO sinOrder) throws Exception;
+  
+  // 포인트로그 추가
+  int recordPointLog(String userId, OrderVO sinOrder) throws Exception;
+//-----------------------------------------최미설-------------------------------------------------
+
 
 }
