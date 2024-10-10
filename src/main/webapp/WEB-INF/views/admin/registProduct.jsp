@@ -216,28 +216,8 @@ let uploadedFiles = new Array();		//업로드 되는 파일들을 저장하는 �
 				<div class="content2">
 
 					<div class="mb-3">
-						<label for="genre" class="form-label">Genre</label>
-							<select class="form-control" id="genre" name="genre">
-								<option value="">장르 선택</option>
-								<optgroup label="인문">
-									<option value="050101">인문교양일반</option>
-								</optgroup>
-								<optgroup label="심리학">
-									<option value="050301">교양심리</option>
-									<option value="050302">심리이론</option>
-									<option value="050303">발달단계별심리</option>
-								</optgroup>
-								<optgroup label="교육학">
-									<option value="050501">교육학에세이</option>
-									<option value="050503">교육학이론</option>
-									<option value="050505">교육사</option>
-								</optgroup>
-								<optgroup label="유아교육">
-									<option value="050701">유아교육이론</option>
-									<option value="050703">유아교육방법</option>
-									<option value="050705">건강/생활지도</option>
-								</optgroup>
-							</select>
+						<label for="genre" class="form-label">Genre</label> <input
+							type="text" class="form-control" id="genre" name="genre">
 					</div>
 
 
@@ -250,7 +230,7 @@ let uploadedFiles = new Array();		//업로드 되는 파일들을 저장하는 �
 							type="text" class="form-control" id="salePrice" name="salePrice">
 					</div>
 					<div class="mb-3">
-						<label for="inven" class="form-label">Qty</label> <input
+						<label for="inven" class="form-label">Inven</label> <input
 							type="text" class="form-control" id="inven" name="inven">
 					</div>
 

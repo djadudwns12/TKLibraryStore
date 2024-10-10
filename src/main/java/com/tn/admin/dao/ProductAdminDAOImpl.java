@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.ProductVO;
-import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
 
 @Repository
@@ -35,9 +34,8 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		SearchCriteriaDTO sc2 = new SearchCriteriaDTO(sc.getSearchType(),"%" + sc.getSearchWord() + "%");
 		return ses.selectOne(NS + ".selectTotalCountWithSearchCriteria", sc2);
 	}
-	
 	@Override
-	public List<ProductVO> getList(PagingInfo pi, String sortBy) throws Exception {
+	public List<ProductVO> getList(PagingInfo pi, String sortBy) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("sortBy", sortBy);
 		params.put("startRowIndex",pi.getStartRowIndex());
@@ -45,9 +43,8 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		
 		return ses.selectList(NS + ".getProductBySortby",params);
 	}
-	
 	@Override
-	public List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria) throws Exception{
+	public List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("searchType", searchCriteria.getSearchType());
 		params.put("searchWord", "%" +searchCriteria.getSearchWord()+ "%");
@@ -57,7 +54,7 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		return ses.selectList(NS + ".getSearchProductWithPaging", params);
 	}
 	@Override
-	public List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria, String sortBy) throws Exception {
+	public List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria, String sortBy) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		System.out.println("다오까진 잘 옴-=============");
 		params.put("sortBy", sortBy);
@@ -117,85 +114,6 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		
 		return ses.insert(NS + ".registSave", params);
 	}
-	@Override
-	public void insertOrUpdateSearchKeyword(String searchWord) throws Exception {
-		ses.insert(NS + ".insertOrUpdateSearchKeyword",searchWord);
-		
-	}
-	@Override
-	public List<String> getPopularKeywords(int limit) throws Exception {
-		
-		return ses.selectList(NS + ".getPopularKeywords", limit);
-	}
-	@Override
-	public List<String> searchRecommend(String searchWord) throws Exception {
-		
-		String searchKeyword = "%"+searchWord+"%";
-		return ses.selectList(NS + ".searchRecommend", searchKeyword);
-	}
-	@Override
-	public int addZzim(String userId, int bookNo) throws Exception {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("userId", userId);
-		params.put("bookNo", bookNo);
-		
-		return ses.insert(NS + ".insertZzim" , params);
-	}
-	@Override
-	public int incrementZzimCount(int bookNo) throws Exception {
-		
-		
-		return ses.update(NS + ".incrementZzimCount" , bookNo);
-	}
-	
-	@Override
-	public int removeZzim(String userId, int bookNo) throws Exception {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("userId", userId);
-		params.put("bookNo", bookNo);
-		
-		return ses.delete(NS + ".deleteZzim" , params);
-	}
-	
-	@Override
-	public int decrementZzimCount(int bookNo) throws Exception {
-		
-		return ses.update(NS + ".decrementZzimCount" , bookNo);
-	}
-	
-	@Override
-	public int checkZzim(String userId, Long bookNo) throws Exception {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("userId", userId);
-		params.put("bookNo", bookNo);
-		
-		return ses.selectOne(NS + ".checkZzim" , params);
-	}
-	@Override
-	public String getZzimCount(String userId) throws Exception {
-		
-		return ses.selectOne(NS + ".getZzimCount",userId);
-	}
-	@Override
-	public int insertRestockBook(RestockVO restockBook) throws Exception {
-		
-		return ses.insert(NS + ".insertRestockBook" , restockBook);
-	}
-	@Override
-	public List<RestockVO> restockList(PagingInfo pi) throws Exception {
-		
-		return ses.selectList(NS + ".restockList",pi);
-	}
-	@Override
-	public int getTotalRestockCnt() throws Exception {
-		
-		return ses.selectOne(NS + ".selectTotalRestockCount");
-	}
-	
-	
-	
-	
-	
 	
 
 }

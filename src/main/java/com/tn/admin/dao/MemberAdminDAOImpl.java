@@ -26,8 +26,8 @@ public class MemberAdminDAOImpl implements MemberAdminDAO {
 
 	@Override
 	public List<MemberVO> getMemberList2(PagingInfo pi, String sortBy) throws Exception {
-//		System.out.println("MemberAdminDAO : " + pi.toString());
-//		System.out.println("MemberAdminDAO : " + sortBy.toString());
+		System.out.println("MemberAdminDAO : " + pi.toString());
+		System.out.println("MemberAdminDAO : " + sortBy.toString());
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("sortBy", sortBy);
@@ -39,20 +39,20 @@ public class MemberAdminDAOImpl implements MemberAdminDAO {
 
 	@Override
 	public int getTotalPostCnt() throws Exception {
-//		System.out.println(">> MemberAdminDAO(getTotalPostCnt1)");
+		System.out.println(">> MemberAdminDAO(getTotalPostCnt1)");
 		return ses.selectOne(NS + ".selectTotalCount");
 	}
 
 	@Override
 	public int getTotalPostCnt(SearchCriteriaDTO sc) throws Exception {
-//		System.out.println(">> MemberAdminDAO(getTotalPostCnt2)");
+		System.out.println(">> MemberAdminDAO(getTotalPostCnt2)");
 		SearchCriteriaDTO sc2 = new SearchCriteriaDTO(sc.getSearchType(), "%" + sc.getSearchWord() + "%");
 		return ses.selectOne(NS + ".selectTotalCountWithSearchCriteria", sc2);
 	}
 
 
 	 @Override public List<MemberVO> getMemberList1 (PagingInfo pi) { 
-//	 System.out.println(">> MemberAdminDAO(getMemberList)");
+	 System.out.println(">> MemberAdminDAO(getMemberList)");
 	 Map<String, Object> params = new HashMap<String, Object>();
 	 params.put("startRowIndex",pi.getStartRowIndex());
 	 params.put("viewPostCntPerPage", pi.getViewPostCntPerPage());
@@ -63,7 +63,7 @@ public class MemberAdminDAOImpl implements MemberAdminDAO {
 
 	@Override
 	public List<MemberVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria) throws Exception {
-//		System.out.println(">> MemberAdminDAO(SelectAllBoard)");
+		System.out.println(">> MemberAdminDAO(SelectAllBoard)");
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("searchType", searchCriteria.getSearchType());
 		params.put("searchWord", "%" + searchCriteria.getSearchWord() + "%");
@@ -77,7 +77,7 @@ public class MemberAdminDAOImpl implements MemberAdminDAO {
 	public List<MemberVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria, String sortBy)
 			throws Exception {
 		Map<String, Object> params = new HashMap<String, Object>();
-//		System.out.println(">> MemberAdminDAO(selectAllBoard)");
+		System.out.println(">> MemberAdminDAO(selectAllBoard)");
 		params.put("sortBy", sortBy);
 		params.put("startRowIndex", pi.getStartRowIndex());
 		params.put("viewPostCntPerPage", pi.getViewPostCntPerPage());
