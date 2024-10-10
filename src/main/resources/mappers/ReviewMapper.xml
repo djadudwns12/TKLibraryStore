@@ -12,4 +12,15 @@
 	ORDER BY r.reviewDate DESC 
 	LIMIT 5;
   </select>
+  
+  <insert id="insertNewReview">
+  	INSERT INTO Review (reviewWriter, reviewContent, reviewDate, reviewScore, bookNo) 
+  	Values (#{reviewWriter}, #{reviewContent}, #{reviewDate}, #{reviewScore}, #{bookNo})
+  </insert>
+  
+  <select id="starRatingAvg" resultType="float">
+  	SELECT ROUND(AVG(reviewScore), 1)
+  	from Review 
+  	where bookNo = #{bookNo}
+  </select>
   </mapper>

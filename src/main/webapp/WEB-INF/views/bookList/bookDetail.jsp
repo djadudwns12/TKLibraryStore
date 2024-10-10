@@ -14,6 +14,8 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>떡잎서점 상세페이지</title>
 <link rel="icon" href="/resources/images/TKlogo.png" type="image/png">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 
 
 
@@ -32,17 +34,228 @@
 		//$('#main_content').html(bDetail);
 		setRecenyBook();
 
+		let userId = '${sessionScope.loginMember.userId}';
+		let bookNo = '${product.bookNo}';
+		
+		let zzimed = false;
+		//  ------------------------찜기능
+		$('.zzimHeart').on('click', function() {
+
+			if (!userId) {
+				// 로그인 되어 있지 않으면 confirm 창 띄우기
+				if (confirm("회원만 찜 가능합니다. 로그인하시겠습니까?")) {
+					// yes 선택 시 로그인 페이지로 이동
+					window.location.href = "/member/loginPage";
+				}
+			} else {
+				// 로그인 되어 있으면 찜 기능 실행
+
+				if (zzimed) {
+					handleZzimRemove(userId, bookNo);
+					zzimed = false;
+				} else {
+					handleZzim(userId, bookNo);
+					zzimed = true;
+				}
+
+			}
+
+		});
+
+		if (userId) {
+
+			$.ajax({
+				url : '/admin/zzimCheck',
+				type : 'POST',
+				data : {
+					userId : userId,
+					bookNo : bookNo
+				},
+				success : function(response) {
+					console.log(response);
+
+					// 클릭된 div 내의 img 태그의 src 속성 변경
+					$('.zzimHeart').find('img').attr('src',
+							'/resources/images/heart.png');
+					zzimed = true;
+					console.log(zzimed);
+				},
+				error : function(error) {
+					console.log(userId + "회원이 좋아요 하지 않은 글");
+				}
+			});
+		}
+		
+		// 별점 기능을 위한 배열 선언
+		const ratingStars = [...document.getElementsByClassName("rating__star")];
+		executeRating(ratingStars);
+
 	});
 
-	function checkLogin() {
-		let user = '${sessionScope.loginMember.userId}';
+	
+	function handleZzim(userId, bookNo) {
+		$.ajax({
+			url : '/admin/zzimAdd',
+			type : 'POST',
+			data : {
+				userId : userId,
+				bookNo : bookNo
+			},
+			success : function(response) {
 
-		if (user == '') {
-			alert('로그인이 필요한 메뉴입니다');
+				alert("찜 목록에 추가되었습니다.");
+				// 클릭된 div 내의 img 태그의 src 속성 변경
+				$('.zzimHeart').find('img').attr('src',
+						'/resources/images/heart.png');
+			},
+			error : function(error) {
+				alert("찜 추가에 실패했습니다.");
+			}
+		});
+	}
+
+	function handleZzimRemove(userId, bookNo) {
+		$.ajax({
+			url : '/admin/zzimRemove',
+			type : 'POST',
+			data : {
+				userId : userId,
+				bookNo : bookNo
+			},
+			success : function(response) {
+
+				alert("찜 목록에서 삭제되었습니다.");
+				// 클릭된 div 내의 img 태그의 src 속성 변경
+				$('.zzimHeart').find('img').attr('src',
+						'/resources/images/emptyHeart.png');
+			},
+			error : function(error) {
+				alert("찜 삭제에 실패했습니다.");
+			}
+		});
+	}
+
+	// (-) (+) 버튼을 누르면 표시되는 수량 변경
+	function count(action) {
+		var maxQty = $("#inven").val();	// bqty의 최대값(재고량)
+		var qtyInput = document.getElementById("bqty");	// 수량 입력 필드
+		var currentQty = parseInt(qtyInput.value);	// 현재 수량을 정수로 변환 
+
+		if (action == 'minus') {
+			if (currentQty > 1) {
+				qtyInput.value = currentQty - 1;
+			}
+		}
+
+		if (action == 'plus') {
+			if (currentQty < maxQty) {
+				qtyInput.value = currentQty + 1;
+			}
+		}
+		
+		showTotalPrice();
+	}
+
+	// 책 수량을 2권 이상 선택하면 총 가격을 화면에 출력하는 기능
+	function showTotalPrice() {
+		var bookPrice = $('#salePrice').val();
+		var totalQty = document.getElementById("bqty").value;
+
+		console.log("bookPrice: ", bookPrice);
+		console.log("totalQty: ", totalQty);
+
+		if (totalQty >= 2) {
+			var totalPrice = totalQty * bookPrice;
+
+			document.getElementById("priceVal").innerText = totalPrice;
+			document.getElementById("totalPrice").style.display = "block";
+		} else {
+			document.getElementById("totalPrice").style.display = "none";
+		}
+		
+	}
+
+	// 장바구니 버튼 누르면 (1)로그인여부 체크, (2)로그인했다면 장바구니에 담고, 장바구니 이동 여부 물어보기
+	function addCart() {
+		let userId = '${sessionScope.loginMember.userId}';
+		var bookNo = document.getElementById("bookNo").value;
+		var totalQty = document.getElementById("bqty").value;
+		
+		console.log(bookNo + ' 번 책 ' + totalQty + ' 권을 장바구니에 담자!');
+
+		if (userId == '') {
+			alert('로그인이 필요한 메뉴입니다');	// '확인' 버튼 누르면 로그인 창으로 이동 
+			window.location.href = "/member/loginPage";
 
 		} else {
-			location.href = '/cart/cartPage?userId="${userId}"';
+			// (1) 해당 user의 장바구니에 겹치는 상품이 있는 경우: '장바구니에 이미 담은 상품입니다. 장바구니로 고고?'
+			$.ajax({
+		        url: '/cart/cartPage',
+		        type: 'POST',
+		        data: {
+		            userId: userId,
+		            qty: totalQty,  // 최종 선택한 수량
+		            bookNo: bookNo
+		        },
+		        success: function(response) {
+		        	if(reponse.success) {
+		        		alert('장바구니에 상품이 담겼습니다. 장바구니로 이동하시겠습니까?');
+		        		location.href='/cart/cartPage?userId="${userId}"';
+		        	} else {
+		        		alert('장바구니 담기에 실패했습니다. 다시 시도해주세요.');
+		        	}
+		            
+		        },
+		        error: function(error) {
+		        	console.log('AJAX로 데이터 송신 중 에러 발생');
+		            alert('에러가 발생했습니다. 다시 시도해주세요.');
+		        }
+		    });
+			
+			// (2-1) 장바구니에 겹치는 상품이 없는 경우: cart(userId, qty, booNo) 업데이트 
+			// (2-2) '장바구니에 상품이 담겼습니다. 장바구니로 고고?'
 		}
+	}
+	
+	function executeRating(stars) {
+		  const starClassActive = "rating__star fas fa-star";
+		  const starClassInactive = "rating__star far fa-star";
+		  const starsLength = stars.length;
+		  let i;
+		  
+		  stars.map((star) => {
+			    star.onclick = () => {
+			      i = stars.indexOf(star);
+
+			      if (star.className===starClassInactive) {
+			        for (i; i >= 0; --i) 
+			        	stars[i].className = starClassActive;
+			      } else {
+			        for (i; i < starsLength; ++i) 
+			        	stars[i].className = starClassInactive;
+			      }
+			    };
+			  });
+		  
+		}
+	
+	function saveReview() {
+		let result = false;
+		let review = $('#review').val();
+		
+		console.log(review);
+
+		if (rating == '' && review == null) {
+
+			//별점을 입력하지 않고 리뷰 내용도 작성하지 않았을 때 
+			alert("별점을 입력하거나 리뷰 내용을 작성하셔야 합니다");
+			$('#review').focus();
+		} else {
+			// 둘 중 하나라도 입력했을 때 
+			result = true;
+		}
+
+		return result;
 	}
 	
 	// localStorege에 최근본 책 넣는 내용
@@ -70,8 +283,6 @@
 		}
 
 	}
-	
-	
 </script>
 
 <style>
@@ -80,16 +291,47 @@
 	color: #7FAD38;
 	border: 0;
 }
+
+.zzimHeart {
+	width: 40px; /* 가로 30px */
+	height: 40px; /* 세로 30px */
+	border: 1px solid black; /* 검은색 테두리 */
+	border-radius: 5px; /* 모서리를 둥글게 */
+	display: flex; /* 내부 요소를 가운데 정렬 */
+	align-items: center; /* 수직 가운데 정렬 */
+	justify-content: center; /* 수평 가운데 정렬 */
+	cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
+}
+
+.zzimHeart img {
+	max-width: 65%; /* 이미지를 div 크기에 맞게 조정 */
+	max-height: 65%; /* 이미지를 div 크기에 맞게 조정 */
+}
+
+.zzimHeart:hover {
+	background-color: #f0f0f0; /* 마우스 오버 시 배경색을 밝은 회색으로 변경 */
+}
+
+.rating {
+	width: 180px;
+}
+
+.rating__star {
+	cursor: pointer;
+	color: #dabd18b2;
+}
 </style>
+
+
 <body>
 
 	<c:import url="../header.jsp"></c:import>
 
 	<div class="bDetail">
-		<div class="container">
 
-			<!-- 책 상세보기 Section Begin -->
-			<section class="bookDetail">
+		<!-- 책 상세보기 Section Begin -->
+		<section class="bookDetail">
+			<div class="container">
 				<div class="bookContainer">
 					<div class="row">
 						<div class="col-lg-6 col-md-6">
@@ -98,7 +340,7 @@
 
 									<c:forEach var="bookInfo" items="${bookDetailInfo}">
 										<img class="bookImagelarge" src="${bookInfo.thumbNail}" alt="">
-										<input type="text" value="${bookInfo.bookNo}" id="bs">
+										<input type="hidden" value="${bookInfo.bookNo}" id="bs">
 								</div>
 
 							</div>
@@ -111,7 +353,7 @@
 										class="fa fa-star"></i> <i class="fa fa-star"></i> <i
 										class="fa fa-star-half-o"></i> <span>(18 reviews)</span>
 								</div>
-								<div class="author">${bookInfo.author}</div>
+								<div class="author">${bookInfo.author} 지음</div>
 								<div class="information">
 									<p>&nbsp;</p>
 
@@ -121,7 +363,7 @@
 												value="${bookInfo.price}" type="currency" /></span>
 									</p>
 									<p>
-										<b>할인가</b> <span><fmt:formatNumber
+										<b>판매가</b> <span style="font-size:25px;"><fmt:formatNumber
 												value="${bookInfo.salePrice}" type="currency" /></span>
 									</p>
 									<p>
@@ -132,22 +374,37 @@
 									</p>
 
 								</div>
+								
+								<div class="qtyControl" style="display: flex; align-items: center; gap: 10px;">
+								<span><b>수량 </b></span> 
+								<span class="count">
+									<button type="button" class="minus" style="border: none;"
+										onclick="count('minus');">-</button> <span><input
+										type="text" id="bqty" name="bqty" value="1"
+										readonly="readonly"
+										style="text-align: center; width: 60px; border: none;"></span>
+									<button type="button" class="plus" style="border: none;"
+										onclick="count('plus');">+</button>
+								</span> <input type="hidden" value="${bookInfo.inven }" id="inven">
 
-								<div class="btns">
-									<p>
-										<span><b>수량</b></span> <input type="number" id="bookCnt"
-											value="1" min="1" style="width: 50px;" />
-									</p>
-									
-									
-									<p></p>
+								<!-- 선택 수량이 2개 이상일 때 가격을 표시하는 기능 -->
+								<input type="hidden" value="${bookInfo.salePrice }" id="salePrice">
+									<div id="totalPrice" style="display: none;">
+										총 상품 금액: <span id="priceVal" style="color: red;"></span> 원
+									</div>
+								</div>
+								<br>
+
+								<div class="btns"
+									style="display: flex; align-items: center; gap: 5px;">
 									<button type="button" class="primary-btn"
 										onclick="location.href='/order'"
-										style="backgroundcolor: #d0e5b0;">바로주문</button>
+										style="background-color: #DA8359;">바로주문</button>
 									<button type="button" class="primary-btn"
-										onclick="checkLogin();">장바구니 담기</button>
-
-
+										onclick="addCart();">장바구니 담기</button>
+									<span class="zzimHeart"> <img
+										src="/resources/images/emptyHeart.png">
+									</span><input type="hidden" value="${bookInfo.bookNo}" id="bookNo">
 
 								</div>
 							</div>
@@ -157,25 +414,40 @@
 								<ul class="nav nav-tabs" role="tablist">
 									<li class="nav-item"><a class="nav-link active"
 										data-toggle="tab" href="#tabs-1" role="tab"
-
-										aria-selected="true">Description</a></li>
-									<li class="nav-item"><a class="nav-link" data-toggle="tab"
-										href="#tabs-2" role="tab" aria-selected="false">Information</a>
-									</li>
-									<li class="nav-item"><a class="nav-link" data-toggle="tab"
-										href="#tabs-3" role="tab" aria-selected="false">Reviews <span>(1)</span></a>
-
 										aria-selected="true">책 소개</a></li>
-									<li class="nav-item"><a class="nav-link" data-toggle="tab"
-										href="#tabs-2" role="tab" aria-selected="false">구매 리뷰 <span>(1)</span></a>
 
-									</li>
+									<li class="nav-item"><a class="nav-link" data-toggle="tab"
+										href="#tabs-2" role="tab" aria-selected="false">회원 리뷰<span>(1)</span></a></li>
+
 								</ul>
 								<div class="tab-content">
 									<div class="tab-pane active" id="tabs-1" role="tabpanel">
 										<div class="product__details__tab__desc">
-											<h6>책 소개</h6>
+											<h4>책 소개</h4>
 											<p>${bookInfo.introduction}</p>
+										</div>
+									</div>
+
+									<div class="tab-pane" id="tabs-2" role="tabpanel">
+										<div class="product__details__tab__desc">
+											<h4>회원 리뷰</h4>
+											<p></p>
+											<div class="reviewArea"
+												style="display: flex; align-items: center; gap: 5px;">
+												<div class="rating">
+													<i class="rating__star far fa-star"></i> <i
+														class="rating__star far fa-star"></i> <i
+														class="rating__star far fa-star"></i> <i
+														class="rating__star far fa-star"></i> <i
+														class="rating__star far fa-star"></i>
+												</div>
+												<textarea class="reviewForm" id="review" name="review"
+													placeholder="리뷰 내용을 작성해주세요" style="width: 80%;"></textarea>
+												<button type="submit" class="btn btn-primary"
+													style="background-color: #7FAD38; border: 0; width: 70px; height: 55px;"
+													onclick="return saveReview();">저장</button>
+											</div>
+											<p></p>
 										</div>
 									</div>
 
@@ -183,10 +455,11 @@
 
 							</div>
 						</div>
+
 					</div>
 					</c:forEach>
 				</div>
-		</div>
+			</div>
 		</section>
 
 
@@ -216,7 +489,7 @@
 			</div>
 		</div>
 
-	</div>
+
 	</div>
 
 	<c:import url="../footer.jsp"></c:import>

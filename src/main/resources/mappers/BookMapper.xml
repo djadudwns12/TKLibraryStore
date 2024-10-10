@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-  <mapper namespace="com.tn.mappers.bookMapper">
+  <mapper namespace="com.tn.mappers.BookMapper">
   
   <!-- 전체 책 리스트를 출간일 내림차순 정렬해 가져오는 쿼리문 -->
   <select id="getAllBooklist" resultType = "com.tn.booklist.model.vo.BooklistVO">
@@ -32,5 +32,20 @@
 		select count(*) from BookList where genre like #{category} 
 	</select>
 	<!-- ====================================================엄영준 END=============================================================  -->
+ 
+ 
+ 
+ 
+<!-- 박근영 -->
+	<select id="selectOrderBookList">
+		SELECT title, price, salePrice, thumbNail FROM BookList WHERE bookNo IN <foreach item="bookNo" 
+		collection="bookNos" open="(" separator="," close=")" >#{bookNo}</foreach>
+	</select>
+<!-- 박근영 -->
+ 
+ 
+ 
+ 
+ 
  
  </mapper>

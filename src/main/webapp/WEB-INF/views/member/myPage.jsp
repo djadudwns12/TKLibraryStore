@@ -24,7 +24,7 @@
 <style>
 /* 전역 스타일 */
 body {
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Cairo', sans-serif; 
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -194,9 +194,9 @@ table.table th {
 </head>
 
 <body>
-    <jsp:include page="../header.jsp"></jsp:include>
+  <c:import url="../header.jsp"></c:import>
 
-    <div class="register-box userInfoDiv">
+    <div class="register-box userInfoDiv"> 
         <!-- Swiper Image Slider -->
         <div class="ex1">
             <div class="swiper-container">
@@ -277,6 +277,6 @@ table.table th {
         
     </div>
 
-    <jsp:include page="../footer.jsp"></jsp:include>
+   <jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

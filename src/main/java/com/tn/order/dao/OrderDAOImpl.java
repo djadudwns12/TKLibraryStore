@@ -9,14 +9,14 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import com.tn.booklist.model.vo.BooklistVO;
-import com.tn.member.model.dto.MemberDTO;
-import com.tn.order.model.vo.OrderVO;
 
 import com.tn.order.model.dto.PaymentInfoDTO;
 import com.tn.order.model.vo.AddressVO;
 import com.tn.order.model.vo.OrderBookListVO;
 import com.tn.order.model.vo.PaymentInfoVO;
+import com.tn.booklist.model.vo.BooklistVO;
+import com.tn.member.model.dto.MemberDTO;
+import com.tn.order.model.vo.OrderVO;
 
 
 @Repository
@@ -59,13 +59,12 @@ public class OrderDAOImpl implements OrderDAO {
 //	}
 //-----------------------------------------박근영-------------------------------------------------
 
- //-----------------------------------------엄영준------------------------------------------------- 
-  @Override
+//-----------------------------------------엄영준-------------------------------------------------
+	@Override
 	public List<BooklistVO> selectOrderList(MemberDTO loginMember) throws Exception {
 		
-		return sess.selectList(NS+".selectOrderList", loginMember);
+		return ses.selectList(NS+".selectOrderList", loginMember);
 	}
-//-----------------------------------------엄영준------------------------------------------------- 
-
+//-----------------------------------------엄영준-------------------------------------------------
 
 }

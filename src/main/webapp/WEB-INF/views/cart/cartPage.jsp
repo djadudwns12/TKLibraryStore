@@ -445,6 +445,7 @@
                     if (response.success) {
                         $(currentElement).closest('tr').remove();
                         updateTotals();
+                        $('.fa-shopping-bag').next().text(response.CartCnt)
                     } else {
                         alert('삭제에 실패했습니다. 다시 시도해주세요.');
                     }
@@ -555,6 +556,9 @@
                         
                         // 총합 업데이트 함수 호출
                         updateTotals();
+                        $('.fa-shopping-bag').next().text(response.CartCnt)
+                        
+                        
                         
                     } else {
                         alert('삭제 중 오류가 발생했습니다.');
