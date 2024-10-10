@@ -10,6 +10,7 @@ import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
+import com.tn.admin.model.vo.TopPublisherVO;
 
 @Service
 public interface ProductAdminService {
@@ -43,6 +44,10 @@ public interface ProductAdminService {
 	int insertRestockBook(RestockVO restockBook)throws Exception;
 
 	Map<String, Object> restockList(PagingInfoDTO dto, SearchCriteriaDTO searchCriteria) throws Exception;
+
+	List<ProductVO> getTopBooks() throws Exception;
+
+	List<TopPublisherVO> getTopPublisher() throws Exception;
 
 
 

@@ -232,6 +232,7 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		return resultMap;
 	}
 	
+	//입고요청페이지 페이징을위해 메서드를 새로 만듦
 	private PagingInfo makeRestockPagingInfo(PagingInfoDTO dto, SearchCriteriaDTO sc) throws Exception {
 		PagingInfo pi = new PagingInfo(dto);
 		
@@ -249,6 +250,20 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		
 		
 		return pi;
+	}
+
+	// 차트 찜기준 탑 5
+	@Override
+	public List<ProductVO> getTopBooks() throws Exception {
+		
+		return pDao.getTopBooks();
+	}
+
+
+	@Override
+	public List<TopPublisherVO> getTopPublisher() throws Exception {
+		
+		return pDao.getTopPublisher();
 	}
 
 

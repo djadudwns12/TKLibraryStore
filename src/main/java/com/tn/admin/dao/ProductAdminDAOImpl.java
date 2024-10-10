@@ -13,6 +13,7 @@ import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
+import com.tn.admin.model.vo.TopPublisherVO;
 
 @Repository
 public class ProductAdminDAOImpl implements ProductAdminDAO {
@@ -190,6 +191,16 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 	public int getTotalRestockCnt() throws Exception {
 		
 		return ses.selectOne(NS + ".selectTotalRestockCount");
+	}
+	@Override
+	public List<ProductVO> getTopBooks() throws Exception {
+		
+		return ses.selectList(NS + ".getTopBooks");
+	}
+	@Override
+	public List<TopPublisherVO> getTopPublisher() throws Exception {
+		
+		return ses.selectList(NS + ".getTopPublisher");
 	}
 	
 	

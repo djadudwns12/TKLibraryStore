@@ -10,6 +10,7 @@ import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
+import com.tn.admin.model.vo.TopPublisherVO;
 
 @Repository
 public interface ProductAdminDAO {
@@ -64,6 +65,10 @@ public interface ProductAdminDAO {
 	List<RestockVO> restockList(PagingInfo pi) throws Exception;
 
 	int getTotalRestockCnt() throws Exception;
+
+	List<ProductVO> getTopBooks() throws Exception;
+
+	List<TopPublisherVO> getTopPublisher() throws Exception;
 
 	
 

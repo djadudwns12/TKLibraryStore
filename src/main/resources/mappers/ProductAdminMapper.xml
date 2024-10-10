@@ -256,56 +256,82 @@
 	</insert>
 
 	<select id="getPopularKeywords" resultType="String">
-		SELECT searchWord FROM Search
+		SELECT searchWord
+		FROM Search
 		ORDER BY searchCount DESC
 		LIMIT #{limit};
 	</select>
 
 	<select id="searchRecommend" resultType="String">
 		SELECT title
-		FROM BookList
+		FROM
+		BookList
 		WHERE REPLACE(title, ' ', '') LIKE #{searchKeyword}
-		ORDER BY zzim DESC
+		ORDER BY
+		zzim DESC
 		LIMIT 10;
 	</select>
-	
+
 	<insert id="insertZzim">
-		insert into Zzim(userId,bookNo)values(#{userId},#{bookNo});
+		insert into
+		Zzim(userId,bookNo)values(#{userId},#{bookNo});
 	</insert>
-	
+
 	<update id="incrementZzimCount">
-		update BookList set zzim=zzim+1 where bookNo=#{bookNo};
+		update BookList set zzim=zzim+1 where
+		bookNo=#{bookNo};
 	</update>
-	
+
 	<delete id="deleteZzim">
-		delete from Zzim where bookNo=#{bookNo} and userId=#{userId}
+		delete from Zzim where bookNo=#{bookNo} and
+		userId=#{userId}
 	</delete>
-	
+
 	<update id="decrementZzimCount">
-		update BookList set zzim=zzim-1 where bookNo=#{bookNo};
+		update BookList set zzim=zzim-1 where
+		bookNo=#{bookNo};
 	</update>
-	
+
 	<select id="checkZzim" resultType="int">
-		select count(*) from Zzim where bookNo=#{bookNo} and userId=#{userId};
+		select count(*) from Zzim
+		where bookNo=#{bookNo} and userId=#{userId};
 	</select>
-	
+
 	<select id="getZzimCount" resultType="String">
-		select count(*) from Zzim where userId=#{userId};
+		select count(*) from Zzim
+		where userId=#{userId};
 	</select>
-	
+
 	<insert id="insertRestockBook">
-		insert into Restock (title,author,image,timestamp) values(#{title},#{author},#{image},#{timestamp})
+		insert into Restock (title,author,image,timestamp)
+		values(#{title},#{author},#{image},#{timestamp})
 	</insert>
-	
-	<select id="restockList" resultType="com.tn.admin.model.vo.RestockVO">
+
+	<select id="restockList"
+		resultType="com.tn.admin.model.vo.RestockVO">
 		select * from Restock order by restockNo desc limit
 		#{startRowIndex},
 		#{viewPostCntPerPage};
 	</select>
-	
+
 	<select id="selectTotalRestockCount" resultType="int">
-		select count(*) from
+		select count(*)
+		from
 		Restock;
 
+	</select>
+
+	<select id="getTopBooks"
+		resultType="com.tn.admin.model.vo.ProductVO">
+		select * from BookList order by zzim desc limit 5;
+	</select>
+
+	<select id="getTopPublisher"
+		resultType="com.tn.admin.model.vo.TopPublisherVO">
+		select publisher,count(publisher) as publisher_count
+		from BookList
+		group by publisher
+		order by publisher_count desc
+		limit 10;
 	</select>
 </mapper>

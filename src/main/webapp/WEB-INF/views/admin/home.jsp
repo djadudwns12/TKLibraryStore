@@ -19,6 +19,71 @@
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
+	
+	$(function() {
+		// Ajax로 데이터 요청
+        $.ajax({
+            url: '/admin/bookChart',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                drawBookChart(data);
+            },
+            error: function (error) {
+                console.error("Error fetching data", error);
+            }
+        });
+		
+        $.ajax({
+            url: '/admin/publisherChart',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                drawPublisherChart(data);
+            },
+            error: function (error) {
+                console.error("Error fetching data", error);
+            }
+        });
+
+        function drawBookChart(bookData) {
+            var dataArray = [['', '찜 수', '리뷰 수']];
+            bookData.forEach(function (book) {
+                dataArray.push([book.title, book.zzim, book.reviewCnt]);
+            });
+
+            var data = google.visualization.arrayToDataTable(dataArray);
+
+            var options = {
+                chart: {
+                    title: '인기 책',
+                    subtitle: '찜이 가장 많은 책 5개의 찜과 리뷰수',
+                },
+                bars: 'horizontal'
+            };
+
+            var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+        
+        function drawPublisherChart(publisherData) {
+            var dataArray = [['Task', 'Hours per Day']];
+            publisherData.forEach(function (publisher) {
+                dataArray.push([publisher.publisher, publisher.publisher_count]);
+            });
+
+            var data = google.visualization.arrayToDataTable(dataArray);
+
+            var options = {
+                title: '출판사별 책 종류',
+                pieHole: 0.4
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+            chart.draw(data, options);
+        }
+    });
+	
 
 	// 출판사별 매출 TOP5 (임의)
 	google.charts.load('current', {
@@ -29,8 +94,8 @@
 	function drawBasic() {
 
 		var data = google.visualization.arrayToDataTable([
-				[ '출판사', '매출', ], [ '학지사', 8175000 ], [ '창지사', 3792000 ],
-				[ '공동체', 2695000 ], [ '양서원', 2099000 ], [ '동문사', 1526000 ] ]);
+				[ '출판사', '매출', ], [ '학지사', 18175000 ], [ '창지사', 13792000 ],
+				[ '공동체', 12695000 ], [ '양서원', 9099000 ], [ '동문사', 8526000 ] ]);
 
 		var options = {
 			title : '출판사 비중 현황 (임의)',
@@ -52,52 +117,9 @@
 		chart.draw(data, options);
 	}
 
-	// 출판사별 책 수 현황
-	google.charts.load("current", {
-		packages : [ "corechart" ]
-	});
-	google.charts.setOnLoadCallback(drawChart);
-	function drawChart() {
-		var data = google.visualization.arrayToDataTable([
-				[ 'Task', 'Hours per Day' ], [ '학지사', 8175000 ], [ '창지사', 3792000 ],
-				[ '공동체', 2695000 ], [ '양서원', 2099000 ], [ '동문사', 1526000 ] ]);
-
-		var options = {
-			title : '출판사별 책 종류',
-			pieHole : 0.4,
-		};
-
-		var chart = new google.visualization.PieChart(document
-				.getElementById('donutchart'));
-		chart.draw(data, options);
-	}
 	
-	// 찜순 TOP5 리뷰수와 찜수
-	 google.charts.load('current', {'packages':['bar']});
-     google.charts.setOnLoadCallback(drawChart2);
-
-     function drawChart2() {
-       var data = google.visualization.arrayToDataTable([
-         ['', '찜 수', '리뷰 수'],
-         ['아이의 마음 속으로 떠나는 여행', 1000, 400],
-         ['학부모의 마음 읽기와 지혜로운 소통', 1170, 460],
-         ['몸의 만남 마음의 연결: 공간의 한계를 넘어', 660, 1120],
-         ['성격 좋다는 말에 가려진 것들', 1030, 540],
-         ['일상으로서의 명상', 1030, 540],
-       ]);
-
-       var options = {
-         chart: {
-           title: '인기 책',
-           subtitle: '찜이 가장 많은 책 5개의 찜과 리뷰수',
-         },
-         bars: 'horizontal' // Required for Material Bar Charts.
-       };
-
-       var chart = new google.charts.Bar(document.getElementById('barchart_material'));
-
-       chart.draw(data, google.charts.Bar.convertOptions(options));
-     }
+	
+	
 </script>
 
 
