@@ -15,6 +15,8 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+	<!-- Google Fonts에서 Gowun Batang 폰트 불러오기 -->
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 
@@ -939,10 +941,9 @@ a:visited {
 	href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap"
 	rel="stylesheet">
 <style>
-<!--
-폰트 영역 -->* {
+* {
 	font-family: "Gowun Batang", serif;
-	font-weight: 400;
+	font-weight: 530;
 	font-style: normal;
 }
 

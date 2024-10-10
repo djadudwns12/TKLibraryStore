@@ -15,6 +15,8 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+	<!-- Google Fonts에서 Gowun Batang 폰트 불러오기 -->
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 
@@ -125,6 +127,11 @@ let uploadedFiles = new Array();		//업로드 되는 파일들을 저장하는 �
 
 
 <style>
+* {
+	font-family: "Gowun Batang", serif;
+	font-weight: 530;
+	font-style: normal;
+}
 .fileBtns {
 	display: flex;
 	justify-content: flex-end;

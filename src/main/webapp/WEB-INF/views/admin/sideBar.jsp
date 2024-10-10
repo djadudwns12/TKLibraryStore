@@ -52,10 +52,10 @@
                         
                         
                         <li class="nav-header">상품 관리</span></li>
-                        <li class="nav-item"> <a href="/admin/productAdmin" class="nav-link"> <i class="nav-icon bi bi-download"></i>
+                        <li class="nav-item"> <a href="/admin/productAdmin" class="nav-link"> <i class="nav-icon bi bi-grip-horizontal"></i>
                                 <p>상품 목록</p>
                             </a> </li>
-                        <li class="nav-item"> <a href="/admin/registProduct" class="nav-link"> <i class="nav-icon bi bi-grip-horizontal"></i>
+                        <li class="nav-item"> <a href="/admin/registProduct" class="nav-link"> <i class="nav-icon bi bi-download"></i>
                                 <p>상품 등록</p>
                             </a> </li>
                         

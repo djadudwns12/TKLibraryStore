@@ -68,6 +68,8 @@ $(function(){
 	}
 	
 });
+
+
 </script>
 
 
@@ -90,6 +92,8 @@ function showHide(){
 	$('.showInfo').toggle();
 	$('.hideInfo').toggle();
 }
+
+
 </script>
 
 
@@ -107,7 +111,7 @@ function showHide(){
 	<div class="humberger__menu__wrapper">
 		<div class="humberger__menu__logo">
 			<a href="#"><img
-				src="${pageContext.request.contextPath}/resources/template/img/logo.png"
+				src="${pageContext.request.contextPath}/resources/images/TKlogo.png"
 				alt=""></a>
 		</div>
 		<div class="humberger__menu__cart">
@@ -171,9 +175,10 @@ function showHide(){
 			<div class="row">
 				<div class="col-lg-3">
 					<div class="header__logo">
-						<a href="./index.html"><img
-							src="${pageContext.request.contextPath}/resources/template/img/logo.png"
-							alt=""></a>
+						<a href="/"><img
+							src="/resources/images/TKlogo.png"
+							alt="" style="width: 60px; height: 80px;"></a>
+							<span style="font-weight: 700; font-size: 25px; padding: 5px;">   떡잎 서점</span>
 					</div>
 				</div>
 				<div class="col-lg-6">
@@ -240,7 +245,7 @@ function showHide(){
 				<div class="col-lg-3">
 					<div class="hero__categories">
 						<div class="hero__categories__all">
-							<i class="fa fa-bars"></i> <span>All departments</span>
+							<i class="fa fa-bars"></i> <span>메뉴</span>
 						</div>
 						<ul id="categoryList" style="display: none">
 							<c:if test="${loginMember != null}">
@@ -263,21 +268,13 @@ function showHide(){
 						<div class="hero__search__form">
 							<form action="#">
 								<div class="hero__search__categories">
-									All Categories <span class="arrow_carrot-down"></span>
+									검색 조건 <span class="arrow_carrot-down"></span>
 								</div>
 								<input type="text" placeholder="What do you need?">
-								<button type="submit" class="site-btn">SEARCH</button>
+								<button type="submit" class="site-btn">검색</button>
 							</form>
 						</div>
-						<div class="hero__search__phone">
-							<div class="hero__search__phone__icon">
-								<i class="fa fa-phone"></i>
-							</div>
-							<div class="hero__search__phone__text">
-								<h5>+65 11.188.888</h5>
-								<span>support 24/7</span>
-							</div>
-						</div>
+						
 					</div>
 					<!-- 카테고리 -->
 					<div class="categoryArea" style="display: none;">
