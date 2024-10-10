@@ -603,14 +603,12 @@ public class AdminController {
 		} catch (Exception e) {
 			e.printStackTrace(); 
 		}
-		System.out.println("MemberAdminController : " + result.toString());
 		
 	}
 	
 	// 회원관리페이지-회원정보상세보기
 	@RequestMapping("/memberDetail")
 	public String memberDetail(@RequestParam("userId")String userId, Model model) {
-		System.out.println("일단 서비스단에는 오네요.....");
 		MemberVO memberDetail; // 회원정보
 		List<OrderVO> recentOrder = null; // 최근주문내역
 		List<ReviewVO> recentReview = null; // 최근리뷰

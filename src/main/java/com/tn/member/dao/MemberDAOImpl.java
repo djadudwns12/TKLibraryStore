@@ -54,6 +54,11 @@ public class MemberDAOImpl implements MemberDAO  {
 	}
 
 
+	@Override
+	public int deleteMember(String userId) throws Exception {
+		
+		return sess.delete(NS + ".deleteMember", userId);
+	}
 
 
 
@@ -72,6 +77,7 @@ public class MemberDAOImpl implements MemberDAO  {
 		return sess.selectOne(NS + ".selectCompareId", tmpUserId);
 	}
 //-----------------------------------------박근영-------------------------------------------------
+
 
 
 	
