@@ -64,8 +64,7 @@
 			<mapping path="/order/" />
 			<mapping path="/qa/qaList" />
 			<mapping path="/admin/" />
-			<mapping path="/member/edit"/>
-      <mapping path="/member/myPage" />
+			<mapping path="/member/" />
       
 			<beans:ref bean="authInterceptor"/>
 		
