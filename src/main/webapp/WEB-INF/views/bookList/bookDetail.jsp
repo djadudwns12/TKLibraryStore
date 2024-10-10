@@ -264,7 +264,7 @@
 		let boll = $('#bs').val();
 		
 		let book = '${param.bookNo}';
-		alert(book);
+		//alert(book);
 		let localbook = localStorage.getItem("localbook");
 
 		let bookList = new Set([]);

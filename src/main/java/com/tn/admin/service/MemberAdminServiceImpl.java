@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tn.admin.dao.MemberAdminDAO;
 import com.tn.admin.model.vo.PagingInfo;
@@ -90,6 +91,22 @@ public class MemberAdminServiceImpl implements MemberAdminService {
 	public List<OrderVO> getRecentOrder(String userId) throws Exception {
 
 		return dao.getRecentOrder(userId);
+	}
+
+	
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Map<String, Object> getVisitorHistory() throws Exception {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		
+		Map<String, Object> memberAgeMap = dao.selectMemberAge();
+		
+		
+		
+		
+		return resultMap;
 	}
 	
 

@@ -746,6 +746,27 @@ public class AdminController {
 			
 		}
 		
+		@RequestMapping("/getVisitorHistory")
+		public ResponseEntity<Map<String, Object>> getVisitorHistory(){
+			Map<String, Object> resultMap = new HashMap<String, Object>();
+			
+			ResponseEntity<Map<String, Object>> result = null;
+			
+			try {
+				resultMap = mService.getVisitorHistory();
+				result = new ResponseEntity<Map<String,Object>>(resultMap, HttpStatus.OK);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return result;
+			
+			
+		}
+		
+		
+		
 		// 엄영준(end) =============================================================================================================
 		
 		

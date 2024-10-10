@@ -22,4 +22,6 @@ public interface MemberAdminService {
 
 	// 관리자페이지-회원관리페이지에서 최근 주문내역을 불러오는 메서드
 	List<OrderVO> getRecentOrder(String userId) throws Exception;
+
+	Map<String, Object> getVisitorHistory() throws Exception;
 }

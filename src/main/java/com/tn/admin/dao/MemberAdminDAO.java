@@ -39,7 +39,12 @@ public interface MemberAdminDAO {
 
 	// 회원관리페이지-회원정보상세보기의 최근 주문내역
 	List<OrderVO> getRecentOrder(String userId) throws Exception;
+	
+	// 회원의 나이대를 가지고 오는 메서드 
+	Map<String, Object> selectMemberAge() throws Exception;
 
+	
+	
 	// 더미 멤버 만들기..
 	//int insertDummyMember(MemberDTO dto) throws Exception;
 }
