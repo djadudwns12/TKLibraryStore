@@ -100,7 +100,7 @@
 							<tr>
 								<td><input type="checkbox" name="proCheck" value="${memberList.userId}" onclick="updateCheck()"></td>
 								
-								<td><img src="/resources/userImg/${memberList.userImg}" width="30px" height="30"></td>
+								<td><img src="${memberList.userImg}" width="30px" height="30"></td>
 								<td onclick="location.href='/admin/memberDetail?userId=${memberList.userId}'">${memberList.userId}</td>
 								<td>${memberList.userName}</td>
 								<td>${memberList.userBirth}</td>
@@ -134,7 +134,7 @@
 						</c:choose>
 					</c:forEach>
 
-					<c:if test="${param.pageNo < pagingInfo.totalPageCnt}">
+					<c:if test="${pagingInfo.pageNo < pagingInfo.totalPageCnt}">
 						<li class="page-item"><a class="page-link"
 							href="/admin/memberadmin?pageNo=${pagingInfo.pageNo+1}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Next</a></li>
 						
