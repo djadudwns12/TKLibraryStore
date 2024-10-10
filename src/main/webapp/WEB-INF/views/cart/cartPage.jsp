@@ -125,8 +125,12 @@
                      <td class="common-td"><input type="checkbox"
                         class="selectItem" data-price="${cart.price}"
                         data-salePrice="${cart.salePrice}" data-cart-id="${cart.cartId}"></td>
-                     <td class="thumbnail"><a href="/bookList/bookDetail?bookNo=${cart.bookNo}"><img src="${cart.thumbNail}"
-                        style="width: 70px;" name="thumbNail" /></a></td>
+
+                   
+
+                     <td class="thumbnail"><img src="${cart.thumbNail}"
+                        style="width: 70px;" name="thumbNail" /></td>
+
                      <td class="common-td" name="title">${cart.title}</td>
                      <td class="common-td">
                         <div name="price">
@@ -593,13 +597,27 @@
         });
     });
     
+
+  
+
+    
+    
+
+    
     $(function () {
+        const cartIdList = [
+            <c:forEach var="cart" items="${cartList}">
+                '${cart.cartId}'<c:if test="${!status.last}">, </c:if>
+            </c:forEach>
+        ];
+
         $("#paymentButton").on("click", function (event) {
             console.log("결제 버튼 클릭됨");
 
             let fd = new FormData();  
 
-            // 체크된거만 가져가기 위해서 반복문
+
+            // 체크된 항목에 대해서만 반복문으로 처리
             $("tr.cartItem").has("input.selectItem:checked").each(function () {  
                 let thumbNail = $(this).find("img[name='thumbNail']").attr("src") || '';  
                 let title = $(this).find("td[name='title']").text().trim() || '';  
@@ -610,30 +628,35 @@
                 let salePrice = salePriceText.replace(/[^\d]/g, '');  
 
                 let cartQty = $(this).find("input[name='cartQty']").val() || '';  
+                let cartId = $(this).find("input.selectItem:checked").data("cart-id"); // 선택된 cartId 가져오기
 
-                
+                // 각 선택된 상품의 정보를 FormData에 추가
                 fd.append("thumbNail", thumbNail);
                 fd.append("title", title);
                 fd.append("price", price);
                 fd.append("salePrice", salePrice);
                 fd.append("cartQty", cartQty);
-
+                fd.append("cartId", cartId);  // 각 개별 cartId 추가
+                
                 console.log("추출된 체크된 책 정보:", {
                     thumbNail: thumbNail,
                     title: title,
                     price: price,
                     salePrice: salePrice,
                     cartQty: cartQty,
+
+                    cartId: cartId
                 });
             });
 
-            
+            // 체크된 항목이 없을 경우 경고
             if (!fd.has("thumbNail")) {
                 alert("결제할 책을 선택해주세요.");
                 return; 
             }
 
-            
+
+            // 총 결제 정보 추출 및 추가
             let totalPriceText = $("td[name='totalPrice']").text().trim();
             let totalPrice = totalPriceText.replace(/[^\d]/g, ''); 
 
@@ -646,13 +669,13 @@
             let totalPointText = $("td[name='totalPoint']").text().trim();
             let totalPoint = totalPointText.replace(/[^\d]/g, '');  
 
-            
+
             fd.append("totalPrice", totalPrice);
             fd.append("totalSalePrice", totalSalePrice);
             fd.append("totalPay", totalPay);
             fd.append("totalPoint", totalPoint);
 
-            
+
             console.log("총 결제 정보:", {
                 totalPrice: totalPrice,
                 totalSalePrice: totalSalePrice,
@@ -660,7 +683,7 @@
                 totalPoint: totalPoint
             });
 
-       
+            // AJAX로 전송
             $.ajax({
                 url: "/order/payment",
                 type: "POST",
@@ -671,16 +694,14 @@
                 success: function (response) {
                     console.log("성공:", response);
                     window.location.href = "/order/payment";
-             
+
                 },
                 error: function () {
                     console.error("오류");
-           
                 }
             });
         });
     });
-
 
 </script>
 

@@ -118,6 +118,7 @@ public class MemberController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 //	/**
 //	 * @작성자 : 엄영준
@@ -151,8 +152,7 @@ public class MemberController {
 	 */
 
 	@RequestMapping(value = "/edit")
-	public void getEditMemeberInfo(HttpSession ses,  Model model) { // 
-//		String userId = "dooly"; // 회원정보수정 페이지 완료하면 로그인 정보 가져오기!
+	public void getEditMemeberInfo(HttpSession ses,  Model model) { 
 		try {
 			MemberVO loginMember = mService.getEditMemberInfo(((MemberVO)ses.getAttribute("loginMember")).getUserId());
 			System.out.println(loginMember.toString());
@@ -175,11 +175,14 @@ public class MemberController {
 	 *
 	 */
 	@RequestMapping(value = "/mypage")
-	public void saveEditInfo(MemberDTO loginMember, RedirectAttributes redirectAttributes,Model model,HttpSession sess) {
+	public void saveEditInfo(MemberDTO editMember, RedirectAttributes redirectAttributes,Model model,HttpSession sess) {
 
 		try {
-			mService.saveEditInfo(loginMember);
+			MemberVO loginMember = (MemberVO) sess.getAttribute("loginMember");
 			model.addAttribute("loginMember", (MemberVO) sess.getAttribute("loginMember"));
+			System.out.println(loginMember.toString());
+			mService.saveEditInfo(editMember);
+			System.out.println("MemberController::editInfo :" + editMember.toString());
 			redirectAttributes.addAttribute("status", "editSuccess");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -284,6 +287,29 @@ public class MemberController {
 		return "redirect:/";
 	}
 
+	@RequestMapping("/deletemember")
+	public void deleteMember() {
+	}
+	
+	@RequestMapping("/deleteconfirm")
+	public String deleteMember(HttpSession ses) {
+		System.out.println("MemberController deleteMember() : " + ses.getAttribute("loginMember"));
+		// 회원수정페이지 하단에 '회원탈퇴 버튼을 눌러서 페이지 이동
+		// 회원탈퇴 페이지에서 안내문 하단의 체크박스 체크 후 버튼을 누르면 회원탈퇴 처리
+		try {
+			MemberVO memberVO = (MemberVO)ses.getAttribute("loginMember");
+			String userId = memberVO.getUserId();
+			System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제함..");
+			mService.deleteMember(userId);
+			logout(ses); // 로그아웃 및 세션에 저장된 회원정보 무효화
+			return "redirect:/";
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			return "redirect:/member/loginPage";
+		} 
+		
+		
+	}
 // -----------------------------------------박근영-------------------------------------------------
 	@PostMapping(value = "/checkedDupl")
 	public ResponseEntity<String> checkedDupl(@RequestParam(value = "tmpUserId") String tmpUserId){
@@ -306,8 +332,7 @@ public class MemberController {
 		
 	}
 	
-	
-	
+	//박근영
 	@PostMapping(value = "/register")
 	public ResponseEntity<Void> register(
 	        @RequestParam(value = "imgFile", required = false) MultipartFile imgFile, // 파일 처리
@@ -338,10 +363,11 @@ public class MemberController {
 		return result;
 	}
 	
-	  
+	//박근영
 	private ImgFileVODTO fileSave(MultipartFile imgFile, String userId, HttpServletRequest request) throws IOException { // 파일의 기본정보 가져옴 
 		
 		String originalFileName = imgFile.getOriginalFilename();
+		System.out.println("여긴는" + originalFileName);
 		byte[] upfile = imgFile.getBytes(); // 파일의 실제 데이터를 읽어옴
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/profileImgs");
 		
@@ -349,13 +375,14 @@ public class MemberController {
 		return fileInfo; 
 		}
 	  
-	 
+	 //박근영
 	@RequestMapping(value = "/register")
 	public String registerMember() {
 
 		return "register";
 	}
 
+	//박근영
 	@RequestMapping(value = "/coolsms", method = RequestMethod.POST)
 	public ResponseEntity<Integer> coolSms(@RequestParam("phone") String phone) {
 		System.out.println("컨트롤 확인");
@@ -369,6 +396,7 @@ public class MemberController {
 
 	}
 
+	//박근영
 	@RequestMapping(value = "/getAddr")
 	public void getAddrApi(HttpServletRequest req, HttpServletResponse response) {
 		try {

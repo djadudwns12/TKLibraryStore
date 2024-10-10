@@ -23,7 +23,6 @@ public class ProfileFileProcess{
 // -----------------------------------------박근영-------------------------------------------------
 	public ImgFileVODTO saveFileToRealPath(byte[] upfile, String realPath, String userId, String originalFileName) throws IOException {
 		ImgFileVODTO result = null;
-		System.out.println(realPath);
 		String newFileName = null;
 		String ext = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
 		newFileName = userId + "." + ext;
@@ -34,8 +33,10 @@ public class ProfileFileProcess{
 		
 		String base64Str = makeBase64String(saveFile, ext);
 
+
+		
 		result = ImgFileVODTO.builder()
-						.newFileName(realPath + File.separator + newFileName)
+						.newFileName("/resources/profileImgs/" + newFileName)
 						.base64Img(base64Str)
 						.build();
 				
