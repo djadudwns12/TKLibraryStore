@@ -125,8 +125,12 @@
                      <td class="common-td"><input type="checkbox"
                         class="selectItem" data-price="${cart.price}"
                         data-salePrice="${cart.salePrice}" data-cart-id="${cart.cartId}"></td>
+
+                   
+
                      <td class="thumbnail"><img src="${cart.thumbNail}"
                         style="width: 70px;" name="thumbNail" /></td>
+
                      <td class="common-td" name="title">${cart.title}</td>
                      <td class="common-td">
                         <div name="price">
@@ -445,6 +449,7 @@
                     if (response.success) {
                         $(currentElement).closest('tr').remove();
                         updateTotals();
+                        $('.fa-shopping-bag').next().text(response.CartCnt)
                     } else {
                         alert('삭제에 실패했습니다. 다시 시도해주세요.');
                     }
@@ -555,6 +560,9 @@
                         
                         // 총합 업데이트 함수 호출
                         updateTotals();
+                        $('.fa-shopping-bag').next().text(response.CartCnt)
+                        
+                        
                         
                     } else {
                         alert('삭제 중 오류가 발생했습니다.');
@@ -589,6 +597,9 @@
         });
     });
     
+
+  
+
     
     
 
@@ -604,6 +615,7 @@
             console.log("결제 버튼 클릭됨");
 
             let fd = new FormData();  
+
 
             // 체크된 항목에 대해서만 반복문으로 처리
             $("tr.cartItem").has("input.selectItem:checked").each(function () {  
@@ -632,6 +644,7 @@
                     price: price,
                     salePrice: salePrice,
                     cartQty: cartQty,
+
                     cartId: cartId
                 });
             });
@@ -641,6 +654,7 @@
                 alert("결제할 책을 선택해주세요.");
                 return; 
             }
+
 
             // 총 결제 정보 추출 및 추가
             let totalPriceText = $("td[name='totalPrice']").text().trim();
@@ -655,10 +669,12 @@
             let totalPointText = $("td[name='totalPoint']").text().trim();
             let totalPoint = totalPointText.replace(/[^\d]/g, '');  
 
+
             fd.append("totalPrice", totalPrice);
             fd.append("totalSalePrice", totalSalePrice);
             fd.append("totalPay", totalPay);
             fd.append("totalPoint", totalPoint);
+
 
             console.log("총 결제 정보:", {
                 totalPrice: totalPrice,
@@ -678,6 +694,7 @@
                 success: function (response) {
                     console.log("성공:", response);
                     window.location.href = "/order/payment";
+
                 },
                 error: function () {
                     console.error("오류");
@@ -685,8 +702,6 @@
             });
         });
     });
-
-
 
 </script>
 

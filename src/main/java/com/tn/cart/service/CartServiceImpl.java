@@ -80,6 +80,16 @@ public class CartServiceImpl implements CartService {
 	    return result;
 	}
 
+	@Override
+	public int getCartCnt(String userId) throws Exception {
+		
+		int CartCnt = 0;
+
+		CartCnt = cDao.getCartCnt(userId);
+		
+		return CartCnt;
+	}
+
 	
 
 }

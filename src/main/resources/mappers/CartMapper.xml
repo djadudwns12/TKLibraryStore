@@ -46,4 +46,9 @@
 		on m.userClass = cd.className
 		where m.userId = #{userId}
 	</select>
+	
+	<!-- 회원의 카트 목록의 갯수를 가져오는 쿼리문 -->
+	<select id="countCartList" resultType="int">
+		select count(*) from Cart where userId = #{userId}
+	</select>
 </mapper>
