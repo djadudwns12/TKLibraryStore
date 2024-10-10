@@ -133,10 +133,12 @@ $(function() {
 		    <div class="d-grid gap-2" style="text-align:right;">
 				<button type="submit" class="btn btn-primary saveEditInfo" onclick="return isValid();" style="border-color:#7fad38; background-color:#7fad38;">수정완료</button>
 				<button type="reset" class="btn btn-danger" >되돌리기</button>
+				<button type="button" class="btn btn-secondary" onclick="location.href='/member/deletemember';">회원탈퇴</button>
 			</div>
 		</form>
 	
 	</div>
+		
 	</div>
 	
 	<jsp:include page="./../footer.jsp"></jsp:include>
