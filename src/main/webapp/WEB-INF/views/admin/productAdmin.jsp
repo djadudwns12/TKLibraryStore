@@ -21,6 +21,7 @@
 <script>
 	$(function() {
 
+		isSelect();
 		$('.pagingSize')
 				.change(
 						function() {
@@ -47,22 +48,34 @@
 									+ $(this).val()
 									+ '&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
 						});
-
+		function isSelect() {
+			let selectSort ='${ra}'
+			$('#sortByWhat').val(selectSort).prop('selected', true);
+			let pagingSize= '${pagingInfo.viewPostCntPerPage}'
+			$('.pagingSize').val(pagingSize).prop('selected',true);
+			let searchWord = '${search.searchWord}'
+			$('.searchWord').val(searchWord);
+			
+		}
+		
 		
 		<!-- 최근 검색어 기능 구현 -->
 		
 		// 모달을 숨기거나 보여주는 기능
-        var modal = $("#recentSearchModal");
+        var recentModal = $("#recentSearchModal");
+        var recommendModal = $("#recommendSearchModal");
         var searchInput = $("#searchWord");
+        var restockModal = $("#restockModal");
 
         // 검색창 클릭 시 모달 띄우기
         searchInput.on("click", function () {
             // 검색창의 위치와 크기 정보 가져오기
+            recommendModal.hide();
             var offset = searchInput.offset();
             var width = searchInput.outerWidth();
 
             // 모달을 검색창 바로 아래로 위치시키기
-            modal.css({
+            recentModal.css({
                 top: offset.top + searchInput.outerHeight(),  // 검색창 바로 아래
                 left: offset.left,  // 검색창의 왼쪽에 맞추기
                 width: width  // 검색창과 동일한 너비로 설정
@@ -73,35 +86,219 @@
 
         // 모달 닫기 버튼 클릭 시 모달 닫기
         $(".close").on("click", function () {
-            modal.hide();  // 모달 닫기
+            recentModal.hide();  // 모달 닫기
+            recommendModal.hide();
+            restockModal.hide();
         });
 
         // 모달 외부 클릭 시 모달 닫기
         $(window).on("click", function (event) {
             if (!$(event.target).closest("#recentSearchModal, #searchWord").length) {
-                modal.hide();  // 모달 닫기
+            	recentModal.hide();  // 모달 닫기
+                recommendModal.hide();
+               
             }
         });
 
         function getCookie(name) {
+        	// 앞에 세미콜론과 공백이 추가된 이유는, 쿠키가 첫 번째 위치에 있는 경우도 쉽게 찾을 수 있게 하기 위함입니다. 
+        	// 이 방식으로 모든 쿠키 항목 앞에 세미콜론이 있다고 가정해 처리할 수 있습니다.
             let value = "; " + document.cookie;
+            // name이라는 이름의 쿠키 분리
             let parts = value.split("; " + name + "=");
+            // parts.length가 1인경우는 "; " 만 있는 것이기때문에 해당 쿠키가 존재하지 않는것이다
+            // 따라서 parts.length === 2는 해당 쿠키가 존재하는 것을 의미하며 존재하면 해당 쿠키의 배열의 첫 번째 값을 반환
             if (parts.length === 2) return parts.pop().split(";").shift();
         }
 
         // 최근 검색어 쿠키 가져오기
         let recentSearch = getCookie("recentSearch");
         if (recentSearch) {
-            let searchArray = decodeURIComponent(recentSearch).split(',');
+        	// 쿠키 문자열의 +를 공백으로 대체후 ,을 기준으로 나눈다.
+        	let searchArray = decodeURIComponent(recentSearch.replace(/\+/g, ' ')).split(',');
 
             // 검색어 목록 표시
             searchArray.forEach(function(keyword) {
-                $("#recentSearchesList").append('<li class="recentSearchs"><a href= "/admin/productAdmin?searchType=title&searchWord=' + keyword + '";>' + keyword + '</a></li>');
+                $("#recentSearchesList").append('<li><a href= "/admin/productAdmin?searchType=title&searchWord=' + keyword + '";>' + keyword + '</a></li>');
             });
         }
+        
+        <!-- 인기 검색어 기능 구현 -->
+        // 인기 검색어 목록 불러오기
+        function loadPopularKeywords() {
+        	
+        	$
+			.ajax({
+				url : "/admin/popularKeywords",
+				type : "get",
+				dataType : "json",
+				data : {
+					limit : 5
+				},
+				success : function(data) {
+					console.log(data)
+					 var popularList = $('#popularSearchesList');
+		                popularList.empty();
+		                $.each(data, function(index, keyword) {
+		                	var index = index+1
+		                    //popularList.append('<li>' + index + "　　" + keyword + '</li>');
+		                	popularList.append('<li><a href= "/admin/productAdmin?searchType=title&searchWord=' + keyword + '";>' +  index + "　　" + keyword + '</a></li>');
+		                	
+		                });
+				},
+				error : function(data) {
+					console.log(data);
+
+				},
+			});
+        	
+        	        	            
+        }
+
+        // 페이지 로드 시 인기 검색어 불러오기
+        loadPopularKeywords();
+        
+        <!-- 추천 검색어 기능 구현-->
+        $('.searchWord').keyup(function (evt) {
+        	
+        	
+            var searchInput = $("#searchWord");
+
+          
+                // 검색창의 위치와 크기 정보 가져오기
+                var offset = searchInput.offset();
+                var width = searchInput.outerWidth();
+				
+                // 인기검색어, 최근검색어 모달 닫기
+                recentModal.hide();
+                
+                // 모달을 검색창 바로 아래로 위치시키기
+                recommendModal.css({
+                    top: offset.top + searchInput.outerHeight(),  // 검색창 바로 아래
+                    left: offset.left,  // 검색창의 왼쪽에 맞추기
+                    width: width  // 검색창과 동일한 너비로 설정
+                }).show();  // 모달 열기
+
+        	
+        	
+			let searchWord = $('.searchWord').val();
+			var isComposing = false;
+
+		    // compositionstart: 조합 입력 시작 시 플래그 설정
+		    $('#searchWord').on('compositionstart', function() {
+		        isComposing = true;
+		    });
+
+		    // compositionend: 조합 입력이 끝나면 플래그 해제하고 AJAX 요청
+		    $('#searchWord').on('compositionend', function() {
+		        isComposing = false;
+		   });	
+			
+			if(searchWord.length >1 && !isComposing){
+				$.ajax({
+		              url: "/admin/searchRecommend", 
+		              type: "get", 
+		              dataType: "json", 
+		              data: {
+		                searchWord : searchWord
+		              },
+		              success: function (data) {
+		               
+		               
+		                if (data.msg === "notPresent") {
+		                	$("#searchRecommend").empty();
+		                  $("#searchRecommend").append('<li> 일치하는 상품이 없습니다. </li><input type="button" value= "입고 신청" style="margin-top:20px;" onclick="showRestockModal(\'' + searchWord + '\')" />');
+		                  
+		                  // 일치하는 책이 있을 때
+		                } else if (data.msg === "isPresent") {
+		                	console.log(data.data)
+		                	$("#searchRecommend").empty();
+		                	$.each(data.data, function(index, title) {
+		                		 $("#searchRecommend").append('<li style="margin-bottom:10px;"><a href= "/admin/productAdmin?searchType=title&searchWord=' + title + '";>' + title + '</a></li>');
+		                	 });
+		                }
+		              },
+		              error: function (data) {
+		            	  console.log(data)
+		              },
+		            });
+			}
+		});
+        
+        $('#searchBtn').click(function() {
+			let searchValue = $('#searchValue').val();
+
+			if (searchValue != '') {
+				$.ajax({
+					url : '/admin/searchBook',
+					type : 'GET',
+					data : {
+						"searchValue" : searchValue
+					},
+					dataType : 'json',
+					success : function(data) {
+						
+						if(data.total==0){
+							$("#restockList").empty();
+			                $("#restockList").append('<li> 일치하는 상품이 없습니다. </li>');
+						}else if(data.total > 0){
+							$("#restockList").empty();
+							console.log(data.items);
+							
+							data.items.forEach(function(item) {
+								  let itemWithoutDescription = { ...item };
+								  delete itemWithoutDescription.description; // \n때문인지 넘겨줄때 오류가 나서 description 속성 삭제
+								  
+		                		 $("#restockList").append('<div class="restockLI"><li><img src="'+item.image+'" style="width : 50px; height: 80px;">'+item.title+'<span style="font-size: 10px; color: gray;">  '+item.author+'</span></li><input type="button" style="width:50px; justify-content:flex-end; text-align:center;" value="신청" onclick=\'restockBook(' + JSON.stringify(itemWithoutDescription) + ')\'/></div>');
+		                	 });
+						}
+
+					}
+
+				});
+			}
+		});
     });
 	
-
+	function restockBook(item) {
+		console.log(item.title);
+		console.log(item.author);
+		console.log(item.image);
+		
+		//ajax로 해당 책 정보를 현재시간과 함께 보내준다
+		
+		const currentTime = new Date().toLocaleString();
+		
+		$.ajax({
+		    url: '/admin/restock', // 서버의 엔드포인트 URL
+		    type: 'POST', // 요청 방식 (POST)
+		    contentType: 'application/json', // 데이터 타입을 JSON으로 설정
+		    data: JSON.stringify({
+		      title: item.title,
+		      author: item.author,
+		      image: item.image,
+		      timestamp: currentTime // 현재 시간 추가
+		    }),
+		    success: function(response) {
+		      // 성공 시 처리
+		      console.log('서버로 데이터 전송 성공:', response);
+		      alert('입고 신청되었습니다!');
+		    },
+		    error: function(error) {
+		      // 에러 발생 시 처리
+		      console.error('데이터 전송 중 오류 발생:', error);
+		    }
+		  });
+		
+	}
+	
+	// 재입고 모달 출력
+	function showRestockModal(searchWord) {
+		$('#restockModal').show();
+		$('#searchValue').val(searchWord);
+	}
+	
+	
 	function pagingInfo() {
 		let productList = '${param.productList}';
 		console.log(productList);
@@ -322,58 +519,63 @@ body {
 	position: absolute; /* 검색창 아래 고정 */
 	z-index: 1;
 	width: 100%; /* 검색창과 동일한 가로 길이 */
-	max-height: 300px; /* 모달 최대 높이 설정 */
+	
 	overflow-y: auto; /* 스크롤 가능 */
-	height: fit-content;
+	height: auto;
 }
 
 /* 모달 내부 콘텐츠 스타일 */
 .modal-content {
-    width: 600px;
-    padding: 20px;
-    border-radius: 10px;
+	width: 600px;
+	padding: 20px;
+	border-radius: 10px;
 }
 
 .content-body {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
 }
 
 .recent-searches, .popular-searches {
-    width: 45%; /* 각각 45%의 공간을 차지 */
+	width: 45%; /* 각각 45%의 공간을 차지 */
 }
 
 .divider {
-    width: 1px;
-    background-color: #ccc; /* 세로선 색상 */
-    height: 100%;
+	width: 1px;
+	background-color: #ccc; /* 세로선 색상 */
+	height: 100%;
+	margin: 0 20px; /* 좌우 여백 */
+}
+
+.recent-searches, .popular-searches {
+	width: 45%; /* 두 영역을 나누어 균형 있게 배치 */
 }
 
 h5 {
-    margin-top: 0;
+	margin-top: 0;
 }
 
 ul {
-    list-style-type: none;
-    padding: 0;
+	list-style-type: none;
+	padding: 0;
 }
 
 .modal {
-    display: none; /* 필요에 따라 모달을 숨기거나 보여줄 수 있습니다 */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
+	display: none; /* 필요에 따라 모달을 숨기거나 보여줄 수 있습니다 */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	margin-top: 10px;
 }
 
 .close {
-    cursor: pointer;
-    font-size: 20px;
+	cursor: pointer;
+	font-size: 20px;
 }
 
 /* 최근 검색어 */
@@ -391,6 +593,25 @@ a:visited {
 	color: #5C636A;
 	text-decoration: none;
 }
+
+.rcContent-top {
+	display: flex;
+	justify-content: space-between; /* 두 요소 사이에 공간을 분배 */
+	align-items: center; /* 세로 방향에서 가운데 정렬 */
+	margin-bottom: 20px;
+}
+
+.rcContent-top h6 {
+	margin: 0; /* 기본 마진 제거 */
+}
+
+.restockLI{
+	margin-bottom:10px;
+	display:flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
 </style>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -435,9 +656,7 @@ a:visited {
 							<div class="keyBoard">
 								<i class="fas fa-keyboard"></i>
 							</div>
-							<div class="mic">
-								<i class="fas fa-microphone"></i>
-							</div>
+
 
 						</div>
 						<input type="hidden" name="pageNo" value="${param.pageNo}" /> <input
@@ -484,60 +703,61 @@ a:visited {
 
 
 
-
-				<table>
-					<thead>
-						<tr>
-							<th><input type="checkbox" onclick="selectAll(this)">
-								selectAll</th>
-							<th>BookNo</th>
-							<th>Title</th>
-							<th>Author</th>
-							<th>Publisher</th>
-							<th>PubDate</th>
-							<th>Genre</th>
-							<th>Price</th>
-							<th>SalePrice</th>
-							<th>Inven</th>
-							<th>ThumbNail</th>
-							<th>Zzim</th>
-							<th>ReviewCnt</th>
-
-							<th><button type="button" class="btn btn-danger btn"
-									id="delBtn" style="width: 90px; font-size: small;"
-									onclick="deleteProduct();">0개 삭제</button></th>
-							<th><button type="button" class="btn btn-success btn"
-									id="soldOutBtn" style="width: 90px; font-size: small;"
-									onclick="soldOutProduct();">0개 품절</button></th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="product" items="${productList}">
+				<div style="overflow-x: auto;">
+					<table>
+						<thead>
 							<tr>
-								<td><input type="checkbox" name="proCheck"
-									value=${product.bookNo } onclick="updateButton()"></td>
-								<td>${product.bookNo}</td>
-								<td>${product.title}</td>
-								<td>${product.author}</td>
-								<td>${product.publisher}</td>
-								<td>${product.pubDate}</td>
-								<td>${product.genre}</td>
-								<td>${product.price}</td>
-								<td>${product.salePrice}</td>
-								<td>${product.inven}</td>
-								<td><img src="${product.thumbNail}" width="50px"
-									height="80"></td>
-								<td>${product.zzim}</td>
-								<td>${product.reviewCnt}</td>
-								<td colspan="3"><button class="btn btn-secondary btn"
-										style="width: 70px"
-										onclick="location.href='/admin/modifyProduct?bookNo=${product.bookNo}'">수정</button></td>
+								<th><input type="checkbox" onclick="selectAll(this)">
+									selectAll</th>
+								<th>BookNo</th>
+								<th>Title</th>
+								<th>Author</th>
+								<th>Publisher</th>
+								<th>PubDate</th>
+								<th>Genre</th>
+								<th>Price</th>
+								<th>SalePrice</th>
+								<th>Qty</th>
+								<th>ThumbNail</th>
+								<th>Zzim</th>
+								<th>ReviewCnt</th>
+
+								<th><button type="button" class="btn btn-danger btn"
+										id="delBtn" style="width: 90px; font-size: small;"
+										onclick="deleteProduct();">0개 삭제</button></th>
+								<th><button type="button" class="btn btn-success btn"
+										id="soldOutBtn" style="width: 90px; font-size: small;"
+										onclick="soldOutProduct();">0개 품절</button></th>
 							</tr>
-						</c:forEach>
+						</thead>
+						<tbody>
+							<c:forEach var="product" items="${productList}">
+								<tr>
+									<td><input type="checkbox" name="proCheck"
+										value=${product.bookNo } onclick="updateButton()"></td>
+									<td>${product.bookNo}</td>
+									<td><a
+										href="/bookList/bookDetail?bookNo=${product.bookNo}">${product.title}</a></td>
+									<td>${product.author}</td>
+									<td>${product.publisher}</td>
+									<td>${product.pubDate}</td>
+									<td>${product.genre}</td>
+									<td>${product.price}</td>
+									<td>${product.salePrice}</td>
+									<td>${product.inven}</td>
+									<td><img src="${product.thumbNail}" width="50px"
+										height="80"></td>
+									<td>${product.zzim}</td>
+									<td>${product.reviewCnt}</td>
+									<td colspan="3"><button class="btn btn-secondary btn"
+											style="width: 70px"
+											onclick="location.href='/admin/modifyProduct?bookNo=${product.bookNo}'">수정</button></td>
+								</tr>
+							</c:forEach>
 
-					</tbody>
-				</table>
-
+						</tbody>
+					</table>
+				</div>
 			</div>
 			<div class="pagination justify-content-center" style="margin: 20px 0">
 
@@ -580,10 +800,11 @@ a:visited {
 				</ul>
 			</div>
 
+			<!-- 모달 영역 시작 -->
 			<div id="recentSearchModal" class="modal">
 				<div class="modal-content">
 					<div class="content-top">
-						<span class="close" style="margin-left: 500px; height: 10px;">&times;</span>						
+						<span class="close" style="margin-left: 500px; height: 10px;">&times;</span>
 					</div>
 					<div class="content-body">
 						<div class="recent-searches">
@@ -598,18 +819,112 @@ a:visited {
 							<h5>인기 검색어</h5>
 							<ul id="popularSearchesList">
 								<!-- 인기 검색어가 동적으로 삽입될 곳 -->
-								<li>1위</li>
-								<li>2위</li>
-								<li>3위</li>
-								<li>4위</li>
-								<li>5위</li>
+
 							</ul>
 						</div>
-						
+
 					</div>
-					
+
 				</div>
 			</div>
+
+			<div id="recentSearchModal" class="modal">
+				<div class="modal-content">
+					<div class="rccontent-top">
+						<div>
+							<h5>최근 검색 기록</h5>
+						</div>
+						<div>
+							<h5>인기 검색어</h5>
+						</div>
+						<div>
+							<span class="close" style="margin-left: 500px; height: 10px;">&times;</span>
+						</div>
+
+
+
+
+					</div>
+					<div class="content-body">
+						<!-- 최근 검색 기록 영역 -->
+						<div class="recent-searches">
+
+							<ul id="recentSearchesList">
+								<!-- 검색 기록이 동적으로 삽입될 곳 -->
+							</ul>
+						</div>
+
+						<!-- 세로선 -->
+						<div class="divider"></div>
+
+						<!-- 인기 검색어 영역 -->
+						<div class="popular-searches">
+
+							<ul id="popularSearchesList">
+								<!-- 인기 검색어가 동적으로 삽입될 곳 -->
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="recommendSearchModal" class="modal">
+				<div class="modal-content">
+					<div class="rcContent-top">
+
+						<div>
+							<h6>추천 검색어</h6>
+						</div>
+						<div>
+							<span class="close" style="height: 10px;">&times;</span>
+						</div>
+					</div>
+					<div class="content-body">
+						<div class="recommend-searches">
+
+							<ul id="searchRecommend">
+								<!-- 추천 검색어가 동적으로 삽입될 곳 -->
+							</ul>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+
+			<div class="modal" id="restockModal" style="height: 800px;">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+
+						<!-- Modal Header -->
+						<div class="modal-header">
+							<h4 class="modal-title">입고 신청</h4>
+							<button type="button" class="btn-close close" data-bs-dismiss="modal"></button>
+						</div>
+
+						<!-- Modal body -->
+						<div class="modal-body" >
+							<div style="display:flex;">
+								<input type="text" style="width:330px; margin-right: 20px;"placeholder="검색할 책을 입력하세요." id="searchValue" />
+								<button  class="btn btn-outline-dark btn" id="searchBtn" >검색</button>
+							</div>
+							<ul id="restockList" >
+								<!-- 추천 검색어가 동적으로 삽입될 곳 -->
+							</ul>
+							
+						</div>
+
+						<!-- Modal footer -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger close"
+								data-bs-dismiss="modal">Close</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+
 
 		</div>
 	</div>

@@ -2,8 +2,26 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tn.mapper.orderMapper">
-	<!-- 회원이 주문한 목록 최근꺼 3개를 가지고 오는 쿼리문 -->
+  <mapper namespace="com.tn.mapper.OrderMapper">
+  
+  	<!--  멤버테이블에 포인트 업데이트 -->
+  	<update id="updatePoint">
+	  	update Member
+		set userPoint = userPoint + 100 <!-- 적립할 포인트... 수정 필요.... -->
+<!--	(
+		(select totalPay from 'Order'
+		where orderWho=#{userId} and orderNo=#{orderNo})*0.02
+		)-->
+		where userId=#{userId}
+  	</update>
+
+	<insert id="insertPointLog">
+		insert into PointLog(pWho, pWhen, pWhy, pScore) 
+		values (#{orderWho}, #{orderDate}, #{orderPK}, 100)<!-- 마지막값 적립된 포인트로 수정 필요 -->
+	</insert>
+    
+    <!-- 엄영준 -->
+    <!-- 회원이 주문한 목록 최근꺼 3개를 가지고 오는 쿼리문 -->
 	<select id="selectOrderList"
 		resultType="com.tn.booklist.model.vo.BooklistVO">
 		<!-- select b.* from
@@ -19,4 +37,5 @@
 		on userOrder.bookNo = b.bookNo order by userOrder.orderPk desc limit
 		0,3;
 	</select>
-</mapper>
+     
+</mapper> 

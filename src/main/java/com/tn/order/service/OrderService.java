@@ -1,28 +1,26 @@
 package com.tn.order.service;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import com.tn.order.model.dto.OrderDTO;
+import com.tn.order.model.dto.PaymentInfoDTO;
+import com.tn.order.model.vo.OrderInfo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import java.util.List;
 
 import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.order.model.vo.OrderVO;
 
-/**
- * Handles requests for the application home page.
- */
 public interface OrderService {
-
 	
-	/**
+// -----------------------------------------박근영-------------------------------------------------
+	// 결제에 필요한 정보 담기
+	OrderInfo otherOrderInfo (String userId, OrderInfo orderInfo) throws Exception;
+	// 결제 완료 후 적용할 정보의 묶음
+	boolean paymentInfoApply(PaymentInfoDTO paymentInfoDTO);
+// -----------------------------------------박근영-------------------------------------------------
+
+// -----------------------------------------엄영준-------------------------------------------------
+/**
 	 * @작성자 : 엄영준 
 	 * @작성일 : 2024. 10. 4. 
 	 * @클래스명 : tnbookstore
@@ -35,5 +33,6 @@ public interface OrderService {
 	 *
 	 */
 	List<BooklistVO> getOrderList(MemberDTO loginMember) throws Exception;
-		
+// -----------------------------------------엄영준-------------------------------------------------
+
 }
