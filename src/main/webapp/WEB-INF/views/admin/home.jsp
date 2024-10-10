@@ -132,7 +132,20 @@ img {
 .content1 {
 	margin-left: 50px;
 	margin-top: 30px;
+	 margin-bottom: 50px;
 }
+
+ /* h4 태그 스타일 */
+        .content1 h4 {
+            font-family: 'Arial', sans-serif;
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+           
+        }
 
 .content2 {
 	display: flex;
@@ -140,8 +153,12 @@ img {
 	margin-left: 50px;
 	margin-right: 100px;
 	justify-content: space-around;
+	border-bottom: 2px solid #e0e0e0;
 }
 
+.content2 div{
+	margin-bottom: 30px;
+}
 .content3 {
 	margin-left: 100px;
 	margin-top: 100px;
