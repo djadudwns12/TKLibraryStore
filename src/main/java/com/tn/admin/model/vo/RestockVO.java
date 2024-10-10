@@ -1,7 +1,7 @@
 package com.tn.admin.model.vo;
 
+import java.security.Timestamp;
 import java.sql.Date;
-import java.sql.Timestamp;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,27 +10,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @ToString
-public class ProductVO {
-	private int bookNo;
+public class RestockVO {
+	
+	private String restockNo;
 	private String title;
 	private String author;
-	private String publisher;
-	private Date pubDate;
-	private String genre;
-	private int price;
-	private int salePrice;
-	private int inven;
-	private String thumbNail;
-	private String introduction;
-	private int zzim;
-	private int reviewCnt;
-	private String base64ProfileImg;
-	
+	private String image;
+	private String timestamp;
 }
