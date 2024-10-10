@@ -64,8 +64,12 @@
 			<mapping path="/order/" />
 			<mapping path="/qa/qaList" />
 
-			<mapping path="/admin/**" />
-
+			
+			<mapping path="/admin/productAdmin" />
+			<mapping path="/admin/registProduct" />
+			<mapping path="/admin/modifyProduct" />
+			<mapping path="/admin/restockList" />
+			
 			<mapping path="/member/edit"/>
       <mapping path="/member/mypage" />
 			<mapping path="/member/" />
