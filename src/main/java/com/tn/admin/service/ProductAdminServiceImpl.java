@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tn.admin.model.vo.*;
+import com.tn.booklist.model.vo.BooklistVO;
+import com.tn.member.model.dto.MemberDTO;
 import com.tn.admin.dao.ProductAdminDAO;
 
 @Service
@@ -249,6 +251,13 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		
 		
 		return pi;
+	}
+
+
+	@Override
+	public List<BooklistVO> getZzimList(MemberDTO loginMember) throws Exception {
+		
+		return pDao.selectZzimList(loginMember);
 	}
 
 

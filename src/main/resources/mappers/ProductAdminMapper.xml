@@ -308,4 +308,9 @@
 		Restock;
 
 	</select>
+	
+	
+	<select id="selectZzimList" resultType="com.tn.booklist.model.vo.BooklistVO">
+		select b.* from (SELECT * FROM mbcac2024.Zzim where userId=#{userId}) as zzim inner join BookList as b on zzim.bookNo = b.bookNo;
+	</select>
 </mapper>

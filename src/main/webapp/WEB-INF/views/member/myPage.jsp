@@ -169,16 +169,11 @@ function mypageNav() {
 			<h6>찜목록</h6>
 			<div class="swiper-container col">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <img src="https://mblogthumb-phinf.pstatic.net/MjAxODEyMDhfMTQz/MDAxNTQ0MjMyMDE4NDU4.x8TtSN-Knc5CrNjwpb1ulTDLpEui7mTLYPqGNUjnDbQg.-9zaXZALDcAXbsdoOfiPngUMs5JRQ6KNVPi0MCoowAgg.PNG.8713232/image.png?type=w800" alt="Product Image 1">
-                </div>
-                <div class="swiper-slide">
-                    <img src="https://dimg.donga.com/wps/NEWS/IMAGE/2021/02/04/105283173.2.jpg" alt="Product Image 2">
-                </div>
-                <div class="swiper-slide">
-                    <img src="https://dimg.donga.com/wps/NEWS/IMAGE/2021/02/04/105283173.2.jpg" alt="Product Image 3">
-                </div>
-                <div class="swiper-slide" style="font-size: 50pt;">- 끝 -</div>
+            	<c:forEach var="zzim" items="${zzimList}">
+	                <div class="swiper-slide">
+	                    <img src="${zzim.thumbNail}" alt="Product Image 1">
+	                </div>
+            	</c:forEach>
             </div>
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>

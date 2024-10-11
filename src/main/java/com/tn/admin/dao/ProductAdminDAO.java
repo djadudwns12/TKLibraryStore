@@ -10,6 +10,8 @@ import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
+import com.tn.booklist.model.vo.BooklistVO;
+import com.tn.member.model.dto.MemberDTO;
 
 @Repository
 public interface ProductAdminDAO {
@@ -64,6 +66,8 @@ public interface ProductAdminDAO {
 	List<RestockVO> restockList(PagingInfo pi) throws Exception;
 
 	int getTotalRestockCnt() throws Exception;
+
+	List<BooklistVO> selectZzimList(MemberDTO loginMember) throws Exception;
 
 	
 

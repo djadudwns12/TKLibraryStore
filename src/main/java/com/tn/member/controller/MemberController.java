@@ -38,6 +38,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tn.admin.model.vo.ProductVO;
+import com.tn.admin.service.ProductAdminService;
 import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.dto.RegisterDTO;
@@ -73,7 +75,12 @@ public class MemberController {
 	@Autowired
 	private OrderService oService;
 	@Autowired
+	private ProductAdminService pService;
+	
+	@Autowired
 	private ProfileFileProcess fileProcess;
+	
+	
 
 	
 //	-------------------------------------------------------------(엄영준) Start-----------------------------------------------------------------------------------
@@ -205,10 +212,17 @@ public class MemberController {
 			// 회원의 주문목록을 불러오는 메서드
 			List<BooklistVO> list = oService.getOrderList(loginMember);
 			
+			// 회원의 찜목록을 불러오는 메서드
+			List<BooklistVO> zzimList = pService.getZzimList(loginMember);
+			
+			
+			
 			System.out.println(list);
+			System.out.println(zzimList);
 			
 			//model.addAttribute("orderList", list);
 			model.addAttribute("orderList", list);
+			model.addAttribute("zzimList", zzimList);
 			model.addAttribute("status", "editSuccess");
 		} catch (Exception e) {
 			e.printStackTrace();
