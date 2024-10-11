@@ -78,7 +78,7 @@ function getBookList(){
             	
             	$.each(data,function(i,row){
             		inputHTML += `<tr onclick="location.href='/bookList/bookDetail?bookNo=${row.bookNo}';" style='cursor:pointer;'>>`
-            		inputHTML += `<td><img src='${row.thumbNail}'></td>`
+            		inputHTML += `<td><img src='${row.thumbNail}'style="width: 80px; height: 100px;"></td>`
             		inputHTML += `<td>${row.title}</td>`
             		inputHTML += `<td>${row.author}</td>`
             		inputHTML += `<td>${row.publisher}</td>`

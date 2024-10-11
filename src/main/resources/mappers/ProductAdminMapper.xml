@@ -329,9 +329,24 @@
 	<select id="getTopPublisher"
 		resultType="com.tn.admin.model.vo.TopPublisherVO">
 		select publisher,count(publisher) as publisher_count
-		from BookList
+		from
+		BookList
 		group by publisher
 		order by publisher_count desc
 		limit 10;
+	</select>
+
+	<select id="getSales" resultType="com.tn.admin.model.vo.SalesVO">
+		SELECT
+		DATE_FORMAT(orderDate, '%Y-%m') AS order_month,
+		SUM(totalPay) AS total_pay
+		FROM
+		`Order`
+		WHERE
+		orderDate BETWEEN '2024-06-01 00:00:00' AND '2024-10-31 23:59:59'
+		GROUP BY
+		DATE_FORMAT(orderDate, '%Y-%m')
+		ORDER BY
+		order_month;
 	</select>
 </mapper>

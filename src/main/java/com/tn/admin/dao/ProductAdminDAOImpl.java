@@ -12,6 +12,7 @@ import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.RestockVO;
+import com.tn.admin.model.vo.SalesVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
 import com.tn.admin.model.vo.TopPublisherVO;
 
@@ -201,6 +202,11 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 	public List<TopPublisherVO> getTopPublisher() throws Exception {
 		
 		return ses.selectList(NS + ".getTopPublisher");
+	}
+	@Override
+	public List<SalesVO> getSales() throws Exception {
+		
+		return ses.selectList(NS + ".getSales" );
 	}
 	
 	

@@ -50,6 +50,7 @@ import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.RestockVO;
+import com.tn.admin.model.vo.SalesVO;
 import com.tn.admin.service.MemberAdminService;
 import com.tn.admin.service.ProductAdminService;
 import com.tn.qa.model.vo.QAVO;
@@ -602,6 +603,21 @@ public class AdminController {
 				e.printStackTrace();
 			}
 		 return publisher;
+	    }
+	 
+	 @GetMapping("/salesChart")
+	    @ResponseBody
+	    public List<SalesVO> salesChart() {
+	        
+		 List<SalesVO> sales = null;
+		 try {
+			 sales = pService.getSales();
+			 System.out.println(sales.toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 return sales;
 	    }
 	
 	// ================================================= 한준형 ===========================================================

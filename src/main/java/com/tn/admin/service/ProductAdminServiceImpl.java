@@ -267,6 +267,13 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 	}
 
 
+	@Override
+	public List<SalesVO> getSales() throws Exception {
+		// TODO Auto-generated method stub
+		return pDao.getSales();
+	}
+
+
 	
 
 

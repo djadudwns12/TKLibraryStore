@@ -60,7 +60,7 @@
                             </a> </li>
                         
                             <ul class="nav nav-treeview">
-                                <li class="nav-item"> <a href="./docs/components/main-header.html" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                                <li class="nav-item"> <a href="./docs/components/main-header.html" class="nav-link"> <i class="bi bi-bar-chart"></i>
                                         <p>asd</p>
                                     </a> </li>
                                 <li class="nav-item"> <a href="./docs/components/main-sidebar.html" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
@@ -69,7 +69,7 @@
                             </ul>
                         </li>
                         
-                        <li class="nav-item"> <a href="./docs/browser-support.html" class="nav-link"> <i class="nav-icon bi bi-browser-edge"></i>
+                        <li class="nav-item" style="margin-left: 7;"> <a href="/admin/home" class="nav-link"> <i class="bi bi-bar-chart"></i>
                                 <p>상품 통계</p>
                             </a> </li>
                         <li class="nav-item"> <a href="/admin/restockList" class="nav-link"> <i class="nav-icon bi bi-hand-thumbs-up-fill"></i>
