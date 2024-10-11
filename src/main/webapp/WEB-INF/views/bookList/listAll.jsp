@@ -188,7 +188,7 @@ table td, table th {
 	<span style="position: absolute; bottom:300px; z-index: 3; margin-left: 1400px;"> <img src="https://contents.kyobobook.co.kr/display/ico_welcome_marketing_9_e758aa5c7a13468da6dfa86057fb0905.svg"></span>
 	<span style="position: absolute; bottom:280px; z-index: 3; margin-left: 1400px;"> 추천 작가 </span>	
 	
-	<span style="margin-left: 350px; margin-top: 30px; font-size: 20px; font-weight: 700;">독서의 계절 가을, 떡잎서점과 함께</span>
+	<span style="margin-left: 350px; margin-top: 30px; font-size: 20px; font-weight: 700;">독서의 계절 가을, 떡잎서점과 함께♥ @)))))))))) 김밥 한줄과 함께♣</span>
 	<div style="margin-top: 30px;">
 		<span style="margin-left: 350px; "><img src="/resources/images/autumn1.jpg" style="width: 280px; height: 170px; margin-bottom: 40px; border-radius: 40px; "></span>
 		<span style="margin-left: 30px; "><img src="/resources/images/library.jpg" style="width: 280px; height: 170px; margin-bottom: 40px;border-radius: 40px;"></span>
