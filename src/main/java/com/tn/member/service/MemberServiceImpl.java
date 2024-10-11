@@ -148,9 +148,23 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
+	
+
+
 
 //-----------------------------------------박근영-------------------------------------------------
 
+//-----------------------------------------엄영준-------------------------------------------------
+	@Override
+	public boolean addVisitHistory() throws Exception {
+		
+		if(dao.mergeIntoVisitHistor() > 0) {
+			return true;
+		}else {
+			return false;
+		}	
+	}
+//-----------------------------------------엄영준-------------------------------------------------
 		
 
 

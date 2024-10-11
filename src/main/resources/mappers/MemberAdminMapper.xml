@@ -122,6 +122,13 @@
 		select * from `Order` 
 		where orderWho=#{userId}
 	</select>
+	
+	<select id="selectVisitHistory" resultType="com.tn.admin.model.vo.VisitHistory">
+		<![CDATA[SELECT * FROM mbcac2024.VisitHistory where  datediff(CURDATE() , visitDate) < 10 order by visitDate asc]]>
+	</select>
+	
+	
+	
 	<!-- 엄영준 -->
 	<!-- 회원의 연령대를 가져로는 쿼리문 -->
 	<select id="selectMemberAge" resultType="com.tn.admin.model.vo.MemberAgeVO">

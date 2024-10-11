@@ -86,7 +86,16 @@ public class MemberDAOImpl implements MemberDAO  {
 		return sess.insert(NS + ".insertRegisterAddress", paramMap);
 	}
 
+	
+
 //-----------------------------------------박근영-------------------------------------------------
+//-----------------------------------------엄영준-------------------------------------------------
+	@Override
+	public int mergeIntoVisitHistor() {
+		// TODO Auto-generated method stub
+		return sess.insert(NS + ".mergeIntoVisitHistor");
+	}
+//-----------------------------------------엄영준-------------------------------------------------
 
 
 

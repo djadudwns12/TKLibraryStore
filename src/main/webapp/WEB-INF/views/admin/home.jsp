@@ -21,6 +21,7 @@
 
 <script>
 google.charts.load('current', {'packages':['corechart']});
+//google.charts.setOnLoadCallback(drawMemberAge);
 
 $(function(){
 	// 방문자 통계페이지데이터를 가지고 오는 쿼리문
@@ -36,9 +37,10 @@ function getvisitHistory(){
 		dataType : 'json',
 		success : function(result) {
 			console.log(result);
-			drawMemberAge(result.memberAge)
-			//google.charts.setOnLoadCallback(drawMemberAge);
-			drawMemberClass(result.memberClass)
+			
+			drawVisitHistory(result.visitHistory);
+			drawMemberAge(result.memberAge);
+			drawMemberClass(result.memberClass);
 			
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
@@ -80,6 +82,42 @@ function drawMemberClass(arr){
     chart.draw(data, options);
 }
 
+function drawVisitHistory(arr) {
+	let VisitHistory = [['날짜', '회원방문수']]
+	$.each(arr,function(i,item) {
+		let visitDate = longtodate(item.visitDate)
+		VisitHistory.push([visitDate, item.visitCount]);
+	});
+	
+	var data = google.visualization.arrayToDataTable(VisitHistory);
+
+    var options = {
+      title: '방문자 그래프',
+      curveType: 'function',
+      legend: { position: 'top' },
+      hAxis : {title:'날짜',
+//    	  	   slantedText: true,       // 텍스트를 기울이도록 설정
+//             slantedTextAngle: 90     // 각도를 45도로 설정
+          	   },
+      vAxis : {title : '방문자수'}
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+    chart.draw(data, options);
+  }
+  
+//날짜 yyyy-mm-dd형식으로 표현하여 주는 함수
+function longtodate(datetime){
+	let today=new Date(datetime);
+	var year = today.getFullYear().toString().slice(2,4);
+	var month = ('0' + (today.getMonth() + 1)).slice(-2);
+	var day = ('0' + today.getDate()).slice(-2);
+	var dateString = year+'/'+month  + '/' + day;
+	
+	return dateString
+}
+
 	
 </script>
 
@@ -111,7 +149,7 @@ img {
 .content4 {
 	display: flex;
 	flex-direction: row;
-	margin-left: 100px;
+	margin-left: 20px;
 	margin-right: 100px;
 	justify-content: space-around;
 }
@@ -154,17 +192,17 @@ img {
 			<div class="content4">
 				<!-- 일별방문자 선그래프 그리기 -->
 				<div>
-					<img src="/resources/images/TKlogo.png">
+					<div id="curve_chart" style="width: 500px; height: 300px; margin-right: 50px;"></div>
 				</div>
 
 				<!-- 연령대그래프 그리기(Pie) -->
 				<div>
-					<div id="MemberAge" style="width: 450px; height: 300px;"></div>
+					<div id="MemberAge" style="width: 500px; height: 300px;margin-right: 50px;"></div>
 				</div>
 
 				<!-- 회원등급그래프 그리기(Pie) -->
 				<div>
-					<div id="MemberClass" style="width: 450px; height: 300px;"></div>
+					<div id="MemberClass" style="width: 500px; height: 300px;margin-right: 50px;"></div>
 				</div>
 			</div>
 

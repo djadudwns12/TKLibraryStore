@@ -119,6 +119,10 @@ public class MemberController {
 				// 로그인 한 유저 세션에 저장하기
 				session.setAttribute("loginMember", loginMember);
 				model.addAttribute("status", "loginSuccess");
+				// 방문자 수에 추가하는 메서드
+				boolean addVisitHistory =  mService.addVisitHistory();
+				System.out.println("방문자 추가 성공여부 : "+ addVisitHistory);
+				
 			} else { // 로그인 실패시
 				System.out.println("로그인 실패");
 				model.addAttribute("status", "loginFail");

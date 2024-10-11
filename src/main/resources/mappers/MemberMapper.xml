@@ -67,4 +67,14 @@
   	<select id="getMemberList" resultType="com.tn.member.model.vo.MemberVO">
   		select * from Member order by userId;
   	</select>
+  	
+<!-- 엄영준 -->
+<!-- 로그인시 방문자수를 증가시키는 쿼리문 -->
+<!-- 오늘 방문한 사람이 없을경우에는 방문자수가 1명으로 INSERT 되고  -->
+<!-- 이미 오늘날짜에 방문한 사람이 있을경우 UPDATE 시키는 쿼리문 -->
+<insert id="mergeIntoVisitHistor">
+	INSERT INTO VisitHistory(visitDate, visitCount) VALUES(now(), 1)
+	ON DUPLICATE KEY UPDATE
+	visitCount = visitCount+1;
+</insert>
   </mapper>

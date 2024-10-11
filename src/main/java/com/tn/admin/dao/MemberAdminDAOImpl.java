@@ -14,6 +14,7 @@ import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
+import com.tn.admin.model.vo.VisitHistory;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.order.model.vo.OrderVO;
@@ -101,6 +102,12 @@ public class MemberAdminDAOImpl implements MemberAdminDAO {
 
 		return ses.selectList(NS + ".getRecentOrder", userId);
 	}
+	
+	@Override
+	public List<VisitHistory> selectVisitHistory() {
+		// TODO Auto-generated method stub
+		return ses.selectList(NS+".selectVisitHistory");
+	}
 
 	@Override
 	public List<MemberAgeVO> selectMemberAge() throws Exception {
@@ -113,6 +120,8 @@ public class MemberAdminDAOImpl implements MemberAdminDAO {
 		// TODO Auto-generated method stub
 		return ses.selectList(NS+".selectMemberClass");
 	}
+
+	
 
 	// 더미데이터 만들기
 //	@Override

@@ -11,6 +11,7 @@ import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
+import com.tn.admin.model.vo.VisitHistory;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.order.model.vo.OrderVO;
@@ -42,10 +43,15 @@ public interface MemberAdminDAO {
 	// 회원관리페이지-회원정보상세보기의 최근 주문내역
 	List<OrderVO> getRecentOrder(String userId) throws Exception;
 	
+	
+	//  회원의 방문기록을 가지고 오는 메서드
+	List<VisitHistory> selectVisitHistory();
 	// 회원의 나이대를 가지고 오는 메서드 
 	List<MemberAgeVO> selectMemberAge() throws Exception;
 	// 회원등급을 가지고 오는  메서드
 	List<MemberClassVO> selectMemberClass() throws Exception;
+
+	
 
 	
 	
