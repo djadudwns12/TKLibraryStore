@@ -38,6 +38,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tn.admin.model.vo.BoardUpFileVODTO;
+import com.tn.admin.model.vo.MyResponseWithoutData;
+import com.tn.admin.model.vo.ProductVO;
 import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.dto.RegisterDTO;
@@ -145,6 +148,28 @@ public class MemberController {
 //	public void gotoMyPage(Model model,HttpSession sess) {
 //		model.addAttribute("loginMember", (MemberVO)sess.getAttribute("loginMember"));
 //	}
+	
+	@RequestMapping(value = "/mypage")
+	public String myPage(MemberDTO loginMember,Model model,HttpSession sess) {
+
+		try {
+			// 회원정보를 불러오는 부분? 근데 왜 세션에서 불러옴? 뷰단에서 세션을 불러도될것으로 보임
+			model.addAttribute("loginMember", (MemberVO) sess.getAttribute("loginMember"));
+			
+			// 회원의 주문목록을 불러오는 메서드
+			List<BooklistVO> list = oService.getOrderList(loginMember);
+			
+			System.out.println(list);
+			
+			//model.addAttribute("orderList", list);
+			model.addAttribute("orderList", list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "/member/mypage";
+
+	}
 //-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
 
 
@@ -168,7 +193,6 @@ public class MemberController {
 			model.addAttribute("loginMember", loginMember);
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -184,37 +208,81 @@ public class MemberController {
 	 * @description : 회원정보수정 페이지에서 수정된 정보를 저장하는 메서드
 	 *
 	 */
-	@RequestMapping(value = "/mypage")
-	public String saveEditInfo(MemberDTO loginMember,Model model,HttpSession sess) {
+	@RequestMapping(value = "/saveedit", method = RequestMethod.POST, produces = "application/json; charset=UTF-8;")
+	public ResponseEntity<MyResponseWithoutData> saveBoardFile(
+			@RequestParam("file") MultipartFile file,
+			@RequestBody MemberVO loginMember, HttpServletRequest request) {
+		System.out.println("회원수정페이지에서 저장할 회원정보 :" + loginMember.toString());
+		System.out.println("fileName " + file.getOriginalFilename());
+		System.out.println("파일 전송됨, 이제 저장해야함");
+
+		ResponseEntity<MyResponseWithoutData> result = null;
 
 		try {
-			// 회원정보 수정하는 부분
-			if(mService.saveEditInfo(loginMember)) {
-				// 회원정보를 수정하였을 경우 수정되 회원정보를 세션에 저장하여 사용하도록함.
-				sess.setAttribute("loginMember", loginMember);
-			}else {
-				loginMember.setUserId(((MemberVO)sess.getAttribute("loginMember")).getUserId());
-			}
-			// 회원정보를 불러오는 부분? 근데 왜 세션에서 불러옴? 뷰단에서 세션을 불러도될것으로 보임
-			model.addAttribute("loginMember", (MemberVO) sess.getAttribute("loginMember"));
-			
-			// 회원의 주문목록을 불러오는 메서드
-			List<BooklistVO> list = oService.getOrderList(loginMember);
-			
-			System.out.println(list);
-			
-			//model.addAttribute("orderList", list);
-			model.addAttribute("orderList", list);
-			model.addAttribute("status", "editSuccess");
+			ImgFileVODTO fileInfo = fileSave(file, request);
+			System.out.println("저장된 파일의 정보 : " + fileInfo.toString());
+			if (mService.saveEditInfo(fileInfo, loginMember)) {
+				MyResponseWithoutData mrw = MyResponseWithoutData.builder()
+						.code(200)
+						.msg("success")
+						.build();
+
+				result = new ResponseEntity<MyResponseWithoutData>(mrw, HttpStatus.OK);
+			}  else {
+	            MyResponseWithoutData response = MyResponseWithoutData.builder()
+	                    .code(400)
+	                    .msg("사용자 정보 저장 실패")
+	                    .build();
+	            result = new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	        }
+
 		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("status", "editFail");
+
+			e.printStackTrace(); MyResponseWithoutData response = MyResponseWithoutData.builder()
+	                .code(500)
+	                .msg("파일 업로드 또는 사용자 정보 저장 중 오류 발생")
+	                .build();
+			result = new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
-		return "/member/mypage";
 
+		return result;
 	}
+//	
+//	@RequestMapping(value="/modifySave", method=RequestMethod.POST)
+//	public String modifySave(ProductVO product, RedirectAttributes redirectAttributes) {
+//		System.out.println(product.toString());
+//		try {
+//			if(pService.modifyProduct(product) > 0) {
+//				redirectAttributes.addAttribute("status","success");
+//			}
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			redirectAttributes.addAttribute("status","fail");
+//		}
+//		
+//		return "redirect:/admin/modifyProduct?bookNo="  + product.getBookNo();
+//	}
+//
+	private ImgFileVODTO fileSave(MultipartFile file, HttpServletRequest request) throws IOException {
+		// 파일의 기본정보 가져옴
+		String contentType = file.getContentType();
+		String originalFileName = file.getOriginalFilename();
+		long fileSize = file.getSize();
 
+		byte[] upfile = file.getBytes();
+		System.out.println(originalFileName);
+		// 세션 : getSession(),서블릿 정보 : getServletContext() , 경로 : getRealPath()
+		System.out.println(
+				"서버의 실제 물리적 경로 : " + request.getSession().getServletContext().getRealPath("/resources/bookImgs"));
+
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/bookImgs");
+
+		// 실제 파일 저장 (이름변경, base64, thumbnail)
+		ImgFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, contentType, originalFileName);
+		return fileInfo;
+	}
+	
 	/**
 	 * @작성자 : 최미설
 	 * @작성일 : 2024. 9. 9.
@@ -374,7 +442,7 @@ public class MemberController {
 				result = new ResponseEntity<Void>(HttpStatus.OK);
 			}
 			
-			}
+		}
 			
 			System.out.println("결과를 보냅니다 파일 저장 완료");
 			
@@ -397,7 +465,7 @@ public class MemberController {
 		
 		ImgFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, userId, originalFileName); 
 		return fileInfo; 
-		}
+	}
 	  
 	 //박근영
 	@RequestMapping(value = "/register")

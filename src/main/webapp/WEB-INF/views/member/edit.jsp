@@ -58,6 +58,8 @@
 }
 </style>
 <script>
+//이미지파일을 저장할 배열
+let uploadedFiles = new Array();
 $(function() {
 	//let qaList = $('.register-box');
 	
@@ -77,7 +79,7 @@ $(function() {
 	<div class="card pwdConfirmCard" style="padding:10px">
 		<p class="register-box-msg">회원 정보 수정</p>
 		
-		<form action="/member/mypage" method="post"> <!-- -->
+		<form action="/member/saveedit" method="post" enctype="multipart/form-data"> <!-- -->
 			<div class="input-group mb-3">
 				<label>이름</label>
 				<input type="text" class="form-control" id="userName" name="userName" value="${loginMember.userName}" readonly/>
@@ -92,17 +94,20 @@ $(function() {
             	<input type="hidden" id="userBirthCheck" value="checked"/>
             	<div id="userBirthError" style="color: red;"></div>
             </div>
-			<div class="input-group mb-3">
+<!-- 			<div class="input-group mb-3">
 				<label>비밀번호</label>
-				<input type="password" class="form-control " id="userPwd" name="userPwd" value="${loginMember.userPwd}"/>
+				<input type="password" class="form-control " id="userPwd" name="userPwd" "/>
             	<div id="userPwdError" style="color: red;"></div>
             </div>
 			<div class="input-group mb-3">
 				<label>비밀번호확인</label>
-				<input type="password" class="form-control" id="userPwdConfirm" name="userPwdConfirm" value="${loginMember.userPwd}"/>
-            	<input type="hidden" id="pwdCheck" value="checked"/>
+				<input type="password" class="form-control" id="userPwdConfirm" name="userPwdConfirm" "/>
+            	
             	<div id="userPwdConfirmError" style="color: red;"></div>
-            </div>
+            </div> -->
+            
+            <input type="hidden" id="pwdCheck" value="checked"/>
+			
 			<div class="input-group mb-3">
 				<label>이메일</label>
 				<input type="email" class="form-control" id="email" name="email" value="${loginMember.email}" readonly/>
@@ -117,19 +122,20 @@ $(function() {
             	<input type="hidden" id="phoneNumCheck" value="checked"/>
             	<div id="phoneNumError" style="color: red;"></div>
             </div>
-<!--      프로필사진 추가 ㅇ안 됨;;      
+ 
 			<div class="input-group mb-3" id="profileImageContainer">
 				<label>프로필사진</label>
 		        <div id="imageDropBox">
 		        	<div id="dropBoxText" >프로필 사진을 변경하려면 드래그 앤 드롭하세요.</div>
 		        	<input type="file" id="profileImageInput" style="display: none;" accept="image/*">
 		        	<img id="profilePreview" src="${loginMember.userImg}">
+		        	<input type="text" class="form-control imagePath" id="imagePath" name="imagePath" value="${loginMember.userImg}" style="width: 900px; margin-bottom: 50px;" readonly>
 			        <span class="badge bg-secondary" id="delPreview" onclick="defaultProfileImage();" style="color:white;">기본이미지</span>
 			        <span class="badge" id="resetPreview" onclick="resetProfileImage();" style="border-color:#7fad38; background-color:#7fad38; color:white;">변경취소</span>
 		        </div>
 		        
 		    	
-		    </div> --> 
+		    </div> 
 		    <div class="d-grid gap-2" style="text-align:right;">
 				<button type="submit" class="btn btn-primary saveEditInfo" onclick="return isValid();" style="border-color:#7fad38; background-color:#7fad38;">수정완료</button>
 				<button type="reset" class="btn btn-danger" >되돌리기</button>
@@ -210,75 +216,40 @@ $(function(){
         event.preventDefault(); // 기본 동작 방지 (파일 열기)
     });
 
-    $("#profileImageContainer").on("drop", function(event) {
-        event.preventDefault(); // 기본 동작 방지
+	$('#profileImageContainer').on("drop", function(evt){
+		evt.preventDefault();
+		console.log(evt.originalEvent.dataTransfer.files);	//업로드 되는 파일 객체의 정보
+		
+		// 기존의 파일 배열을 비움
+    	uploadedFiles.length = 0;  // 이전에 저장된 파일 정보 삭제
+		let files = evt.originalEvent.dataTransfer.files; 
+    	console.log("files : "+ files);
+		for (let file of files) {
+			// 파일 사이즈가 10MB 이상이면 업로드 금지
+ 			if (file.size > 10485760) {
+				alert("파일 용량이 너무 큽니다. 업로드한 파일을 확인해 주세요.");
+ 			} else if (!files[0].type.startsWith('image/')) {
+ 				alert("이미지 파일만 가능합니다.");
+ 			} else if (file.length > 1) {
+ 				alert("1개의 이미지만 가능합니다.");
+			} else {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					// 이미지 미리보기
+					$('#profilePreview').attr('src', e.target.result);
+                    // 파일 경로 저장
+                    $('.imagePath').val('/resources/profileImgs/' + file.name);
 
-        let files = event.originalEvent.dataTransfer.files;
-
-        if (files.length === 0) {
-            alert("파일을 드롭해주세요.");
-            return;
-        }
-
-        if (files[0].size > 1024 * 1024 * 10) {
-            alert('10MB 이하의 파일만 업로드할 수 있습니다...');
-            return;
-        } else if (!files[0].type.startsWith('image/')) {
-            alert("이미지 파일만 가능합니다.");
-            return;
-        } else if (files.length > 1) {
-            alert("1개의 이미지만 가능합니다.");
-            return;
-        } else {
-        	let reader = new FileReader();
-	        let userImg = files[0]; // 읽어올 파일 참조
-	        let imageType = ["image/jpeg", "image/png", "image/gif"];
-	
-	        // 파일 타입 확인
-	        if (imageType.indexOf(userImg.type) === -1) {
-	            alert("지원되지 않는 이미지 형식입니다.");
-	            return;
-	        }
-	
-	        // FileReader onload 콜백
-	        reader.onload = function(evt) {
-	            $('#profilePreview').attr('src', evt.target.result); // 이미지 소스 설정
-	            $('#profilePreview').show();
-	            $('#dropBoxText').hide(); // 이미지 업로드 시 숨길 요소
-	        };
-	
-	        // 이미지 파일을 DataURL로 읽기
-	        reader.readAsDataURL(userImg);
-	        const fileInput = $('#profileImageInput')[0];
-	        const formData = new FormData();
-	
-	        if (fileInput.files.length > 0) {
-	            formData.append('userImg', fileInput.files[0]);
-	
-	            $.ajax({
-	                url: '/member/edit',
-	                type: 'POST',
-	                data: formData,
-	                contentType: false,
-	                processData: false,
-	                success: function(response) {
-	                    alert(response);
-	                },
-	                error: function(jqXHR, textStatus, errorThrown) {
-	                    alert('업로드 실패: ' + textStatus);
-	                }
-	            });
-	        } else {
-	            alert('파일을 선택하세요.');
-	        }
-	     }        
-    });
-    
-/*     // 수정완료버튼을 누르면 프리뷰의 이미지를 저장함
-    $('.saveEditInfo').on("click", function (){
-    	
-    }); */
-
+                    // 전역 변수에 파일 정보 저장
+                   	uploadedFiles.push(file);  // 파일을 전역 변수에 추가
+                    console.log(uploadedFiles);
+                }
+				reader.readAsDataURL(file);   // 파일을 읽어옴
+				
+			}
+		}
+		//fileUpload(uploadedFiles);
+	});
 });
 
 
@@ -305,6 +276,8 @@ function clearError(obj) {
 	let phoneNumChecked = phoneNumValid();
 	if(pwdChecked && birthChecked && emailChecked && phoneNumChecked){
 		//location.href="/member/mypage";
+		console.log("isVaild에서 uploadedFiles : "+uploadedFiles[0]);
+		fileUpload(uploadedFiles[0]);
 		return true;
 	} else {
 		return false;
@@ -457,6 +430,39 @@ function defaultProfileImage() {
 // 프로필사진 : 변경 전 이미지로 변경
 function resetProfileImage() {
 	$('#profilePreview').attr('src', '${loginMember.userImg}');
+}
+
+// 실제로 유저가 업로드한 파일을 컨트롤러단에 전송하여 저장되도록 하는 함수
+function fileUpload(uploadedFiles) {
+	alert(uploadedFiles[0]);
+	let result = false;
+	let fd = new FormData(); 	//FormData() 객체 생성 : form태그와 같은 역할의 객체
+	fd.append("file", uploadedFiles[0]);
+	fd.append("userId", `${loginMember.userId}`);
+	
+	$.ajax({
+        url : '/member/saveedit',             
+        type : 'post',             	
+        dataType : 'json',        		
+		data : fd,				
+		processData : false,
+		contentType : false,
+		success : function(data) {		
+            console.log(data);
+        	if(data.msg == 'success'){
+        		alert ('파일을 업로드 완료');
+        		result = true;
+        		
+       		 }
+        },error : function (data) {
+        	console.log(data);
+        	if (data == 'fail'){
+        		alert ('파일을 업로드 하지 못했습니다');
+        	}
+		}
+	});
+	
+	return result;
 }
 </script>
 </body>

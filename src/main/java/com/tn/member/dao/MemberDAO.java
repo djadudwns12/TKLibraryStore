@@ -21,7 +21,7 @@ public interface MemberDAO {
 	MemberVO getEditMemberInfo(String userId) throws Exception;
 	
 	// 회원수정페이지에서 수정된 회원정보를 저장하는 메서드
-	int updateEditMember(MemberDTO editMember) throws Exception;
+	int updateEditMember(MemberVO editMember, ImgFileVODTO fileInfo) throws Exception;
 	
 	// 회원탈퇴
 	int deleteMember(String userId) throws Exception;

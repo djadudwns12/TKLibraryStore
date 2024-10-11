@@ -7,6 +7,7 @@
   	<select id="getMember" resultType="com.tn.member.model.vo.MemberVO">
   		select * from Member;
   	</select>
+<!-- =====================================최미설======================================== -->
   	<!-- 로그인 하는 쿼리문 -->
   	<select id="getLoginMember" resultType="com.tn.member.model.vo.MemberVO">
   		select * from Member where userId = #{userId} and userPwd = sha1(md5(#{userPwd}))
@@ -19,14 +20,23 @@
   	
   	<!-- 수정된 회원정보를 DB에 저장한는 쿼리문 -->
   	<update id="updateEditMember">
-  		update Member set userPwd=#{userPwd}, userBirth=#{userBirth}, phoneNum=#{phoneNum}, email=#{email} where userId=#{userId}
+  		update Member set 
+<!--   		<if test="{editMember.userPwd} != null || {editMember.userPwd} != ''">
+  			userPwd=sha1(md5(#{editMember.userPwd})),
+  		</if> -->
+  		userBirth=#{editMember.userBirth}, phoneNum=#{editMember.phoneNum}, email=#{editMember.email} 
+  		<if test="fileInfo !=null">
+  		, userImg=#{fileInfo.newFileName}, base64ProfileImg=#{fileInfo.base64Img}
+  		</if>
+  		where userId=#{editMember.userId}
   	</update>
 
 	<!-- 회원탈퇴 -->
 	<delete id="deleteMember">
 		delete from Member where userId=#{userId}
 	</delete>
-  	
+<!-- =====================================최미설======================================== -->
+ 	
 <!-- 박근영 -->
 	<!-- 회원 가입를 위하여 회원 정보를 DB에 저장하며, 회원가입시 프로필 이미지 등록 유무에 따른 inser문 if문으로 구별 -->
 	<insert id="insertRegisterMember">

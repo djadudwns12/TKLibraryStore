@@ -39,9 +39,12 @@ public class MemberDAOImpl implements MemberDAO  {
 	}
 
 	@Override
-	public int updateEditMember(MemberDTO editMember) throws Exception {
+	public int updateEditMember(MemberVO editMember, ImgFileVODTO fileInfo) throws Exception {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("editMember", editMember);
+		paramMap.put("fileInfo", fileInfo);
 		
-		return sess.update(NS + ".updateEditMember", editMember);
+		return sess.update(NS + ".updateEditMember", paramMap);
 	}
 	
 	public MemberVO getMember(String userId, String userPwd) throws Exception {

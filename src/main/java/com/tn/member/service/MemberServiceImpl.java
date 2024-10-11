@@ -59,9 +59,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public boolean saveEditInfo(MemberDTO editMember) throws Exception {
+	public boolean saveEditInfo(ImgFileVODTO fileInfo, MemberVO editMember) throws Exception {
 		boolean result = false;
-		if(dao.updateEditMember(editMember) == 1) {
+		if(dao.updateEditMember(editMember, fileInfo) == 1) {
 			result = true;
 		}		
 		return result;
