@@ -612,7 +612,7 @@ public class AdminController {
 		 List<SalesVO> sales = null;
 		 try {
 			 sales = pService.getSales();
-			 System.out.println(sales.toString());
+			 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -74,10 +74,8 @@ $(function(){
 
 
 <style>
-div#category_young {
-	display: flex;
-	justify-content: flex-start;
-}
+
+
 
 </style>
 <script type="text/javascript">
@@ -139,7 +137,7 @@ function showHide(){
 				<a href="#"><i class="fa fa-user"></i> Login</a>
 			</div>
 		</div>
-		<nav class="humberger__menu__nav mobile-menu">
+		<nav class="humberger__menu__nav mobile-menu" >
 			<ul>
 				<li class="active"><a href="./index.html">Home</a></li>
 				<li><a href="./shop-grid.html">Shop</a></li>
@@ -182,19 +180,19 @@ function showHide(){
 					</div>
 				</div>
 				<div class="col-lg-6">
-					<nav class="header__menu">
+					<nav class="header__menu" style="margin-left: 80px;">
 						<ul>
 							<li class="active"><a href="/">Home</a></li>
-							<li><a href="./shop-grid.html">Shop</a></li>
-							<li><a href="#">Pages</a>
+							
+							<li><a href="/member/mypage">myPages</a>
 								<ul class="header__menu__dropdown">
 									<li><a href="./shop-details.html">Shop Details</a></li>
 									<li><a href="./shoping-cart.html">Shopping Cart</a></li>
 									<li><a href="./checkout.html">Check Out</a></li>
 									<li><a href="./blog-details.html">Blog Details</a></li>
 								</ul></li>
-							<li><a href="./blog.html">Blog</a></li>
-							<li><a href="./contact.html">Contact</a></li>
+							<li><a href="/qa/qaList">Q&A</a></li>
+							<li><a href="/member/register">Sign up</a></li>
 						</ul>
 					</nav>
 				</div>
@@ -270,54 +268,20 @@ function showHide(){
 								<div class="hero__search__categories">
 									검색 조건 <span class="arrow_carrot-down"></span>
 								</div>
-								<input type="text" placeholder="What do you need?">
+								<input type="text" placeholder="검색어를 입력하세요.">
 								<button type="submit" class="site-btn">검색</button>
 							</form>
 						</div>
 						
 					</div>
-					<!-- 카테고리 -->
-					<div class="categoryArea" style="display: none;">
-						<input type="hidden" class="categoryNo">
-						<div id="category_young">
-							<select id="high_class" onchange="category(this)">
-								<option value="">선택</option>
-								<option value="05">인문</option>
-							</select>
-							<!-- 중분류 -->
-							<select id="mid_class" onchange="category(this)">
-								<option value="-1">선택</option>
-							</select>
-							<!-- 소분류 -->
-							<select id="low_class" onchange="category(this)">
-								<option value="-1">선택</option>
-							</select>
-						</div>
-						<div id="main_content"></div>
-					</div>
+					
 				</div>
 			</div>
 		</div>
 	</section>
 	<!-- Hero Section End -->
 
-	<!-- Js Plugins -->
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/jquery-3.3.1.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/bootstrap.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/jquery.nice-select.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/jquery-ui.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/jquery.slicknav.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/mixitup.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/owl.carousel.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/main.js"></script>
+	
 </body>
 
 
