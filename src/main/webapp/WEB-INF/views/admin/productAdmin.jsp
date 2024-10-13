@@ -667,10 +667,18 @@ a:visited {
 					<button type="submit" class="btn btn-outline-dark btn"
 						onclick="return isValid()">검색</button>
 				</form>
-				<div style="display: flex; margin-left: 50px; width: 200px;">
-					<button type="button" class="btn btn-outline-dark btn"
-						onclick="location.href='/admin/registProduct';">Add
-						Product</button>
+				<div style="display: flex;">
+					<div style="margin-left: 50px; width: 200px;">
+						<button type="button" class="btn btn-outline-dark btn"
+							onclick="location.href='/admin/registProduct';">Add
+							Product</button>
+					</div>
+					
+					<div style="width: 200px;">
+						<button type="button" class="btn btn-outline-dark btn"
+							onclick="location.href='/admin/registWithExcel';">Add
+							With Excel File</button>
+					</div>
 				</div>
 
 				<div

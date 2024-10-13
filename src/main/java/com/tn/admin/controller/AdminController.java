@@ -620,6 +620,23 @@ public class AdminController {
 		 return sales;
 	    }
 	
+	// 엑셀 파일로 db에 insert
+	 @RequestMapping("/registWithExcel")
+		public String registWithExcel() {
+			return "/admin/registWithExcel";
+	}
+	 
+	 @PostMapping("/uploadExcel")
+	    public ResponseEntity<String> uploadExcel(@RequestParam("file") MultipartFile excelFile) {
+	        try {
+	            pService.saveExcelData(excelFile); // 엑셀 파일 처리 후 DB 저장
+	            return new ResponseEntity<>("파일이 성공적으로 업로드되었습니다.", HttpStatus.OK);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return new ResponseEntity<>("파일 업로드 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    }
+	 
 	// ================================================= 한준형 ===========================================================
 	
 	//========================================최미설===================================//

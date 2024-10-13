@@ -1,13 +1,20 @@
 package com.tn.admin.service;
 
+import java.io.InputStream;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.mariadb.jdbc.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tn.admin.model.vo.*;
 import com.tn.admin.dao.ProductAdminDAO;
@@ -272,6 +279,46 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 	public List<SalesVO> getSales() throws Exception {
 		// TODO Auto-generated method stub
 		return pDao.getSales();
+	}
+
+
+	@Override
+	public void saveExcelData(MultipartFile excelFile) throws Exception {
+		 // 엑셀 파일을 읽기 위한 InputStream 생성
+        InputStream inputStream = excelFile.getInputStream();
+        Workbook workbook = WorkbookFactory.create(inputStream);
+        Sheet sheet = workbook.getSheetAt(0); // 첫 번째 시트 사용
+
+        // 시트의 각 행을 반복
+        for (Row row : sheet) {
+//			  현재의 경우에는 헤더가 없음을 가정하기 때문에 일단 주석
+//            if (row.getRowNum() == 0) { 
+//                // 첫 번째 행은 보통 헤더이므로 건너뜀
+//                continue;
+//            }
+            
+            // 셀 데이터 읽기
+        	int bookNo = (int) row.getCell(0).getNumericCellValue();
+        	String title = row.getCell(1).getStringCellValue();
+            String author = row.getCell(2).getStringCellValue();
+            String publisher = row.getCell(3).getStringCellValue();
+            String pubDate = String.valueOf(row.getCell(4).getStringCellValue()); // 날짜는 String으로 처리 이 이유로 productVO는 사용하지 않음
+            String genre = row.getCell(5).getStringCellValue();
+            int price = (int) row.getCell(6).getNumericCellValue();
+            int salePrice = (int) row.getCell(7).getNumericCellValue();
+            int inven = (int) row.getCell(8).getNumericCellValue(); 
+            String thumbNail = row.getCell(9).getStringCellValue(); 
+            String introduction = row.getCell(10).getStringCellValue();
+            int zzim = (int) row.getCell(11).getNumericCellValue();
+            int reviewCnt = (int) row.getCell(12).getNumericCellValue();
+            String base64ProfileImg = row.getCell(13).getStringCellValue();
+            // 읽은 데이터를 DB에 삽입
+            
+            System.out.println(title);
+        }
+
+        workbook.close();
+		
 	}
 
 

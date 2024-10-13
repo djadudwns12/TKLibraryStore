@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.PagingInfoDTO;
@@ -51,6 +52,8 @@ public interface ProductAdminService {
 	List<TopPublisherVO> getTopPublisher() throws Exception;
 
 	List<SalesVO> getSales() throws Exception;
+
+	void saveExcelData(MultipartFile excelFile) throws Exception;
 
 
 
