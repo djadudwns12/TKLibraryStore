@@ -618,6 +618,13 @@ async function requestPayment() {
 	      </c:forEach>
 	   ];
 	 const address = $('#deliveryAddress').text();
+	 const totalPoint = ${orderInfo.totalPoint}
+	 const bookQty = [
+	      <c:forEach var="bookQty" items="${orderInfo.cartQty}">
+	         '${bookQty}'<c:if test="${!status.last}">, </c:if>
+	      </c:forEach>
+	   ];
+	 
 	console.log(orderTitleList);
 	const paymentRequestData = {
 		    storeId: "${orderInfo.storeId}",
@@ -653,7 +660,9 @@ async function requestPayment() {
     			orderName: paymentRequestData.orderName,
     			titleName: orderTitleList,
     			cartId: cartIdList,
-    			address: address
+    			address: address,
+    			totalPoint: totalPoint,
+    			bookQty: bookQty
 			})
 		  });
 		  if (notified.ok) {
@@ -662,6 +671,8 @@ async function requestPayment() {
 		    } else {
 		    	console.log(notified.message);
 		        alert('결제 완료 요청에 실패했습니다.');
+		        const redirectUrl =await notified.text();
+		        window.location = redirectUrl;
 		    }
 
 		}

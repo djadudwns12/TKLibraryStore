@@ -16,6 +16,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tn.order.dao.OrderDAO;
 import com.tn.order.model.dto.PaymentInfoDTO;
@@ -71,22 +72,50 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public boolean paymentInfoApply(PaymentInfoDTO paymentInfoDTO) {
+	@Transactional(rollbackFor = Exception.class)
+	public void paymentInfoApply(PaymentInfoDTO paymentInfoDTO) throws Exception {
 		//카트테이블에서 삭제, 멤머 포인트 차감한값으로 update, 포인트 로그에 사용으로 기록 남기기, order 에 insert
     	// 멤버 테이블에 구매 금액 업데이트
+		
 		System.out.println(paymentInfoDTO.getCartId().get(0));
 		
-		oDao.insertPaymentInfo(paymentInfoDTO);
-		
-		List<PaymentInfoVO> bookNo = oDao.selectBookNo(paymentInfoDTO);
-		
-		
-		System.out.println("북엔오 확인"+ bookNo.toString());
-		//oDao.insertPaymentInfo(paymentInfoDTO);
-		
-		
-		return false;
+			oDao.insertPaymentInfo(paymentInfoDTO);
+			List<PaymentInfoVO> bookNo = oDao.selectBookNo(paymentInfoDTO);
+			
+			for(int i = 0; i < bookNo.size() ; i ++) {
+				bookNo.get(i).setOrderNo(paymentInfoDTO.getPaymentId());
+				bookNo.get(i).setQty(paymentInfoDTO.getBookQty().get(i));
+			}
+			oDao.insertBooks(bookNo);
+			oDao.updatePoint(paymentInfoDTO);
+			System.out.println("포인트 로그 인서트 전 확인을 위한 시스:"+paymentInfoDTO.getOrderPK());
+			if (paymentInfoDTO.getFinalInputPoint() != null && Integer.parseInt(paymentInfoDTO.getFinalInputPoint()) > 0) {
+				oDao.insertUsePoint(paymentInfoDTO);
+			}
+			oDao.deleteCart(paymentInfoDTO);
+			
+			PaymentInfoVO totalPay = oDao.selectTotalPay(paymentInfoDTO);
+			System.out.println(totalPay.getUserTotalPay());
+			
+			int userTotalPay = totalPay.getUserTotalPay() + Integer.parseInt(paymentInfoDTO.getTotalAmount());
+			paymentInfoDTO.setUserTotalPay(userTotalPay);
+			oDao.updateTotalPay(paymentInfoDTO);
+			
 	}
+	
+	@Override
+	public void orderStatusToShipping() throws Exception {
+		oDao.updateOrdersToShipping();
+		
+	}
+	
+	@Override
+	public void orderStatusToDelivered() throws Exception {
+		oDao.updateOrdersToDelivered();
+		
+	}
+	
+	
 // -----------------------------------------박근영-------------------------------------------------
 
 // -----------------------------------------엄영준-------------------------------------------------
@@ -96,4 +125,10 @@ public class OrderServiceImpl implements OrderService {
 		return oDao.selectOrderList(loginMember);
 	}
 // -----------------------------------------엄영준-------------------------------------------------
+
+
+
+
+
+
 }
