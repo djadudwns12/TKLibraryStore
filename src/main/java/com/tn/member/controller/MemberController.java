@@ -234,7 +234,7 @@ public class MemberController {
 			model.addAttribute("status", "editFail");
 		}
 		
-		return "/member/mypage";
+		return "/member/myPage";
 
 	}
 
