@@ -90,6 +90,19 @@ public class CartServiceImpl implements CartService {
 		return CartCnt;
 	}
 
+	@Override
+	public boolean insertCart(CartVO cartVO) throws Exception {
+		boolean result = false;
+		
+		if(cDao.insertCart(cartVO) == 1) {
+			result = true;
+		} else {
+			result = false;
+		}
+		
+		return result;
+	}
+
 	
 
 }

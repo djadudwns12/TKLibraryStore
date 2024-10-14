@@ -73,4 +73,10 @@ public class CartDAOImpl implements CartDAO {
 		return ses.selectOne(NS + ".countCartList", userId);
 	}
 
+	@Override
+	public int insertCart(CartVO cartVO) throws Exception {
+		
+		return ses.insert(NS + ".insertCart", cartVO);
+	}
+
 }
