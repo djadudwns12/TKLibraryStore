@@ -338,7 +338,8 @@
 
 	<select id="getSales" resultType="com.tn.admin.model.vo.SalesVO">
 		SELECT
-		DATE_FORMAT(orderDate, '%Y-%m') AS order_month,
+		DATE_FORMAT(orderDate,
+		'%Y-%m') AS order_month,
 		SUM(totalPay) AS total_pay
 		FROM
 		`Order`
@@ -349,4 +350,13 @@
 		ORDER BY
 		order_month;
 	</select>
+
+	<insert id="insertExcelFile">
+		insert into BookList2(bookNo, title, author,
+		publisher, pubDate, genre, price, salePrice, inven, thumbNail,
+		introduction, zzim,
+		reviewCnt,base64ProfileImg) values
+		(#{bookNo},#{title},#{author},#{publisher},#{pubDate},#{genre},#{price},#{salePrice},#{inven},#{thumbNail},
+		#{introduction},#{zzim},#{reviewCnt},#{base64ProfileImg})
+	</insert>
 </mapper>

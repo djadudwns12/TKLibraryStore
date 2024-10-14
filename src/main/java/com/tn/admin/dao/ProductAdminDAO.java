@@ -1,5 +1,6 @@
 package com.tn.admin.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,12 @@ public interface ProductAdminDAO {
 	List<TopPublisherVO> getTopPublisher() throws Exception;
 
 	List<SalesVO> getSales() throws Exception;
+
+	void insertExcelFile(int bookNo, String title, String author, String publisher, String pubDate, int genre,
+			int price, int salePrice, int inven, String thumbNail, String introduction, int zzim, int reviewCnt,
+			String base64ProfileImg) throws Exception;
+
+	
 
 	
 

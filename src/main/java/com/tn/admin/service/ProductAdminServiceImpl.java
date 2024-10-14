@@ -2,6 +2,7 @@ package com.tn.admin.service;
 
 import java.io.InputStream;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -302,19 +303,25 @@ public class ProductAdminServiceImpl implements ProductAdminService {
         	String title = row.getCell(1).getStringCellValue();
             String author = row.getCell(2).getStringCellValue();
             String publisher = row.getCell(3).getStringCellValue();
-            String pubDate = String.valueOf(row.getCell(4).getStringCellValue()); // 날짜는 String으로 처리 이 이유로 productVO는 사용하지 않음
-            String genre = row.getCell(5).getStringCellValue();
+            
+            // Date String으로 변환
+            java.util.Date date =  row.getCell(4).getDateCellValue();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  // 원하는 포맷으로 변환
+            String pubDate = dateFormat.format(date);  // String으로 변환
+            
+            int genre = (int)row.getCell(5).getNumericCellValue();
             int price = (int) row.getCell(6).getNumericCellValue();
             int salePrice = (int) row.getCell(7).getNumericCellValue();
             int inven = (int) row.getCell(8).getNumericCellValue(); 
             String thumbNail = row.getCell(9).getStringCellValue(); 
             String introduction = row.getCell(10).getStringCellValue();
-            int zzim = (int) row.getCell(11).getNumericCellValue();
+            int zzim = (int)row.getCell(11).getNumericCellValue();
             int reviewCnt = (int) row.getCell(12).getNumericCellValue();
             String base64ProfileImg = row.getCell(13).getStringCellValue();
             // 읽은 데이터를 DB에 삽입
             
-            System.out.println(title);
+            //ProductVO excel = new ProductVO(bookNo, title, author, publisher, date, price, salePrice, inven, thumbNail, introduction, zzim, reviewCnt, base64ProfileImg);
+            pDao.insertExcelFile(bookNo, title, author, publisher, pubDate, genre, price, salePrice, inven, thumbNail, introduction, zzim, reviewCnt, base64ProfileImg);
         }
 
         workbook.close();

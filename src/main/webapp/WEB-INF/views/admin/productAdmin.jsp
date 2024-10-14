@@ -673,12 +673,7 @@ a:visited {
 							onclick="location.href='/admin/registProduct';">Add
 							Product</button>
 					</div>
-					
-					<div style="width: 200px;">
-						<button type="button" class="btn btn-outline-dark btn"
-							onclick="location.href='/admin/registWithExcel';">Add
-							With Excel File</button>
-					</div>
+										
 				</div>
 
 				<div
