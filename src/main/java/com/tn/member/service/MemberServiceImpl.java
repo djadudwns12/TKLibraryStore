@@ -15,6 +15,7 @@ import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.member.model.vo.PointLogVO;
 
 import java.io.IOException;
 import java.util.Random;
@@ -163,6 +164,12 @@ public class MemberServiceImpl implements MemberService {
 		}else {
 			return false;
 		}	
+	}
+	
+	@Override
+	public List<PointLogVO> getPointLog(MemberDTO loginMember) throws Exception {
+		
+		return dao.selectPointLog(loginMember);
 	}
 //-----------------------------------------엄영준-------------------------------------------------
 		

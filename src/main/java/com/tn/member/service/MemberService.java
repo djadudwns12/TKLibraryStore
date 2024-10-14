@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.member.model.vo.PointLogVO;
 
 @Service
 public interface MemberService {
@@ -45,6 +46,9 @@ public interface MemberService {
 	
 //-----------------------------------------엄영준------------------------------------------------- 	
 	boolean addVisitHistory() throws Exception;
+	
+	
+	List<PointLogVO> getPointLog(MemberDTO loginMember) throws Exception;
 //-----------------------------------------엄영준------------------------------------------------- 	
 
 

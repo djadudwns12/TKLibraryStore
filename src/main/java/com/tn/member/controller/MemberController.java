@@ -44,6 +44,7 @@ import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.member.model.vo.PointLogVO;
 import com.tn.member.model.vo.ProfileResponseWithoutData;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.service.MemberService;
@@ -215,6 +216,9 @@ public class MemberController {
 			// 회원의 찜목록을 불러오는 메서드
 			List<BooklistVO> zzimList = pService.getZzimList(loginMember);
 			
+			// 회원의 포인트 적립내역을 가지고 오는 메서드
+			List<PointLogVO> pointList = mService.getPointLog(loginMember);
+			
 			
 			
 			System.out.println(list);
@@ -223,6 +227,7 @@ public class MemberController {
 			//model.addAttribute("orderList", list);
 			model.addAttribute("orderList", list);
 			model.addAttribute("zzimList", zzimList);
+			model.addAttribute("pointList", pointList);
 			model.addAttribute("status", "editSuccess");
 		} catch (Exception e) {
 			e.printStackTrace();
