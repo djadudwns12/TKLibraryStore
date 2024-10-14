@@ -763,14 +763,14 @@ public class AdminController {
 		    return "redirect:/admin/orderDeliveryAdmin";
 		}
 
-		@RequestMapping("/admin/orderDeliveryAdmin")
+		@RequestMapping("/orderDeliveryAdmin")
 		public String orderDeliveryAdmin(Model model) {
-				List<OrderDeliveryVO> odInfo = odService.orderDeliveryInfo();
+			List<OrderDeliveryVO> odInfo = odService.orderDeliveryInfo();
 			
 			model.addAttribute("odInfo", odInfo);
 			
 		    
-		    return "admin/orderDeliveryAdmin";
+		    return "/admin/orderDeliveryAdmin";
 		}
 		
 			

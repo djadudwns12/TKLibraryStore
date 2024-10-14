@@ -709,19 +709,15 @@ a:visited {
 							<tr>
 								<th><input type="checkbox" onclick="selectAll(this)">
 									selectAll</th>
-								<th>BookNo</th>
-								<th>Title</th>
-								<th>Author</th>
-								<th>Publisher</th>
-								<th>PubDate</th>
-								<th>Genre</th>
-								<th>Price</th>
-								<th>SalePrice</th>
-								<th>Qty</th>
-								<th>ThumbNail</th>
-								<th>Zzim</th>
-								<th>ReviewCnt</th>
-
+								<th>주문자</th>
+								<th>주문일자</th>
+								<th>주문상태</th>
+								<th>배송지</th>
+								<th>제품정보</th>
+								<th>사용포인트</th>
+								<th>결제금액</th>
+								
+					
 								<th><button type="button" class="btn btn-danger btn"
 										id="delBtn" style="width: 90px; font-size: small;"
 										onclick="deleteProduct();">0개 삭제</button></th>
@@ -731,24 +727,18 @@ a:visited {
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="product" items="${productList}">
+							<c:forEach var="order" items="${odInfo}">
 								<tr>
 									<td><input type="checkbox" name="proCheck"
-										value=${product.bookNo } onclick="updateButton()"></td>
-									<td>${product.bookNo}</td>
-									<td><a
-										href="/bookList/bookDetail?bookNo=${product.bookNo}">${product.title}</a></td>
-									<td>${product.author}</td>
-									<td>${product.publisher}</td>
-									<td>${product.pubDate}</td>
-									<td>${product.genre}</td>
-									<td>${product.price}</td>
-									<td>${product.salePrice}</td>
-									<td>${product.inven}</td>
-									<td><img src="${product.thumbNail}" width="50px"
-										height="80"></td>
-									<td>${product.zzim}</td>
-									<td>${product.reviewCnt}</td>
+										value="${order.orderNo}" onclick="updateButton()"></td>
+									<td>${order.orderWho}</td>
+									<td>${order.orderDate}</td>
+									<td>${order.orderStatus}</td>
+									<td>${order.orderAddress}</td>
+									<td>${order.orderName}</td>
+									<td>${order.usePoint}</td>
+									<td>${order.totalPay}</td>
+								
 									<td colspan="3"><button class="btn btn-secondary btn"
 											style="width: 70px"
 											onclick="location.href='/admin/modifyProduct?bookNo=${product.bookNo}'">수정</button></td>

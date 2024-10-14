@@ -19,6 +19,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class OrderDeliveryVO {
+	private String orderNo; 
 	private String orderDate;
 	private String orderStatus;
 	private String orderWho;
