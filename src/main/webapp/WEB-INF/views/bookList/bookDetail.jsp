@@ -417,7 +417,7 @@
 										aria-selected="true">책 소개</a></li>
 
 									<li class="nav-item"><a class="nav-link" data-toggle="tab"
-										href="#tabs-2" role="tab" aria-selected="false">회원 리뷰<span>(1)</span></a></li>
+										href="#tabs-2" role="tab" aria-selected="false">회원 리뷰<span>()</span></a></li>
 
 								</ul>
 								<div class="tab-content">
