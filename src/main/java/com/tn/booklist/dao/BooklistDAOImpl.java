@@ -59,5 +59,15 @@ public class BooklistDAOImpl implements BooklistDAO {
 		return ses.selectOne(NS+".countCategoryBooklist",category);
 	}
 
+	@Override
+	public List<BooklistVO> selectRecentlyBooks(List<Integer> list) throws Exception {
+		// TODO Auto-generated method stub
+		return ses.selectList(NS+".selectRecentlyBooks",list);
+	}
+	
+	
+	
+	
+
 //	====================================================엄영준 END=============================================================
 }

@@ -147,6 +147,10 @@ $(function() {
 
     // 마이페이지 네비게이션 설정
     mypageNav();
+
+    // 최근본목록 보기
+    recentViews();
+
 });
 
 function mypageNav() {
@@ -162,6 +166,44 @@ function mypageNav() {
         <li><a href="#"><h5><b>나의 리뷰</b></h5></a></li>
         <li><a href="/qa/qaList"><h5><b>1:1문의</b></h5></a></li>`;
     $('#categoryList').html(inputHTML);
+}
+function recentViews() {
+	let userId = '${sessionScope.loginMember.userId}';
+    let localBook = localStorage.getItem(userId+"_localbook");
+
+    let obj = JSON.parse(localBook);
+
+    console.log(obj);
+    
+    if(localBook != null){
+    	$.ajax({
+            url: "/bookList/getRecentViews",
+            type: "post",
+            dataType: "json",
+            contentType: 'application/json',  // 전송할 데이터의 형식
+            //data: {'obj':obj},
+            data : localBook ,
+            success: function(data) {
+//            	console.log(data);
+                let inputHTML = '';
+
+                $.each(data.booklist, function(i,row){
+                    inputHTML += '<li class="list-group-item">';
+                    inputHTML += '<img src="'+row.thumbNail+'" alt="Product Image" style="border-radius: 50%; width: 30px;">';
+                    inputHTML += '<span>'+row.title+'</span>';
+                    inputHTML += '</li>';
+                });
+                $('#recentlyView').html(inputHTML);
+            },
+    		error : function(data){
+    			console.log('최근본목록 불러오기 실패')
+    		}
+        	
+        });	
+    }
+
+    	
+
 }
 
 </script>
@@ -243,11 +285,11 @@ function mypageNav() {
 				<!-- 최근 본 상품 -->
 				<div class="ex1">
 					<h6>최근본상품</h6>
-					<ul class="list-group">
+					<ul class="list-group" id="recentlyView">
 						<li class="list-group-item">
-							<img src="https://mblogthumb-phinf.pstatic.net/MjAxODEyMDhfMTQz/MDAxNTQ0MjMyMDE4NDU4.x8TtSN-Knc5CrNjwpb1ulTDLpEui7mTLYPqGNUjnDbQg.-9zaXZALDcAXbsdoOfiPngUMs5JRQ6KNVPi0MCoowAgg.PNG.8713232/image.png?type=w800"
+							<!-- <img src="https://mblogthumb-phinf.pstatic.net/MjAxODEyMDhfMTQz/MDAxNTQ0MjMyMDE4NDU4.x8TtSN-Knc5CrNjwpb1ulTDLpEui7mTLYPqGNUjnDbQg.-9zaXZALDcAXbsdoOfiPngUMs5JRQ6KNVPi0MCoowAgg.PNG.8713232/image.png?type=w800"
 								alt="Product Image" style="border-radius: 50%; width: 30px;">
-							<span>연금술사</span>
+							<span>연금술사</span> -->
 						</li>
 					</ul>
 				</div>

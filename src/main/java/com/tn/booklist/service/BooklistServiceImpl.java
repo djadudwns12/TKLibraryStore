@@ -105,6 +105,16 @@ public class BooklistServiceImpl implements BooklistService {
 		
 		return result;
 	}
+
+
+	@Override
+	public List<BooklistVO> getRecentlyBooks(List<Integer> list) throws Exception {
+		
+		return bDao.selectRecentlyBooks(list);
+	}
+	
+	
+	
 //	====================================================엄영준 END=============================================================
 
 }

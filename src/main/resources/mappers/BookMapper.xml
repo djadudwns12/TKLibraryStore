@@ -31,6 +31,14 @@
 	<select id="countCategoryBooklist" resultType="int">
 		select count(*) from BookList where genre like #{category} 
 	</select>
+	
+		<!-- 다수의 book_id를 조회하는 쿼리 -->
+	<select id="selectRecentlyBooks" resultType="com.tn.booklist.model.vo.BooklistVO">
+        SELECT * FROM BookList WHERE bookNo IN
+        <foreach item="bookNo" collection="list" open="(" separator="," close=")">
+            #{bookNo}
+        </foreach>
+    </select>
 	<!-- ====================================================엄영준 END=============================================================  -->
  
  
