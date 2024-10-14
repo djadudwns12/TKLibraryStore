@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tn.mapper.OrderMapper">
+  	
+ 
+<!-- 박근영 -->
+	
+	<resultMap id="orderResultMap" type="com.tn.admin.model.vo.OrderDeliveryVO">
+	    <id property="orderNo" column="orderNo"/>
+	    <result property="orderDate" column="orderDate"/>
+	    <result property="orderStatus" column="orderStatus"/>
+	    <result property="orderWho" column="orderWho"/>
+	    <result property="orderAddress" column="orderAddress"/>
+	    <result property="usePoint" column="usePoint"/>
+	    <result property="totalPay" column="totalPay"/>
+	    
+	    <!-- 1대 다 관계 매핑: OrderBook 리스트 -->
+	    <collection property="orderBooks" ofType="com.tn.admin.model.vo.OrderBookVO">
+	        <id property="orderNo" column="orderNo"/>
+	        <result property="bookNo" column="bookNo"/>
+	        <result property="qty" column="qty"/>
+	        <result property="thumbNail" column="thumbNail"/>
+	    </collection>
+	</resultMap>
+	
+	<select id="selectOrdersWithBooks" resultMap="orderResultMap">
+	    SELECT o.orderDate, o.orderStatus, o.orderWho, o.orderAddress, o.usePoint, o.totalPay, 
+	           o.orderNo, b.bookNo, b.qty, l.thumbNail 
+	    FROM `Order` o
+	    INNER JOIN OrderBook b ON o.orderNo = b.orderNo
+	    INNER JOIN BookList l ON b.bookNo = l.bookNo
+	</select>
+
+	
+	
+<!-- 박근영 -->
+
+</mapper>

@@ -15,7 +15,7 @@
 	</select>	
 	
 	<insert id="insertPaymentComplete" parameterType="com.tn.order.model.dto.PaymentInfoDTO" useGeneratedKeys="true" keyProperty="orderPK">
-	    INSERT INTO `Order` (orderStatus, orderWho, orderAddress, usePoint, totalPay, orderNo, plannedPoint)
+	    INSERT INTO `Order` (orderStatus, orderWho, orderAddress, usePoint, totalPay, orderNo, plannedPoint, orderName)
 	    VALUES (
 	        '결제완료', #{userId}, #{address}, 
 	        <choose>
@@ -25,7 +25,7 @@
 	            <otherwise>
 	                0
 	            </otherwise>
-	        </choose>, #{totalAmount}, #{paymentId},#{totalPoint});
+	        </choose>, #{totalAmount}, #{paymentId}, #{totalPoint}, #{orderName});
 	</insert>
 	
  	<select id="selectOrderBookNo" parameterType="com.tn.order.model.dto.PaymentInfoDTO" resultType="com.tn.order.model.vo.PaymentInfoVO">

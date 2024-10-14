@@ -42,7 +42,13 @@ public class OrderServiceImpl implements OrderService {
 		List<AddressVO> addressList = oDao.selectAddress(userId);
 		int orderCount = orderInfo.getTitle().size();
 		String titleName = orderInfo.getTitle().get(0);
-		String orderName = titleName +" 외 " + (orderCount - 1) + "건";
+		String orderName ="";
+		if(orderCount > 1) {
+			orderName = titleName +" 외 " + (orderCount - 1) + "건";
+		}else {
+			orderName = titleName;
+		}
+		
 		String paymentId = UUID.randomUUID().toString();
 		
 		int userPoint = oDao.selectPoint(userId);

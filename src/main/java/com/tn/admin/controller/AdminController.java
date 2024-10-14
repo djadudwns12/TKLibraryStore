@@ -45,11 +45,13 @@ import com.tn.admin.model.vo.SearchCriteriaDTO;
 import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.MyResponseWithData;
 import com.tn.admin.model.vo.MyResponseWithoutData;
+import com.tn.admin.model.vo.OrderDeliveryVO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.service.MemberAdminService;
+import com.tn.admin.service.OrderDeliveryService;
 import com.tn.admin.service.ProductAdminService;
 import com.tn.qa.model.vo.QAVO;
 import com.tn.qa.service.QAService;
@@ -87,6 +89,10 @@ public class AdminController {
 
 	@Autowired
 	private BookFileProcess fileProcess;
+	
+	@Autowired
+	private OrderDeliveryService odService;
+	
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -749,7 +755,25 @@ public class AdminController {
 		// 엄영준(end) =============================================================================================================
 		
 // -----------------------------------------박근영-------------------------------------------------
+
 		
+		@RequestMapping("/orderDelivery")
+		public String orderDelivery() {
+		    // 리퀘스트 파라미터로 기본 정보만 넘김
+		    return "redirect:/admin/orderDeliveryAdmin";
+		}
+
+		@RequestMapping("/admin/orderDeliveryAdmin")
+		public String orderDeliveryAdmin(Model model) {
+				List<OrderDeliveryVO> odInfo = odService.orderDeliveryInfo();
+			
+			model.addAttribute("odInfo", odInfo);
+			
+		    
+		    return "admin/orderDeliveryAdmin";
+		}
+		
+			
 		
 		
 		

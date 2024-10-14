@@ -76,7 +76,7 @@ public class OrderController {
         return "/order/payment"; 
     }
     //박근영
-    @PostMapping("paymentInfo")
+    @PostMapping("/paymentInfo")
     public ResponseEntity<String> PaymentInfo(@RequestBody PaymentInfoDTO paymentInfoDTO, HttpSession session) {
     	String userId = ((MemberVO)session.getAttribute("loginMember")).getUserId();
     	System.out.println("paymentInfo 인서트 전 확인" + paymentInfoDTO.toString());
