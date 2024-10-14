@@ -36,8 +36,8 @@
 
 		let userId = '${sessionScope.loginMember.userId}';
 		let bookNo = '${product.bookNo}';
-		
-		let zzimed = false;
+		// 김가윤 - 에러떠서 일단 주석처리 했음
+		/* let zzimed = false;
 		//  ------------------------찜기능
 		$('.zzimHeart').on('click', function() {
 
@@ -84,7 +84,7 @@
 					console.log(userId + "회원이 좋아요 하지 않은 글");
 				}
 			});
-		}
+		} */
 		
 		// 별점 기능을 위한 배열 선언
 		const ratingStars = [...document.getElementsByClassName("rating__star")];
@@ -175,40 +175,37 @@
 		
 	}
 
+	// 김가윤 - cart에 추가하기
 	// 장바구니 버튼 누르면 (1)로그인여부 체크, (2)로그인했다면 장바구니에 담고, 장바구니 이동 여부 물어보기
 	function addCart() {
 		let userId = '${sessionScope.loginMember.userId}';
 		var bookNo = document.getElementById("bookNo").value;
 		var totalQty = document.getElementById("bqty").value;
 		
-		console.log(bookNo + ' 번 책 ' + totalQty + ' 권을 장바구니에 담자!');
+		console.log(userId + '님께서 ' + bookNo + ' 번 책 ' + totalQty + ' 권을 장바구니에 담았습니다.');
 
 		if (userId == '') {
 			alert('로그인이 필요한 메뉴입니다');	// '확인' 버튼 누르면 로그인 창으로 이동 
 			window.location.href = "/member/loginPage";
 
 		} else {
+			
 			// (1) 해당 user의 장바구니에 겹치는 상품이 있는 경우: '장바구니에 이미 담은 상품입니다. 장바구니로 고고?'
 			$.ajax({
-		        url: '/cart/cartPage',
+		        url: '/cart/insertCart',
 		        type: 'POST',
-		        data: {
+		        contentType: 'application/json',
+		        data: JSON.stringify({
 		            userId: userId,
 		            qty: totalQty,  // 최종 선택한 수량
 		            bookNo: bookNo
-		        },
+		        }),
 		        success: function(response) {
-		        	if(reponse.success) {
-		        		alert('장바구니에 상품이 담겼습니다. 장바구니로 이동하시겠습니까?');
-		        		location.href='/cart/cartPage?userId="${userId}"';
-		        	} else {
-		        		alert('장바구니 담기에 실패했습니다. 다시 시도해주세요.');
-		        	}
-		            
+		        	alert(response.message);
 		        },
-		        error: function(error) {
-		        	console.log('AJAX로 데이터 송신 중 에러 발생');
-		            alert('에러가 발생했습니다. 다시 시도해주세요.');
+		        error: function(xhr, status, error) {
+		        	alert('xxxxx');
+		        	console.error('xxxxx :', xhr.responseText);
 		        }
 		    });
 			
@@ -221,6 +218,7 @@
 		  const starClassActive = "rating__star fas fa-star";
 		  const starClassInactive = "rating__star far fa-star";
 		  const starsLength = stars.length;
+		 
 		  let i;
 		  
 		  stars.map((star) => {
@@ -230,12 +228,16 @@
 			      if (star.className===starClassInactive) {
 			        for (i; i >= 0; --i) 
 			        	stars[i].className = starClassActive;
+
 			      } else {
 			        for (i; i < starsLength; ++i) 
 			        	stars[i].className = starClassInactive;
+			        console.log('선택된 별 갯수 : ',i);
 			      }
 			    };
 			  });
+		  
+		  
 		  
 		}
 	
@@ -243,9 +245,12 @@
 		let result = false;
 		let review = $('#review').val();
 		
+		const rating = $(".fas").length;
+		console.log(rating);
+		
 		console.log(review);
 
-		if (rating == '' && review == null) {
+		if (rating == 0 && review == null) {
 
 			//별점을 입력하지 않고 리뷰 내용도 작성하지 않았을 때 
 			alert("별점을 입력하거나 리뷰 내용을 작성하셔야 합니다");
@@ -341,6 +346,7 @@
 									<c:forEach var="bookInfo" items="${bookDetailInfo}">
 										<img class="bookImagelarge" src="${bookInfo.thumbNail}" alt="">
 										<input type="hidden" value="${bookInfo.bookNo}" id="bs">
+										
 								</div>
 
 							</div>
