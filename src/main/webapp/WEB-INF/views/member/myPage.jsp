@@ -167,6 +167,7 @@ function mypageNav() {
         <li><a href="/qa/qaList"><h5><b>1:1문의</b></h5></a></li>`;
     $('#categoryList').html(inputHTML);
 }
+// 마이페이지 최근본 목록을 불러오는 함수
 function recentViews() {
 	let userId = '${sessionScope.loginMember.userId}';
     let localBook = localStorage.getItem(userId+"_localbook");
@@ -188,7 +189,7 @@ function recentViews() {
                 let inputHTML = '';
 
                 $.each(data.booklist, function(i,row){
-                    inputHTML += '<li class="list-group-item">';
+                    inputHTML += `<li class="list-group-item" onclick="location.href='/bookList/bookDetail?bookNo=\${row.bookNo}'">`;
                     inputHTML += '<img src="'+row.thumbNail+'" alt="Product Image" style="border-radius: 50%; width: 30px;">';
                     inputHTML += '<span>'+row.title+'</span>';
                     inputHTML += '</li>';
@@ -218,7 +219,7 @@ function recentViews() {
 			<div class="swiper-container col">
 				<div class="swiper-wrapper">
 					<c:forEach var="zzim" items="${zzimList}">
-						<div class="swiper-slide">
+						<div class="swiper-slide" onclick="location.href='/bookList/bookDetail?bookNo=${zzim.bookNo}'">
 							<img src="${zzim.thumbNail}" alt="Product Image 1">
 						</div>
 					</c:forEach>
@@ -288,8 +289,8 @@ function recentViews() {
 					<ul class="list-group" id="recentlyView">
 						<li class="list-group-item">
 							<!-- <img src="https://mblogthumb-phinf.pstatic.net/MjAxODEyMDhfMTQz/MDAxNTQ0MjMyMDE4NDU4.x8TtSN-Knc5CrNjwpb1ulTDLpEui7mTLYPqGNUjnDbQg.-9zaXZALDcAXbsdoOfiPngUMs5JRQ6KNVPi0MCoowAgg.PNG.8713232/image.png?type=w800"
-								alt="Product Image" style="border-radius: 50%; width: 30px;">
-							<span>연금술사</span> -->
+								alt="Product Image" style="border-radius: 50%; width: 30px;"> -->
+							<span>최근본책이 없습니다.</span> 
 						</li>
 					</ul>
 				</div>
