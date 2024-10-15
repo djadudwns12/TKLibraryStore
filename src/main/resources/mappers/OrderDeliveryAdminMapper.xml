@@ -39,12 +39,12 @@
 	</select>
 
 	
-<!-- 	 	SELECT o.orderDate, o.orderStatus, o.orderWho, o.orderAddress, o.usePoint, o.totalPay, 
-	           o.orderNo, b.bookNo, b.qty, l.thumbNail 
-	    FROM `Order` o
-	    INNER JOIN OrderBook b ON o.orderNo = b.orderNo
-	    INNER JOIN BookList l ON b.bookNo = l.bookNo WHERE o.orderWho = 'geunyeon'
-	    ORDER BY o.orderDate DESC -->
+	<select id="selectOrderInfo" resultType="com.tn.admin.model.vo.CancelOrderVODTO">
+		SELECT orderPK, orderWho, usePoint, totalPay FROM `Order` WHERE orderNo IN 
+		<foreach item="orderNo" collection="list" open="(" separator="," close=")">#{orderNo}</foreach>
+	
+	
+	</select>
 	
 <!-- 박근영 -->
 

@@ -773,10 +773,19 @@ public class AdminController {
 		    
 		    return "/admin/orderDeliveryAdmin";
 		}
+	
+		
+		@RequestMapping("/cancelOrders")
+		public ResponseEntity<String> cancelOrders(@RequestBody List<String> orderNos) {
+			System.out.println("진입 확인 cancelOrders");
+			
+			odService.cancelOrder(orderNos);
 		
 			
-		
-		
+			
+		    
+		    return new ResponseEntity<String>("성공", HttpStatus.OK);
+		}
 		
 		
 		

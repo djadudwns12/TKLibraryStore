@@ -233,7 +233,10 @@ td:hover .book-info-container {
   flex-direction: column; /* 책 번호와 수량을 세로로 나열 */
 }
 
-
+#cancelBtn {
+	margin-left: 35px;
+	margin-bottom: 5px;
+}
 
 
 
@@ -292,11 +295,7 @@ td:hover .book-info-container {
 					<button type="submit" class="btn btn-outline-dark btn"
 						onclick="return isValid()">검색</button>
 				</form>
-				<div style="display: flex; margin-left: 50px; width: 200px;">
-					<button type="button" class="btn btn-outline-dark btn"
-						onclick="location.href='/admin/registProduct';">Add
-						Product</button>
-				</div>
+			
 
 				<div
 					style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: right; margin-bottom: 50px;">
@@ -331,6 +330,9 @@ td:hover .book-info-container {
 
 
 				<div style="overflow-x: auto;">
+				<button type="button" class="btn btn-danger btn"
+										id="cancelBtn" style="width: 120px; font-size: small;"
+										onclick="cancelSelected();">0개 주문취소</button>
 					<table>
 						<thead>
 							<tr>
@@ -345,12 +347,7 @@ td:hover .book-info-container {
 								<th>결제금액</th>
 								
 					
-								<th><button type="button" class="btn btn-danger btn"
-										id="delBtn" style="width: 90px; font-size: small;"
-										onclick="deleteProduct();">0개 삭제</button></th>
-								<th><button type="button" class="btn btn-success btn"
-										id="soldOutBtn" style="width: 90px; font-size: small;"
-										onclick="soldOutProduct();">0개 품절</button></th>
+							
 							</tr>
 						</thead>
 						<tbody>
@@ -383,9 +380,6 @@ td:hover .book-info-container {
 									<td>${order.usePoint}</td>
 									<td>${order.totalPay}</td>
 								
-									<td colspan="3"><button class="btn btn-secondary btn"
-											style="width: 70px"
-											onclick="location.href='/admin/modifyProduct?bookNo=${product.bookNo}'">수정</button></td>
 								</tr>
 							</c:forEach>
 
@@ -563,16 +557,91 @@ td:hover .book-info-container {
 		</div>
 	</div>
 
+
 <script>
-	function cancel(element, orderNo) {
-		$(element).text("취소완료");
-		$(element).css({
-            'color': 'blue',      // 글자 색상 빨간색으로 설정
-            'font-weight': 'bold', // 글자를 굵게 설정
-            'cursor' : 'default'
-        });
-		
+
+	function cancelSelected() {
+	    let selectedOrders = [];
+	    
+	    // 체크된 체크박스에서 각 주문번호와 관련된 요소를 배열로 수집
+	    $('input[name="proCheck"]:checked').each(function() {
+	        let orderNo = $(this).val();  // 체크된 체크박스의 value (주문번호)
+	        let element = $(this).closest('tr').find('.orderStatus');  // 해당 주문의 상태를 표시하는 element
+	        
+	        // 주문번호와 element를 객체로 저장
+	        selectedOrders.push({
+	            orderNo: orderNo,
+	            element: element
+	        });
+	    });
+	
+	    // 선택된 주문이 있을 때 cancel 호출
+	    if (selectedOrders.length > 0) {
+	        cancel(selectedOrders);  // 선택된 주문 정보를 cancel 함수에 전달
+	    } else {
+	        alert("취소할 주문을 선택하세요.");
+	    }
 	}
+
+
+
+	function cancel(elementOrOrders, orderNo) {
+	    let orderNos = [];  // 서버로 보낼 주문 번호 배열
+
+	    // 단일 항목일 경우
+	    if (!Array.isArray(elementOrOrders)) {
+	        
+	        orderNos.push(orderNo);  
+
+	    } else {
+	        // 여러 주문인 경우 (배열로 주문 번호들이 전달됨)
+	        elementOrOrders.forEach(function(order) {
+	            orderNos.push(order.orderNo); 
+	        });
+	    }
+	    
+	    
+	    
+	    $.ajax({
+	        url: '/admin/cancelOrders',  // 서버에서 취소 처리할 엔드포인트
+	        type: 'POST',
+	        contentType: 'application/json',
+	        data: JSON.stringify(orderNos),
+	        success: function(response) {
+	            alert(orderNos.length + "개의 주문이 취소 완료되었습니다.");
+	            console.log(response);  // 서버에서 받은 응답 처리
+	            
+	            
+	            if (!Array.isArray(elementOrOrders)) {
+	    	        $(elementOrOrders).text("취소완료");  
+	    	        $(elementOrOrders).css({
+	    	            'color': 'blue',
+	    	            'font-weight': 'bold',
+	    	            'cursor': 'default'
+	    	        });
+	    	    } else {
+	    	        // 여러 주문인 경우 (배열로 주문 번호들이 전달됨)
+	    	        elementOrOrders.forEach(function(order) {  	      
+	    	            $(order.element).text("취소완료");  
+	    		        $(order.element).css({
+	    		            'color': 'blue',
+	    		            'font-weight': 'bold',
+	    		            'cursor': 'default'
+	    		        });
+	    	           
+	    	            
+	    	        });
+	    	    }
+	        },
+	        error: function(response) {
+	            console.error(response);
+	            alert("취소 처리 중 오류가 발생했습니다.");
+	        }
+	    });
+
+	    
+	}
+
 	$(function() {
 		console.log($('.orderStatus').text());
 		$('.orderStatus').each(function() {
@@ -952,7 +1021,7 @@ td:hover .book-info-container {
 		}
 	}
 
-	// 상품의 재고를 0으로 만드는 함수
+	// =========================== 기능 삭제 예정
 	function soldOutProduct() {
 		let pro_check = document
 				.querySelectorAll('input[name="proCheck"]:checked').length;
@@ -1002,8 +1071,8 @@ td:hover .book-info-container {
 		// 체크박스 선택된 개수 가져오기
 		let pro_check = $('input[name="proCheck"]:checked').length;
 		// 버튼 텍스트 업데이트
-		$('#delBtn').text(pro_check + "개 삭제");
-		$('#soldOutBtn').text(pro_check + "개 품절");
+		$('#cancelBtn').text(pro_check + "개 주문취소");
+		
 	}
 	
 	
