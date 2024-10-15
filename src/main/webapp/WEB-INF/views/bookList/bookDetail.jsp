@@ -36,8 +36,8 @@
 
 		let userId = '${sessionScope.loginMember.userId}';
 		let bookNo = '${product.bookNo}';
-		// 김가윤 - 에러떠서 일단 주석처리 했음
-		/* let zzimed = false;
+		
+		let zzimed = false;
 		//  ------------------------찜기능
 		$('.zzimHeart').on('click', function() {
 
@@ -84,11 +84,14 @@
 					console.log(userId + "회원이 좋아요 하지 않은 글");
 				}
 			});
-		} */
+		}
 		
 		// 별점 기능을 위한 배열 선언
 		const ratingStars = [...document.getElementsByClassName("rating__star")];
 		executeRating(ratingStars);
+		
+		// 로그인 이전에 적은 내용을 다시 집어 넣음
+		$('#review').html(localStorage.getItem('reviewContent'));
 
 	});
 
@@ -175,7 +178,7 @@
 		
 	}
 
-	// 김가윤 - cart에 추가하기
+
 	// 장바구니 버튼 누르면 (1)로그인여부 체크, (2)로그인했다면 장바구니에 담고, 장바구니 이동 여부 물어보기
 	function addCart() {
 		let userId = '${sessionScope.loginMember.userId}';
@@ -241,26 +244,50 @@
 		  
 		}
 	
-	function saveReview() {
-		let result = false;
-		let review = $('#review').val();
+	function validReviewWriter() {
+		let reviewWriter = '${sessionScope.loginMember.userId}';
+		let reviewContent = $('#review').val();
+		const reviewScore = $(".fas").length;
+		const bookNo = '${param.bookNo}';
 		
-		const rating = $(".fas").length;
-		console.log(rating);
-		
-		console.log(review);
-
-		if (rating == 0 && review == null) {
-
-			//별점을 입력하지 않고 리뷰 내용도 작성하지 않았을 때 
-			alert("별점을 입력하거나 리뷰 내용을 작성하셔야 합니다");
-			$('#review').focus();
+		if(reviewWriter == '' || reviewWriter == null) {
+			if(reviewContent != '') {
+	            localStorage.setItem("reviewContent", reviewContent);
+	            localStorage.setItem("reviewScore", reviewScore);
+	         }	        
+	        location.href = "/member/loginPage?redirectUri=/bookList/bookDetail?bookNo=${param.bookNo}";
 		} else {
-			// 둘 중 하나라도 입력했을 때 
-			result = true;
+			return '${sessionScope.loginMember.userId}';
 		}
-
-		return result;
+	}
+	
+	
+	function saveReview() {
+		let reviewWriter = validReviewWriter();
+		let bookNo = '${param.bookNo}';
+		let reviewContent = $('#review').val();
+		const reviewScore = $(".fas").length;
+		
+		localStorage.setItem('reviewContent',reviewContent);
+				
+		
+		if (reviewContent.length < 1) {
+			alert('리뷰 내용을 입력해주세요.');
+		} else if (reviewScore == 0) {
+			alert('별점을 입력해주세요.');
+		} else {
+			const reviewData = {
+					'reviewWriter' : reviewWriter,
+					'reviewContent' : reviewContent,
+					'reviewScore' : reviewScore,
+					'bookNo' : bookNo
+				};
+				
+				console.log(JSON.stringify(reviewData));
+		}
+		
+		
+				
 	}
 	
 	// localStorege에 최근본 책 넣는 내용
@@ -269,7 +296,7 @@
 		let boll = $('#bs').val();
 		
 		let book = '${param.bookNo}';
-		alert(book);
+		//alert(book);
 		let localbook = localStorage.getItem("localbook");
 
 		let bookList = new Set([]);
@@ -451,7 +478,7 @@
 													placeholder="리뷰 내용을 작성해주세요" style="width: 80%;"></textarea>
 												<button type="submit" class="btn btn-primary"
 													style="background-color: #7FAD38; border: 0; width: 70px; height: 55px;"
-													onclick="return saveReview();">저장</button>
+													onclick="saveReview();">저장</button>
 											</div>
 											<p></p>
 										</div>
