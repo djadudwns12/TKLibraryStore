@@ -148,14 +148,13 @@ public class BookListController {
 	// 수량 선택해 장바구니 버튼을 누르면 카트에 상품이 담기는 메서드
 	@PostMapping("/insertCart")
 	@ResponseBody
-	public String addToCart(@RequestParam("qty") int qty, @RequestParam("bookNo") int bookNo, @RequestParam("userId") String userId) {
+	public String addToCart(@RequestParam("qty") int qty, @RequestParam("bookNo") int bookNo, HttpSession ses) {
 		
 		
 	String result = null;
 		
-		// 나중에 userId로 변경
-//		MemberVO loginMember = (MemberVO) ses.getAttribute("userId");
-//		String userId = loginMember.getUserId();
+		MemberVO loginMember = (MemberVO) ses.getAttribute("loginMember");
+		String userId = loginMember.getUserId();
 //		
 		System.out.println(qty +"bookNo"+ bookNo + userId);
 		try {
