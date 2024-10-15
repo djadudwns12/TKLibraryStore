@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-   pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,92 +9,116 @@
 <meta name="keywords" content="Ogani, unica, creative, html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title> 마이페이지 | 회원정보수정</title>
+<title>마이페이지 | 회원정보수정</title>
 <!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
+	rel="stylesheet">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
-.register-box{
-	display : flex;
+* {
+	font-family: "Gowun Batang", serif;
+	font-weight: 550;
+	font-style: normal;
+}
+
+.register-box {
+	display: flex;
 	justify-content: center;
 }
 
-.input-group{
+.input-group {
 	display: flex;
 	text-align: center;
 }
-.input-group label{
-	display :inline-block;
-	width : 150px;
+
+.input-group label {
+	display: inline-block;
+	width: 150px;
 }
+
 .input-group form-check {
-	padding-left : 0px;
+	padding-left: 0px;
 }
+
 #emailAuth {
-	margin-top:10px;
+	margin-top: 10px;
 }
-#emailAuth span{
-	margin-left:10px;
-	margin-right:10px;
+
+#emailAuth span {
+	margin-left: 10px;
+	margin-right: 10px;
 }
+
 #emailEditBtn {
-	margin-left:10px; 
-	border-color:#7fad38; 
-	background-color:#7fad38;
+	margin-left: 10px;
+	border-color: #7fad38;
+	background-color: #7fad38;
 }
+
 #profileImageContainer {
 	display: flex;
 	justify-content: space-around;
-
 }
+
 #imageDropBox {
 	border: 2px dashed #cccccc;
-    padding: 20px;
-    text-align: center;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    cursor: pointer;
-
+	padding: 20px;
+	text-align: center;
+	border-radius: 4px;
+	margin-bottom: 20px;
+	cursor: pointer;
 }
 </style>
 <script>
-//이미지파일을 저장할 배열
-let uploadedFiles = new Array();
+
 $(function() {
 	//let qaList = $('.register-box');
 	
 	//$('#main_content').html(qaList);
 })
-</script> 
+</script>
 
 
 </head>
 
 
 <body>
-	
+
 	<jsp:include page="./../header.jsp"></jsp:include>
-		<!-- 회원정보 : ${loginMember} -->
-    <div class="register-box pwdConfirm">
-	<div class="card pwdConfirmCard" style="padding:10px">
-		<p class="register-box-msg">회원 정보 수정</p>
-		
-		<form action="/member/saveedit" method="post" enctype="multipart/form-data"> <!-- -->
-			<div class="input-group mb-3">
-				<label>이름</label>
-				<input type="text" class="form-control" id="userName" name="userName" value="${loginMember.userName}" readonly/>
-            </div>
-			<div class="input-group mb-3">
-				<label>아이디</label>
-				<input type="text" class="form-control" id="userId" name="userId" value="${loginMember.userId}" readonly/>
-            </div>
-			<div class="input-group mb-3">
-				<label>생년월일</label>
-				<input type="date" class="form-control" id="userBirth" name="userBirth" value="${loginMember.userBirth}" />
-            	<input type="hidden" id="userBirthCheck" value="checked"/>
-            	<div id="userBirthError" style="color: red;"></div>
-            </div>
-<!-- 			<div class="input-group mb-3">
+	<!-- 회원정보 : ${loginMember} -->
+	<div class="register-box pwdConfirm">
+		<div class="card pwdConfirmCard" style="padding: 10px">
+			<p class="register-box-msg">회원 정보 수정</p>
+
+			<form action="/member/saveMemberEdit" method="post"
+				enctype="multipart/form-data">
+				<!-- -->
+				<div class="input-group mb-3">
+					<label>이름</label> <input type="text" class="form-control"
+						id="userName" name="userName" value="${loginMember.userName}"
+						readonly />
+				</div>
+				<div class="input-group mb-3">
+					<label>아이디</label> <input type="text" class="form-control"
+						id="userId" name="userId" value="${loginMember.userId}" readonly />
+				</div>
+				<div class="input-group mb-3">
+					<label>생년월일</label> <input type="date" class="form-control"
+						id="userBirth" name="userBirth" value="${loginMember.userBirth}" />
+					<input type="hidden" id="userBirthCheck" value="checked" />
+					<div id="userBirthError" style="color: red;"></div>
+				</div>
+				<div class="input-group mb-3">
+					<label>비밀번호</label>
+					<button type="button" id="pwdEditBtn" class="btn btn-primary"
+						onclick="pwdEdit()" style="border-color:#7fad38; background-color:#7fad38; color:white;">비밀번호 변경</button>
+				</div>
+				<!-- 			
 				<label>비밀번호</label>
 				<input type="password" class="form-control " id="userPwd" name="userPwd" "/>
             	<div id="userPwdError" style="color: red;"></div>
@@ -105,55 +129,88 @@ $(function() {
             	
             	<div id="userPwdConfirmError" style="color: red;"></div>
             </div> -->
-            
-            <input type="hidden" id="pwdCheck" value="checked"/>
-			
-			<div class="input-group mb-3">
-				<label>이메일</label>
-				<input type="email" class="form-control" id="email" name="email" value="${loginMember.email}" readonly/>
-            	<button type="button" id="emailEditBtn" class="btn btn-primary" onclick="emailEdit();" >이메일변경</button>
-            	<input type="hidden" id="emailCheck" value="checked"/>
-            	<div id="emailError" style="color: red;"></div>
-            </div>
 
-			<div class="input-group mb-3">
-				<label>핸드폰 번호</label>
-				<input type="text" class="form-control" id="phoneNum" name="phoneNum" value="${loginMember.phoneNum}" />
-            	<input type="hidden" id="phoneNumCheck" value="checked"/>
-            	<div id="phoneNumError" style="color: red;"></div>
-            </div>
- 
-			<div class="input-group mb-3" id="profileImageContainer">
-				<label>프로필사진</label>
-		        <div id="imageDropBox">
-		        	<div id="dropBoxText" >프로필 사진을 변경하려면 드래그 앤 드롭하세요.</div>
-		        	<input type="file" id="profileImageInput" style="display: none;" accept="image/*">
-		        	<img id="profilePreview" src="${loginMember.userImg}">
-		        	<input type="text" class="form-control imagePath" id="imagePath" name="imagePath" value="${loginMember.userImg}" style="width: 900px; margin-bottom: 50px;" readonly>
-			        <span class="badge bg-secondary" id="delPreview" onclick="defaultProfileImage();" style="color:white;">기본이미지</span>
-			        <span class="badge" id="resetPreview" onclick="resetProfileImage();" style="border-color:#7fad38; background-color:#7fad38; color:white;">변경취소</span>
-		        </div>
-		        
-		    	
-		    </div> 
-		    <div class="d-grid gap-2" style="text-align:right;">
-				<button type="submit" class="btn btn-primary saveEditInfo" onclick="return isValid();" style="border-color:#7fad38; background-color:#7fad38;">수정완료</button>
-				<button type="reset" class="btn btn-danger" >되돌리기</button>
-				<button type="button" class="btn btn-secondary" onclick="location.href='/member/deletemember';">회원탈퇴</button>
-			</div>
-		</form>
-	
+				<input type="hidden" id="pwdCheck" value="checked" />
+
+				<div class="input-group mb-3">
+					<label>이메일</label> <input type="email" class="form-control"
+						id="email" name="email" value="${loginMember.email}" readonly />
+					<button type="button" id="emailEditBtn" class="btn btn-primary"
+						onclick="emailEdit();">이메일변경</button>
+					<input type="hidden" id="emailCheck" value="checked" />
+					<div id="emailError" style="color: red;"></div>
+				</div>
+
+				<div class="input-group mb-3">
+					<label>핸드폰 번호</label> <input type="text" class="form-control"
+						id="phoneNum" name="phoneNum" value="${loginMember.phoneNum}" />
+					<input type="hidden" id="phoneNumCheck" value="checked" />
+					<div id="phoneNumError" style="color: red;"></div>
+				</div>
+
+				<div class="input-group mb-3" id="profileImageContainer">
+					<label>프로필사진</label>
+					<div id="imageDropBox" style="width: 400px;">
+						<div id="dropBoxText">프로필 사진을 변경하려면 드래그 앤 드롭하세요.</div>
+						<input type="file" id="profileImageInput" style="display: none;"
+							accept="image/*"> <img id="profilePreview"
+							src="${loginMember.userImg}">
+					</div>
+				</div>
+				<div class="d-grid gap-2" style="text-align: right;">
+					<button type="submit" class="btn btn-primary saveEditInfo"
+						onclick="return isValid();"
+						style="border-color: #7fad38; background-color: #7fad38;">수정완료</button>
+					<button type="reset" class="btn btn-danger resetBtn">되돌리기</button>
+					<button type="button" class="btn btn-secondary"
+						onclick="location.href='/member/deletemember';">회원탈퇴</button>
+				</div>
+			</form>
+
+		</div>
+
 	</div>
-		
-	</div>
-	
+
 	<jsp:include page="./../footer.jsp"></jsp:include>
 
-
+	<!-- The Modal -->
+	<div class="modal" id="myModal" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">떡잎서점</h4>
+					<button type="button" class="btn-close modalCloseBtn" data-bs-dismiss="modal"></button>
+				</div>
+			
+				<!-- Modal body -->
+				<div class="modal-body">
+					<div class="input-group mb-3">
+						<label>비밀번호</label>
+						<input type="password" class="form-control " id="userPwd" name="userPwd" "/>
+		            	<div id="userPwdError" style="color: red;"></div>
+	            	</div>
+					<div class="input-group mb-3">
+						<label>비밀번호확인</label>
+						<input type="password" class="form-control" id="userPwdConfirm" name="userPwdConfirm" "/>
+            			<div id="userPwdConfirmError" style="color: red;"></div>
+            		</div>
+				</div>
+			
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-info" data-bs-dismiss="modal" style="border-color:#7fad38; background-color:#7fad38; color:white;" onclick="userPwdValid();">저장</button>
+				</div>
+			</div>
+		</div>
+	</div>
 <script src="/resources/js/authTimer.js"></script>
 <script type="text/javascript">
+//이미지파일을 저장할 배열
+let uploadedFiles = new Array();
+
 $(function(){
-	// 비밀번호 변경을 위해 userPwd에 비밀번호를 입력할 때 > 비밀번호 양식 확인
+/* 	// 비밀번호 변경을 위해 userPwd에 비밀번호를 입력할 때 > 비밀번호 양식 확인
 	$('#userPwd').on("input", function() {
 		let tmpPwd = $('#userPwd').val();
 		let passwordRegExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()])[a-zA-Z\d!@#$%^&*()]{8,20}$/;
@@ -179,7 +236,7 @@ $(function(){
             clearError($("#userPwdConfirm"));
             $("#pwdCheck").val("checked");
           }
-    });
+    }); */
 	// 생년월일을 입력했을 때
 	$("#userBirth").on("input", function(){
 		let userBirth = new Date($('#userBirth').val());
@@ -218,11 +275,11 @@ $(function(){
 
 	$('#profileImageContainer').on("drop", function(evt){
 		evt.preventDefault();
-		console.log(evt.originalEvent.dataTransfer.files);	//업로드 되는 파일 객체의 정보
-		
+		console.log("dataTransfer.files : ", evt.originalEvent.dataTransfer.files);	//업로드 되는 파일 객체의 정보
+	
 		// 기존의 파일 배열을 비움
     	uploadedFiles.length = 0;  // 이전에 저장된 파일 정보 삭제
-		let files = evt.originalEvent.dataTransfer.files; 
+		let files = evt.originalEvent.dataTransfer.files;
     	console.log("files : "+ files);
 		for (let file of files) {
 			// 파일 사이즈가 10MB 이상이면 업로드 금지
@@ -242,16 +299,18 @@ $(function(){
 
                     // 전역 변수에 파일 정보 저장
                    	uploadedFiles.push(file);  // 파일을 전역 변수에 추가
-                    console.log(uploadedFiles);
+                    console.log("uploadedFiles.push : ", uploadedFiles);
                 }
-				reader.readAsDataURL(file);   // 파일을 읽어옴
-				
 			}
+			reader.readAsDataURL(file);   // 파일을 읽어옴
+			console.log("reader.readAsDataURL : ", file);
 		}
-		//fileUpload(uploadedFiles);
+	});
+	
+	$('.resetBtn').click(function(){
+		$('#profilePreview').attr('src', '${loginMember.userImg}');
 	});
 });
-
 
 //===============================인풋태그 오입력 처리=====================================//
 // 에러가 난 태그의 선색상을 빨간색으로
@@ -275,9 +334,7 @@ function clearError(obj) {
 	let emailChecked = userEmailValid();
 	let phoneNumChecked = phoneNumValid();
 	if(pwdChecked && birthChecked && emailChecked && phoneNumChecked){
-		//location.href="/member/mypage";
-		console.log("isVaild에서 uploadedFiles : "+uploadedFiles[0]);
-		fileUpload(uploadedFiles[0]);
+		fileUpload(uploadedFiles);
 		return true;
 	} else {
 		return false;
@@ -300,13 +357,75 @@ function userBirthValid(){
 	}
 }
 
+// 비밀번호 변경 팝업
+function pwdEdit() {
+	$('#myModal').show(500);
+	$(function() {
+		// 비밀번호 변경을 위해 userPwd에 비밀번호를 입력할 때 > 비밀번호 양식 확인
+		$('#userPwd').on("input", function() {
+			let tmpPwd = $('#userPwd').val();
+			let passwordRegExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()])[a-zA-Z\d!@#$%^&*()]{8,20}$/;
+			if (!passwordRegExp.test(tmpPwd) || tmpPwd =='') {
+				outputError("영문/숫자/특수문자[!@#$%^&*()] 조합 (8~20자)으로 입력하세요.", $('#userPwd'));
+				$("#pwdCheck").val("");
+			} else {
+				// 에러메시지 사라짐
+				clearError($("#userPwd"));
+	        	$("#userPwd").css("border", "");
+	        	$("#pwdCheck").val("formatCheck");
+	        	
+			}
+		});
+		// userPwdConfirm에서 비밀번호 입력하고 blur 되었을때
+	    $("#userPwdConfirm").blur(function () {
+	    	let tmpPwd = $("#userPwd").val();
+	    	if (tmpPwd != $(this).val()) {
+	            outputError("패스워드가 다릅니다.", $("#userPwdConfirm"));
+	            $("#userPwdConfirm").val("");
+	            $(this).val("");
+	            
+	          } else {
+	            clearError($("#userPwdConfirm"));
+	            $("#pwdCheck").val("checked");
+	          }
+	    });
+		// Close, X 버튼 클릭하면 모달창 종료
+		$('.modalCloseBtn').click(function() {
+			$('#myModal').hide(100);
+			$("#pwdCheck").val("checked");
+		});
+	});
+	//$('.modal-body').html(".....");
+}
+
 // 비밀번호 확인
 function userPwdValid(){
 	if ($("#pwdCheck").val() == 'checked') {
-		return true;
-	} else {
-		alert("비밀번호를 확인하세요.");
-		return false;
+		let userInfo = {
+				"userPwd" : $("#userPwd").val(),
+				"userId" : $("#userId").val()
+	        }
+		
+		$.ajax({
+			url: "/member/pwdChange", 
+	        type: "post",
+	        dataType: "text",
+	        contentType : 'application/json; charset=utf-8',
+	        data: JSON.stringify(userInfo),
+	        success: function(data) {
+	        	console.log(data)
+	        	if ($("#pwdCheck").val() == 'checked'&& data=='success') {
+					console.log(data);
+					$('#myModal').hide();
+	        	} else if ($("#pwdCheck").val() != 'checked') {
+	        		alert ('비밀번호를 확인해주세요.');
+	        		return;
+	        	}
+	        },
+	        error : function(data){
+	        	console.log(data)
+	        }
+		});
 	}
 }
 
@@ -422,26 +541,14 @@ function phoneNumValid(){
 	}
 }
 
-// 프로필사진 : 기본이미지로 변경
-function defaultProfileImage() {
-	$('#profilePreview').attr('src', '/resources/userImg/noImage.png');
-}
-
-// 프로필사진 : 변경 전 이미지로 변경
-function resetProfileImage() {
-	$('#profilePreview').attr('src', '${loginMember.userImg}');
-}
-
 // 실제로 유저가 업로드한 파일을 컨트롤러단에 전송하여 저장되도록 하는 함수
 function fileUpload(uploadedFiles) {
-	alert(uploadedFiles[0]);
 	let result = false;
 	let fd = new FormData(); 	//FormData() 객체 생성 : form태그와 같은 역할의 객체
 	fd.append("file", uploadedFiles[0]);
 	fd.append("userId", `${loginMember.userId}`);
-	
 	$.ajax({
-        url : '/member/saveedit',             
+        url : '/member/profileImgEdit',             
         type : 'post',             	
         dataType : 'json',        		
 		data : fd,				

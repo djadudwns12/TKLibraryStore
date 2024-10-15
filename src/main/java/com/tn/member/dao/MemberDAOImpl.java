@@ -31,21 +31,6 @@ public class MemberDAOImpl implements MemberDAO  {
 		System.out.println(sess.selectList(NS+".getMember"));
 		return aa;
 	}
-
-	@Override
-	public MemberVO getEditMemberInfo(String userId) throws Exception {
-
-		return sess.selectOne(NS + ".getEditMemberInfo", userId);
-	}
-
-	@Override
-	public int updateEditMember(MemberVO editMember, ImgFileVODTO fileInfo) throws Exception {
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("editMember", editMember);
-		paramMap.put("fileInfo", fileInfo);
-		
-		return sess.update(NS + ".updateEditMember", paramMap);
-	}
 	
 	public MemberVO getMember(String userId, String userPwd) throws Exception {
 		Map<String, String> loginMember = new HashMap<>();
@@ -54,16 +39,47 @@ public class MemberDAOImpl implements MemberDAO  {
 		loginMember.put("userPwd", userPwd);
 	
 		return sess.selectOne(NS+".getLoginMember", loginMember);
+	}	
+
+	//=============================최미설========================================//
+	@Override
+	public MemberVO getEditMemberInfo(String userId) throws Exception {
+
+		return sess.selectOne(NS + ".getEditMemberInfo", userId);
 	}
 
+	@Override
+	public int updateEditMember(MemberVO editMember) throws Exception {
 
+		return sess.update(NS + ".updateEditMember", editMember);
+	}
+
+	@Override
+	public int saveEditImg(ImgFileVODTO fileInfo, String userId) {
+		Map<String,Object> params = new HashMap<String, Object>();
+		params.put("fileName", fileInfo.getNewFileName());
+		params.put("base64Img", fileInfo.getBase64Img());
+		params.put("userId", userId);
+		
+		return sess.update(NS + ".saveEditImg",params);
+	}
+	
+	@Override
+	public int saveEditPwd(String userPwd, String userId) throws Exception {
+		Map<String,Object> params = new HashMap<String, Object>();
+		params.put("userPwd", userPwd);
+		params.put("userId", userId);
+		return sess.update(NS + ".saveEditPwd", params);
+	}
+	
 	@Override
 	public int deleteMember(String userId) throws Exception {
 		
-		return sess.delete(NS + ".deleteMember", userId);
+		return sess.update(NS + ".deleteMember", userId);
 	}
+	
 
-
+	//=============================최미설========================================//
 
 	
 //-----------------------------------------박근영-------------------------------------------------
@@ -88,6 +104,9 @@ public class MemberDAOImpl implements MemberDAO  {
 		paramMap.put("address", address);
 		return sess.insert(NS + ".insertRegisterAddress", paramMap);
 	}
+
+
+
 
 //-----------------------------------------박근영-------------------------------------------------
 

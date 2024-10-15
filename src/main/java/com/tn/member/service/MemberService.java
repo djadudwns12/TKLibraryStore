@@ -26,8 +26,14 @@ public interface MemberService {
 	MemberVO getEditMemberInfo(String userId) throws Exception;
 	
 	// 회원수정페이지에서 수정된 회원정보를 저장하는 메서드
-	boolean saveEditInfo(ImgFileVODTO fileInfo, MemberVO loginMember) throws Exception;
+	boolean saveEditInfo(MemberVO editMember) throws Exception;
 
+	// 회원수정페이지에서 수정된 프로필이미지를 저장하는 메서드
+	boolean saveEditImg(ImgFileVODTO fileInfo, String userId) throws Exception;
+	
+	// 비밀번호를 변경하는 메서드
+	boolean saveEditPwd(String userPwd, String userId) throws Exception;
+	
 	// 회원탈퇴
 	boolean deleteMember(String userId) throws Exception;
 //-----------------------------------------최미설-------------------------------------------------
@@ -43,6 +49,11 @@ public interface MemberService {
 	// 중복아이디 비교 메서드
 	boolean compareId(String tmpUserId) throws Exception;
 //-----------------------------------------박근영-------------------------------------------------
+
+
+
+
+
 
 
 
