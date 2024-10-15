@@ -23,4 +23,12 @@
   	from Review 
   	where bookNo = #{bookNo}
   </select>
+  
+  <!-- 김가윤 -->
+    
+  <!-- bookNo에 달린 리뷰 리스트를 가져오는 쿼리문 -->
+  <select id="getReviewWithBookNo" resultType="com.tn.review.model.DTO.ReviewDTO">
+  	select * from Review where bookNo = #{bookNo}
+  </select>
+  
   </mapper>

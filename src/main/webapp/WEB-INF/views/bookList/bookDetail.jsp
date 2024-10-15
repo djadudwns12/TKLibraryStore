@@ -480,6 +480,10 @@
 													style="background-color: #7FAD38; border: 0; width: 70px; height: 55px;"
 													onclick="saveReview();">저장</button>
 											</div>
+											
+											<div class="reviewList">
+												${review}
+											</div>
 											<p></p>
 										</div>
 									</div>
