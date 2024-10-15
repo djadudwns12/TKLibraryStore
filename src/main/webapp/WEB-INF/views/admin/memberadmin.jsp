@@ -11,6 +11,8 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Google Fonts에서 Gowun Batang 폰트 불러오기 -->
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <title>회원관리페이지</title>
@@ -151,10 +153,10 @@
 
 <style>
 <!--폰트 영역 -->
-*{
-	font-family: "Gowun Batang", serif;
-	font-weight: 400;
-	font-style: normal;
+* {
+   font-family: "Gowun Batang", serif;
+   font-weight: 550;
+   font-style: normal;
 }
 
 
