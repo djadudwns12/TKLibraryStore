@@ -1,8 +1,12 @@
 package com.tn.cart.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tn.cart.dao.CartDAO;
 import com.tn.cart.model.dto.CartDTO;
@@ -90,6 +94,40 @@ public class CartServiceImpl implements CartService {
 		return CartCnt;
 	}
 
+	// ============================== (이아림 start) =====================================
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
+	public String findBookByBookNo(int bookNo, String userId, int qty) throws Exception {
+		
+		String result = "";
+		
+		// 1. 카트에 해당 책이 있는지 
+		int count = cDao.isExistInCart(bookNo, userId);
+		System.out.println(count + ": 카트에 담은 이 책의 수");
+		// 2. 반환되는 값이 0보다 클 때 update
+		if(count > 0) {
+			if(cDao.updateCart(userId, bookNo, qty) > 0) {
+				result = "updateTrue";
+			}else {
+				result = "false";
+			}
+		// 3. 반환되는 값 =0 이면 insert
+		}else if(count == 0) {
+			if(cDao.insertCart(userId, bookNo, qty) > 0) {
+				result = "insertTrue";
+			}else {
+				result = "false";
+			}
+		}
+		return result;
+	}
+
+
 	
+	
+	
+	
+
+	// ================================ (이아림 end) ======================================
 
 }

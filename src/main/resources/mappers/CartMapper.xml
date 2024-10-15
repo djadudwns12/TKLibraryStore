@@ -51,4 +51,25 @@
 	<select id="countCartList" resultType="int">
 		select count(*) from Cart where userId = #{userId}
 	</select>
+	
+	<!-- ======================= 이아림(start) ======================= -->
+	
+	<!-- 카트에 담으려는 책이 이미 있다면, 이를 가져오는 쿼리문 -->
+	<select id="isExistInCart" resultType="int" >
+		SELECT count(*) 
+		from Cart 
+		where userId = #{userId} and bookNo = #{bookNo}
+	</select>
+	
+	<!-- 카트에 담으려는 책이 있을 때 카트를 업데이트하는 쿼리문 -->
+	<update id="updateCart">
+		update Cart set qty = qty + #{qty} where userId = #{userId} and bookNo=#{bookNo}
+	</update>
+	
+	<!-- 새 상품을 장바구니에 담는 쿼리문 -->
+	<insert id="insertCart">
+		INSERT into Cart (bookNo, qty, userId) Values (#{bookNo}, #{qty}, #{userId})
+	</insert>
+	
+	<!-- ========================= 이아림(end) ========================= -->
 </mapper>
