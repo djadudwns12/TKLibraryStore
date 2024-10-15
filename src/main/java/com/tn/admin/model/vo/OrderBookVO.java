@@ -1,7 +1,5 @@
 package com.tn.admin.model.vo;
 
-import java.sql.Date;
-import java.sql.Timestamp;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,7 +18,7 @@ import lombok.ToString;
 public class OrderBookVO {
 	private String orderNo;
 	private String bookNo;
-	private int Qty;
+	private int qty;
 	private String thumbNail;
 	
 }

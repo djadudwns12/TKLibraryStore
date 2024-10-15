@@ -4,11 +4,19 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<link
+   href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap"
+   rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <title>회원 가입 폼</title>
 <style>
+* {
+   font-family: "Gowun Batang", serif;
+   font-weight: 600;
+   font-style: normal;
+}
+
 body {
-    font-family: 'Noto Sans KR', Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 20px;

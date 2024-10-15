@@ -769,6 +769,7 @@ public class AdminController {
 			
 			model.addAttribute("odInfo", odInfo);
 			
+			System.out.println(odInfo.get(0).getOrderBooks());
 		    
 		    return "/admin/orderDeliveryAdmin";
 		}

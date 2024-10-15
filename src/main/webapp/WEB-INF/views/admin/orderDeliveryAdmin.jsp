@@ -18,8 +18,583 @@
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 
+
+<style>
+<!--
+테이블 영역 -->body {
+	color: #666;
+	font: 14px/24px "Open Sans", "HelveticaNeue-Light",
+		"Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial,
+		"Lucida Grande", Sans-Serif;
+}
+
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+	width: 1600px;
+	margin-left: 30px;
+	text-align: center;
+}
+
+th, td {
+	padding: 6px 15px;
+}
+
+th {
+	background: #42444e;
+	color: #fff;
+	text-align: center;
+}
+
+tr:first-child th:first-child {
+	border-top-left-radius: 6px;
+}
+
+tr:first-child th:last-child {
+	border-top-right-radius: 6px;
+}
+
+td {
+	border-right: 1px solid #c6c9cc;
+	border-bottom: 1px solid #c6c9cc;
+	text-align: center;
+}
+
+td:first-child {
+	border-left: 1px solid #c6c9cc;
+}
+
+tr:nth-child(even) td {
+	background: #eaeaed;
+}
+
+tr:last-child td:first-child {
+	border-bottom-left-radius: 6px;
+}
+
+tr:last-child td:last-child {
+	border-bottom-right-radius: 6px;
+}
+
+$
+background-color: #2A2E37 ; $search-bg-color: #242628 ; $icon-color: #00FEDE 
+	 ; $transition: all .5s ease ; * {
+	box-sizing: border-box;
+}
+
+body {
+	background: $background-color;
+}
+
+.search {
+	margin-left: 30px;
+}
+
+.jemok {
+	margin-left: 30px;
+}
+
+/* 모달 스타일 */
+.modal {
+	display: none; /* 기본적으로 숨김 */
+	position: absolute; /* 검색창 아래 고정 */
+	z-index: 1;
+	width: 100%; /* 검색창과 동일한 가로 길이 */
+	
+	overflow-y: auto; /* 스크롤 가능 */
+	height: auto;
+}
+
+/* 모달 내부 콘텐츠 스타일 */
+.modal-content {
+	width: 600px;
+	padding: 20px;
+	border-radius: 10px;
+}
+
+.content-body {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+.recent-searches, .popular-searches {
+	width: 45%; /* 각각 45%의 공간을 차지 */
+}
+
+.divider {
+	width: 1px;
+	background-color: #ccc; /* 세로선 색상 */
+	height: 100%;
+	margin: 0 20px; /* 좌우 여백 */
+}
+
+.recent-searches, .popular-searches {
+	width: 45%; /* 두 영역을 나누어 균형 있게 배치 */
+}
+
+h5 {
+	margin-top: 0;
+}
+
+ul {
+	list-style-type: none;
+	padding: 0;
+}
+
+.modal {
+	display: none; /* 필요에 따라 모달을 숨기거나 보여줄 수 있습니다 */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	margin-top: 10px;
+}
+
+.close {
+	cursor: pointer;
+	font-size: 20px;
+}
+
+/* 최근 검색어 */
+a:link {
+	color: 5C636A;
+	text-decoration: inherit;
+}
+
+a:hover {
+	color: 5C636A;
+	text-decoration: inherit;
+}
+
+a:visited {
+	color: #5C636A;
+	text-decoration: none;
+}
+
+.rcContent-top {
+	display: flex;
+	justify-content: space-between; /* 두 요소 사이에 공간을 분배 */
+	align-items: center; /* 세로 방향에서 가운데 정렬 */
+	margin-bottom: 20px;
+}
+
+.rcContent-top h6 {
+	margin: 0; /* 기본 마진 제거 */
+}
+
+.restockLI{
+	margin-bottom:10px;
+	display:flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+
+
+
+
+/* book-info-container를 기본적으로 숨기기 */
+.book-info-container {
+  display: none; /* 기본적으로 보이지 않게 설정 */
+  position: absolute; /* 테이블 크기에 영향을 주지 않도록 절대 위치 설정 */
+  background-color: white; /* 배경을 하얗게 설정 */
+  border: 1px solid #ddd; /* 테두리 추가 */
+  padding: 10px; /* 내부 여백 추가 */
+  z-index: 10; /* 다른 요소들보다 위에 나타나도록 설정 */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 추가로 구분 강조 */
+  margin-left: 140px;
+}
+
+/* td에 마우스를 올렸을 때 book-info-container 보이기 */
+td:hover .book-info-container {
+  display: block; /* 마우스를 올리면 보이도록 설정 */
+}
+
+/* 책 정보를 테이블처럼 정리 */
+.book-info {
+  display: flex; /* 책 이미지와 정보를 수평으로 나란히 정렬 */
+  align-items: center; /* 수직 정렬 중앙에 맞춤 */
+  border-bottom: 1px solid #ddd; /* 각 책 정보 항목 사이에 구분선 추가 */
+  padding: 5px 0; /* 각 항목에 여백 추가 */
+}
+
+.book-thumbnail img {
+  width: 50px; /* 썸네일 이미지 크기 설정 */
+  height: auto;
+  margin-right: 10px; /* 이미지와 책 정보 사이에 간격 추가 */
+}
+
+.book-details {
+  display: flex;
+  flex-direction: column; /* 책 번호와 수량을 세로로 나열 */
+}
+
+
+
+
+
+
+
+</style>
+</head>
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+	<!--begin::App Wrapper-->
+
+	<div class="app-wrapper">
+		<!--begin::Header-->
+		<div class="sideBar">
+			<jsp:include page="sideBar.jsp" />
+		</div>
+		<div class="header">
+			<jsp:include page="header.jsp" />
+
+			<div class="content">
+				<h1 class="jemok">ProductList</h1>
+
+
+				<!-- The form -->
+				<form class="search"
+					style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: center;"
+					action="/admin/productAdmin" method="post">
+
+					<div>
+						<select class="searchType" name="searchType" id="searchType"
+							style="text-align: center">
+							<option value="-1">검색 조건</option>
+							<option value="title">제목</option>
+							<option value="author">작가</option>
+							<option value="introduction">내용</option>
+							<option value="genre">장르</option>
+							<option value="publisher">출판사</option>
+						</select>
+					</div>
+					<section>
+
+						<div class="searchBar" style="margin-right: 20px;">
+							<input type="text" class="searchWord" name="searchWord"
+								id="searchWord" placeholder="검색어를 입력하세요." autocomplete="off">
+							<div class="searchIcon">
+								<i class="fas fa-search"></i>
+							</div>
+							<div class="keyBoard">
+								<i class="fas fa-keyboard"></i>
+							</div>
+
+
+						</div>
+						<input type="hidden" name="pageNo" value="${param.pageNo}" /> <input
+							type="hidden" name="pagingSize" value="${param.pagingSize}" />
+					</section>
+					<button type="submit" class="btn btn-outline-dark btn"
+						onclick="return isValid()">검색</button>
+				</form>
+				<div style="display: flex; margin-left: 50px; width: 200px;">
+					<button type="button" class="btn btn-outline-dark btn"
+						onclick="location.href='/admin/registProduct';">Add
+						Product</button>
+				</div>
+
+				<div
+					style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: right; margin-bottom: 50px;">
+
+					<div class="boardC">
+						<select class="form-select sortByWhat" id="sortByWhat"
+							style="width: 150px">
+							<option value="default">기본 정렬</option>
+							<option value="salePrice">가격 높은순</option>
+							<option value="inven">재고 많은순</option>
+							<option value="zzim">찜 많은순</option>
+							<option value="reviewCnt">리뷰 많은순</option>
+							<option value="pubDate">최신순</option>
+						</select>
+					</div>
+
+					<div class="boardControll">
+						<select class="form-select pagingSize" id="pagingSize"
+							style="width: 150px">
+							<option value="0">정렬 기준</option>
+							<option value="10">10개씩 보기</option>
+							<option value="20">20개씩 보기</option>
+							<option value="30">30개씩 보기</option>
+							<option value="40">40개씩 보기</option>
+						</select>
+					</div>
+				</div>
+
+
+
+
+
+
+				<div style="overflow-x: auto;">
+					<table>
+						<thead>
+							<tr>
+								<th><input type="checkbox" onclick="selectAll(this)">
+									selectAll</th>
+								<th>주문자</th>
+								<th>주문일자</th>
+								<th>주문상태</th>
+								<th>배송지</th>
+								<th>제품정보</th>
+								<th>사용포인트</th>
+								<th>결제금액</th>
+								
+					
+								<th><button type="button" class="btn btn-danger btn"
+										id="delBtn" style="width: 90px; font-size: small;"
+										onclick="deleteProduct();">0개 삭제</button></th>
+								<th><button type="button" class="btn btn-success btn"
+										id="soldOutBtn" style="width: 90px; font-size: small;"
+										onclick="soldOutProduct();">0개 품절</button></th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="order" items="${odInfo}">
+								<tr>
+									<td><input type="checkbox" name="proCheck"
+										value="${order.orderNo}" onclick="updateButton()"></td>
+									<td>${order.orderWho}</td>
+									<td>${order.orderDate}</td>
+									<td class="orderStatus" data-order-no="${order.orderNo}">${order.orderStatus}</td>
+									<td>${order.orderAddress}</td>
+									<td>${order.orderName}
+									  <div class="book-info-container">
+									    <c:forEach var="book" items="${order.orderBooks}">
+									      <div class="book-info">
+									        <div class="book-thumbnail">
+									          <img src="${book.thumbNail}" alt="Book Thumbnail">
+									        </div>
+									        <div class="book-details">
+									          <span>책 번호: ${book.bookNo}</span><br>
+									          <span>수량: ${book.qty}</span>
+									        </div>
+									      </div>
+									    </c:forEach>
+									  </div>
+									</td>
+
+
+
+									<td>${order.usePoint}</td>
+									<td>${order.totalPay}</td>
+								
+									<td colspan="3"><button class="btn btn-secondary btn"
+											style="width: 70px"
+											onclick="location.href='/admin/modifyProduct?bookNo=${product.bookNo}'">수정</button></td>
+								</tr>
+							</c:forEach>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="pagination justify-content-center" style="margin: 20px 0">
+
+				<ul class="pagination">
+
+					<c:if test="${param.pageNo > 1 }">
+						<li class="page-item"><a class="page-link"
+							href="/admin/productAdmin?pageNo=1
+						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">
+								<< </a></li>
+						<li class="page-item"><a class="page-link"
+							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo-1}
+						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
+					</c:if>
+
+					<c:forEach var="i" begin="${pagingInfo.startPageNoCurBlock }"
+						end="${pagingInfo.endPageNoCurBlock }">
+						<c:choose>
+							<c:when test="${param.pageNo == i }">
+								<li class="page-item active" id="${i}"><a class="page-link"
+									href="/admin/productAdmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item" id="${i}"><a class="page-link"
+									href="/admin/productAdmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+
+					<c:if test="${pagingInfo.pageNo < pagingInfo.totalPageCnt}">
+						<li class="page-item"><a class="page-link"
+							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo+1}
+						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Next</a></li>
+
+						<li class="page-item"><a class="page-link"
+							href="/admin/productAdmin?pageNo=${pagingInfo.totalPageCnt}
+						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">
+								>> </a></li>
+					</c:if>
+				</ul>
+			</div>
+
+			<!-- 모달 영역 시작 -->
+			<div id="recentSearchModal" class="modal">
+				<div class="modal-content">
+					<div class="content-top">
+						<span class="close" style="margin-left: 500px; height: 10px;">&times;</span>
+					</div>
+					<div class="content-body">
+						<div class="recent-searches">
+							<h5>최근 검색 기록</h5>
+							<ul id="recentSearchesList">
+								<!-- 검색 기록이 동적으로 삽입될 곳 -->
+							</ul>
+						</div>
+						<div class="divider"></div>
+						<!-- 세로선 -->
+						<div class="popular-searches">
+							<h5>인기 검색어</h5>
+							<ul id="popularSearchesList">
+								<!-- 인기 검색어가 동적으로 삽입될 곳 -->
+
+							</ul>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+
+			<div id="recentSearchModal" class="modal">
+				<div class="modal-content">
+					<div class="rccontent-top">
+						<div>
+							<h5>최근 검색 기록</h5>
+						</div>
+						<div>
+							<h5>인기 검색어</h5>
+						</div>
+						<div>
+							<span class="close" style="margin-left: 500px; height: 10px;">&times;</span>
+						</div>
+
+
+
+
+					</div>
+					<div class="content-body">
+						<!-- 최근 검색 기록 영역 -->
+						<div class="recent-searches">
+
+							<ul id="recentSearchesList">
+								<!-- 검색 기록이 동적으로 삽입될 곳 -->
+							</ul>
+						</div>
+
+						<!-- 세로선 -->
+						<div class="divider"></div>
+
+						<!-- 인기 검색어 영역 -->
+						<div class="popular-searches">
+
+							<ul id="popularSearchesList">
+								<!-- 인기 검색어가 동적으로 삽입될 곳 -->
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="recommendSearchModal" class="modal">
+				<div class="modal-content">
+					<div class="rcContent-top">
+
+						<div>
+							<h6>추천 검색어</h6>
+						</div>
+						<div>
+							<span class="close" style="height: 10px;">&times;</span>
+						</div>
+					</div>
+					<div class="content-body">
+						<div class="recommend-searches">
+
+							<ul id="searchRecommend">
+								<!-- 추천 검색어가 동적으로 삽입될 곳 -->
+							</ul>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+
+			<div class="modal" id="restockModal" style="height: 800px;">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+
+						<!-- Modal Header -->
+						<div class="modal-header">
+							<h4 class="modal-title">입고 신청</h4>
+							<button type="button" class="btn-close close" data-bs-dismiss="modal"></button>
+						</div>
+
+						<!-- Modal body -->
+						<div class="modal-body" >
+							<div style="display:flex;">
+								<input type="text" style="width:330px; margin-right: 20px;"placeholder="검색할 책을 입력하세요." id="searchValue" />
+								<button  class="btn btn-outline-dark btn" id="searchBtn" >검색</button>
+							</div>
+							<ul id="restockList" >
+								<!-- 추천 검색어가 동적으로 삽입될 곳 -->
+							</ul>
+							
+						</div>
+
+						<!-- Modal footer -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger close"
+								data-bs-dismiss="modal">Close</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+
+
+		</div>
+	</div>
+
 <script>
+	function cancel(element, orderNo) {
+		$(element).text("취소완료");
+		$(element).css({
+            'color': 'blue',      // 글자 색상 빨간색으로 설정
+            'font-weight': 'bold', // 글자를 굵게 설정
+            'cursor' : 'default'
+        });
+		
+	}
 	$(function() {
+		console.log($('.orderStatus').text());
+		$('.orderStatus').each(function() {
+	        // 각 .orderStatus 요소에 대해 실행
+	        var orderStatusText = $(this).text().trim();
+
+	        if (orderStatusText == "취소요청") {
+	            // 글자 색상 및 굵기 설정
+	            $(this).css({
+	                'color': 'red',      // 글자 색상 빨간색으로 설정
+	                'font-weight': 'bold', // 글자를 굵게 설정
+	                'cursor' : 'pointer'
+	            });
+
+	            let orderNo = $(this).data('order-no');
+	            // onclick 이벤트 추가 (prop에서 콜론 추가)
+	            $(this).attr("onclick", "cancel(this,'" + orderNo + "')");
+	            
+	        }
+	    });
+		
+		
 
 		isSelect();
 		$('.pagingSize')
@@ -437,488 +1012,6 @@
 		
 		
 </script>
-
-<style>
-<!--
-테이블 영역 -->body {
-	color: #666;
-	font: 14px/24px "Open Sans", "HelveticaNeue-Light",
-		"Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial,
-		"Lucida Grande", Sans-Serif;
-}
-
-table {
-	border-collapse: separate;
-	border-spacing: 0;
-	width: 1600px;
-	margin-left: 30px;
-	text-align: center;
-}
-
-th, td {
-	padding: 6px 15px;
-}
-
-th {
-	background: #42444e;
-	color: #fff;
-	text-align: center;
-}
-
-tr:first-child th:first-child {
-	border-top-left-radius: 6px;
-}
-
-tr:first-child th:last-child {
-	border-top-right-radius: 6px;
-}
-
-td {
-	border-right: 1px solid #c6c9cc;
-	border-bottom: 1px solid #c6c9cc;
-	text-align: center;
-}
-
-td:first-child {
-	border-left: 1px solid #c6c9cc;
-}
-
-tr:nth-child(even) td {
-	background: #eaeaed;
-}
-
-tr:last-child td:first-child {
-	border-bottom-left-radius: 6px;
-}
-
-tr:last-child td:last-child {
-	border-bottom-right-radius: 6px;
-}
-
-$
-background-color: #2A2E37 ; $search-bg-color: #242628 ; $icon-color: #00FEDE 
-	 ; $transition: all .5s ease ; * {
-	box-sizing: border-box;
-}
-
-body {
-	background: $background-color;
-}
-
-.search {
-	margin-left: 30px;
-}
-
-.jemok {
-	margin-left: 30px;
-}
-
-/* 모달 스타일 */
-.modal {
-	display: none; /* 기본적으로 숨김 */
-	position: absolute; /* 검색창 아래 고정 */
-	z-index: 1;
-	width: 100%; /* 검색창과 동일한 가로 길이 */
-	
-	overflow-y: auto; /* 스크롤 가능 */
-	height: auto;
-}
-
-/* 모달 내부 콘텐츠 스타일 */
-.modal-content {
-	width: 600px;
-	padding: 20px;
-	border-radius: 10px;
-}
-
-.content-body {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
-}
-
-.recent-searches, .popular-searches {
-	width: 45%; /* 각각 45%의 공간을 차지 */
-}
-
-.divider {
-	width: 1px;
-	background-color: #ccc; /* 세로선 색상 */
-	height: 100%;
-	margin: 0 20px; /* 좌우 여백 */
-}
-
-.recent-searches, .popular-searches {
-	width: 45%; /* 두 영역을 나누어 균형 있게 배치 */
-}
-
-h5 {
-	margin-top: 0;
-}
-
-ul {
-	list-style-type: none;
-	padding: 0;
-}
-
-.modal {
-	display: none; /* 필요에 따라 모달을 숨기거나 보여줄 수 있습니다 */
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	justify-content: center;
-	align-items: center;
-	margin-top: 10px;
-}
-
-.close {
-	cursor: pointer;
-	font-size: 20px;
-}
-
-/* 최근 검색어 */
-a:link {
-	color: 5C636A;
-	text-decoration: inherit;
-}
-
-a:hover {
-	color: 5C636A;
-	text-decoration: inherit;
-}
-
-a:visited {
-	color: #5C636A;
-	text-decoration: none;
-}
-
-.rcContent-top {
-	display: flex;
-	justify-content: space-between; /* 두 요소 사이에 공간을 분배 */
-	align-items: center; /* 세로 방향에서 가운데 정렬 */
-	margin-bottom: 20px;
-}
-
-.rcContent-top h6 {
-	margin: 0; /* 기본 마진 제거 */
-}
-
-.restockLI{
-	margin-bottom:10px;
-	display:flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-</style>
-</head>
-<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
-	<!--begin::App Wrapper-->
-
-	<div class="app-wrapper">
-		<!--begin::Header-->
-		<div class="sideBar">
-			<jsp:include page="sideBar.jsp" />
-		</div>
-		<div class="header">
-			<jsp:include page="header.jsp" />
-
-			<div class="content">
-				<h1 class="jemok">ProductList</h1>
-
-
-				<!-- The form -->
-				<form class="search"
-					style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: center;"
-					action="/admin/productAdmin" method="post">
-
-					<div>
-						<select class="searchType" name="searchType" id="searchType"
-							style="text-align: center">
-							<option value="-1">검색 조건</option>
-							<option value="title">제목</option>
-							<option value="author">작가</option>
-							<option value="introduction">내용</option>
-							<option value="genre">장르</option>
-							<option value="publisher">출판사</option>
-						</select>
-					</div>
-					<section>
-
-						<div class="searchBar" style="margin-right: 20px;">
-							<input type="text" class="searchWord" name="searchWord"
-								id="searchWord" placeholder="검색어를 입력하세요." autocomplete="off">
-							<div class="searchIcon">
-								<i class="fas fa-search"></i>
-							</div>
-							<div class="keyBoard">
-								<i class="fas fa-keyboard"></i>
-							</div>
-
-
-						</div>
-						<input type="hidden" name="pageNo" value="${param.pageNo}" /> <input
-							type="hidden" name="pagingSize" value="${param.pagingSize}" />
-					</section>
-					<button type="submit" class="btn btn-outline-dark btn"
-						onclick="return isValid()">검색</button>
-				</form>
-				<div style="display: flex; margin-left: 50px; width: 200px;">
-					<button type="button" class="btn btn-outline-dark btn"
-						onclick="location.href='/admin/registProduct';">Add
-						Product</button>
-				</div>
-
-				<div
-					style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: right; margin-bottom: 50px;">
-
-					<div class="boardC">
-						<select class="form-select sortByWhat" id="sortByWhat"
-							style="width: 150px">
-							<option value="default">기본 정렬</option>
-							<option value="salePrice">가격 높은순</option>
-							<option value="inven">재고 많은순</option>
-							<option value="zzim">찜 많은순</option>
-							<option value="reviewCnt">리뷰 많은순</option>
-							<option value="pubDate">최신순</option>
-						</select>
-					</div>
-
-					<div class="boardControll">
-						<select class="form-select pagingSize" id="pagingSize"
-							style="width: 150px">
-							<option value="0">정렬 기준</option>
-							<option value="10">10개씩 보기</option>
-							<option value="20">20개씩 보기</option>
-							<option value="30">30개씩 보기</option>
-							<option value="40">40개씩 보기</option>
-						</select>
-					</div>
-				</div>
-
-
-
-
-
-
-				<div style="overflow-x: auto;">
-					<table>
-						<thead>
-							<tr>
-								<th><input type="checkbox" onclick="selectAll(this)">
-									selectAll</th>
-								<th>주문자</th>
-								<th>주문일자</th>
-								<th>주문상태</th>
-								<th>배송지</th>
-								<th>제품정보</th>
-								<th>사용포인트</th>
-								<th>결제금액</th>
-								
-					
-								<th><button type="button" class="btn btn-danger btn"
-										id="delBtn" style="width: 90px; font-size: small;"
-										onclick="deleteProduct();">0개 삭제</button></th>
-								<th><button type="button" class="btn btn-success btn"
-										id="soldOutBtn" style="width: 90px; font-size: small;"
-										onclick="soldOutProduct();">0개 품절</button></th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="order" items="${odInfo}">
-								<tr>
-									<td><input type="checkbox" name="proCheck"
-										value="${order.orderNo}" onclick="updateButton()"></td>
-									<td>${order.orderWho}</td>
-									<td>${order.orderDate}</td>
-									<td>${order.orderStatus}</td>
-									<td>${order.orderAddress}</td>
-									<td>${order.orderName}</td>
-									<td>${order.usePoint}</td>
-									<td>${order.totalPay}</td>
-								
-									<td colspan="3"><button class="btn btn-secondary btn"
-											style="width: 70px"
-											onclick="location.href='/admin/modifyProduct?bookNo=${product.bookNo}'">수정</button></td>
-								</tr>
-							</c:forEach>
-
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="pagination justify-content-center" style="margin: 20px 0">
-
-				<ul class="pagination">
-
-					<c:if test="${param.pageNo > 1 }">
-						<li class="page-item"><a class="page-link"
-							href="/admin/productAdmin?pageNo=1
-						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">
-								<< </a></li>
-						<li class="page-item"><a class="page-link"
-							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo-1}
-						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
-					</c:if>
-
-					<c:forEach var="i" begin="${pagingInfo.startPageNoCurBlock }"
-						end="${pagingInfo.endPageNoCurBlock }">
-						<c:choose>
-							<c:when test="${param.pageNo == i }">
-								<li class="page-item active" id="${i}"><a class="page-link"
-									href="/admin/productAdmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
-							</c:when>
-							<c:otherwise>
-								<li class="page-item" id="${i}"><a class="page-link"
-									href="/admin/productAdmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-
-					<c:if test="${pagingInfo.pageNo < pagingInfo.totalPageCnt}">
-						<li class="page-item"><a class="page-link"
-							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo+1}
-						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Next</a></li>
-
-						<li class="page-item"><a class="page-link"
-							href="/admin/productAdmin?pageNo=${pagingInfo.totalPageCnt}
-						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">
-								>> </a></li>
-					</c:if>
-				</ul>
-			</div>
-
-			<!-- 모달 영역 시작 -->
-			<div id="recentSearchModal" class="modal">
-				<div class="modal-content">
-					<div class="content-top">
-						<span class="close" style="margin-left: 500px; height: 10px;">&times;</span>
-					</div>
-					<div class="content-body">
-						<div class="recent-searches">
-							<h5>최근 검색 기록</h5>
-							<ul id="recentSearchesList">
-								<!-- 검색 기록이 동적으로 삽입될 곳 -->
-							</ul>
-						</div>
-						<div class="divider"></div>
-						<!-- 세로선 -->
-						<div class="popular-searches">
-							<h5>인기 검색어</h5>
-							<ul id="popularSearchesList">
-								<!-- 인기 검색어가 동적으로 삽입될 곳 -->
-
-							</ul>
-						</div>
-
-					</div>
-
-				</div>
-			</div>
-
-			<div id="recentSearchModal" class="modal">
-				<div class="modal-content">
-					<div class="rccontent-top">
-						<div>
-							<h5>최근 검색 기록</h5>
-						</div>
-						<div>
-							<h5>인기 검색어</h5>
-						</div>
-						<div>
-							<span class="close" style="margin-left: 500px; height: 10px;">&times;</span>
-						</div>
-
-
-
-
-					</div>
-					<div class="content-body">
-						<!-- 최근 검색 기록 영역 -->
-						<div class="recent-searches">
-
-							<ul id="recentSearchesList">
-								<!-- 검색 기록이 동적으로 삽입될 곳 -->
-							</ul>
-						</div>
-
-						<!-- 세로선 -->
-						<div class="divider"></div>
-
-						<!-- 인기 검색어 영역 -->
-						<div class="popular-searches">
-
-							<ul id="popularSearchesList">
-								<!-- 인기 검색어가 동적으로 삽입될 곳 -->
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div id="recommendSearchModal" class="modal">
-				<div class="modal-content">
-					<div class="rcContent-top">
-
-						<div>
-							<h6>추천 검색어</h6>
-						</div>
-						<div>
-							<span class="close" style="height: 10px;">&times;</span>
-						</div>
-					</div>
-					<div class="content-body">
-						<div class="recommend-searches">
-
-							<ul id="searchRecommend">
-								<!-- 추천 검색어가 동적으로 삽입될 곳 -->
-							</ul>
-						</div>
-
-					</div>
-
-				</div>
-			</div>
-
-			<div class="modal" id="restockModal" style="height: 800px;">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-
-						<!-- Modal Header -->
-						<div class="modal-header">
-							<h4 class="modal-title">입고 신청</h4>
-							<button type="button" class="btn-close close" data-bs-dismiss="modal"></button>
-						</div>
-
-						<!-- Modal body -->
-						<div class="modal-body" >
-							<div style="display:flex;">
-								<input type="text" style="width:330px; margin-right: 20px;"placeholder="검색할 책을 입력하세요." id="searchValue" />
-								<button  class="btn btn-outline-dark btn" id="searchBtn" >검색</button>
-							</div>
-							<ul id="restockList" >
-								<!-- 추천 검색어가 동적으로 삽입될 곳 -->
-							</ul>
-							
-						</div>
-
-						<!-- Modal footer -->
-						<div class="modal-footer">
-							<button type="button" class="btn btn-danger close"
-								data-bs-dismiss="modal">Close</button>
-						</div>
-
-					</div>
-				</div>
-			</div>
-
-
-
-		</div>
-	</div>
-
 
 </body>
 

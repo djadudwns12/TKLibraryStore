@@ -8,14 +8,22 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<link
+   href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap"
+   rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 <title>주문/결제 페이지</title>
 <style>
+* {
+   font-family: "Gowun Batang", serif;
+   font-weight: 600;
+   font-style: normal;
+}
+
 body {
-	font-family: 'Arial', sans-serif;
 	background-color: #f4f4f4;
 	margin: 0;
 	padding: 20px;

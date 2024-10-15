@@ -15,25 +15,36 @@
 	    <result property="orderAddress" column="orderAddress"/>
 	    <result property="usePoint" column="usePoint"/>
 	    <result property="totalPay" column="totalPay"/>
+	    <result property="orderName" column="orderName"/>
 	    
 	    <!-- 1대 다 관계 매핑: OrderBook 리스트 -->
 	    <collection property="orderBooks" ofType="com.tn.admin.model.vo.OrderBookVO">
-	        <id property="orderNo" column="orderNo"/>
+	        <!-- 중복된 orderNo에 대해 여러 책이 존재하므로 orderNo 대신 bookNo로 묶지 않음 -->
+	        <result property="orderNo" column="orderNo"/>
 	        <result property="bookNo" column="bookNo"/>
 	        <result property="qty" column="qty"/>
 	        <result property="thumbNail" column="thumbNail"/>
 	    </collection>
 	</resultMap>
+
+
 	
 	<select id="selectOrderDeliveryInfo" resultMap="orderResultMap">
 	    SELECT o.orderDate, o.orderStatus, o.orderWho, o.orderAddress, o.usePoint, o.totalPay, 
-	           o.orderNo, b.bookNo, b.qty, l.thumbNail 
+	           o.orderNo, o.orderName, b.bookNo, b.qty, l.thumbNail 
 	    FROM `Order` o
 	    INNER JOIN OrderBook b ON o.orderNo = b.orderNo
 	    INNER JOIN BookList l ON b.bookNo = l.bookNo
+	    ORDER BY o.orderDate DESC
 	</select>
 
 	
+<!-- 	 	SELECT o.orderDate, o.orderStatus, o.orderWho, o.orderAddress, o.usePoint, o.totalPay, 
+	           o.orderNo, b.bookNo, b.qty, l.thumbNail 
+	    FROM `Order` o
+	    INNER JOIN OrderBook b ON o.orderNo = b.orderNo
+	    INNER JOIN BookList l ON b.bookNo = l.bookNo WHERE o.orderWho = 'geunyeon'
+	    ORDER BY o.orderDate DESC -->
 	
 <!-- 박근영 -->
 
