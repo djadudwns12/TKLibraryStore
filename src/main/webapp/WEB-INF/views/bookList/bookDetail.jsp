@@ -35,7 +35,7 @@
 		setRecenyBook();
 
 		let userId = '${sessionScope.loginMember.userId}';
-		let bookNo = '${product.bookNo}';
+		let bookNo = '${param.bookNo}';
 		
 		let zzimed = false;
 		//  ------------------------찜기능
@@ -198,7 +198,7 @@
 		            bookNo: bookNo
 		        },
 		        success: function(response) {
-		        	if(reponse.success) {
+		        	if(response.success) {
 		        		alert('장바구니에 상품이 담겼습니다. 장바구니로 이동하시겠습니까?');
 		        		location.href='/cart/cartPage?userId="${userId}"';
 		        	} else {
