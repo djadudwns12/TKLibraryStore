@@ -12,6 +12,11 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Ogani | Template</title>
 
+<!-- Google Fonts에서 Gowun Batang 폰트 불러오기 -->
+<link
+   href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap"
+   rel="stylesheet">
+
 <!-- Google Font -->
 <script type="text/javascript" src="/resources/js/category.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
@@ -75,6 +80,12 @@ $(function(){
 div#category_young {
 	display: flex;
 	justify-content: flex-start;
+}
+
+* {
+   font-family: "Gowun Batang", serif;
+   font-weight: 550;
+   font-style: normal;
 }
 
 </style>
