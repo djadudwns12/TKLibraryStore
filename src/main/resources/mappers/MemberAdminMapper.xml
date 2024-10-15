@@ -6,7 +6,7 @@
   	
 
    	<select id="getMember" resultType="com.tn.member.model.vo.MemberVO">
-  		select * from Member order by userId limit #{startRowIndex}, #{viewPostCntPerPage}
+  		select * from Member where isDelete='N' order by userId limit #{startRowIndex}, #{viewPostCntPerPage}
   	</select>
 	
 	<select id="selectTotalCount" resultType="int">
@@ -27,11 +27,12 @@
 				where phoneNum like #{searchWord}
 			</when>
 		</choose>
+		and isDelete='N'
 	</select>
 	
 	<!-- 조건별 정렬 -->
 	<select id="getMemberSorted" resultType="com.tn.member.model.vo.MemberVO">
-		select * from Member 
+		select * from Member where isDelete='N'
 		<choose>
 			<when test="sortBy == 'userId'">
 				order by userId
@@ -60,7 +61,7 @@
 				where phoneNum like #{searchWord}
 			</when>
 		</choose>
-		 limit #{startRowIndex}, #{viewPostCntPerPage}
+		 and isDelete='N' limit #{startRowIndex}, #{viewPostCntPerPage}
 	</select>
 	
 	<!-- 검색어가 있을 때 정렬 조건 적용 -->
@@ -69,7 +70,7 @@
 		select * from Member
 		<choose>
 			<when test="searchType == 'userId'">
-				where userId like #{searchWord}
+				where userId like #{searchWord} and isDelete='N'
 				<choose>
 					<when test="sortBy == 'userId'">
 						order by userId
@@ -83,7 +84,7 @@
 				</choose>
 			</when>
 			<when test="searchType == 'userName'">
-				where userName like #{searchWord}
+				where userName like #{searchWord} and isDelete='N'
 				<choose>
 					<when test="sortBy == 'userId'">
 						order by userId
@@ -97,7 +98,7 @@
 				</choose>
 			</when>
 			<when test="searchType == 'phoneNum'">
-				where phoneNum like #{searchWord}
+				where phoneNum like #{searchWord} and isDelete='N'
 				<choose>
 					<when test="sortBy == 'userId'">
 						order by userId
@@ -115,12 +116,12 @@
 	</select>
 	
 	<select id="getMemberInfo" resultType="com.tn.member.model.vo.MemberVO">
-		select * from Member where userId=#{userId}
+		select * from Member where userId=#{userId} 
 	</select>
 	
 	<select id="getRecentOrder" resultType="com.tn.order.model.vo.OrderVO">
 		select * from `Order` 
-		where orderWho=#{userId}
+		where orderWho=#{userId} 
 	</select>
 	
 <!--	 더미 멤버 만들기.. 
