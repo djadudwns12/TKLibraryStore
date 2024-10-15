@@ -16,11 +16,16 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tn.order.dao.OrderDAO;
 import com.tn.order.model.dto.PaymentInfoDTO;
 import com.tn.order.model.vo.AddressVO;
+import com.tn.order.model.vo.OrderDetailVO;
 import com.tn.order.model.vo.OrderInfo;
+import com.tn.order.model.vo.OrderVO;
 import com.tn.order.model.vo.PaymentInfoVO;
 import com.tn.util.PropertiesTask;
 
@@ -91,9 +96,48 @@ public class OrderServiceImpl implements OrderService {
 
 // -----------------------------------------엄영준-------------------------------------------------
   @Override
-	public List<BooklistVO> getOrderList(MemberDTO loginMember)throws Exception {
+	public List<BooklistVO> getRecentOrderList(MemberDTO loginMember)throws Exception {
 		
-		return oDao.selectOrderList(loginMember);
+		return oDao.selectRecentOrderList(loginMember);
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<OrderVO> getOrderList(MemberDTO loginMember) throws Exception {
+		// TODO Auto-generated method stub
+		return oDao.selectMyPageOrderList(loginMember);
+	}
+
+	@Override
+	public List<OrderDetailVO> getDetailOrder(String orderNo) throws Exception {
+		// TODO Auto-generated method stub
+		return oDao.selectDetailOrder(orderNo);
+	}
+
+	@Override
+	@Transactional(	propagation = Propagation.REQUIRED, // 전파 속성 : 메서드실행시 각각 OPEN / CLOSE 시키는 것이 아닌 한번만 OPEN/CLOSE 실행 REQUIRED(디폴트 값)- 가장 많이 사용
+					rollbackFor = Exception.class, // 예외가 발생하면 rollback 시키겠다.
+					isolation = Isolation.DEFAULT) // 작업중일때 한번에 한작업만 실행 (커밋을 하기 전에는 다른 작업 X) DEFAULT: 주로  사용
+	public boolean orderCancel(List<String> ckArr)  throws Exception {
+		
+		boolean result = false;
+		// 주문취소 처리
+		int delYN = oDao.updateOrderCancel(ckArr);
+		// 체크 한만큼 수정되었을경우 
+		if(delYN == ckArr.size()) {
+			System.out.println(delYN);
+			result = true;
+		}
+		
+		
+		
+		
+		return result;
+	}
+	
+	
+	
+  
+  
 // -----------------------------------------엄영준-------------------------------------------------
 }

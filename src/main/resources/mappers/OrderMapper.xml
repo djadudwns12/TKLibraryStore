@@ -42,7 +42,7 @@
 <!-- 박근영 -->
 <!-- 엄영준 -->
     <!-- 회원이 주문한 목록 최근꺼 3개를 가지고 오는 쿼리문 -->
-	<select id="selectOrderList"
+	<select id="selectRecentOrderList"
 		resultType="com.tn.booklist.model.vo.BooklistVO">
 		<!-- select b.* from
 		(select o.orderPk , o.bookNo from mbcac2024.Order o inner Join Member m on
@@ -57,5 +57,24 @@
 		on userOrder.bookNo = b.bookNo order by userOrder.orderPk desc limit
 		0,3;
 	</select>
+	<select id="selectMyPageOrderList" resultType="com.tn.order.model.vo.OrderVO">
+		SELECT * FROM mbcac2024.Order where orderWho = #{userId} and orderStatus = '배송중'
+	</select>
+	<select id="selectDetailOrder" resultType="com.tn.order.model.vo.OrderDetailVO">
+		select ob.orderNo, ob.qty,b.thumbNail,b.title,b.author,b.salePrice
+			from OrderBook ob inner join BookList b
+			on ob.bookNo = b.bookNo
+			where ob.orderNo = #{orderNo}
+	</select>
+	
+	<update id="updateOrderCancel" parameterType="list">
+  			update mbcac2024.Order set orderStatus = '취소요청' where orderNo in 
+  			<foreach collection="list" item="orderNo" open="(" separator="," close=")">
+    			#{orderNo}
+  			</foreach>
+  	</update>
+	
+	
+	
 
 </mapper>

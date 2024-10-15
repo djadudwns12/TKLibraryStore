@@ -157,6 +157,35 @@ public class MemberController {
 //	public void gotoMyPage(Model model,HttpSession sess) {
 //		model.addAttribute("loginMember", (MemberVO)sess.getAttribute("loginMember"));
 //	}
+	@RequestMapping("/OrderStatus")
+	public String OrderStatus(HttpSession sess,Model model) {
+		
+		
+		
+		
+		
+		try {
+			// 회원의 정보 불러오기
+			MemberVO loginMember = (MemberVO) sess.getAttribute("loginMember");
+			// 회원이 주문한 목록을 불러오는 메서드
+			List<OrderVO> orderList =oService.getOrderList(MemberDTO.builder().userId(loginMember.getUserId()).build());
+			
+			System.out.println(orderList.toString());
+			
+			model.addAttribute("orderList", orderList);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		return "/member/OrderStatus";
+	}
+	
+	
 //-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
 
 
@@ -211,7 +240,7 @@ public class MemberController {
 			model.addAttribute("loginMember", (MemberVO) sess.getAttribute("loginMember"));
 			
 			// 회원의 주문목록을 불러오는 메서드
-			List<BooklistVO> list = oService.getOrderList(loginMember);
+			List<BooklistVO> list = oService.getRecentOrderList(loginMember);
 			
 			// 회원의 찜목록을 불러오는 메서드
 			List<BooklistVO> zzimList = pService.getZzimList(loginMember);

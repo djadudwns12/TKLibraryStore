@@ -76,6 +76,7 @@
 			
 			<mapping path="/member/edit"/>
       		<mapping path="/member/mypage" />
+      		<mapping path="/member/OrderStatus" />
       
 			<beans:ref bean="authInterceptor"/>
 		
