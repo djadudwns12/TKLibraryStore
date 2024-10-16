@@ -275,7 +275,7 @@
 		let reviewWriter = validReviewWriter();
 		let bookNo = '${param.bookNo}';
 		let reviewContent = $('#review').val();
-		const reviewScore = $(".fas").length;
+		const reviewScore = $(".rating > .fas").length;
 		
 		localStorage.setItem('reviewContent',reviewContent);
 				
