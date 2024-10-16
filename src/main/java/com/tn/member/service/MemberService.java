@@ -57,6 +57,8 @@ public interface MemberService {
 	// 배송지 추가
 	boolean insertAddress(MyAddressDTO addressDTO) throws Exception;
 
+	boolean removeAddress(int addressId) throws Exception;
+
 
 
 

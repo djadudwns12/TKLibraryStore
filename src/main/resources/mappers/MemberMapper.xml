@@ -102,4 +102,8 @@
 		UPDATE Address SET isDefault = 'Y' WHERE userId = #{userId}
 	</update>
 	
+	<delete id="removeAddress">
+		delete from Address where addressId = #{addressId}
+	</delete>
+	
   </mapper>

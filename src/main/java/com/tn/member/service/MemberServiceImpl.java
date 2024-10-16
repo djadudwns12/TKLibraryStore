@@ -208,4 +208,18 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
+	@Override
+	public boolean removeAddress(int addressId) throws Exception {
+		
+		boolean result = false;
+		
+		if(dao.removeAddress(addressId) == 1) {
+			result = true;
+		} else {
+			result = false;
+		}
+		
+		return result;
+	}
+
 }

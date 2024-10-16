@@ -159,6 +159,21 @@ public class MemberController {
 	    }
 	}
 	
+	@PostMapping(value="/removeAddr", produces = "application/text; charset=UTF-8;")
+	public ResponseEntity<String> removeAddr(@RequestParam("addressId") int addressId) {
+		
+		try {
+			mService.removeAddress(addressId);
+			
+			return ResponseEntity.ok("삭제 완료");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("주소 삭제 실패");
+		}
+	}
+	
 
 // -------------------------------- 김가윤 --------------------------------
 

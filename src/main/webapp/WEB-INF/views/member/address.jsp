@@ -46,6 +46,32 @@ body {
 	$(function() {	
 		// 마이페이메뉴 수정
 		mypageNav();
+		
+		// 삭제 버튼 클릭 시 처리
+        $('#deleteButton').click(function() {
+            // 선택한 addressId를 사용하여 AJAX 요청
+            $.ajax({
+                url: '/member/removeAddr',  // 서버로 보낼 URL
+                type: 'POST',  // POST 요청으로 전송
+                data: { addressId: selectedAddressId },  // 서버로 보낼 데이터 (addressId)
+                success: function(response) {
+                    // 성공 시 모달 닫기
+                    $('#myModal').hide();
+                    
+                    location.reload();
+                    alert('주소가 삭제되었습니다.');
+                },
+                error: function(error) {
+                    // 에러 처리
+                    alert('삭제 중 오류가 발생했습니다.');
+                }
+            });
+        });
+
+        // 모달 닫기 버튼 처리
+        $('.modalCloseBtn').click(function() {
+            $('#myModal').hide();
+        });
 	});
 	
 	// nav
@@ -63,10 +89,36 @@ body {
 		$('#categoryList').html(inputHTML);
 	}
 	
+	// addressId를 저장할 변수
+    var selectedAddressId;
+
+    // 모달을 띄우고 addressId를 저장하는 함수
+    function showRemoveModal(addressId) {
+        selectedAddressId = addressId;  // 선택한 addressId 저장
+        $('#myModal').show();  // 모달을 표시
+    }
+	
 	function editAddress(addressId) {
 		$.ajax({
             type: 'POST', // 요청 방식 (GET, POST 등)
             url: '/member/modifyAddress', // 요청할 컨트롤러의 URL
+            data: { addressId: addressId }, // 전송할 데이터 (JSON 형식)
+            success: function(response) {
+                // 만약 주소 수정 페이지로 바로 이동하고 싶다면
+                window.location.href = '/member/modifyAddress?addressId=' + addressId;
+            },
+            error: function(error) {
+                // 요청 실패 시 처리
+                alert('수정 요청에 실패했습니다.');
+                console.error(error);
+            }
+        });
+	}
+	
+	function removeAddress(addressId) {
+		$.ajax({
+            type: 'POST', // 요청 방식 (GET, POST 등)
+            url: '/member/removeAddr', // 요청할 컨트롤러의 URL
             data: { addressId: addressId }, // 전송할 데이터 (JSON 형식)
             success: function(response) {
                 // 만약 주소 수정 페이지로 바로 이동하고 싶다면
@@ -97,12 +149,12 @@ body {
 			<div class="NAddress">
 				<!-- isDefault가 'N'인 항목을 먼저 출력 -->
 				<c:forEach var="address" items="${address}">
+					<input type="hidden" name="addressId" id="addressId" value="${address.addressId}">
 					<c:if test="${address.isDefault == 'N'}">
-						<div class="AddressName">
-							<strong>${address.address_key}</strong> <span
-								class="badge rounded-pill bg-primary" style="color: white;">기본
-								배송지</span>
+						<div class="AddressName" id="addrName">
+							<strong>${address.address_key}</strong> 
 						</div>
+						<div><span class="badge rounded-pill bg-primary" style="color: white;">일반 배송지</span></div>
 						<div class="detailAddress">
 							<div>${address.receiver_name}/${address.receiver_phone}</div>
 							<div>${address.address}</div>
@@ -112,7 +164,7 @@ body {
 							<div class="badge rounded-pill bg-success" style="color: white;"
 								onclick="editAddress(${address.addressId});">수정</div>
 							<div class="badge rounded-pill bg-danger" style="color: white;"
-								onclick="removeAddress(${address.addressId});">삭제</div>
+								onclick="showRemoveModal(${address.addressId});">삭제</div>
 						</div>
 					</c:if>
 				</c:forEach>
@@ -121,12 +173,12 @@ body {
 			<div class="YAddress">
 				<!-- isDefault가 'Y'인 항목을 그 다음에 출력 -->
 				<c:forEach var="address" items="${address}">
+					<input type="hidden" name="addressId" id="addressId" value="${address.addressId}">
 					<c:if test="${address.isDefault == 'Y'}">
-						<div class="AddressName">
-							<strong>${address.address_key}</strong> <span
-								class="badge rounded-pill bg-secondary" style="color: white;">일반
-								배송지</span>
+						<div class="AddressName" id="addrName">
+							<strong>${address.address_key}</strong> 
 						</div>
+						<div><span class="badge rounded-pill bg-secondary" style="color: white;">일반 배송지</span></div>
 						<div class="detailAddress">
 							<div>${address.receiver_name}/${address.receiver_phone}</div>
 							<div>${address.address}</div>
@@ -136,15 +188,38 @@ body {
 							<div class="badge rounded-pill bg-success" style="color: white;"
 								onclick="editAddress(${address.addressId});">수정</div>
 							<div class="badge rounded-pill bg-danger" style="color: white;"
-								onclick="removeAddress(${address.addressId});">삭제</div>
+								onclick="showRemoveModal(${address.addressId});">삭제</div>
 						</div>
 					</c:if>
 				</c:forEach>
 			</div>
 		</div>
-
-
 	</div>
+	
+	 <!-- The Modal -->
+     <div class="modal" id="myModal" style="display: none;">
+     	<div class="modal-dialog">
+     		<div class="modal-content">
+        
+     			<!-- Modal Header -->
+     			<div class="modal-header">
+     				<h4 class="modal-title">MiniProject</h4>
+     				<button type="button" class="btn-close modalCloseBtn" data-bs-dismiss="modal"></button>
+     			</div>
+        
+     			<!-- Modal body -->
+     			<div class="modal-body"><p>주소를 삭제하시겠습니까?</p></div>
+        
+     			<!-- Modal footer -->
+     			<div class="modal-footer">
+     				<button type="button" id="deleteButton" class="btn btn-info" id="deleteButton">삭제</button>
+    				<button type="button" class="btn btn-danger modalCloseBtn" data-bs-dismiss="modal">취소</button>
+     			</div>
+        
+     		</div>
+     	</div>
+     </div>
+	
 	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

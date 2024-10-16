@@ -60,6 +60,8 @@ public interface MemberDAO {
 	// 추가할 때 isDefault값 N으로 입력하면 나머지 isDefault값을 Y로 update
 	public int updateInsertIsDefault(String userId) throws Exception;
 
+	public int removeAddress(int addressId) throws Exception;
+
 
 
 

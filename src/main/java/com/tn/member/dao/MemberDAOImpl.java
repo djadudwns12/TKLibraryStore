@@ -130,6 +130,12 @@ public class MemberDAOImpl implements MemberDAO  {
 		return sess.update(NS + ".updateInsertIsDefault", userId);
 	}
 
+	@Override
+	public int removeAddress(int addressId) throws Exception {
+		
+		return sess.delete(NS + ".removeAddress", addressId);
+	}
+
 
 	
 	
