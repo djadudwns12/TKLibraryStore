@@ -73,4 +73,8 @@
 	<select id="getAddressList" resultType="com.tn.member.model.vo.MyAddressVO">
 		select * from Address where userId = #{userId}
 	</select>
+	
+	<select id="selectByAddressId" resultType="com.tn.member.model.vo.MyAddressVO">
+		select * from Address where addressId = #{addressId}
+	</select>
   </mapper>
