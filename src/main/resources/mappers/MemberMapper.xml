@@ -6,13 +6,13 @@
 
 	<select id="getMember"
 		resultType="com.tn.member.model.vo.MemberVO">
-		select * from Member;
+		select * from Member where isDelete = 'N';
 	</select>
 	<!-- 로그인 하는 쿼리문 -->
 	<select id="getLoginMember"
 		resultType="com.tn.member.model.vo.MemberVO">
 		select * from Member where userId = #{userId} and userPwd =
-		sha1(md5(#{userPwd}))
+		sha1(md5(#{userPwd})) and isDelete = 'N'
 	</select>
 
 	<!-- 회원정보수정을 위해 회원정보를 얻어오는 쿼리문 -->
