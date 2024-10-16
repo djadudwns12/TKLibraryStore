@@ -51,7 +51,14 @@ public interface MemberDAO {
 	// 주소 수정
 	public int modifyAddress(MyAddressDTO addressDTO) throws Exception;
 
+	// 수정할 때 isDefault값 N으로 입력하면 나머지 isDefault값을 Y로 update
 	public int updateOtherIsDefault(String userId) throws Exception;
+
+	// 배송지 추가
+	public int insertNewAddress(MyAddressDTO addressDTO) throws Exception;
+
+	// 추가할 때 isDefault값 N으로 입력하면 나머지 isDefault값을 Y로 update
+	public int updateInsertIsDefault(String userId) throws Exception;
 
 
 

@@ -181,4 +181,31 @@ public class MemberServiceImpl implements MemberService {
 	    return result > 0;
 	}
 
+	@Override
+	public boolean insertAddress(MyAddressDTO addressDTO) throws Exception {
+		
+		boolean result = false;
+		
+		// keyword와 addressDetail을 결합하여 하나의 주소로 처리
+	    String address = addressDTO.getKeyword() + ", " + addressDTO.getAddressDetail();
+	    // 결합된 주소를 addressDTO에 설정
+	    addressDTO.setAddress(address);
+		
+	    // isDefault가 'N'일 경우 다른 주소의 isDefault를 'Y'로 업데이트
+	    if ("N".equals(addressDTO.getIsDefault())) {
+	        // 이곳에서 userId를 이용하여 다른 주소의 isDefault를 업데이트하는 메서드를 호출
+	        dao.updateInsertIsDefault(addressDTO.getUserId());
+	    }
+	    
+		if(dao.insertNewAddress(addressDTO) == 1) {
+			result = true;
+		} else {
+			result = false;
+		}
+		
+		
+		
+		return result;
+	}
+
 }

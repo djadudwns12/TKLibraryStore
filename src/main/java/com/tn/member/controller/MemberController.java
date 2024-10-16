@@ -94,6 +94,11 @@ public class MemberController {
 		return "/member/address";
 	}
 	
+	@RequestMapping("/insertAddress")
+	public void goInsertAddress() {
+		
+	}
+	
 	@RequestMapping("/modifyAddress")
 	public String modifyAddress(Model model, @RequestParam("addressId") int addressId) {
 		// 수정 페이지에 addressId로 기존 정보 가져오기
@@ -109,9 +114,26 @@ public class MemberController {
 		return "/member/modifyAddress";
 	}
 	
-	@RequestMapping("/insertAddress")
-	public void insertAddress() {
-		
+	@PostMapping(value="/insertNewAddress", produces = "application/text; charset=UTF-8;")
+	public ResponseEntity<String> insertAddress(@RequestBody MyAddressDTO addressDTO, HttpSession session) {
+		// 세션에서 로그인된 사용자의 정보 가져오기
+	    MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
+	    System.out.println("배송지 목록을 수정하려는 유저의 아이디 : " + loginMember.getUserId());
+	    
+	    // addressDTO에 userId 설정
+	    addressDTO.setUserId(loginMember.getUserId());
+	    
+	    try {
+	        mService.insertAddress(addressDTO);
+
+	        System.out.println("추가할 주소 내용 : " + addressDTO.toString());
+	        return ResponseEntity.ok("추가 완료.");
+	       
+	    } catch (Exception e) {
+	        e.printStackTrace(); // 예외 로그 출력
+	        // 예외 발생 시 500 서버 오류 응답
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("추가 실패");
+	    }
 	}
 	
 	@PostMapping(value="/saveModifyAddress", produces = "application/text; charset=UTF-8;")

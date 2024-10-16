@@ -54,6 +54,9 @@ public interface MemberService {
 	// 수정할 주소 내용을 객체에 담아서 보내기
 	boolean modifyUpdateAddress(MyAddressDTO addressDTO) throws Exception;
 
+	// 배송지 추가
+	boolean insertAddress(MyAddressDTO addressDTO) throws Exception;
+
 
 
 

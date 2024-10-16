@@ -92,4 +92,14 @@
 	<update id="updateOtherIsDefault" parameterType="String">
     	UPDATE Address SET isDefault = 'Y' WHERE userId = #{userId} AND isDefault = 'N'
 	</update>
+	
+	<insert id="insertNewAddress">
+		insert into Address (userId, address_key, receiver_name, receiver_phone, address, isDefault, request)
+		values(#{userId}, #{address_key}, #{receiver_name}, #{receiver_phone}, #{address}, #{isDefault}, #{request})
+	</insert>
+	
+	<update id="updateInsertIsDefault">
+		UPDATE Address SET isDefault = 'Y' WHERE userId = #{userId}
+	</update>
+	
   </mapper>

@@ -217,12 +217,56 @@ input[readonly] {
 </style>
 
 <script type="text/javascript">
-	$(function() {	
+	
+	$(document).ready(function() {
 		// 마이페이메뉴 수정
 		mypageNav();
-	});
+		
+        // 주소를 ',' 기준으로 나누어 input placeholder에 넣기
+        var address = "${address.address}";
+        var addressParts = address.split(',');
+
+        // 앞 부분을 keyword의 placeholder에, 뒷 부분을 addressDetail의 placeholder에 설정
+        document.getElementById('keyword').placeholder = addressParts[0].trim(); // 앞부분
+        document.getElementById('addressDetail').placeholder = addressParts[1] ? addressParts[1].trim() : ''; // 뒷부분
+        
+        
+        $('#submitBtn').click(function(event) {
+            event.preventDefault();  // 기본 폼 제출 방지
+            saveAddress();  // AJAX로 전송
+        });
+    });
 	
+	function saveAddress() {
+	    // 폼 데이터를 객체로 만들기
+	    let newAddressData = {
+	        address_key: $('#addrName').val(),
+	        receiver_name: $('#receiver_name').val(),
+	        receiver_phone: $('#receiver_phone').val(),
+	        keyword: $('#keyword').val(),
+	        addressDetail: $('#addressDetail').val(),
+	        request: $('#request').val(),
+	        isDefault: $('#terms').is(":checked") ? 'N' : 'Y'  // 기본 배송지 설정 여부 (체크박스)
+	    };
+
+	    console.log(addressData); // 데이터 확인을 위한 로그
+
+	    // AJAX 요청
+	    $.ajax({
+	        url: '/member/insertNewAddress',  // Controller로 요청할 URL
+	        type: 'POST',
+	        contentType: 'application/json',  // JSON 타입으로 전송
+	        data: JSON.stringify(newAddressData),
+	    }).done(function() {
+	        alert('새로운 배송지가 추가되어습니다.');
+	        window.location.href = '/member/address';
+	    }).fail(function(jqXHR) {
+	        console.error('Error:', jqXHR.responseText); // 오류 메시지 로그
+	        alert('추가 실패: ' + jqXHR.status + ' ' + jqXHR.statusText);
+	    });
+	}
 	
+
 	// nav
 	function mypageNav(){
 		let inputHTML = `<li onclick="showHide()"><h5><b>내정보보기<span class="showInfo">▼</span><span class="hideInfo">◀</span></b></h5></li>
@@ -486,6 +530,12 @@ input[readonly] {
 			<div class="form-group">
 				<input type="text" id="request" name="request"
 					placeholder="배송 시 요청사항" onclick="selectRequest();" required>
+			</div>
+			
+			<!-- 기본 배송지 설정 -->
+			<div id="agreement" style="margin-bottom:0.8em;">
+				<input type="checkbox" id="terms" name="terms" <c:if test="${address.isDefault == 'N'}">checked</c:if>> 
+				<label for="terms">기본 배송지로 설정</label>
 			</div>
 
 			<div style="display: flex;">

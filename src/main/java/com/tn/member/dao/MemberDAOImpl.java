@@ -118,6 +118,18 @@ public class MemberDAOImpl implements MemberDAO  {
 		return sess.update(NS + ".updateOtherIsDefault", userId);
 	}
 
+	@Override
+	public int insertNewAddress(MyAddressDTO addressDTO) throws Exception {
+		
+		return sess.insert(NS + ".insertNewAddress", addressDTO);
+	}
+
+	@Override
+	public int updateInsertIsDefault(String userId) throws Exception {
+		
+		return sess.update(NS + ".updateInsertIsDefault", userId);
+	}
+
 
 	
 	
