@@ -23,9 +23,9 @@
         padding: 0;
     }
     .qaContent {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        /* display: flex; */
+       /*  flex-direction: column;
+        align-items: center; */
         padding: 2em;
         background-color: #fff;
         max-width: 800px;
@@ -105,12 +105,12 @@
         <!-- Input Form for Question and Answer -->
         <form action="/qa/qaSave" method="get">
             <div class="form-group">
-                <label for="qTitle">Question No:</label>
-                <input type="text" id="qTitle" name="qTitle" placeholder="Enter question qTitle" required>
+                <label for="qTitle">질문제목:</label>
+                <input type="text" id="qTitle" name="qTitle" placeholder="제목" required>
             </div>
             <div class="form-group">
-                <label for="qContent">Question Content:</label>
-                <textarea id="qContent" name="qContent" placeholder="Enter your question here" required></textarea>
+                <label for="qContent">질문내용:</label>
+                <textarea id="qContent" name="qContent" placeholder="내용을 작성하세요" required></textarea>
             </div>
             <div>
                 <button type="submit" class="submit-btn">Submit</button>
