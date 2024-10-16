@@ -488,11 +488,6 @@ input[readonly] {
 					placeholder="배송 시 요청사항" onclick="selectRequest();" required>
 			</div>
 
-			<!-- 기본 배송지 설정 -->
-			<div id="agreement" style="margin-bottom:0.8em;">
-				<input type="checkbox" id="terms" name="terms" required> <label
-					for="terms">기본 배송지로 설정</label>
-			</div>
 			<div style="display: flex;">
 				<button type="submit" class="submit-btn" id="submitBtn">저장</button>
 				<button type="button" class="cancel-btn" onclick="location.href='/member/address'">취소</button>
