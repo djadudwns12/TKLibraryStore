@@ -79,7 +79,7 @@ public class MemberController {
 // -------------------------------- 김가윤 --------------------------------
 	
 	@RequestMapping("/address")
-	public String bringAddress(Model model,HttpSession session) {
+	public String bringAddress(Model model, HttpSession session) {
 		String userId = ((MemberVO)session.getAttribute("loginMember")).getUserId();
 		
 		try {
@@ -91,6 +91,26 @@ public class MemberController {
 		}
 		
 		return "/member/address";
+	}
+	
+	@RequestMapping("/modifyAddress")
+	public String modifyAddress(Model model, @RequestParam("addressId") int addressId) {
+		
+		try {
+			MyAddressVO address = mService.selectById(addressId);
+			
+			model.addAttribute("address", address);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return "/member/modifyAddress";
+	}
+	
+	@RequestMapping("/insertAddress")
+	public void insertAddress() {
+		
 	}
 	
 

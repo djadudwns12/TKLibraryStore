@@ -98,6 +98,12 @@ public class MemberDAOImpl implements MemberDAO  {
 		return sess.selectList(NS + ".getAddressList", userId);
 	}
 
+	@Override
+	public MyAddressVO selectById(int addressId) throws Exception {
+		
+		return sess.selectOne(NS + ".selectByAddressId", addressId);
+	}
+
 	
 	
 }

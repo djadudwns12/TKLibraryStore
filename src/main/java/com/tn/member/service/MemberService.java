@@ -48,6 +48,9 @@ public interface MemberService {
 	// 회원의 주소록을 가져오는 메서드
 	List<MyAddressVO> getAddressList(String userId) throws Exception;
 
+	// addressId를 이용해 해당 row를 가져오기
+	MyAddressVO selectById(int addressId) throws Exception;
+
 
 
 

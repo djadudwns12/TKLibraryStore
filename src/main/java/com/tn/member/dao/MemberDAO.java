@@ -43,6 +43,9 @@ public interface MemberDAO {
 	// 회원의 주소록을 가져오는 메서드
 	public List<MyAddressVO> getAddressList(String userId) throws Exception;
 
+	// 주소 Id를 가지고 해당 row 가져오기
+	public MyAddressVO selectById(int addressId) throws Exception;
+
 
 
 
