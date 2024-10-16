@@ -529,7 +529,7 @@ input[readonly] {
 
 			<div class="form-group">
 				<input type="text" id="request" name="request"
-					placeholder="배송 시 요청사항" onclick="selectRequest();" required>
+					placeholder="배송 시 요청사항">
 			</div>
 			
 			<!-- 기본 배송지 설정 -->

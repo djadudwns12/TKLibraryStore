@@ -534,7 +534,7 @@ input[readonly] {
 
 			<div class="form-group">
 				<input type="text" id="request" name="request"
-					value="${address.request}" required>
+					value="${address.request}">
 			</div>
 
 			<!-- 기본 배송지 설정 -->
