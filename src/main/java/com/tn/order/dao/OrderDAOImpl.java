@@ -77,7 +77,7 @@ public class OrderDAOImpl implements OrderDAO {
 		return ses.update(NS + ".updatePoint", params);
 	}
 	
-		@Override
+	@Override
 	public OrderVO getSinOrder(String userId) {
 		return ses.selectOne(NS + ".getSinOrder", userId);
 	}
@@ -91,7 +91,20 @@ public class OrderDAOImpl implements OrderDAO {
 		
 		return ses.insert(NS + ".recordPointLog", params);
 	}	
+	
+
+	@Override
+	public int updateUnregisterInfo(String deletedMember) throws Exception {
+		return ses.update(NS + ".updateUnregisterInfo", deletedMember);
+	}
+
+	@Override
+	public List<OrderVO> checkRemainOrder(String deletedMember) throws Exception {
+		return ses.selectList(NS + ".checkRemainOrder", deletedMember);
+	}
 //-----------------------------------------최미설-------------------------------------------------
+
+
 
 		
 

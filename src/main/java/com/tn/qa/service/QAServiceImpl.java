@@ -120,4 +120,15 @@ public class QAServiceImpl implements QAService {
 		return qaDao.saveQaAnswer(qa);
 	}
 
+	//======================================최미설====================================================//
+	
+	@Override
+	public boolean removeUndefinedQA(String deletedMember) throws Exception {
+		boolean result = false;
+		if(qaDao.removeUndefinedQA(deletedMember) > 0) {
+			result = true;
+		}
+		return result;
+	}
+
 }

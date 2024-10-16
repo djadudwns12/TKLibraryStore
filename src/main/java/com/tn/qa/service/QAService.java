@@ -58,4 +58,8 @@ public interface QAService {
 
 	int qaAnswerSave(QAVO qa) throws Exception;
 
+	//=================================================== 최미설 =====================================================//
+	// 탈퇴한 회원의 1:1 문의글을 삭제
+	boolean removeUndefinedQA(String deletedMember) throws Exception;
+
 }

@@ -78,5 +78,16 @@
 		values (#{userId}, #{pWhy}, #{pScore})
 	</insert>
 
+	<!-- 탈퇴한 회원의 주소와 아이디 업데이트 -->
+	<update id="updateUnregisterInfo">
+		UPDATE `Order`
+		SET orderAddress = '탈퇴한 회원입니다...', orderWho='unregist'
+		WHERE orderWho = #{deletedMember}
+	</update>
+	
+	<!-- 탈퇴요청하는 회원의 주문을 확인하는 쿼리문 -->
+	<select id="checkRemainOrder" resultType="com.tn.order.model.vo.OrderVO">
+		select * from `Order` where orderStatus!='배송완료' and orderWho=#{deletedMember}
+	</select>
 <!-- ==================================================최미설========================================================================== -->
 </mapper>

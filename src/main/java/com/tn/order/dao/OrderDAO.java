@@ -42,7 +42,15 @@ public interface OrderDAO {
   
   // 포인트로그 추가
   int recordPointLog(String userId, OrderVO sinOrder) throws Exception;
+  
+  // 탈퇴회원 주문건 업데이트
+  int updateUnregisterInfo(String deletedMember) throws Exception;
+  
+  // 탈퇴요청 회원의 주문건을 확인해서 주문이 없거나 배송완료되었을 때만 탈퇴가 진행되도록 한다.
+  List<OrderVO> checkRemainOrder(String deletedMember) throws Exception;
+  
 //-----------------------------------------최미설-------------------------------------------------
+
 
 
 }

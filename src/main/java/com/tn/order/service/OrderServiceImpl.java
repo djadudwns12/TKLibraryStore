@@ -122,9 +122,26 @@ public boolean recordPointLog(String userId, OrderVO sinOrder) throws Exception 
 	}
 	return result;
 }
+
+@Override
+public boolean updateUnregisterInfo(String deletedMember) throws Exception {
+	boolean result=false;
+	if(oDao.updateUnregisterInfo(deletedMember) > 0) {
+		result=true;
+	}
+	return result;
+}
+
+@Override
+public boolean checkRemainOrder(String deletedMember) throws Exception {
+	boolean result = true;
+	if(oDao.checkRemainOrder(deletedMember).size() > 0 ) {
+		result=false;
+	}
+	return result;
+}
+
+
 //-----------------------------------------최미설-------------------------------------------------
-
-
-
 
 }

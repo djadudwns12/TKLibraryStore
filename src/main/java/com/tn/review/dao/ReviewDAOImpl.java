@@ -16,17 +16,27 @@ public class ReviewDAOImpl implements ReviewDAO {
 	private SqlSession ses;
 	private static String NS = "com.tn.mapper.ReviewMapper";
 	
+	// ===================================== 최미설 =====================================//		
 	@Override
-	public List<ReviewVO> getRecentReview(String userId) {
+	public List<ReviewVO> getRecentReviewForAdmin(String userId) throws Exception {
 		
-		return ses.selectList(NS + ".getRecentReview", userId);
+		return ses.selectList(NS + ".getRecentReviewForAdmin", userId);
 	}
+	
+	@Override
+	public int removeUndefinedReview(String deletedMember) throws Exception {
+		
+		return ses.delete(NS + ".removeUndefinedReview", deletedMember); 
+	}
+	
+	// ===================================== 최미설 =====================================//		
 
 	@Override
 	public int insertNewReview(ReviewDTO reviewDTO) {
 		
 		return ses.insert(NS + ".insertNewReview", reviewDTO);
 	}
+
 
 
 }

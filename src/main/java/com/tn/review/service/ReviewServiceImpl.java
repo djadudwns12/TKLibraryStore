@@ -16,14 +16,24 @@ public class ReviewServiceImpl implements ReviewService {
 	@Autowired
 	ReviewDAO dao;
 
-	
+	// ===================================== 최미설 =====================================//		
 	@Override
-	public List<ReviewVO> getRecentReview(String userId) {
+	public List<ReviewVO> getRecentReviewForAdmin(String userId) throws Exception {
 		
-		return dao.getRecentReview(userId);
+		return dao.getRecentReviewForAdmin(userId);
 	}
 	
-
+		@Override
+	public boolean removeUndefinedReview(String deletedMember) throws Exception {
+		boolean result = false;
+		if(dao.removeUndefinedReview(deletedMember) == 1) {
+			result = true;
+		}
+		return result;
+	}
+		
+	// ===================================== 최미설 =====================================//	
+		
 	@Override
 	@Transactional
 	public boolean saveBoard(ReviewDTO reviewDTO) {
@@ -36,6 +46,9 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		return result;
 	}
+
+
+
 	
 
 }

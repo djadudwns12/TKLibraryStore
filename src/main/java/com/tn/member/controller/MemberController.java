@@ -356,14 +356,18 @@ public class MemberController {
 		try {
 			MemberVO memberVO = (MemberVO)ses.getAttribute("loginMember");
 			String userId = memberVO.getUserId();
-			System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제함..");
-			mService.deleteMember(userId);
-			logout(ses); // 로그아웃 및 세션에 저장된 회원정보 무효화
-			return "redirect:/";
+			if(oService.checkRemainOrder(userId)) {
+				System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제요청..");
+				mService.deleteMember(userId);
+				logout(ses); // 로그아웃 및 세션에 저장된 회원정보 무효화
+				return "redirect:/";
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace(); 
 			return "redirect:/member/loginPage";
-		} 
+		}
+		return "redirect:/";
 	}
 	
 	

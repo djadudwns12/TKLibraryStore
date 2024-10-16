@@ -96,5 +96,10 @@ public class QADAOImpl implements QADAO {
 		// TODO Auto-generated method stub
 		return sess.update(NS+".saveQaAnswer", qa);
 	}
-	
+// ====================================== 최미설 ===================================================== //
+	@Override
+	public int removeUndefinedQA(String deletedMember) throws Exception {
+		return sess.delete(NS+ ".removeUndefinedQA" ,deletedMember);
+	}
+// ====================================== 최미설 ===================================================== //
 }

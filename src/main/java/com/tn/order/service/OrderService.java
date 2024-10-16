@@ -42,6 +42,10 @@ public interface OrderService {
 	boolean updatePoint(String userId, OrderVO sinOrder) throws Exception;
 	// 포인트로그 추가
 	boolean recordPointLog(String userId, OrderVO sinOrder) throws Exception;
+	// 탈퇴회원 주문정보 업데이트
+	boolean updateUnregisterInfo(String deletedMember) throws Exception;
+	// 회원탈퇴시 남아있는 주문을 확인하는 메서드
+	boolean checkRemainOrder(String deletedMember) throws Exception;
 
 //-----------------------------------------최미설-------------------------------------------------
 	
