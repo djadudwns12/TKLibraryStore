@@ -87,14 +87,24 @@
 		}
 		
 		// 별점 기능을 위한 배열 선언
-		const ratingStars = [...document.getElementsByClassName("rating__star")];
-		executeRating(ratingStars);
+		/* const ratingStars = [...document.getElementsByClassName("rating__star")];
+		executeRating(ratingStars); */
+		
+		
 		
 		// 로그인 이전에 적은 내용을 다시 집어 넣음
 		$('#review').html(localStorage.getItem('reviewContent'));
 
 	});
 
+	// 별점기능------------------------------------------------------------------------------------
+	   document.addEventListener("DOMContentLoaded", () => {
+	        const starGroups = Array.from(document.querySelectorAll(".rating")).map(group => 
+	          Array.from(group.querySelectorAll(".rating__star"))
+	        );
+	        executeRating(starGroups);
+	      });
+	   // 별점기능------------------------------------------------------------------------------------
 	
 	function handleZzim(userId, bookNo) {
 		$.ajax({
@@ -217,31 +227,30 @@
 		}
 	}
 	
-	function executeRating(stars) {
+	function executeRating(starGroups) {
 		  const starClassActive = "rating__star fas fa-star";
 		  const starClassInactive = "rating__star far fa-star";
-		  const starsLength = stars.length;
-		 
-		  let i;
-		  
-		  stars.map((star) => {
-			    star.onclick = () => {
-			      i = stars.indexOf(star);
 
-			      if (star.className===starClassInactive) {
-			        for (i; i >= 0; --i) 
-			        	stars[i].className = starClassActive;
+		  // 각 별점 그룹마다 개별적으로 적용
+		  starGroups.forEach(stars => {
+		    const starsLength = stars.length;
 
-			      } else {
-			        for (i; i < starsLength; ++i) 
-			        	stars[i].className = starClassInactive;
-			        console.log('선택된 별 갯수 : ',i);
-			      }
-			    };
-			  });
-		  
-		  
-		  
+		    stars.forEach((star, index) => {
+		      star.onclick = () => {
+		        if (star.className === starClassInactive) {
+		          // 현재 클릭한 별과 그 이전의 모든 별을 활성화
+		          for (let i = 0; i <= index; ++i) {
+		            stars[i].className = starClassActive;
+		          }
+		        } else {
+		          // 현재 클릭한 별과 그 이후의 모든 별을 비활성화
+		          for (let i = index; i < starsLength; ++i) {
+		            stars[i].className = starClassInactive;
+		          }
+		        }
+		      };
+		    });
+		  });
 		}
 	
 	function validReviewWriter() {
@@ -488,14 +497,14 @@
 															<p>${review.reviewWriter}</p>
 															<p>${review.reviewDate}</p>
 															<p>${review.reviewContent}</p>
-															<p>${review.reviewScore}</p>
 															<div class="reviewArea" style="display: flex; align-items: center; gap: 5px;">
-												<div class="rating">
-													<i class="rating__star far fa-star"></i> <i
-														class="rating__star far fa-star"></i> <i
-														class="rating__star far fa-star"></i> <i
-														class="rating__star far fa-star"></i> <i
-														class="rating__star far fa-star"></i>
+												<div class="showRating">
+													<c:forEach begin="1" end="${review.reviewScore}">
+														<i class="rating__star fas fa-star"></i> 
+													</c:forEach>
+													<c:forEach begin="1" end="${5-review.reviewScore}">
+														<i class="rating__star far fa-star"></i> 
+													</c:forEach>
 												</div>
 														</div>
 													</div>
