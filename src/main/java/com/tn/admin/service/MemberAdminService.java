@@ -22,4 +22,10 @@ public interface MemberAdminService {
 
 	// 관리자페이지-회원관리페이지에서 최근 주문내역을 불러오는 메서드
 	List<OrderVO> getRecentOrder(String userId) throws Exception;
+
+	// 회원정보를 삭제하는 메서드
+	boolean removeMemberInfo(String deletedMember) throws Exception;
+
+	// 관리자페이지-탈퇴한회원 목록을 불러오는 메서드
+	Map<String, Object> getUnregiMember(PagingInfoDTO pDTO, SearchCriteriaDTO searchCriteria, String sortBy) throws Exception;
 }
