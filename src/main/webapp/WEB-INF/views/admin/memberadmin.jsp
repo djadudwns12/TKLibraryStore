@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Google Fonts에서 Gowun Batang 폰트 불러오기 -->
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<!--  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">-->
 <meta charset="UTF-8">
 <title>회원관리페이지</title>
 </head>
@@ -82,7 +82,7 @@
 				<table>
 					<thead>
 						<tr>
-							<th><input type="checkbox" onclick="selectAll(this)"> selectAll </th>
+							<!-- <th><input type="checkbox" onclick="selectAll(this)"> selectAll </th> -->
 							<th>프로필사진</th>
 							<th>아이디</th>
 							<th>이름</th>
@@ -100,7 +100,7 @@
 					<tbody>
 						<c:forEach var="memberList" items="${memberList}">
 							<tr>
-								<td><input type="checkbox" name="proCheck" value="${memberList.userId}" onclick="updateCheck()"></td>
+								<!--<td><input type="checkbox" name="proCheck" value="${memberList.userId}" onclick="updateCheck()"></td>-->
 								
 								<td><img src="${memberList.userImg}" width="30px" height="30"></td>
 								<td onclick="location.href='/admin/memberDetail?userId=${memberList.userId}'">${memberList.userId}</td>
