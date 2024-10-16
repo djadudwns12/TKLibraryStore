@@ -15,6 +15,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class MyAddressDTO {
+	private int addressId;
 	private String userId;
 	private String receiver_name;
 	private String address_key;
