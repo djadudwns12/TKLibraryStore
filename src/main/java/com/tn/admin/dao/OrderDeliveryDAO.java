@@ -2,6 +2,7 @@ package com.tn.admin.dao;
 
 import java.util.List;
 
+import com.tn.admin.model.vo.CancelBookInvenVO;
 import com.tn.admin.model.vo.CancelOrderMemberVO;
 import com.tn.admin.model.vo.CancelOrderVO;
 
@@ -49,6 +50,14 @@ public interface OrderDeliveryDAO {
 	
 	int getTotalOrderCount() throws Exception; // 전체 주문 수를 가져오는 메서드
     int getTotalOrderCount(SearchCriteriaDTO searchCriteria) throws Exception; // 검색 조건에 따른 주문 수를 가져오는 메서드
+
+
+
+    List<CancelBookInvenVO> selectBooks(List<String> orderNos);
+
+
+
+	void reStock(List<CancelBookInvenVO> cancelBookInfo);
 
 //-----------------------------------------박근영-------------------------------------------------
 

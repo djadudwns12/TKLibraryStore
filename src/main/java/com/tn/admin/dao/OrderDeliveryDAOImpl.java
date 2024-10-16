@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.tn.admin.model.vo.CancelBookInvenVO;
 import com.tn.admin.model.vo.CancelOrderMemberVO;
 import com.tn.admin.model.vo.CancelOrderVO;
 import com.tn.admin.model.vo.OrderDeliveryVO;
@@ -68,6 +69,7 @@ public class OrderDeliveryDAOImpl implements OrderDeliveryDAO {
 	    Map<String, Object> paramMap = new HashMap<>();
 	    paramMap.put("pagingInfo", pi);
 	    paramMap.put("sortBy", sortBy);
+	    System.out.println(pi+"정렬 기준을 확인합니다."+sortBy);
 	    return ses.selectList(NS + ".selectOrderDeliveryInfoWithSort", paramMap);
 	}
 	
@@ -76,6 +78,7 @@ public class OrderDeliveryDAOImpl implements OrderDeliveryDAO {
 	public List<OrderDeliveryVO> selectAllOrderDelivery(PagingInfo pi, SearchCriteriaDTO searchCriteria) {
 	    Map<String, Object> paramMap = new HashMap<>();
 	    paramMap.put("pagingInfo", pi);
+	    System.out.println("selectAllOrderDelivery 넘어가기전 pi 오류 확인을 위하여 :"+searchCriteria +pi);
 	    paramMap.put("searchCriteria", searchCriteria);
 	    return ses.selectList(NS + ".selectAllOrderDelivery", paramMap);
 	}
@@ -108,6 +111,20 @@ public class OrderDeliveryDAOImpl implements OrderDeliveryDAO {
 	    public int getTotalOrderCount(SearchCriteriaDTO searchCriteria) throws Exception {
 	        return ses.selectOne(NS + ".getTotalOrderCountWithSearch", searchCriteria);
 	    }
+
+		@Override
+		public List<CancelBookInvenVO> selectBooks(List<String> orderNos) {
+			
+			return ses.selectList(NS + ".selectBooks", orderNos);
+			
+		}
+
+		@Override
+		public void reStock(List<CancelBookInvenVO> cancelBookInfo) {
+			System.out.println("책재고를 다시 더합니다." + cancelBookInfo);
+			ses.update("reStock", cancelBookInfo);
+			
+		}
 
 //-----------------------------------------박근영-------------------------------------------------
 

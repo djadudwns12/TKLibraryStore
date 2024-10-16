@@ -800,9 +800,10 @@ public class AdminController {
 		
 		@RequestMapping("/cancelOrders")
 		public ResponseEntity<String> cancelOrders(@RequestBody List<String> orderNos) {
-			System.out.println("진입 확인 cancelOrders");
-			
+			System.out.println("진입 확인 cancelOrders" + orderNos);
 			try {
+			odService.cancelOrder(orderNos);
+			
 				return new ResponseEntity<String>("취소 성공", HttpStatus.OK);
 			} catch (Exception e) {
 				return new ResponseEntity<String>("취소 실패", HttpStatus.NOT_ACCEPTABLE);

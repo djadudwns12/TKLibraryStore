@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tn.admin.dao.OrderDeliveryDAO;
+import com.tn.admin.model.vo.CancelBookInvenVO;
 import com.tn.admin.model.vo.CancelOrderMemberVO;
 import com.tn.admin.model.vo.CancelOrderVO;
 import com.tn.admin.model.vo.OrderDeliveryVO;
@@ -32,6 +33,9 @@ public class OrderDeliveryServiceImpl implements OrderDeliveryService {
 		// 주문번호로 사용한 포인트 및 pk , userId 가져오기, member에서 총 구입액, 사용자 포인트가져오기, 사용한포인트와 사용자포인트 합쳐서 insert,
 		// pk를 가지고 포인트 로그의 why와 매칭하여 삭제
 		odDao.updateOrderStatus(orderNos);
+		List<CancelBookInvenVO> cancelBookInfo = odDao.selectBooks(orderNos);
+		odDao.reStock(cancelBookInfo);
+		
 		List<CancelOrderVO> orderInfo= odDao.selectOrderInfo(orderNos);
 		
 		// 취소 주문 정보를 유저 ID로 그룹화한 정보

@@ -353,19 +353,19 @@ td:hover .book-info-container {
 			<jsp:include page="header.jsp" />
 
 			<div class="content">
-				<h1 class="jemok">ProductList</h1>
+				<h1 class="jemok">OrderList</h1>
 
 
 				<!-- The form -->
 				<form class="search"
 					style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: center;"
-					action="/admin/productAdmin" method="post">
+					action="/admin/orderDeliveryAdmin" method="post">
 
 					<div>
 						<select class="searchType" name="searchType" id="searchType"
 							style="text-align: center">
 							<option value="-1">검색 조건</option>
-							<option value="userId">사용자</option>
+							<option value="orderWho">사용자</option>
 							<option value="orderName">제품정보</option>
 						</select>
 					</div>
@@ -398,11 +398,8 @@ td:hover .book-info-container {
 						<select class="form-select sortByWhat" id="sortByWhat"
 							style="width: 150px">
 							<option value="default">기본 정렬</option>
-							<option value="salePrice">가격 높은순</option>
-							<option value="inven">재고 많은순</option>
-							<option value="zzim">찜 많은순</option>
-							<option value="reviewCnt">리뷰 많은순</option>
-							<option value="pubDate">최신순</option>
+							<option value="orderDate">주문 일자순</option>
+							<option value="totalPay">주문 금액순</option>
 						</select>
 					</div>
 
@@ -537,13 +534,7 @@ td:hover .book-info-container {
 						</div>
 						<div class="divider"></div>
 						<!-- 세로선 -->
-						<div class="popular-searches">
-							<h5>인기 검색어</h5>
-							<ul id="popularSearchesList">
-								<!-- 인기 검색어가 동적으로 삽입될 곳 -->
-
-							</ul>
-						</div>
+						
 
 					</div>
 
@@ -768,7 +759,8 @@ td:hover .book-info-container {
 
 		
 
-		isSelect();
+		
+		
 		$('.pagingSize')
 				.change(
 						function() {
@@ -781,7 +773,7 @@ td:hover .book-info-container {
 								pageNo = parseInt(pageNo);
 							}
 
-							location.href = '/admin/productAdmin?pagingSize='
+							location.href = '/admin/orderDeliveryAdmin?pagingSize='
 									+ $(this).val()
 									+ '&pageNo=1&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}';
 						});
@@ -791,7 +783,7 @@ td:hover .book-info-container {
 						function() {
 							console.log($(this).val());
 
-							location.href = '/admin/productAdmin?ra='
+							location.href = '/admin/orderDeliveryAdmin?ra='
 									+ $(this).val()
 									+ '&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
 						});
@@ -866,7 +858,7 @@ td:hover .book-info-container {
 
             // 검색어 목록 표시
             searchArray.forEach(function(keyword) {
-                $("#recentSearchesList").append('<li><a href= "/admin/productAdmin?searchType=title&searchWord=' + keyword + '";>' + keyword + '</a></li>');
+                $("#recentSearchesList").append('<li><a href= "/admin/orderDeliveryAdmin?searchType=title&searchWord=' + keyword + '";>' + keyword + '</a></li>');
             });
         }
         
@@ -889,7 +881,7 @@ td:hover .book-info-container {
 		                $.each(data, function(index, keyword) {
 		                	var index = index+1
 		                    //popularList.append('<li>' + index + "　　" + keyword + '</li>');
-		                	popularList.append('<li><a href= "/admin/productAdmin?searchType=title&searchWord=' + keyword + '";>' +  index + "　　" + keyword + '</a></li>');
+		                	popularList.append('<li><a href= "/admin/orderDeliveryAdmin?searchType=title&searchWord=' + keyword + '";>' +  index + "　　" + keyword + '</a></li>');
 		                	
 		                });
 				},
@@ -961,7 +953,7 @@ td:hover .book-info-container {
 		                	console.log(data.data)
 		                	$("#searchRecommend").empty();
 		                	$.each(data.data, function(index, title) {
-		                		 $("#searchRecommend").append('<li style="margin-bottom:10px;"><a href= "/admin/productAdmin?searchType=title&searchWord=' + title + '";>' + title + '</a></li>');
+		                		 $("#searchRecommend").append('<li style="margin-bottom:10px;"><a href= "/admin/orderDeliveryAdmin?searchType=title&searchWord=' + title + '";>' + title + '</a></li>');
 		                	 });
 		                }
 		              },
@@ -1110,7 +1102,7 @@ td:hover .book-info-container {
 						success : function(data) {
 							// 실행시키기 위해선 컨트롤러단에서 json데이터로 변환 후 데이터를 보내주어야한다.
 							alert(pro_check + "개의 상품을 삭제했습니다.");
-							location.href = '/admin/productAdmin?ra=${param.ra}&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
+							location.href = '/admin/orderDeliveryAdmin?ra=${param.ra}&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
 
 						},
 						error : function(data) {
@@ -1156,7 +1148,7 @@ td:hover .book-info-container {
 							// 실행시키기 위해선 컨트롤러단에서 json데이터로 변환 후 데이터를 보내주어야한다.
 							console.log(data)
 							alert(pro_check + "개의 상품을 품절 처리했습니다.");
-							location.href = '/admin/productAdmin?ra=${param.ra}&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
+							location.href = '/admin/orderDeliveryAdmin?ra=${param.ra}&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
 
 						},
 						error : function(data) {

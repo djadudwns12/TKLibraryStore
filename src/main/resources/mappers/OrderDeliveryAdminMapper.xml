@@ -33,62 +33,84 @@
 	    SELECT o.orderDate, o.orderStatus, o.orderWho, o.orderAddress, o.usePoint, o.totalPay, 
 	           o.orderNo, o.orderName, b.bookNo, b.qty, l.thumbNail 
 	    FROM `Order` o
-	    INNER JOIN OrderBook b ON o.orderNo = b.orderNo
-	    INNER JOIN BookList l ON b.bookNo = l.bookNo
-	    INNER JOIN Member m ON o.orderWho = m.userId 
-	    WHERE m.isDelete = 'N'
-	    ORDER BY o.orderDate DESC LIMIT
-		#{startRowIndex},
-		#{viewPostCntPerPage};
+	    INNER JOIN 
+	    (
+	        SELECT o2.orderNo
+	        FROM `Order` o2
+	        INNER JOIN Member m ON o2.orderWho = m.userId 
+	        WHERE m.isDelete = 'N'
+	        ORDER BY o2.orderDate DESC 
+	        LIMIT #{startRowIndex}, #{viewPostCntPerPage}
+	    ) sub ON o.orderNo = sub.orderNo
+	    LEFT JOIN OrderBook b ON sub.orderNo = b.orderNo
+	    LEFT JOIN BookList l ON b.bookNo = l.bookNo
+	    ORDER BY o.orderDate DESC
 	</select>
-	
-	
-	
 	
 	<select id="selectOrderDeliveryInfoWithSort" resultMap="orderResultMap">
 	    SELECT o.orderDate, o.orderStatus, o.orderWho, o.orderAddress, o.usePoint, o.totalPay, 
 	           o.orderNo, o.orderName, b.bookNo, b.qty, l.thumbNail 
 	    FROM `Order` o
-	    INNER JOIN OrderBook b ON o.orderNo = b.orderNo
-	    INNER JOIN BookList l ON b.bookNo = l.bookNo
-	    INNER JOIN Member m ON o.orderWho = m.userId 
-	    WHERE m.isDelete = 'N' 
-	        <choose>
-	            <when test="searchType == 'orderName'">
-	               order by orderName
+	    INNER JOIN 
+	    (
+	        SELECT o2.orderNo
+	        FROM `Order` o2
+	        INNER JOIN Member m ON o2.orderWho = m.userId 
+	        WHERE m.isDelete = 'N'
+	        ORDER BY o2.orderDate DESC 
+	        LIMIT #{pagingInfo.startRowIndex}, #{pagingInfo.viewPostCntPerPage}
+	    ) sub ON o.orderNo = sub.orderNo
+	    LEFT JOIN OrderBook b ON sub.orderNo = b.orderNo
+	    LEFT JOIN BookList l ON b.bookNo = l.bookNo
+	    	<choose>
+	            <when test="sortBy == 'orderDate'">
+	               ORDER BY orderDate DESC
 	            </when>
-	            <when test="searchType == 'orderWho'">
-	                order by orderWho
+	            <when test="sortBy == 'totalPay'">
+	                ORDER BY totalPay DESC
 	            </when>
 	        </choose>
-	        DESC LIMIT
-		#{startRowIndex},
-		#{viewPostCntPerPage};
 	</select>
 	
 	<select id="selectAllOrderDelivery" resultMap="orderResultMap">
 	    SELECT o.orderDate, o.orderStatus, o.orderWho, o.orderAddress, o.usePoint, o.totalPay, 
 	           o.orderNo, o.orderName, b.bookNo, b.qty, l.thumbNail 
 	    FROM `Order` o
-	    INNER JOIN OrderBook b ON o.orderNo = b.orderNo
-	    INNER JOIN BookList l ON b.bookNo = l.bookNo
-	    INNER JOIN Member m ON o.orderWho = m.userId 
-	    WHERE ${searchCriteria.searchType} LIKE CONCAT('%', #{searchCriteria.searchWord}, '%')
-	    LIMIT #{pagingInfo.startRowIndex}, #{pagingInfo.pagingSize}
+	    INNER JOIN 
+	    (
+	        SELECT o2.orderNo
+	        FROM `Order` o2
+	        INNER JOIN Member m ON o2.orderWho = m.userId 
+	        WHERE m.isDelete = 'N'
+	        ORDER BY o2.orderDate DESC 
+	        LIMIT #{pagingInfo.startRowIndex}, #{pagingInfo.viewPostCntPerPage}
+	    ) sub ON o.orderNo = sub.orderNo
+	    LEFT JOIN OrderBook b ON sub.orderNo = b.orderNo
+	    LEFT JOIN BookList l ON b.bookNo = l.bookNo
+	    WHERE ${searchCriteria.searchType} LIKE '%${searchCriteria.searchWord}%'
 	</select>
 	
 	<select id="selectAllOrderDeliveryWithSort" resultMap="orderResultMap">
-	    SELECT o.orderDate, o.orderStatus, o.orderWho, o.orderAddress, o.usePoint, o.totalPay, 
+	    	    SELECT o.orderDate, o.orderStatus, o.orderWho, o.orderAddress, o.usePoint, o.totalPay, 
 	           o.orderNo, o.orderName, b.bookNo, b.qty, l.thumbNail 
 	    FROM `Order` o
-	    INNER JOIN OrderBook b ON o.orderNo = b.orderNo
-	    INNER JOIN BookList l ON b.bookNo = l.bookNo
-	    INNER JOIN Member m ON o.orderWho = m.userId 
-	    WHERE ${searchCriteria.searchType} LIKE CONCAT('%', #{searchCriteria.searchWord}, '%')
-	    ORDER BY ${sortBy}
-	    LIMIT #{pagingInfo.startRowIndex}, #{pagingInfo.pagingSize}
+	    INNER JOIN 
+	    (
+	        SELECT o2.orderNo
+	        FROM `Order` o2
+	        INNER JOIN Member m ON o2.orderWho = m.userId 
+	        WHERE m.isDelete = 'N'
+	        ORDER BY o2.orderDate DESC 
+	        LIMIT #{pagingInfo.startRowIndex}, #{pagingInfo.viewPostCntPerPage}
+	    ) sub ON o.orderNo = sub.orderNo
+	    LEFT JOIN OrderBook b ON sub.orderNo = b.orderNo
+	    LEFT JOIN BookList l ON b.bookNo = l.bookNo
+	    WHERE ${searchCriteria.searchType} LIKE '%${searchCriteria.searchWord}%'
+	    ORDER BY ${sortBy} DESC
 	</select>
 	
+	
+
 	
 
 
@@ -117,71 +139,55 @@
 		#{order.orderPK}</foreach>
 	</delete>
 	
-	
-	
-	
-	
-	
-	
-	
-<select id="getOrderList" parameterType="com.tn.admin.model.vo.PagingInfo" resultType="com.tn.admin.model.vo.OrderDeliveryVO">
-    SELECT * FROM OrderDelivery
-    LIMIT #{startRowIndex}, #{viewPostCntPerPage}
-</select>
-
-	<select id="getOrderListWithSort" parameterType="map" resultType="com.tn.admin.model.vo.OrderDeliveryVO">
-	    SELECT * FROM OrderDelivery
-	    ORDER BY ${sortBy}
-	    LIMIT #{pagingInfo.startRowIndex}, #{pagingInfo.pagingSize}
+	<select id="selectBooks" resultType="com.tn.admin.model.vo.CancelBookInvenVO">
+		SELECT bookNo, qty FROM OrderBook WHERE orderNo IN <foreach item="orderNo" collection="list" open="(" separator="," close=")">#{orderNo}</foreach>
 	</select>
 	
-	
-	
-
-	
-	
-
-
-
-
-
-
-
-
-
+	<update id="reStock" >
+	    <foreach collection="list" item="book" separator=";">
+	        UPDATE BookList SET inven = inven + #{book.qty} WHERE bookNo = #{book.bookNo}
+	    </foreach>
+	</update>
 
     <!-- 전체 주문 수 가져오기 -->
     <select id="getTotalOrderCount" resultType="int">
-        SELECT COUNT(*) FROM `Order` o
-	    INNER JOIN OrderBook b ON o.orderNo = b.orderNo
-	    INNER JOIN BookList l ON b.bookNo = l.bookNo
-	    INNER JOIN Member m ON o.orderWho = m.userId 
-	    WHERE m.isDelete = 'N'
-	    ORDER BY o.orderDate DESC
+        SELECT COUNT(*) 
+	    FROM `Order` o
+	    INNER JOIN 
+	    (
+	        SELECT o2.orderNo
+	        FROM `Order` o2
+	        INNER JOIN Member m ON o2.orderWho = m.userId 
+	        WHERE m.isDelete = 'N'
+	    ) sub ON o.orderNo = sub.orderNo
+	    LEFT JOIN OrderBook b ON sub.orderNo = b.orderNo
+	    LEFT JOIN BookList l ON b.bookNo = l.bookNo
     </select>
 
-
-
-
-
-
-
-
     <!-- 검색 조건에 따른 주문 수 가져오기 -->
-<select id="getTotalOrderCountWithSearch" parameterType="com.tn.admin.model.vo.SearchCriteriaDTO" resultType="int">
-    SELECT COUNT(*) 
-    FROM OrderDelivery
-    <where>
-        <choose>
-            <when test="searchType == 'title'">
-                title LIKE CONCAT('%', #{searchWord}, '%')
-            </when>
-            <when test="searchType == 'userId'">
-                userId LIKE CONCAT('%', #{searchWord}, '%')
-            </when>
-        </choose>
-    </where>
-</select>
+	<select id="getTotalOrderCountWithSearch" parameterType="com.tn.admin.model.vo.SearchCriteriaDTO" resultType="int">
+	         SELECT COUNT(*) 
+	    FROM `Order` o
+	    INNER JOIN 
+	    (
+	        SELECT o2.orderNo
+	        FROM `Order` o2
+	        INNER JOIN Member m ON o2.orderWho = m.userId 
+	        WHERE m.isDelete = 'N'
+	    ) sub ON o.orderNo = sub.orderNo
+	    LEFT JOIN OrderBook b ON sub.orderNo = b.orderNo
+	    LEFT JOIN BookList l ON b.bookNo = l.bookNo
+	    <where>
+	        <choose>
+	            <when test="searchType == 'orderName'">
+	                orderName LIKE '%${searchWord}%'
+	            </when>
+	            <when test="searchType == 'orderWho'">
+	                orderWho LIKE '%${searchWord}%'
+	            </when>
+	        </choose>
+	    </where>
+	</select>
 
 
 
