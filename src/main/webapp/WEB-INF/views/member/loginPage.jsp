@@ -173,7 +173,7 @@ input[type="button"] {
 					저장하기
 				</label> 
 				<input type="submit" value="Login" onclick="return valid()">
-				<img src="/resources/images/kakao_login.png" style="width: 100%" onclick="kakaoLogin()">
+				<!-- <img src="/resources/images/kakao_login.png" style="width: 100%" onclick="kakaoLogin()"> -->
 			</form>
 			<!-- 회원 가입 버튼 -->
 			<a href="/member/register"><input type="button" value="회원가입"></a>
