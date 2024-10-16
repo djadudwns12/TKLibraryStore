@@ -90,7 +90,7 @@
 		const ratingStars = [...document.getElementsByClassName("rating__star")];
 		executeRating(ratingStars);
 		// 처음부터 별점을 선택되도록 함.(0번째 star클릭)
-		$($('.rating__star')[0]).trigger("click");
+		//$($('.rating__star')[0]).trigger("click");
 
 	});
 

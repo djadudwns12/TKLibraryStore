@@ -24,8 +24,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			// 이전에 접속하던 페이지 페이지가 있다면 페이지를 얻어오기 
 			
 			System.out.println(request.getHeader("referer"));
-			
-			request.getSession().setAttribute("destPath", request.getHeader("referer"));
+			// destPath가 없다면 이전페이지로 설정하는 코드
+			if(request.getSession().getAttribute("destPath") == null) {				
+				request.getSession().setAttribute("destPath", request.getHeader("referer"));
+			}
 			
 			if(request.getParameter("redirectUri") != null) {
 				String redirectUri =(String)request.getParameter("redirectUri");
