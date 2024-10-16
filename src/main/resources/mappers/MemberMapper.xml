@@ -77,4 +77,19 @@
 	<select id="selectByAddressId" resultType="com.tn.member.model.vo.MyAddressVO">
 		select * from Address where addressId = #{addressId}
 	</select>
+	
+	<update id="modifyAddress" parameterType="com.tn.member.model.dto.MyAddressDTO">
+    	UPDATE Address SET 
+        	receiver_name = #{receiver_name}, 
+        	address_key = #{address_key}, 
+        	receiver_phone = #{receiver_phone}, 
+        	address = #{address}, 
+        	request = #{request}, 
+        	isDefault = #{isDefault}
+    	WHERE addressId = #{addressId};
+	</update>
+	
+	<update id="updateOtherIsDefault" parameterType="String">
+    	UPDATE Address SET isDefault = 'Y' WHERE userId = #{userId} AND isDefault = 'N'
+	</update>
   </mapper>

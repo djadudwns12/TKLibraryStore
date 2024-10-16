@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.member.model.dto.MemberDTO;
-
+import com.tn.member.model.dto.MyAddressDTO;
 import com.tn.member.model.dto.RegisterDTO;
 
 import org.springframework.http.ResponseEntity;
@@ -50,6 +50,9 @@ public interface MemberService {
 
 	// addressId를 이용해 해당 row를 가져오기
 	MyAddressVO selectById(int addressId) throws Exception;
+
+	// 수정할 주소 내용을 객체에 담아서 보내기
+	boolean modifyUpdateAddress(MyAddressDTO addressDTO) throws Exception;
 
 
 

@@ -12,6 +12,7 @@ import com.tn.member.dao.MemberDAO;
 
 import com.tn.member.dao.MemberDAOImpl;
 import com.tn.member.model.dto.MemberDTO;
+import com.tn.member.model.dto.MyAddressDTO;
 import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
@@ -157,6 +158,27 @@ public class MemberServiceImpl implements MemberService {
 	public MyAddressVO selectById(int addressId) throws Exception {
 		
 		return dao.selectById(addressId);
+	}
+
+	@Override
+	public boolean modifyUpdateAddress(MyAddressDTO addressDTO) throws Exception {
+		
+		// keyword와 addressDetail을 결합하여 하나의 주소로 처리
+	    String address = addressDTO.getKeyword() + ", " + addressDTO.getAddressDetail();
+		
+	    // 결합된 주소를 addressDTO에 설정
+	    addressDTO.setAddress(address);
+	    
+	    // isDefault가 'N'일 경우 다른 주소의 isDefault를 'Y'로 업데이트
+	    if ("N".equals(addressDTO.getIsDefault())) {
+	        // 이곳에서 userId를 이용하여 다른 주소의 isDefault를 업데이트하는 메서드를 호출
+	        dao.updateOtherIsDefault(addressDTO.getUserId());
+	    }
+	    
+	    int result = dao.modifyAddress(addressDTO);
+
+	    // 업데이트 성공 여부에 따른 반환값 처리
+	    return result > 0;
 	}
 
 }

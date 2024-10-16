@@ -43,6 +43,7 @@ import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.member.model.vo.MyAddressVO;
+import com.tn.member.model.dto.MyAddressDTO;
 import com.tn.member.model.vo.ProfileResponseWithoutData;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.service.MemberService;
@@ -95,7 +96,7 @@ public class MemberController {
 	
 	@RequestMapping("/modifyAddress")
 	public String modifyAddress(Model model, @RequestParam("addressId") int addressId) {
-		
+		// 수정 페이지에 addressId로 기존 정보 가져오기
 		try {
 			MyAddressVO address = mService.selectById(addressId);
 			
@@ -111,6 +112,29 @@ public class MemberController {
 	@RequestMapping("/insertAddress")
 	public void insertAddress() {
 		
+	}
+	
+	@PostMapping(value="/saveModifyAddress", produces = "application/text; charset=UTF-8;")
+	public ResponseEntity<String> saveModifyAddress(@RequestBody MyAddressDTO addressDTO, HttpSession session) {
+		
+		// 세션에서 로그인된 사용자의 정보 가져오기
+	    MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
+	    System.out.println("배송지 목록을 수정하려는 유저의 아이디 : " + loginMember.getUserId());
+	    
+	    // addressDTO에 userId 설정
+	    addressDTO.setUserId(loginMember.getUserId());
+		
+	    try {
+	        mService.modifyUpdateAddress(addressDTO);
+
+	        System.out.println("수정할 주소 내용 : " + addressDTO.toString());
+	        return ResponseEntity.ok("수정되었습니다.");
+	       
+	    } catch (Exception e) {
+	        e.printStackTrace(); // 예외 로그 출력
+	        // 예외 발생 시 500 서버 오류 응답
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수정 실패");
+	    }
 	}
 	
 

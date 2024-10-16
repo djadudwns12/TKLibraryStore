@@ -6,10 +6,12 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.tn.member.model.dto.MemberDTO;
+import com.tn.member.model.dto.MyAddressDTO;
 import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.member.model.vo.MyAddressVO;
+
 
 @Repository
 public interface MemberDAO {
@@ -45,6 +47,13 @@ public interface MemberDAO {
 
 	// 주소 Id를 가지고 해당 row 가져오기
 	public MyAddressVO selectById(int addressId) throws Exception;
+
+	// 주소 수정
+	public int modifyAddress(MyAddressDTO addressDTO) throws Exception;
+
+	public int updateOtherIsDefault(String userId) throws Exception;
+
+
 
 
 

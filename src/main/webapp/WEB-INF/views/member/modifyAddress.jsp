@@ -217,12 +217,11 @@ input[readonly] {
 </style>
 
 <script type="text/javascript">
-	$(function() {	
-		// 마이페이메뉴 수정
-		mypageNav();
-	});
 	
 	$(document).ready(function() {
+		// 마이페이메뉴 수정
+		mypageNav();
+		
         // 주소를 ',' 기준으로 나누어 input placeholder에 넣기
         var address = "${address.address}";
         var addressParts = address.split(',');
@@ -230,7 +229,44 @@ input[readonly] {
         // 앞 부분을 keyword의 placeholder에, 뒷 부분을 addressDetail의 placeholder에 설정
         document.getElementById('keyword').placeholder = addressParts[0].trim(); // 앞부분
         document.getElementById('addressDetail').placeholder = addressParts[1] ? addressParts[1].trim() : ''; // 뒷부분
+        
+        
+        $('#submitBtn').click(function(event) {
+            event.preventDefault();  // 기본 폼 제출 방지
+            modifyAddress();  // AJAX로 전송
+        });
     });
+	
+	function modifyAddress() {
+	    // 폼 데이터를 객체로 만들기
+	    let addressData = {
+	    	addressId: $('#addressId').val(),
+	        address_key: $('#addrName').val(),
+	        receiver_name: $('#receiver_name').val(),
+	        receiver_phone: $('#receiver_phone').val(),
+	        keyword: $('#keyword').val(),
+	        addressDetail: $('#addressDetail').val(),
+	        request: $('#request').val(),
+	        isDefault: $('#terms').is(":checked") ? 'N' : 'Y'  // 기본 배송지 설정 여부 (체크박스)
+	    };
+
+	    console.log(addressData); // 데이터 확인을 위한 로그
+
+	    // AJAX 요청
+	    $.ajax({
+	        url: '/member/saveModifyAddress',  // Controller로 요청할 URL
+	        type: 'POST',
+	        contentType: 'application/json',  // JSON 타입으로 전송
+	        data: JSON.stringify(addressData),
+	    }).done(function() {
+	        alert('수정 성공');
+	        window.location.href = '/member/address';
+	    }).fail(function(jqXHR) {
+	        console.error('Error:', jqXHR.responseText); // 오류 메시지 로그
+	        alert('수정 실패: ' + jqXHR.status + ' ' + jqXHR.statusText);
+	    });
+	}
+	
 
 	// nav
 	function mypageNav(){
@@ -453,6 +489,9 @@ input[readonly] {
 		<form class="form-container">
 
 			<div class="form-group">
+				<input type="hidden" id="addressId" name="addressId" value="${address.addressId}">
+			</div>
+			<div class="form-group">
 				<input type="text" id="addrName" name="addrName"
 					value="${address.address_key}" required>
 			</div>
@@ -495,13 +534,13 @@ input[readonly] {
 
 			<div class="form-group">
 				<input type="text" id="request" name="request"
-					value="${address.request}" onclick="selectRequest();" required>
+					value="${address.request}" required>
 			</div>
 
 			<!-- 기본 배송지 설정 -->
 			<div id="agreement" style="margin-bottom:0.8em;">
-				<input type="checkbox" id="terms" name="terms" required> <label
-					for="terms">기본 배송지로 설정</label>
+				<input type="checkbox" id="terms" name="terms" <c:if test="${address.isDefault == 'N'}">checked</c:if>> 
+				<label for="terms">기본 배송지로 설정</label>
 			</div>
 			<div style="display: flex;">
 				<button type="submit" class="submit-btn" id="submitBtn">저장</button>
