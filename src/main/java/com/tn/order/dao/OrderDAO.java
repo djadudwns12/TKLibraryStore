@@ -39,6 +39,8 @@ public interface OrderDAO {
 	void updateOrdersToShipping();
 	// 배송중 > 배송완료 UPDATE
 	void updateOrdersToDelivered();
+	// 주문한 책 수량만큼 북리스트 업데이트
+	void updateBook(List<PaymentInfoVO> bookNo);
 	
 	// 주문한 책리스트 SELECT
 //	List<OrderBookListVO> selectBookList(List<String> bookNos);
@@ -48,6 +50,7 @@ public interface OrderDAO {
 // -----------------------------------------엄영준-------------------------------------------------	
   List<BooklistVO> selectOrderList(MemberDTO loginMember)throws Exception;
 // -----------------------------------------엄영준-------------------------------------------------	
+
 
 
 

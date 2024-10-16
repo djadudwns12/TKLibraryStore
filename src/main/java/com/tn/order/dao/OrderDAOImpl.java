@@ -1,6 +1,7 @@
 package com.tn.order.dao;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
@@ -98,6 +99,31 @@ public class OrderDAOImpl implements OrderDAO {
 		ses.update(NS + ".updateOrdersToDelivered");
 		
 	}
+	
+	@Override
+	public void updateBook(List<PaymentInfoVO> bookNo) {
+
+		List<Map<String, Integer>> bookMapList = new ArrayList<>();
+
+	    // 각 PaymentInfoVO 객체에서 필요한 정보를 Map으로 변환
+	    for (PaymentInfoVO book : bookNo) {
+	        Map<String, Integer> bookMap = new HashMap<>();
+	        
+	        // bookNo와 qty 값 가져오기
+	        String qtyStr = book.getQty();  // qty는 String 형태
+	        int qty = Integer.parseInt(qtyStr.trim());  // 문자열을 숫자로 변환
+	        System.out.println(qty);
+	        System.out.println(book.getBookNo());
+	        bookMap.put("bookNo", book.getBookNo());
+	        bookMap.put("qty", qty);
+	        
+	        bookMapList.add(bookMap);
+	    }
+
+	    // 변환된 List<Map>을 MyBatis로 전달
+	    ses.update(NS + ".updateBookNo", bookMapList);
+		
+	}
 
 
 //	@Override
@@ -114,6 +140,8 @@ public class OrderDAOImpl implements OrderDAO {
 		return ses.selectList(NS+".selectOrderList", loginMember);
 	}
 //-----------------------------------------엄영준-------------------------------------------------
+
+
 
 
 

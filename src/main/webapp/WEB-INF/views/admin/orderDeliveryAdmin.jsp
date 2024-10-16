@@ -15,11 +15,108 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+	
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap"
+	rel="stylesheet">
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 
 
 <style>
+
+
+<!--
+폰트 영역 -->* {
+	font-family: "Gowun Batang", serif;
+	font-weight: 400;
+	font-style: normal;
+}
+
+.page-item .page-link {
+	color: #999;
+	background-color: #343a40;
+	border-color: #444;
+}
+
+.page-item.active .page-link {
+	z-index: 1;
+	color: #ccc;
+	font-weight: bold;
+	background-color: #333;
+	border-color: #444;
+}
+
+.page-link:focus, .page-link:hover {
+	color: #ccc;
+	background-color: #222;
+	border-color: #444;
+}
+
+.searchType {
+	border: 1px solid rgba(128, 128, 128, 0.2);
+	border-radius: 22px;
+	position: relative;
+	display: flex;
+	width: 150px;
+	height: 44px;
+}
+
+.btn {
+	border: 1px solid rgba(128, 128, 128, 0.2);
+	border-radius: 22px;
+}
+
+<!--
+검색 바 영역 -->* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+section div {
+	margin: 0 auto;
+	align-items: center;
+}
+
+.searchBar {
+	position: relative;
+	display: flex;
+	width: 600px;
+	height: 44px;
+}
+
+input {
+	border: 1px solid rgba(128, 128, 128, 0.2);
+	border-radius: 22px;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
+
+.searchIcon {
+	position: absolute;
+	top: 14px;
+	left: 20px;
+	opacity: 0.5;
+}
+
+.keyBoard {
+	position: absolute;
+	top: 14px;
+	right: 45px;
+	opacity: 0.8;
+}
+
+.mic {
+	position: absolute;
+	top: 14px;
+	right: 20px;
+	color: #5086ec;
+}
 <!--
 테이블 영역 -->body {
 	color: #666;
@@ -268,11 +365,8 @@ td:hover .book-info-container {
 						<select class="searchType" name="searchType" id="searchType"
 							style="text-align: center">
 							<option value="-1">검색 조건</option>
-							<option value="title">제목</option>
-							<option value="author">작가</option>
-							<option value="introduction">내용</option>
-							<option value="genre">장르</option>
-							<option value="publisher">출판사</option>
+							<option value="userId">사용자</option>
+							<option value="orderName">제품정보</option>
 						</select>
 					</div>
 					<section>
@@ -393,11 +487,11 @@ td:hover .book-info-container {
 
 					<c:if test="${param.pageNo > 1 }">
 						<li class="page-item"><a class="page-link"
-							href="/admin/productAdmin?pageNo=1
+							href="/admin/orderDeliveryAdmin?pageNo=1
 						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">
 								<< </a></li>
 						<li class="page-item"><a class="page-link"
-							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo-1}
+							href="/admin/orderDeliveryAdmin?pageNo=${pagingInfo.pageNo-1}
 						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
 					</c:if>
 
@@ -406,22 +500,22 @@ td:hover .book-info-container {
 						<c:choose>
 							<c:when test="${param.pageNo == i }">
 								<li class="page-item active" id="${i}"><a class="page-link"
-									href="/admin/productAdmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
+									href="/admin/orderDeliveryAdmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item" id="${i}"><a class="page-link"
-									href="/admin/productAdmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
+									href="/admin/orderDeliveryAdmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 
 					<c:if test="${pagingInfo.pageNo < pagingInfo.totalPageCnt}">
 						<li class="page-item"><a class="page-link"
-							href="/admin/productAdmin?pageNo=${pagingInfo.pageNo+1}
+							href="/admin/orderDeliveryAdmin?pageNo=${pagingInfo.pageNo+1}
 						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Next</a></li>
 
 						<li class="page-item"><a class="page-link"
-							href="/admin/productAdmin?pageNo=${pagingInfo.totalPageCnt}
+							href="/admin/orderDeliveryAdmin?pageNo=${pagingInfo.totalPageCnt}
 						&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">
 								>> </a></li>
 					</c:if>
@@ -635,7 +729,7 @@ td:hover .book-info-container {
 	        },
 	        error: function(response) {
 	            console.error(response);
-	            alert("취소 처리 중 오류가 발생했습니다.");
+	            alert("취소 처리 중 오류가 발생했습니다. 다시 시도하세요");
 	        }
 	    });
 
@@ -643,26 +737,35 @@ td:hover .book-info-container {
 	}
 
 	$(function() {
-		console.log($('.orderStatus').text());
-		$('.orderStatus').each(function() {
+	    console.log($('.orderStatus').text());
+	    $('.orderStatus').each(function() {
 	        // 각 .orderStatus 요소에 대해 실행
 	        var orderStatusText = $(this).text().trim();
 
 	        if (orderStatusText == "취소요청") {
 	            // 글자 색상 및 굵기 설정
 	            $(this).css({
-	                'color': 'red',      // 글자 색상 빨간색으로 설정
+	                'color': 'red', // 글자 색상 빨간색으로 설정
 	                'font-weight': 'bold', // 글자를 굵게 설정
-	                'cursor' : 'pointer'
+	                'cursor': 'pointer'
 	            });
 
 	            let orderNo = $(this).data('order-no');
 	            // onclick 이벤트 추가 (prop에서 콜론 추가)
 	            $(this).attr("onclick", "cancel(this,'" + orderNo + "')");
-	            
 	        }
+
+	        if (orderStatusText == "취소완료") {
+	            $(this).css({
+	                'color': 'blue',
+	                'font-weight': 'bold',
+	                'cursor': 'default'
+	            });
+	        }
+
 	    });
-		
+	});
+
 		
 
 		isSelect();
@@ -902,7 +1005,7 @@ td:hover .book-info-container {
 				});
 			}
 		});
-    });
+  
 	
 	function restockBook(item) {
 		console.log(item.title);
@@ -1083,102 +1186,5 @@ td:hover .book-info-container {
 </script>
 
 </body>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap"
-	rel="stylesheet">
-<style>
-<!--
-폰트 영역 -->* {
-	font-family: "Gowun Batang", serif;
-	font-weight: 400;
-	font-style: normal;
-}
-
-.page-item .page-link {
-	color: #999;
-	background-color: #343a40;
-	border-color: #444;
-}
-
-.page-item.active .page-link {
-	z-index: 1;
-	color: #ccc;
-	font-weight: bold;
-	background-color: #333;
-	border-color: #444;
-}
-
-.page-link:focus, .page-link:hover {
-	color: #ccc;
-	background-color: #222;
-	border-color: #444;
-}
-
-.searchType {
-	border: 1px solid rgba(128, 128, 128, 0.2);
-	border-radius: 22px;
-	position: relative;
-	display: flex;
-	width: 150px;
-	height: 44px;
-}
-
-.btn {
-	border: 1px solid rgba(128, 128, 128, 0.2);
-	border-radius: 22px;
-}
-
-<!--
-검색 바 영역 -->* {
-	box-sizing: border-box;
-	padding: 0;
-	margin: 0;
-}
-
-section div {
-	margin: 0 auto;
-	align-items: center;
-}
-
-.searchBar {
-	position: relative;
-	display: flex;
-	width: 600px;
-	height: 44px;
-}
-
-input {
-	border: 1px solid rgba(128, 128, 128, 0.2);
-	border-radius: 22px;
-	width: 100%;
-	height: 100%;
-	text-align: center;
-}
-
-.searchIcon {
-	position: absolute;
-	top: 14px;
-	left: 20px;
-	opacity: 0.5;
-}
-
-.keyBoard {
-	position: absolute;
-	top: 14px;
-	right: 45px;
-	opacity: 0.8;
-}
-
-.mic {
-	position: absolute;
-	top: 14px;
-	right: 20px;
-	color: #5086ec;
-}
-</style>
 </html>
 

@@ -764,27 +764,54 @@ public class AdminController {
 		}
 
 		@RequestMapping("/orderDeliveryAdmin")
-		public String orderDeliveryAdmin(Model model) {
-			List<OrderDeliveryVO> odInfo = odService.orderDeliveryInfo();
-			
-			model.addAttribute("odInfo", odInfo);
-			
-			System.out.println(odInfo.get(0).getOrderBooks());
-		    
+		public String orderDeliveryAdmin(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+		                                 @RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize,
+		                                 @RequestParam(value = "ra", defaultValue = "default") String sortBy, 
+		                                 SearchCriteriaDTO searchCriteria, 
+		                                 HttpServletRequest request, 
+		                                 HttpServletResponse response) {
+			System.out.println(pageNo + "페이징 확인" + pagingSize + "서치" + searchCriteria + "알에이" + sortBy);
+		    PagingInfoDTO dto = PagingInfoDTO.builder().pageNo(pageNo).pagingSize(pagingSize).build();
+		    Map<String, Object> result = null;
+
+		    try {
+		        // 페이징된 주문 목록 가져오기
+		        result = odService.listAllOrderDelivery(dto, searchCriteria, sortBy);
+		        PagingInfo pi = (PagingInfo) result.get("pagingInfo");
+		        
+		        List<OrderDeliveryVO> orderList = (List<OrderDeliveryVO>) result.get("orderList");
+		        System.out.println("보내기전 확인"+pi+"오더리스트도 확인 :" + orderList);
+		        
+		        model.addAttribute("odInfo", orderList); // 페이징된 주문 목록 데이터 바인딩
+		        model.addAttribute("pagingInfo", pi);
+		        model.addAttribute("search", searchCriteria);
+		        model.addAttribute("ra", sortBy);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        model.addAttribute("exception", "error");
+		    }
+
+	
+
 		    return "/admin/orderDeliveryAdmin";
 		}
+
 	
 		
 		@RequestMapping("/cancelOrders")
 		public ResponseEntity<String> cancelOrders(@RequestBody List<String> orderNos) {
 			System.out.println("진입 확인 cancelOrders");
 			
-			odService.cancelOrder(orderNos);
+			try {
+				return new ResponseEntity<String>("취소 성공", HttpStatus.OK);
+			} catch (Exception e) {
+				return new ResponseEntity<String>("취소 실패", HttpStatus.NOT_ACCEPTABLE);
+			}
 		
 			
 			
 		    
-		    return new ResponseEntity<String>("성공", HttpStatus.OK);
+		    
 		}
 		
 		

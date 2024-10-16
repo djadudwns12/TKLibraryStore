@@ -93,6 +93,7 @@ public class OrderServiceImpl implements OrderService {
 				bookNo.get(i).setQty(paymentInfoDTO.getBookQty().get(i));
 			}
 			oDao.insertBooks(bookNo);
+			oDao.updateBook(bookNo);
 			oDao.updatePoint(paymentInfoDTO);
 			System.out.println("포인트 로그 인서트 전 확인을 위한 시스:"+paymentInfoDTO.getOrderPK());
 			if (paymentInfoDTO.getFinalInputPoint() != null && Integer.parseInt(paymentInfoDTO.getFinalInputPoint()) > 0) {

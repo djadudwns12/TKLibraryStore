@@ -69,6 +69,17 @@
 	<update id="updateOrdersToDelivered">
 	    UPDATE `Order` SET orderStatus = '배송완료' WHERE orderDate &lt; DATE_SUB(NOW(), INTERVAL 3 DAY) AND orderStatus = '배송중' AND orderNo IS NOT NULL
 	</update>
+	
+<update id="updateBookNo" >
+    <foreach collection="list" item="book" separator=";">
+        UPDATE BookList SET inven = inven - #{book.qty} WHERE bookNo = #{book.bookNo}
+    </foreach>
+</update>
+
+
+
+
+
 <!-- 박근영 -->
 
 <!-- 엄영준 -->

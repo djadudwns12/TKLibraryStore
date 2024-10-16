@@ -35,16 +35,160 @@
 	    FROM `Order` o
 	    INNER JOIN OrderBook b ON o.orderNo = b.orderNo
 	    INNER JOIN BookList l ON b.bookNo = l.bookNo
-	    ORDER BY o.orderDate DESC
+	    INNER JOIN Member m ON o.orderWho = m.userId 
+	    WHERE m.isDelete = 'N'
+	    ORDER BY o.orderDate DESC LIMIT
+		#{startRowIndex},
+		#{viewPostCntPerPage};
 	</select>
-
 	
-	<select id="selectOrderInfo" resultType="com.tn.admin.model.vo.CancelOrderVODTO">
+	
+	
+	
+	<select id="selectOrderDeliveryInfoWithSort" resultMap="orderResultMap">
+	    SELECT o.orderDate, o.orderStatus, o.orderWho, o.orderAddress, o.usePoint, o.totalPay, 
+	           o.orderNo, o.orderName, b.bookNo, b.qty, l.thumbNail 
+	    FROM `Order` o
+	    INNER JOIN OrderBook b ON o.orderNo = b.orderNo
+	    INNER JOIN BookList l ON b.bookNo = l.bookNo
+	    INNER JOIN Member m ON o.orderWho = m.userId 
+	    WHERE m.isDelete = 'N' 
+	        <choose>
+	            <when test="searchType == 'orderName'">
+	               order by orderName
+	            </when>
+	            <when test="searchType == 'orderWho'">
+	                order by orderWho
+	            </when>
+	        </choose>
+	        DESC LIMIT
+		#{startRowIndex},
+		#{viewPostCntPerPage};
+	</select>
+	
+	<select id="selectAllOrderDelivery" resultMap="orderResultMap">
+	    SELECT o.orderDate, o.orderStatus, o.orderWho, o.orderAddress, o.usePoint, o.totalPay, 
+	           o.orderNo, o.orderName, b.bookNo, b.qty, l.thumbNail 
+	    FROM `Order` o
+	    INNER JOIN OrderBook b ON o.orderNo = b.orderNo
+	    INNER JOIN BookList l ON b.bookNo = l.bookNo
+	    INNER JOIN Member m ON o.orderWho = m.userId 
+	    WHERE ${searchCriteria.searchType} LIKE CONCAT('%', #{searchCriteria.searchWord}, '%')
+	    LIMIT #{pagingInfo.startRowIndex}, #{pagingInfo.pagingSize}
+	</select>
+	
+	<select id="selectAllOrderDeliveryWithSort" resultMap="orderResultMap">
+	    SELECT o.orderDate, o.orderStatus, o.orderWho, o.orderAddress, o.usePoint, o.totalPay, 
+	           o.orderNo, o.orderName, b.bookNo, b.qty, l.thumbNail 
+	    FROM `Order` o
+	    INNER JOIN OrderBook b ON o.orderNo = b.orderNo
+	    INNER JOIN BookList l ON b.bookNo = l.bookNo
+	    INNER JOIN Member m ON o.orderWho = m.userId 
+	    WHERE ${searchCriteria.searchType} LIKE CONCAT('%', #{searchCriteria.searchWord}, '%')
+	    ORDER BY ${sortBy}
+	    LIMIT #{pagingInfo.startRowIndex}, #{pagingInfo.pagingSize}
+	</select>
+	
+	
+
+
+
+	<update id="updateOrderStatus">
+		UPDATE `Order` SET orderStatus = '취소완료' WHERE orderNo IN 
+		<foreach item="orderNo" collection="list" open="(" separator="," close=")">#{orderNo}</foreach>
+	</update>
+	
+	<select id="selectOrderInfo" resultType="com.tn.admin.model.vo.CancelOrderVO">
 		SELECT orderPK, orderWho, usePoint, totalPay FROM `Order` WHERE orderNo IN 
 		<foreach item="orderNo" collection="list" open="(" separator="," close=")">#{orderNo}</foreach>
-	
-	
 	</select>
+	
+	<select id="selectMemberInfo" resultType="com.tn.admin.model.vo.CancelOrderMemberVO">
+		SELECT userId, userTotalPay, userPoint FROM Member WHERE userId IN
+		<foreach item="order" collection="list" open="(" separator="," close=")">#{order.orderWho}</foreach>
+	</select>	
+	
+	<update id="updateMemberPoints">
+		UPDATE Member SET userPoint = #{userPoint}, userTotalPay = #{userTotalPay} WHERE userId = #{userId};
+	</update>
+	
+	<delete id="deletePointLog">
+		DELETE FROM PointLog WHERE pWhy IN <foreach item="order" collection="list" open="(" separator="," close=")">
+		#{order.orderPK}</foreach>
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+<select id="getOrderList" parameterType="com.tn.admin.model.vo.PagingInfo" resultType="com.tn.admin.model.vo.OrderDeliveryVO">
+    SELECT * FROM OrderDelivery
+    LIMIT #{startRowIndex}, #{viewPostCntPerPage}
+</select>
+
+	<select id="getOrderListWithSort" parameterType="map" resultType="com.tn.admin.model.vo.OrderDeliveryVO">
+	    SELECT * FROM OrderDelivery
+	    ORDER BY ${sortBy}
+	    LIMIT #{pagingInfo.startRowIndex}, #{pagingInfo.pagingSize}
+	</select>
+	
+	
+	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+    <!-- 전체 주문 수 가져오기 -->
+    <select id="getTotalOrderCount" resultType="int">
+        SELECT COUNT(*) FROM `Order` o
+	    INNER JOIN OrderBook b ON o.orderNo = b.orderNo
+	    INNER JOIN BookList l ON b.bookNo = l.bookNo
+	    INNER JOIN Member m ON o.orderWho = m.userId 
+	    WHERE m.isDelete = 'N'
+	    ORDER BY o.orderDate DESC
+    </select>
+
+
+
+
+
+
+
+
+    <!-- 검색 조건에 따른 주문 수 가져오기 -->
+<select id="getTotalOrderCountWithSearch" parameterType="com.tn.admin.model.vo.SearchCriteriaDTO" resultType="int">
+    SELECT COUNT(*) 
+    FROM OrderDelivery
+    <where>
+        <choose>
+            <when test="searchType == 'title'">
+                title LIKE CONCAT('%', #{searchWord}, '%')
+            </when>
+            <when test="searchType == 'userId'">
+                userId LIKE CONCAT('%', #{searchWord}, '%')
+            </when>
+        </choose>
+    </where>
+</select>
+
+
+
+
+
+	
+	
 	
 <!-- 박근영 -->
 

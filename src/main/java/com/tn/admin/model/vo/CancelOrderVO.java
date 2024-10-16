@@ -16,11 +16,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CancelOrderVODTO {
+public class CancelOrderVO {
 	private String orderWho; 
 	private int usePoint;
 	private int totalPay;
 	private String orderPK;
-	private int userPoint; 
-	private int userTotalPay;
 }
