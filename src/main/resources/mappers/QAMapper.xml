@@ -70,10 +70,10 @@
 		select * from QA where
 		<choose>
 			<when test="searchType == 'title'">
-				order by qTitle
+				qTitle like #{searchWord} 
 			</when>
 			<when test="searchType == 'writer'">
-				order by qWriter
+				qWriter like #{searchWord} 
 			</when>
 		</choose>
 		<choose>

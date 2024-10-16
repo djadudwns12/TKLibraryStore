@@ -253,6 +253,11 @@ function recentViews() {
 								<td>${pointLog.pScore}</td>
 							</tr>
 						</c:forEach>
+						<c:if test="${pointList.size() == 0}">
+							<tr>
+								<td colspan="3">데이터가 없습니다.</td>
+							</tr>
+						</c:if>
 					</tbody>
 				</table>
 			</div>
@@ -279,6 +284,11 @@ function recentViews() {
 								<td>${order.salePrice}</td>
 							</tr>
 						</c:forEach>
+						<c:if test="${orderList.size() == 0}">
+							<tr>
+								<td colspan="3">데이터가 없습니다.</td>
+							</tr>
+						</c:if>
 					</tbody>
 				</table>
 			</div>
