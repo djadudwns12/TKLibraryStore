@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.member.model.vo.MyAddressVO;
 
 @Service
 public interface MemberService {
@@ -41,6 +42,11 @@ public interface MemberService {
 	// 중복아이디 비교 메서드
 	boolean compareId(String tmpUserId) throws Exception;
 //-----------------------------------------박근영-------------------------------------------------
+
+//-----------------------------------------김가윤-------------------------------------------------
+	
+	// 회원의 주소록을 가져오는 메서드
+	List<MyAddressVO> getAddressList(String userId) throws Exception;
 
 
 

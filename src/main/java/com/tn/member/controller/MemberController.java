@@ -42,6 +42,7 @@ import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.member.model.vo.MyAddressVO;
 import com.tn.member.model.vo.ProfileResponseWithoutData;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.service.MemberService;
@@ -74,6 +75,26 @@ public class MemberController {
 	private OrderService oService;
 	@Autowired
 	private ProfileFileProcess fileProcess;
+	
+// -------------------------------- 김가윤 --------------------------------
+	
+	@RequestMapping("/address")
+	public String bringAddress(Model model,HttpSession session) {
+		String userId = ((MemberVO)session.getAttribute("loginMember")).getUserId();
+		
+		try {
+			List<MyAddressVO> list = mService.getAddressList(userId);
+			
+			model.addAttribute("address", list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "/member/address";
+	}
+	
+
+// -------------------------------- 김가윤 --------------------------------
 
 	
 //	-------------------------------------------------------------(엄영준) Start-----------------------------------------------------------------------------------

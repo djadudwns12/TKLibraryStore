@@ -9,6 +9,7 @@ import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.member.model.vo.MyAddressVO;
 
 @Repository
 public interface MemberDAO {
@@ -35,6 +36,12 @@ public interface MemberDAO {
 	// ID 중복확인 SELECT
 	public int selectId(String tmpUserId) throws Exception;
 //-----------------------------------------박근영-------------------------------------------------
+
+
+//-----------------------------------------김가윤-------------------------------------------------
+
+	// 회원의 주소록을 가져오는 메서드
+	public List<MyAddressVO> getAddressList(String userId) throws Exception;
 
 
 

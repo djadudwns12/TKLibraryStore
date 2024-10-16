@@ -14,6 +14,7 @@ import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.member.model.vo.MyAddressVO;
 
 @Repository
 public class MemberDAOImpl implements MemberDAO  {
@@ -87,8 +88,15 @@ public class MemberDAOImpl implements MemberDAO  {
 	}
 
 //-----------------------------------------박근영-------------------------------------------------
+	
+	
+//-----------------------------------------김가윤-------------------------------------------------
 
-
+	@Override
+	public List<MyAddressVO> getAddressList(String userId) throws Exception {
+		
+		return sess.selectList(NS + ".getAddressList", userId);
+	}
 
 	
 	

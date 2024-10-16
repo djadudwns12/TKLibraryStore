@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.tn.review.model.DTO.ReviewDTO;
-import com.tn.review.model.VO.ReviewVO;
 
 @Repository
 public class ReviewDAOImpl implements ReviewDAO {
@@ -15,20 +14,6 @@ public class ReviewDAOImpl implements ReviewDAO {
 	@Autowired
 	private SqlSession ses;
 	private static String NS = "com.tn.mapper.ReviewMapper";
-	
-	@Override
-	public List<ReviewVO> getRecentReview(String userId) {
-		
-		return ses.selectList(NS + ".getRecentReview", userId);
-	}
-
-	@Override
-	public int insertNewReview(ReviewDTO reviewDTO) {
-		
-		return ses.insert(NS + ".insertNewReview", reviewDTO);
-	}
-
-	// 김가윤 시작
 	
 	@Override
 	public List<ReviewDTO> getReview(int bookNo) throws Exception {

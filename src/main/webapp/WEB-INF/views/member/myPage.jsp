@@ -158,7 +158,7 @@ table.table th {
 	function mypageNav(){
 		let inputHTML = `<li onclick="showHide()"><h5><b>내정보보기<span class="showInfo">▼</span><span class="hideInfo">◀</span></b></h5></li>
 			<li class="myInfo"><a href="/member/edit">ㅤ> 수정</a></li>
-			<li class="myInfo"><a href="/member/mypage">ㅤ> 주소록 관리</a></li>
+			<li class="myInfo"><a href="/member/address">ㅤ> 주소록 관리</a></li>
 			<li><a href="#"><h5><b>찜</b></h5></a></li>
 			<li><a href="/cart/cartPage"><h5><b>장바구니</b></h5></a></li>
 			<li><a href="#"><h5><b>알림</b></h5></a></li>

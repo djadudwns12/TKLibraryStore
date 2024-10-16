@@ -67,4 +67,10 @@
   	<select id="getMemberList" resultType="com.tn.member.model.vo.MemberVO">
   		select * from Member order by userId;
   	</select>
+  	
+<!-- 김가윤 -->
+
+	<select id="getAddressList" resultType="com.tn.member.model.vo.MyAddressVO">
+		select * from Address where userId = #{userId}
+	</select>
   </mapper>

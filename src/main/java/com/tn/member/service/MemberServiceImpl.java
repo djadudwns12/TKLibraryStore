@@ -15,6 +15,7 @@ import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.member.model.vo.MyAddressVO;
 
 import java.io.IOException;
 import java.util.Random;
@@ -151,7 +152,15 @@ public class MemberServiceImpl implements MemberService {
 
 //-----------------------------------------박근영-------------------------------------------------
 
+//-----------------------------------------김가윤-------------------------------------------------
+
+	@Override
+	public List<MyAddressVO> getAddressList(String userId) throws Exception {
 		
+		List<MyAddressVO> list = dao.getAddressList(userId);
+		
+		return list;
+	}
 
 
 }

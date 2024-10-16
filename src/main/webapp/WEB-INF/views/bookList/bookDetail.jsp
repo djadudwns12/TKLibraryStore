@@ -482,7 +482,24 @@
 											</div>
 											
 											<div class="reviewList">
-												${review}
+												<c:forEach var="review" items="${review}">
+													<div class="review-item" data-review-content="${review.reviewContent}">
+														<div class="review-content">
+															<p>${review.reviewWriter}</p>
+															<p>${review.reviewDate}</p>
+															<p>${review.reviewContent}</p>
+															<p>${review.reviewScore}</p>
+															<div class="reviewArea" style="display: flex; align-items: center; gap: 5px;">
+												<div class="rating">
+													<i class="rating__star far fa-star"></i> <i
+														class="rating__star far fa-star"></i> <i
+														class="rating__star far fa-star"></i> <i
+														class="rating__star far fa-star"></i> <i
+														class="rating__star far fa-star"></i>
+												</div>
+														</div>
+													</div>
+												</c:forEach>
 											</div>
 											<p></p>
 										</div>
