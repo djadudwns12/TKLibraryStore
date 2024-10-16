@@ -31,4 +31,9 @@
   	select * from Review where bookNo = #{bookNo}
   </select>
   
+  <insert id="insertReviewDTO">
+  	insert into Review (reviewWriter, reviewContent, reviewScore, bookNo) 
+  	value (#{reviewWriter}, #{reviewContent}, #{reviewScore}, #{bookNo})
+  </insert>
+  
   </mapper>

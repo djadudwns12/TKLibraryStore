@@ -1,6 +1,6 @@
 package com.tn.review.model.DTO;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,10 +17,10 @@ import lombok.ToString;
 @ToString
 @Builder
 public class ReviewDTO {
-	private int reviewNo;
+	private int reviewId;
+	private Timestamp reviewDate;
 	private String reviewWriter;
 	private String reviewContent;
-	private Date reviewDate;
 	private int reviewScore;
 	private int bookNo;
 	

@@ -12,7 +12,9 @@ public interface ReviewService {
 	// ---------------------------------------------- 김가윤 ---------------------------------------------- 
 	
 	// bookNo번 책의 리뷰를 가져오는 메소드
-	List<ReviewDTO> getBookNoReview(int bookNo) throws Exception;
+	List<ReviewVO> getBookNoReview(int bookNo) throws Exception;
+
+	boolean insertReview(ReviewDTO reviewDTO) throws Exception;
 
 	
 

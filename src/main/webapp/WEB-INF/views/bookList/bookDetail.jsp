@@ -91,6 +91,9 @@
 		executeRating(ratingStars); */
 		
 		
+		$('.nav-tabs .nav-item a[href="#tabs-2"]').tab('show');
+		
+		
 		
 		// 로그인 이전에 적은 내용을 다시 집어 넣음
 		$('#review').html(localStorage.getItem('reviewContent'));
@@ -227,6 +230,7 @@
 		}
 	}
 	
+	// 수정했음(김가윤)
 	function executeRating(starGroups) {
 		  const starClassActive = "rating__star fas fa-star";
 		  const starClassInactive = "rating__star far fa-star";
@@ -270,7 +274,7 @@
 		}
 	}
 	
-	
+	// ------------------------ 김가윤 ------------------------
 	function saveReview() {
 		let reviewWriter = validReviewWriter();
 		let bookNo = '${param.bookNo}';
@@ -286,18 +290,36 @@
 			alert('별점을 입력해주세요.');
 		} else {
 			const reviewData = {
-					'reviewWriter' : reviewWriter,
 					'reviewContent' : reviewContent,
 					'reviewScore' : reviewScore,
 					'bookNo' : bookNo
 				};
 				
 				console.log(JSON.stringify(reviewData));
-		}
-		
-		
 				
+				$.ajax({
+					url:'/review/insertReview',
+					type:'POST',
+					contentType:'application/json',
+					data:JSON.stringify(reviewData),
+					success: function(response) {
+		                alert('리뷰가 성공적으로 저장되었습니다.');
+		            },
+		            error: function(xhr, status, error) {
+		                alert('리뷰 저장 중 오류가 발생했습니다: ' + error);
+		                console.error('Error details:', xhr.responseText); // 오류 로그 출력
+		            }
+				});
+		}		
 	}
+	
+	function editReview(reviewId, element) {
+		console.log(reviewId);
+		console.log(element);
+	}
+	
+	// ------------------------ 김가윤 ------------------------
+	
 	
 	// localStorege에 최근본 책 넣는 내용
 	function setRecenyBook(){
@@ -495,18 +517,26 @@
 													<div class="review-item" data-review-content="${review.reviewContent}">
 														<div class="review-content">
 															<p>${review.reviewWriter}</p>
-															<p>${review.reviewDate}</p>
+															<p><fmt:formatDate value="${review.reviewDate}" pattern="yyyy-MM-dd" /></p>
 															<p>${review.reviewContent}</p>
+															
 															<div class="reviewArea" style="display: flex; align-items: center; gap: 5px;">
-												<div class="showRating">
-													<c:forEach begin="1" end="${review.reviewScore}">
-														<i class="rating__star fas fa-star"></i> 
-													</c:forEach>
-													<c:forEach begin="1" end="${5-review.reviewScore}">
-														<i class="rating__star far fa-star"></i> 
-													</c:forEach>
-												</div>
-														</div>
+																<div class="showRating">
+																	<c:forEach begin="1" end="${review.reviewScore}">
+																		<i class="rating__star fas fa-star"></i> 
+																	</c:forEach>
+																	<c:forEach begin="1" end="${5-review.reviewScore}">
+																		<i class="rating__star far fa-star"></i> 
+																	</c:forEach>
+																</div>
+															</div>
+															
+															<!-- 세션에 저장된 userId와 reviewWriter 비교 -->
+													     	<c:if test="${sessionScope.loginMember.userId != null && sessionScope.loginMember.userId == review.reviewWriter}">
+													     		<button onclick="editReview()">수정</button>
+													     		<button onclick="deleteReview()">삭제</button>
+													     	</c:if>
+													     </div>													     
 													</div>
 												</c:forEach>
 											</div>

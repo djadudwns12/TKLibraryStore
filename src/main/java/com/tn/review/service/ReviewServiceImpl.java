@@ -29,13 +29,28 @@ public class ReviewServiceImpl implements ReviewService {
 	// ---------------------------------------------- 김가윤 ---------------------------------------------- 
 
 	@Override
-	public List<ReviewDTO> getBookNoReview(int bookNo) throws Exception {
+	public List<ReviewVO> getBookNoReview(int bookNo) throws Exception {
 		
 		System.out.println("ReviewServiceImpl 리뷰 가져오기 : " + bookNo + "번 글");
 		
-		List<ReviewDTO> list = reviewDao.getReview(bookNo);
+		List<ReviewVO> list = reviewDao.getReview(bookNo);
 		
 		return list;
+	}
+
+
+	@Override
+	public boolean insertReview(ReviewDTO reviewDTO) throws Exception {
+		
+		boolean result = false;
+		
+		if(reviewDao.insertReview(reviewDTO) == 1) {
+			result = true;
+		} else {
+			result = false;
+		}
+		
+		return result;
 	}
 
 	
