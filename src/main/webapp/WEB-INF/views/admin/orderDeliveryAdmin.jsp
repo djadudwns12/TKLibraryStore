@@ -652,13 +652,20 @@ td:hover .book-info-container {
 	    $('input[name="proCheck"]:checked').each(function() {
 	        let orderNo = $(this).val();  // 체크된 체크박스의 value (주문번호)
 	        let element = $(this).closest('tr').find('.orderStatus');  // 해당 주문의 상태를 표시하는 element
-	        
+	        console.log(element);
+	        if(element.text() == "취소완료"){
+	        	alert("취소가 완료된 주문 건이 포함되어 있습니다.");
+	        	return false;
+	        }
 	        // 주문번호와 element를 객체로 저장
 	        selectedOrders.push({
 	            orderNo: orderNo,
 	            element: element
 	        });
 	    });
+	    if ($('input[name="proCheck"]:checked').length !== selectedOrders.length) {
+	        return;  // 함수 전체 종료
+	    }
 	
 	    // 선택된 주문이 있을 때 cancel 호출
 	    if (selectedOrders.length > 0) {
