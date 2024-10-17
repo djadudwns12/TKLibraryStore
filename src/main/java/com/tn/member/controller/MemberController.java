@@ -357,16 +357,20 @@ public class MemberController {
 
 	// 회원정보 불러오기
 	@RequestMapping("/edit")
-	public void getEditMember(HttpServletRequest request) {
+	public void getEditMember(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
-		MemberVO loginMember = (MemberVO)session.getAttribute("loginMember");
-//		MemberVO loginMember = mService.getEditMemberInfo(((MemberVO)ses.getAttribute("loginMember")).getUserId()); // HttpSession ses
+		MemberVO loginMember = null;
+		MemberVO editMember= null;
+		loginMember = (MemberVO)session.getAttribute("loginMember");
 		String userId = loginMember.getUserId();
 		try {
-			MemberVO editMember = mService.getEditMemberInfo(userId);
+			editMember = mService.getEditMemberInfo(userId);
+			System.out.println(editMember.toString());
+			model.addAttribute("loginMember", editMember);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 	// 회원정보 수정 > 저장
 	@RequestMapping("/saveMemberEdit")
