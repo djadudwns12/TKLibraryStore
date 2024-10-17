@@ -317,7 +317,7 @@ public class MemberController {
 	
 //-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
 
-	@RequestMapping(value = "/mypage")
+	@RequestMapping(value = "/myPage")
 	public String myPage(MemberDTO loginMember,Model model,HttpSession sess) {
 
 		try {
@@ -370,17 +370,15 @@ public class MemberController {
 	}
 	// 회원정보 수정 > 저장
 	@RequestMapping("/saveMemberEdit")
-	public String modifyInfoSave (MemberVO editMember, RedirectAttributes redirectAttributes) {
-		try {
-			if(mService.saveEditInfo(editMember)) {
-				redirectAttributes.addAttribute("editStatus", "success");
-				return "/member/myPage";
-			}
-		} catch (Exception e) {
-			redirectAttributes.addAttribute("editStatus", "fail");
-			e.printStackTrace();
-		}
-		return "redirect:/member/edit";
+	public String modifyInfoSave (MemberVO editMember) {
+	    try {
+	        if (mService.saveEditInfo(editMember)) {
+	            return "redirect:/member/myPage";
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return "redirect:/member/edit";
 	}
 	
 	// 회원 이미지 변경>저장	// 쪼개져서온 'file' 파일을 재조립해주는 인터페이스 MultipartFile, @RequestParam로 save
