@@ -57,4 +57,10 @@ public class ReviewDAOImpl implements ReviewDAO {
 		return ses.delete(NS + ".deleteReview", reviewNo);
 	}
 
+	@Override
+	public int reviewCnt(int bookNo) throws Exception {
+		
+		return ses.selectOne(NS + ".reviewCnt", bookNo);
+	}
+
 }

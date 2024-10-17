@@ -49,4 +49,8 @@
   	delete from Review where reviewNo = #{reviewNo}
   </delete>
   
+  <select id="reviewCnt" resultType="int">
+  	select count(*) from Review where bookNo = #{bookNo}
+  </select>
+  
   </mapper>

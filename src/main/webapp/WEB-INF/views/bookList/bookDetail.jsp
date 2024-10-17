@@ -523,7 +523,7 @@
 								<div class="product__details__rating">
 									<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
 										class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-										class="fa fa-star-half-o"></i> <span>(18 reviews)</span>
+										class="fa fa-star-half-o"></i> <span>(${reviewCnt}개의 리뷰)</span>
 								</div>
 								<div class="author">${bookInfo.author}지음</div>
 								<div class="information">
@@ -590,7 +590,7 @@
 										aria-selected="true">책 소개</a></li>
 
 									<li class="nav-item"><a class="nav-link" data-toggle="tab"
-										href="#tabs-2" role="tab" aria-selected="false">회원 리뷰<span>()</span></a></li>
+										href="#tabs-2" role="tab" aria-selected="false">회원 리뷰<span>(${reviewCnt}개)</span></a></li>
 
 								</ul>
 								<div class="tab-content">

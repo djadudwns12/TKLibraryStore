@@ -31,4 +31,6 @@ public interface ReviewDAO {
 	int updateReview(ReviewDTO reviewDTO) throws Exception;
 
 	int deleteReview(int reviewNo) throws Exception;
+
+	int reviewCnt(int bookNo) throws Exception;
 }
