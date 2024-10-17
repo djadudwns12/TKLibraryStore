@@ -17,15 +17,15 @@ public class ReviewDAOImpl implements ReviewDAO {
 	private static String NS = "com.tn.mapper.ReviewMapper";
 	
 	@Override
-	public List<ReviewVO> getRecentReview(String userId) {
+	public List<ReviewVO> getReview(int bookNo) throws Exception {
 		
-		return ses.selectList(NS + ".getRecentReview", userId);
+		return ses.selectList(NS + ".getReviewWithBookNo", bookNo);
 	}
 
 	@Override
-	public int insertNewReview(ReviewDTO reviewDTO) {
+	public int insertReview(ReviewDTO reviewDTO) throws Exception {
 		
-		return ses.insert(NS + ".insertNewReview", reviewDTO);
+		return ses.insert(NS + ".insertReviewDTO", reviewDTO);
 	}
 
 

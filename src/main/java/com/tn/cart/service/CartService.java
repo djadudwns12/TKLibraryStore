@@ -19,5 +19,7 @@ public interface CartService {
 
 	int getCartCnt(String userId) throws Exception;
 
+	boolean insertCart(CartVO cartVO) throws Exception;
+
 
 }

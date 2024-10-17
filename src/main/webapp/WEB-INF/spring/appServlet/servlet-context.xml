@@ -75,6 +75,9 @@
 			
 			<mapping path="/member/edit"/>
       		<mapping path="/member/mypage" />
+      		<mapping path="/member/address" />
+      		<mapping path="/member/modifyAddress" />
+      		<mapping path="/member/insertAddress" />
       
 			<beans:ref bean="authInterceptor"/>
 		

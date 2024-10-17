@@ -25,6 +25,8 @@ import com.tn.booklist.model.dto.PagingInfoDTO;
 import com.tn.booklist.model.vo.BookDetailInfo;
 import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.booklist.service.BooklistService;
+import com.tn.review.model.VO.ReviewVO;
+import com.tn.review.service.ReviewService;
 import com.tn.util.GetClientIPAddr;
 
 /**
@@ -38,6 +40,9 @@ public class BookListController {
 	
 	@Autowired
 	private BooklistService bService;
+	
+	@Autowired
+	private ReviewService reviewService;
 
 	
 	// 책 전체 리스트를 불러오는 메서드 
@@ -107,6 +112,8 @@ public class BookListController {
 		
 		String returnBDetail = "";
 		List<BookDetailInfo> bookDetailInfo = null;
+		
+		List<ReviewVO> reviewVO = null;// 김가윤 : 리뷰 리스트 불러오기
 
 	         String ipAddr = GetClientIPAddr.getClientIP(request);
 //	         System.out.println(ipAddr + "가 " + bookNo + "번 책 정보를 검색한다!!");
@@ -119,6 +126,7 @@ public class BookListController {
 	        	  	
 			        returnBDetail = "/bookList/bookDetail";
 			        bookDetailInfo = bService.read(bookNo, ipAddr);
+			        reviewVO = reviewService.getBookNoReview(bookNo);// 김가윤 : 리뷰 리스트 불러오기
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -126,9 +134,11 @@ public class BookListController {
 	         }
 
 	      model.addAttribute("bookDetailInfo", bookDetailInfo);
+	      model.addAttribute("review", reviewVO);// 김가윤 : 리뷰 리스트 불러오기
 
 		
 		return returnBDetail;
+		
 		
 	}
 	

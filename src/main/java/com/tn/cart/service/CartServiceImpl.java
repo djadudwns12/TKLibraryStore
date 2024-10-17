@@ -19,7 +19,6 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public List<CartDTO> getCartList(String userId) throws Exception {
-		System.out.println("CartServiceImpl : " + userId + " Cart List");
 		
 		List<CartDTO> list = cDao.selectCartList(userId);
 		
@@ -28,7 +27,6 @@ public class CartServiceImpl implements CartService {
 	
 	@Override
 	public float getPointRate(String userId) throws Exception {
-		System.out.println("CartServiceImpl : " + userId + "의 적립률을 가져오자.");
 		
 		float pointRate = cDao.getPointRate(userId);
 		
@@ -37,7 +35,6 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public boolean deleteCartById(String cartId) throws Exception {
-		System.out.println("CartServiceImpl : " + cartId + "���� ��������~~~~~~~");
 		
 		boolean result = false;
 		
@@ -49,7 +46,6 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public boolean updateQuantity(int cartId, int qty) throws Exception {
-		System.out.println("CartServiceImpl : " + cartId + "���� ������ " + qty + "�� ��������~~~~~");
 		
 		boolean result = false;
 		
@@ -62,7 +58,6 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public boolean deleteCartsByIds(List<Integer> cartIds) throws Exception {
-	    System.out.println("CartServiceImpl : 삭제할 cartId - " + cartIds);
 	    
 	    boolean result = false;
 	    
@@ -88,6 +83,19 @@ public class CartServiceImpl implements CartService {
 		CartCnt = cDao.getCartCnt(userId);
 		
 		return CartCnt;
+	}
+
+	@Override
+	public boolean insertCart(CartVO cartVO) throws Exception {
+		boolean result = false;
+		
+		if(cDao.insertCart(cartVO) == 1) {
+			result = true;
+		} else {
+			result = false;
+		}
+		
+		return result;
 	}
 
 	

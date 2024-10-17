@@ -19,4 +19,6 @@ public interface CartDAO {
 
 	int getCartCnt(String userId) throws Exception;
 
+	int insertCart(CartVO cartVO) throws Exception;
+
 }

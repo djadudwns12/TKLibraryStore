@@ -103,7 +103,7 @@
 
    <div class="container">
       <button type="button" class="btn btn-outline-danger"
-         id="deleteSelectedButton">선택삭제</button>
+         id="deleteSelectedButton" style="margin-bottom:0.5em;">선택삭제</button>
       <form>
       <div style="max-height: 500px; overflow-y: auto;">
          <table class="table table-hover">

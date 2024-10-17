@@ -1,41 +1,44 @@
 package com.tn.review.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tn.member.model.vo.MemberVO;
 import com.tn.review.model.DTO.ReviewDTO;
 import com.tn.review.service.ReviewService;
 
+
 @Controller
-@RequestMapping("/bookList")
+@RequestMapping("/review")
 public class ReviewController {
 	
 	@Autowired
 	private ReviewService rService;
-	
-	@RequestMapping(value="/bookDetail", method = RequestMethod.POST)
-	private String saveNewReview(ReviewDTO reviewDTO, RedirectAttributes redirectAttributes) throws Exception {
+
+
+	@PostMapping(value="/insertReview", produces = "application/text; charset=UTF-8;")
+	public ResponseEntity<String> insertReview(@RequestBody ReviewDTO reviewDTO, HttpSession session) {
+		MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
+		System.out.println("리뷰 작성한 유저 아이디 : " + loginMember.getUserId());
 		
-		System.out.println("This is review!!!! " + reviewDTO.toString());
-
-		String returnPage = "redirect: /bookList/bookDetail";
+		reviewDTO.setReviewWriter(loginMember.getUserId());
+		
 		try {
-			if (rService.saveBoard(reviewDTO)) { // 리뷰 글 저장에 성공했다면
-				redirectAttributes.addAttribute("status", "success");
-
-			}
-		} catch (Exception e) { // 리뷰 글 저장에 실패했다면..
+			rService.insertReview(reviewDTO);
+			System.out.println("작성한 리뷰 내용 : " + reviewDTO.toString());
+			
+			return ResponseEntity.ok("리뷰 저장");
+		} catch (Exception e) {
 			e.printStackTrace();
-
-			redirectAttributes.addAttribute("status", "fail");
+			
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("저장 실패");
 		}
-
-		return returnPage; 
 	}
-
 } 
