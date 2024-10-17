@@ -44,12 +44,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.MyResponseWithoutData;
 import com.tn.admin.model.vo.ProductVO;
+import com.tn.admin.service.ProductAdminService;
 import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.member.model.vo.MyAddressVO;
 import com.tn.member.model.dto.MyAddressDTO;
+import com.tn.member.model.vo.PointLogVO;
 import com.tn.member.model.vo.ProfileResponseWithoutData;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.service.MemberService;
@@ -80,6 +82,9 @@ public class MemberController {
 	private MemberService mService;
 	@Autowired
 	private OrderService oService;
+	@Autowired
+	private ProductAdminService pService;
+	
 	@Autowired
 	private ProfileFileProcess fileProcess;
 	
@@ -227,6 +232,10 @@ public class MemberController {
 				// 로그인 한 유저 세션에 저장하기
 				session.setAttribute("loginMember", loginMember);
 				model.addAttribute("status", "loginSuccess");
+				// 방문자 수에 추가하는 메서드
+				boolean addVisitHistory =  mService.addVisitHistory();
+				System.out.println("방문자 추가 성공여부 : "+ addVisitHistory);
+				
 			} else { // 로그인 실패시
 				System.out.println("로그인 실패");
 				model.addAttribute("status", "loginFail");
@@ -281,7 +290,70 @@ public class MemberController {
 //	public void gotoMyPage(Model model,HttpSession sess) {
 //		model.addAttribute("loginMember", (MemberVO)sess.getAttribute("loginMember"));
 //	}
+	@RequestMapping("/OrderStatus")
+	public String OrderStatus(HttpSession sess,Model model) {
+		
+		try {
+			// 회원의 정보 불러오기
+			MemberVO loginMember = (MemberVO) sess.getAttribute("loginMember");
+			// 회원이 주문한 목록을 불러오는 메서드
+			List<OrderVO> orderList =oService.getOrderList(MemberDTO.builder().userId(loginMember.getUserId()).build());
+			
+			System.out.println(orderList.toString());
+			
+			model.addAttribute("orderList", orderList);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		return "/member/OrderStatus";
+	}
 	
+	
+//-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
+
+
+	// -----------------------------------------최미설-------------------------------------------------
+	/**
+	 * @작성자 : 최미설
+	 * @작성일 : 2024. 9. 6.
+	 * @method_name : getMemberInfo
+	 * @param :String userId(로그인 기능 구현 이후 세션에서 로그인 정보 받아와서 파라미터로 받을 예정)
+	 * @param :Model  model
+	 * @return : memberVO
+	 * @throws :
+	 * @description : 회원정보수정을 위해 회원정보를 불러오는 메서드
+	 */
+
+	@RequestMapping(value = "/edit")
+	public void getEditMemeberInfo(HttpSession ses,  Model model) { 
+		try {
+			MemberVO loginMember = mService.getEditMemberInfo(((MemberVO)ses.getAttribute("loginMember")).getUserId());
+			System.out.println(loginMember.toString());
+			model.addAttribute("loginMember", loginMember);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * @작성자 : 최미설
+	 * @작성일 : 2024. 9. 9.
+	 * @클래스명 : MemberController
+	 * @메서드명 : saveEditInfo
+	 * @param : MemberDTO, RedirectAttributes
+	 * @return : void
+	 * @throws
+	 * @description : 회원정보수정 페이지에서 수정된 정보를 저장하는 메서드
+	 *
+	 */
 	@RequestMapping(value = "/mypage")
 	public String myPage(MemberDTO loginMember,Model model,HttpSession sess) {
 
@@ -290,17 +362,29 @@ public class MemberController {
 			model.addAttribute("loginMember", (MemberVO) sess.getAttribute("loginMember"));
 			
 			// 회원의 주문목록을 불러오는 메서드
-			List<BooklistVO> list = oService.getOrderList(loginMember);
+			List<BooklistVO> list = oService.getRecentOrderList(loginMember);
+			
+			// 회원의 찜목록을 불러오는 메서드
+			List<BooklistVO> zzimList = pService.getZzimList(loginMember);
+			
+			// 회원의 포인트 적립내역을 가지고 오는 메서드
+			List<PointLogVO> pointList = mService.getPointLog(loginMember);
+			
+			
 			
 			System.out.println(list);
+			System.out.println(zzimList);
 			
 			//model.addAttribute("orderList", list);
 			model.addAttribute("orderList", list);
+			model.addAttribute("zzimList", zzimList);
+			model.addAttribute("pointList", pointList);
+			model.addAttribute("status", "editSuccess");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return "/member/mypage";
+		return "/member/myPage";
 
 	}
 //-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------

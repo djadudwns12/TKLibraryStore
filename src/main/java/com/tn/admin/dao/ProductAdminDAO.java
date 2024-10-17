@@ -13,6 +13,8 @@ import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.model.vo.SalesVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
 import com.tn.admin.model.vo.TopPublisherVO;
+import com.tn.booklist.model.vo.BooklistVO;
+import com.tn.member.model.dto.MemberDTO;
 
 @Repository
 public interface ProductAdminDAO {
@@ -79,6 +81,7 @@ public interface ProductAdminDAO {
 			String base64ProfileImg) throws Exception;
 
 	
+	List<BooklistVO> selectZzimList(MemberDTO loginMember) throws Exception;
 
 	
 

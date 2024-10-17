@@ -16,7 +16,7 @@ import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.member.model.vo.MyAddressVO;
-
+import com.tn.member.model.vo.PointLogVO;
 
 @Repository
 public class MemberDAOImpl implements MemberDAO  {
@@ -108,10 +108,23 @@ public class MemberDAOImpl implements MemberDAO  {
 		return sess.insert(NS + ".insertRegisterAddress", paramMap);
 	}
 
-
-
+	
 
 //-----------------------------------------박근영-------------------------------------------------
+
+//-----------------------------------------엄영준-------------------------------------------------
+	@Override
+	public int mergeIntoVisitHistor() {
+		// TODO Auto-generated method stub
+		return sess.insert(NS + ".mergeIntoVisitHistor");
+	}
+	
+	@Override
+	public List<PointLogVO> selectPointLog(MemberDTO loginMember) throws Exception {
+		// TODO Auto-generated method stub
+		return sess.selectList(NS + ".selectPointLog",loginMember);
+	}
+//-----------------------------------------엄영준-------------------------------------------------
 	
 	
 //-----------------------------------------김가윤-------------------------------------------------

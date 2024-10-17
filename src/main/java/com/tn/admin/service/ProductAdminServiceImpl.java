@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tn.admin.model.vo.*;
+import com.tn.booklist.model.vo.BooklistVO;
+import com.tn.member.model.dto.MemberDTO;
 import com.tn.admin.dao.ProductAdminDAO;
 
 @Service
@@ -328,6 +330,13 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 
         workbook.close();
 		
+	}
+
+
+	@Override
+	public List<BooklistVO> getZzimList(MemberDTO loginMember) throws Exception {
+		
+		return pDao.selectZzimList(loginMember);
 	}
 
 

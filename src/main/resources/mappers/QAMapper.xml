@@ -6,7 +6,11 @@
 
 	<!-- Q&A목록을 가지고오는 쿼리문 -->
 	<select id="selectByUserIdQAList" resultType="QAVO">
-		select * from QA where qWriter=#{userId} order by qNo desc;
+		SELECT q.*, m.isDelete 
+		FROM QA q
+		INNER JOIN Member m 
+		ON q.qWriter = m.userId 
+		WHERE m.isDelete = 'N' and q.qWriter=#{userId} order by qNo desc
 	</select>
 	<!-- QA 상세보기 보여주는 쿼리문 -->
 	<select id="selectQADetail" resultType="QAVO">
@@ -66,10 +70,10 @@
 		select * from QA where
 		<choose>
 			<when test="searchType == 'title'">
-				order by qTitle
+				qTitle like #{searchWord} 
 			</when>
 			<when test="searchType == 'writer'">
-				order by qWriter
+				qWriter like #{searchWord} 
 			</when>
 		</choose>
 		<choose>

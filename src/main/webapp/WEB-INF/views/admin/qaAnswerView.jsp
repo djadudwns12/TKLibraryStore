@@ -79,6 +79,28 @@ body {
 .jemok {
    margin-left: 30px;
 }
+.searchType {
+	border: 1px solid rgba(128, 128, 128, 0.2);
+	border-radius: 22px;
+	position: relative;
+	display: flex;
+	width: 150px;
+	height: 44px;
+}
+.searchBar {
+	position: relative;
+	display: flex;
+	width: 600px;
+	height: 44px;
+}
+
+input {
+	border: 1px solid rgba(128, 128, 128, 0.2);
+	border-radius: 22px;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -128,6 +150,15 @@ body {
 	}
 	$(function () {
 		
+		let searchType = '${search.searchType}'
+		let searchWord = '${search.searchWord}'
+		
+		
+		if(searchType !=''){
+			$('#searchType').val(searchType).prop("selected", true);
+		}
+		$('#searchWord').val(searchWord);
+		
 		// 페이지 로딩시 선택한 선택한것이 선택되어 있도록 하는 함수
 		isSelect()
 		
@@ -156,7 +187,9 @@ body {
 	
 	function isSelect(){
 		let selectSort = '${ra}'
+		let pagingSize = '${param.pagingSize}'
 		$('#sortByWhat').val(selectSort).prop('selected',true);
+		$('#pagingSize').val(pagingSize).prop('selected',true);
 	}
 </script>
 
@@ -219,7 +252,7 @@ body {
                
                   <div class="boardControll">
                      <select class="form-select pagingSize" id="pagingSize" style="width: 150px ">
-                        <option value="0">정렬 기준</option>
+                        <option value="10">정렬 기준</option>
                         <option value="10">10개씩 보기</option>
                         <option value="20">20개씩 보기</option>
                         <option value="30">30개씩 보기</option>
@@ -232,7 +265,7 @@ body {
             <table>
                <thead>
                   <tr>
-                     <th><input type="checkbox" id="allck" onclick="selectAll(this)"></th>
+                     <!-- <th><input type="checkbox" id="allck" onclick="selectAll(this)"></th> -->
                      <th>번호</th>
                      <th>제목</th>
                      <th>작성자</th>
@@ -243,7 +276,7 @@ body {
                <tbody>
                   <c:forEach var="qa" items="${qaList}">
                      <tr onclick="location.href='/admin/qaAnswer?qNo=${qa.qNo}'">
-                        <td><input type="checkbox" name="proCheck" value="${qa.qNo}" onclick="checkallYN(this)"></td>
+                        <%-- <td><input type="checkbox" name="proCheck" value="${qa.qNo}" onclick="checkallYN(this)"></td> --%>
                         <td>${qa.qNo}</td>
                         <td>${qa.qTitle}</td>
                         <td>${qa.qWriter}</td>
@@ -259,13 +292,13 @@ body {
 
             <ul class="pagination">
 
-               <c:if test="${param.pageNo > 1 }">
+               <c:if test="${pagingInfo.pageNo > 1 }">
                   <li class="page-item"><a class="page-link"
                      href="/admin/qaAnswerView?pageNo=1
-                  &pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> << </a></li>
+                  &pagingSize=${pagingInfo.viewPostCntPerPage}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> << </a></li>
                   <li class="page-item"><a class="page-link"
                      href="/admin/qaAnswerView?pageNo=${pagingInfo.pageNo-1}
-                  &pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
+                  &pagingSize=${pagingInfo.viewPostCntPerPage}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
                </c:if>
 
                <c:forEach var="i" begin="${pagingInfo.startPageNoCurBlock }"
@@ -282,14 +315,14 @@ body {
                   </c:choose>
                </c:forEach>
 
-               <c:if test="${param.pageNo < pagingInfo.totalPageCnt}">
+               <c:if test="${pagingInfo.pageNo < pagingInfo.totalPageCnt}">
                   <li class="page-item"><a class="page-link"
                      href="/admin/qaAnswerView?pageNo=${pagingInfo.pageNo+1}
-                  &pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Next</a></li>
+                  &pagingSize=${pagingInfo.viewPostCntPerPage}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Next</a></li>
                   
                   <li class="page-item"><a class="page-link"
                      href="/admin/qaAnswerView?pageNo=${pagingInfo.totalPageCnt}
-                  &pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> >> </a></li>
+                  &pagingSize=${pagingInfo.viewPostCntPerPage}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> >> </a></li>
                </c:if>
             </ul>
          </div>

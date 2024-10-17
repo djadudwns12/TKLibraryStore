@@ -6,11 +6,15 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tn.admin.dao.MemberAdminDAO;
+import com.tn.admin.model.vo.MemberAgeVO;
+import com.tn.admin.model.vo.MemberClassVO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
+import com.tn.admin.model.vo.VisitHistory;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.order.model.vo.OrderVO;
 
@@ -152,5 +156,28 @@ public class MemberAdminServiceImpl implements MemberAdminService {
 		
 		return pi;
 	}
+	
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Map<String, Object> getVisitorHistory() throws Exception {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		List<VisitHistory> visitHistory = dao.selectVisitHistory();
+		List<MemberAgeVO> memberAge = dao.selectMemberAge();
+		List<MemberClassVO> memberClass = dao.selectMemberClass();
+		
+//		System.out.println(memberAgeMap);
+		
+		resultMap.put("visitHistory", visitHistory);
+		resultMap.put("memberAge", memberAge);
+		resultMap.put("memberClass", memberClass);
+		
+		
+		
+		
+		return resultMap;
+	}
+	
 
 }

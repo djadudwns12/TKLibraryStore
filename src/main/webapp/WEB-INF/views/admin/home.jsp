@@ -22,7 +22,9 @@
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
-	
+
+google.charts.load('current', {'packages':['corechart']});
+
 $(function() {
 	// Ajax로 데이터 요청
     $.ajax({
@@ -85,6 +87,10 @@ $(function() {
         var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
         chart.draw(data, options);
     }
+
+    // 엄영준
+    getvisitHistory();
+
 });
 
 
@@ -132,6 +138,98 @@ function drawBasic(salesData) {
     var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
     chart.draw(data, options);
 }
+    // 엄영준
+    function getvisitHistory(){
+	$.ajax({
+		url : '/admin/getVisitorHistory',
+		type : 'get',
+		contentType : false,
+		processData : false,
+		dataType : 'json',
+		success : function(result) {
+			console.log(result);
+			
+			drawVisitHistory(result.visitHistory);
+			drawMemberAge(result.memberAge);
+			drawMemberClass(result.memberClass);
+			
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert('업로드 실패: ' + textStatus);
+		}
+	});
+}
+function drawMemberAge(arr) {	
+	let aa = [['회원연령대', '파이그래프']]
+	$.each(arr,function(i,item) {
+  		aa.push([item.age_group, item.user_count])
+	});
+	
+    var data = google.visualization.arrayToDataTable(aa);
+
+    var options = {
+      title: '나이'
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('MemberAge'));
+
+    chart.draw(data, options);
+    
+  }
+function drawMemberClass(arr){
+	let aa = [['회원등급별', '파이그래프']]
+	$.each(arr,function(i,item) {
+  		aa.push([item.userClass_group, item.user_count])
+	});
+	
+    var data = google.visualization.arrayToDataTable(aa);
+
+    var options = {
+      title: '회원등급'
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('MemberClass'));
+
+    chart.draw(data, options);
+}
+
+function drawVisitHistory(arr) {
+	let VisitHistory = [['날짜', '회원방문수']]
+	$.each(arr,function(i,item) {
+		let visitDate = longtodate(item.visitDate)
+		VisitHistory.push([visitDate, item.visitCount]);
+	});
+	
+	var data = google.visualization.arrayToDataTable(VisitHistory);
+
+    var options = {
+      title: '방문자 그래프',
+      curveType: 'function',
+      legend: { position: 'top' },
+      hAxis : {title:'날짜',
+//    	  	   slantedText: true,       // 텍스트를 기울이도록 설정
+//             slantedTextAngle: 90     // 각도를 45도로 설정
+          	   },
+      vAxis : {title : '방문자수'}
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+    chart.draw(data, options);
+  }
+  
+//날짜 yyyy-mm-dd형식으로 표현하여 주는 함수
+function longtodate(datetime){
+	let today=new Date(datetime);
+	var year = today.getFullYear().toString().slice(2,4);
+	var month = ('0' + (today.getMonth() + 1)).slice(-2);
+	var day = ('0' + today.getDate()).slice(-2);
+	var dateString = year+'/'+month  + '/' + day;
+	
+	return dateString
+}
+
+
 	
 </script>
 
@@ -238,14 +336,19 @@ function drawBasic(salesData) {
 			</div>
 
 			<div class="content4">
+				<!-- 일별방문자 선그래프 그리기 -->
 				<div>
-					
+					<div id="curve_chart" style="width: 500px; height: 300px; margin-right: 50px;"></div>
 				</div>
+
+				<!-- 연령대그래프 그리기(Pie) -->
 				<div>
-					
+					<div id="MemberAge" style="width: 500px; height: 300px;margin-right: 50px;"></div>
 				</div>
+
+				<!-- 회원등급그래프 그리기(Pie) -->
 				<div>
-					
+					<div id="MemberClass" style="width: 500px; height: 300px;margin-right: 50px;"></div>
 				</div>
 			</div>
 

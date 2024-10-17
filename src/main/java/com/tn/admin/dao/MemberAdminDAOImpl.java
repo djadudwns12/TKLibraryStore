@@ -8,10 +8,13 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.tn.admin.model.vo.MemberAgeVO;
+import com.tn.admin.model.vo.MemberClassVO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
+import com.tn.admin.model.vo.VisitHistory;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.order.model.vo.OrderVO;
@@ -99,6 +102,26 @@ public class MemberAdminDAOImpl implements MemberAdminDAO {
 
 		return ses.selectList(NS + ".getRecentOrder", userId);
 	}
+	
+	@Override
+	public List<VisitHistory> selectVisitHistory() {
+		// TODO Auto-generated method stub
+		return ses.selectList(NS+".selectVisitHistory");
+	}
+
+	@Override
+	public List<MemberAgeVO> selectMemberAge() throws Exception {
+		// TODO Auto-generated method stub
+		return ses.selectList(NS+".selectMemberAge");
+	}
+
+	@Override
+	public List<MemberClassVO> selectMemberClass() throws Exception {
+		// TODO Auto-generated method stub
+		return ses.selectList(NS+".selectMemberClass");
+	}
+
+	
 
 	@Override
 	public int removeMemberInfo(String deletedMember) throws Exception {

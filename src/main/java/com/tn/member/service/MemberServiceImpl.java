@@ -17,6 +17,7 @@ import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.member.model.vo.MyAddressVO;
+import com.tn.member.model.vo.PointLogVO;
 
 import java.io.IOException;
 import java.util.Random;
@@ -161,11 +162,31 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
+	
+
+
 
 //-----------------------------------------박근영-------------------------------------------------
 
+//-----------------------------------------엄영준-------------------------------------------------
+	@Override
+	public boolean addVisitHistory() throws Exception {
+		
+		if(dao.mergeIntoVisitHistor() > 0) {
+			return true;
+		}else {
+			return false;
+		}	
+	}
+	
+	@Override
+	public List<PointLogVO> getPointLog(MemberDTO loginMember) throws Exception {
+		
+		return dao.selectPointLog(loginMember);
+	}
+//-----------------------------------------엄영준-------------------------------------------------
+		
 //-----------------------------------------김가윤-------------------------------------------------
-
 	@Override
 	public List<MyAddressVO> getAddressList(String userId) throws Exception {
 

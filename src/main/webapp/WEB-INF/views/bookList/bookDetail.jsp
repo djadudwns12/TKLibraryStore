@@ -332,20 +332,22 @@
 		let boll = $('#bs').val();
 		
 		let book = '${param.bookNo}';
-		let localbook = localStorage.getItem("localbook");
+		let userId = '${sessionScope.loginMember.userId}';
+		//alert(book);
+		let localbook = localStorage.getItem(userId+"_localbook");
 
 		let bookList = new Set([]);
 		if(localbook == null){
 			// 로컬스토리지에 값을 넣어주기
 			bookList.add(book);
 			// set를 객체로 저장하는 함수(JSON.stringify(Array.from(bookList)))
-            localStorage.setItem("localbook", JSON.stringify(Array.from(bookList)));
+            localStorage.setItem(userId+"_localbook", JSON.stringify(Array.from(bookList)));
 		}else{
-			console.log(localStorage.getItem("localbook"));
-			bookList =new Set(JSON.parse(localStorage.getItem("localbook")));
+			console.log(localStorage.getItem(userId+"_localbook"));
+			bookList =new Set(JSON.parse(localStorage.getItem(userId+"_localbook")));
 			
 			bookList.add(book);
-			localStorage.setItem("localbook", JSON.stringify(Array.from(bookList)));
+			localStorage.setItem(userId+"_localbook", JSON.stringify(Array.from(bookList)));
 			console.log(bookList)
 		}
 

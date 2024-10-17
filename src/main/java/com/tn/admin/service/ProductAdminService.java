@@ -13,6 +13,8 @@ import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.model.vo.SalesVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
 import com.tn.admin.model.vo.TopPublisherVO;
+import com.tn.booklist.model.vo.BooklistVO;
+import com.tn.member.model.dto.MemberDTO;
 
 @Service
 public interface ProductAdminService {
@@ -54,6 +56,7 @@ public interface ProductAdminService {
 	List<SalesVO> getSales() throws Exception;
 
 	void saveExcelData(MultipartFile excelFile) throws Exception;
+	List<BooklistVO> getZzimList(MemberDTO loginMember) throws Exception;
 
 
 

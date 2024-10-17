@@ -11,7 +11,7 @@ import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.member.model.vo.MyAddressVO;
-
+import com.tn.member.model.vo.PointLogVO;
 
 @Repository
 public interface MemberDAO {
@@ -46,6 +46,13 @@ public interface MemberDAO {
 	public int selectId(String tmpUserId) throws Exception;
 //-----------------------------------------박근영-------------------------------------------------
 
+//-----------------------------------------엄영준-------------------------------------------------
+	// 방문자 수 +1하는 쿼리문
+	public int mergeIntoVisitHistor();
+	
+	// 회원의 포인트 로그내역을 가지고 오는메서드
+	List<PointLogVO> selectPointLog(MemberDTO loginMember) throws Exception;
+//-----------------------------------------엄영준-------------------------------------------------
 
 //-----------------------------------------김가윤-------------------------------------------------
 

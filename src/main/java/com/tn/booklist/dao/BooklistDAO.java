@@ -22,7 +22,11 @@ public interface BooklistDAO {
 	List<BooklistVO> selectCategoryBooklist(PagingInfo pi, String category) throws Exception;
 	// 카테고리 적용시 개수를 받아오는 메서드
 	int countCategoryBooklist(String category) throws Exception;
+	
+	List<BooklistVO> selectRecentlyBooks(List<Integer> list) throws Exception;
 //	====================================================엄영준 END=============================================================
+
+	
 
 
 }

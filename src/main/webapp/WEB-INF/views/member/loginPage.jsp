@@ -155,6 +155,9 @@ input[type="button"] {
 	function modalClose(){
 		$('#myModal').hide();
 	}
+	function kakaoLogin(){
+		
+	}
 </script>
 
 </head>
@@ -168,7 +171,9 @@ input[type="button"] {
 					placeholder="Password"> <label for="remember-check">
 					<input type="checkbox" id="remember-check" onclick="userIdsave()">아이디
 					저장하기
-				</label> <input type="submit" value="Login" onclick="return valid()">
+				</label> 
+				<input type="submit" value="Login" onclick="return valid()">
+				<!-- <img src="/resources/images/kakao_login.png" style="width: 100%" onclick="kakaoLogin()"> -->
 			</form>
 			<!-- 회원 가입 버튼 -->
 			<a href="/member/register"><input type="button" value="회원가입"></a>

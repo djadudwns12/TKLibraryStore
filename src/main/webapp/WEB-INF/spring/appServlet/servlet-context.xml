@@ -72,6 +72,7 @@
 			<mapping path="/admin/registProduct" />
 			<mapping path="/admin/modifyProduct" />
 			<mapping path="/admin/restockList" />
+			<mapping path="/admin/home" />
 			
 			<mapping path="/member/edit"/>
       		<mapping path="/member/mypage" />
@@ -79,6 +80,7 @@
       		<mapping path="/member/address" />
       		<mapping path="/member/modifyAddress" />
       		<mapping path="/member/insertAddress" />
+      		<mapping path="/member/OrderStatus" />
       
 			<beans:ref bean="authInterceptor"/>
 		

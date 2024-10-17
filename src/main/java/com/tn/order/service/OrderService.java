@@ -2,6 +2,7 @@ package com.tn.order.service;
 
 import com.tn.order.model.dto.OrderDTO;
 import com.tn.order.model.dto.PaymentInfoDTO;
+import com.tn.order.model.vo.OrderDetailVO;
 import com.tn.order.model.vo.OrderInfo;
 
 import java.util.List;
@@ -33,10 +34,14 @@ public interface OrderService {
 	 * @param
 	 * @return : List<OrderVO>
 	 * @throws 
-	 * @description : 회원이 주문한 목록을 불러오는 메서드
+	 * @description : 회원이 최근주문한 목록을 불러오는 메서드
 	 *
 	 */
-	List<BooklistVO> getOrderList(MemberDTO loginMember) throws Exception;
+	List<BooklistVO> getRecentOrderList(MemberDTO loginMember) throws Exception;
+	
+	List<OrderVO> getOrderList(MemberDTO loginMember) throws Exception;
+	List<OrderDetailVO> getDetailOrder(String orderNo) throws Exception;
+	boolean orderCancel(List<String> ckArr) throws Exception;
 // -----------------------------------------엄영준-------------------------------------------------
 	
 // -----------------------------------------최미설-------------------------------------------------
@@ -53,5 +58,8 @@ public interface OrderService {
 
 //-----------------------------------------최미설-------------------------------------------------
 	
+
+
+
 
 }

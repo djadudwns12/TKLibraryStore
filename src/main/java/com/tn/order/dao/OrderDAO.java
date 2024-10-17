@@ -5,10 +5,10 @@ import java.util.List;
 import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.order.model.vo.OrderVO;
-
 import com.tn.order.model.dto.PaymentInfoDTO;
 import com.tn.order.model.vo.AddressVO;
 import com.tn.order.model.vo.OrderBookListVO;
+import com.tn.order.model.vo.OrderDetailVO;
 import com.tn.order.model.vo.PaymentInfoVO;
 
 public interface OrderDAO {
@@ -48,7 +48,11 @@ public interface OrderDAO {
 // -----------------------------------------박근영-------------------------------------------------	
 
 // -----------------------------------------엄영준-------------------------------------------------	
-  List<BooklistVO> selectOrderList(MemberDTO loginMember)throws Exception;
+  List<BooklistVO> selectRecentOrderList(MemberDTO loginMember)throws Exception;
+  
+  List<OrderVO> selectMyPageOrderList(MemberDTO loginMember)throws Exception;
+  List<OrderDetailVO> selectDetailOrder(String orderNo)throws Exception;
+  int updateOrderCancel(List<String> ckArr)throws Exception;
 // -----------------------------------------엄영준-------------------------------------------------	
   
 //-----------------------------------------최미설-------------------------------------------------
@@ -79,5 +83,7 @@ public interface OrderDAO {
 
 
 
+
+  
 
 }

@@ -16,6 +16,8 @@ import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.model.vo.SalesVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
 import com.tn.admin.model.vo.TopPublisherVO;
+import com.tn.booklist.model.vo.BooklistVO;
+import com.tn.member.model.dto.MemberDTO;
 
 @Repository
 public class ProductAdminDAOImpl implements ProductAdminDAO {
@@ -231,6 +233,13 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		
 		
 		ses.insert(NS + ".insertExcelFile", params);
+	}
+	
+	
+	@Override
+	public List<BooklistVO> selectZzimList(MemberDTO loginMember) throws Exception {
+		// TODO Auto-generated method stub
+		return ses.selectList(NS + ".selectZzimList",loginMember);
 	}
 	
 	

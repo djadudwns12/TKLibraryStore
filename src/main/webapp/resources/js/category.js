@@ -86,6 +86,8 @@ function getBookList(){
             		inputHTML += `<td>${dd}</td>`
             		let price = parseInt(row.salePrice).toLocaleString('ko-KR',{ style: "currency", currency: "KRW" });
             		inputHTML += `<td>${price}</td>`
+            		inputHTML += `<td>${row.zzim}</td>`
+            		inputHTML += `<td>${row.reviewCnt}</td>`
             		inputHTML += '</tr>'
             	});
             	
@@ -159,6 +161,8 @@ function getBookListPaging(pageNo,pageSize){
             		inputHTML += `<td>${dd}</td>`
             		let price = parseInt(row.salePrice).toLocaleString('ko-KR',{ style: "currency", currency: "KRW" });
             		inputHTML += `<td>${price}</td>`
+            		inputHTML += `<td>${row.zzim}</td>`
+            		inputHTML += `<td>${row.reviewCnt}</td>`
             		inputHTML += '</tr>'
             	});
             	

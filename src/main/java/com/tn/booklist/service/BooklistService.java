@@ -29,6 +29,8 @@ public interface BooklistService {
 	 *
 	 */
 	public Map<String, Object> getCategoryBooklist(PagingInfoDTO dto, String category) throws Exception;
+
+	public List<BooklistVO> getRecentlyBooks(List<Integer> list) throws Exception;
 	
 //	====================================================엄영준(end)=============================================================
 
