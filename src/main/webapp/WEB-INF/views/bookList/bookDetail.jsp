@@ -330,7 +330,7 @@
 					contentType:'application/json',
 					data:JSON.stringify(reviewData),
 					success: function(response) {
-		                alert('리뷰가 성공적으로 저장되었습니다.');
+						window.location.href = response;
 		            },
 		            error: function(xhr, status, error) {
 		                alert('리뷰 저장 중 오류가 발생했습니다: ' + error);
@@ -341,7 +341,7 @@
 	}
 	
 	function modifyReview() {
-		
+		let bookNo = '${param.bookNo}';
 		let reviewNo = $('#reviewNo').val();
 		let reviewContent = $('#reviewModal').val();
 		const reviewScore = $(".rating > .fas").length;
@@ -352,6 +352,7 @@
 			alert('별점을 입력해주세요.');
 		} else {
 			const reviewModifyData = {
+					'bookNo' : bookNo,
 					'reviewNo' : reviewNo,
 					'reviewContent' : reviewContent,
 					'reviewScore' : reviewScore
@@ -365,9 +366,12 @@
 					contentType:'application/json',
 					data:JSON.stringify(reviewModifyData),
 					success: function(response) {
-		                alert('리뷰가 성공적으로 수정되었습니다.');
+		               
+		             	// 리다이렉트 URL로 이동
+		                window.location.href = response;
+		                
 		        		modifyModal.remove();	
-		        		location.reload();
+		        		
 		            },
 		            error: function(xhr, status, error) {
 		                alert('리뷰 수정 중 오류가 발생했습니다: ' + error);
@@ -409,13 +413,18 @@
 	
 	function deleteModal(){
 		let reviewNo = $('#reviewNo').val();
-		console.log('삭제할 리뷰 번호 : ', reviewNo);
+		let bookNo = '${param.bookNo}';
+		
 		$.ajax({
 			url:'/review/deleteReview',
 			type:'POST',
-			data: { reviewNo: reviewNo },
+			data: {
+				reviewNo: reviewNo,
+				bookNo: bookNo
+			},
 			success: function(response) {
-                alert('리뷰가 삭제되었습니다.');
+				// 리다이렉트 URL로 이동
+                window.location.href = response;
                 $('#deleteModal').remove();	
         		location.reload();
             },

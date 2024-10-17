@@ -1,5 +1,7 @@
 package com.tn.review.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +35,10 @@ public class ReviewController {
 		
 		try {
 			rService.insertReview(reviewDTO);
-			System.out.println("작성한 리뷰 내용 : " + reviewDTO.toString());
 			
-			return ResponseEntity.ok("리뷰 저장");
+			String redirectUrl = "/bookList/bookDetail?bookNo=" + reviewDTO.getBookNo();
+			
+			return ResponseEntity.ok(redirectUrl);
 		} catch (Exception e) {
 			e.printStackTrace();
 			
@@ -48,9 +51,11 @@ public class ReviewController {
 		
 		try {
 			rService.updateReview(reviewDTO);
-			System.out.println("작성한 리뷰 내용 : " + reviewDTO.toString());
 			
-			return ResponseEntity.ok("리뷰 수정");
+			String redirectUrl = "/bookList/bookDetail?bookNo=" + reviewDTO.getBookNo();
+			
+			return ResponseEntity.ok(redirectUrl);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			
@@ -59,12 +64,14 @@ public class ReviewController {
 	}
 	
 	@PostMapping("/deleteReview")
-	public ResponseEntity<String> deleteReview(@RequestParam("reviewNo") int reviewNo) {
-		System.out.println("삭제할 리뷰 번호 : " + reviewNo);
+	public ResponseEntity<String> deleteReview(@RequestParam("reviewNo") int reviewNo, @RequestParam("bookNo") int bookNo) {
 		
 		try {
 	        rService.deleteReview(reviewNo);
-	        return ResponseEntity.ok("리뷰가 삭제되었습니다.");
+	        
+	        String redirectUrl = "/bookList/bookDetail?bookNo=" + bookNo;
+	        
+	        return ResponseEntity.ok(redirectUrl);
 	    } catch (Exception e) {
 	        // 오류 처리
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 삭제 중 오류가 발생했습니다.");
