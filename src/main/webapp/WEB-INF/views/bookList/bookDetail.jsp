@@ -99,7 +99,7 @@
 		
 		
 		// 로그인 이전에 적은 내용을 다시 집어 넣음
-		$('#review').html(localStorage.getItem('reviewContent'));
+		//$('#review').html(localStorage.getItem('reviewContent'));
 
 	
 		 $(".close").on("click", function () {
