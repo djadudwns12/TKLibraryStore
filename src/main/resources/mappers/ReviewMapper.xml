@@ -41,4 +41,12 @@
   	value (#{reviewWriter}, #{reviewContent}, #{reviewScore}, #{bookNo})
   </insert>
   
+  <update id="updateReview">
+  	update Review set reviewContent = #{reviewContent}, reviewScore = #{reviewScore} where reviewNo = #{reviewNo}
+  </update>
+  
+  <delete id="deleteReview">
+  	delete from Review where reviewNo = #{reviewNo}
+  </delete>
+  
   </mapper>

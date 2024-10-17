@@ -24,7 +24,11 @@ public interface ReviewDAO {
 	// ----------------- 김가윤 -----------------
 	
 	// bookNo번 책의 리뷰를 가져오기 위한 메소드
-	List<ReviewVO> getReview(int bookNo) throws Exception;
-  // 새 리뷰와 별점을 입력하는 메서드
+	List<ReviewDTO> getReview(int bookNo) throws Exception;
+	// 새 리뷰와 별점을 입력하는 메서드
 	int insertReview(ReviewDTO reviewDTO) throws Exception;
+
+	int updateReview(ReviewDTO reviewDTO) throws Exception;
+
+	int deleteReview(int reviewNo) throws Exception;
 }

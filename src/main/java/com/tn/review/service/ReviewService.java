@@ -22,9 +22,15 @@ public interface ReviewService {
 	// ---------------------------------------------- 김가윤 ---------------------------------------------- 
 	
 	// bookNo번 책의 리뷰를 가져오는 메소드
-	List<ReviewVO> getBookNoReview(int bookNo) throws Exception;
+	List<ReviewDTO> getBookNoReview(int bookNo) throws Exception;
 
 	boolean insertReview(ReviewDTO reviewDTO) throws Exception;
+
+	boolean updateReview(ReviewDTO reviewDTO) throws Exception;
+
+	boolean deleteReview(int reviewNo) throws Exception;
+
+	int reviewCnt(int bookNo) throws Exception;
 
 	
 

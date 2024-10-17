@@ -31,7 +31,7 @@ import com.tn.booklist.model.dto.PagingInfoDTO;
 import com.tn.booklist.model.vo.BookDetailInfo;
 import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.booklist.service.BooklistService;
-
+import com.tn.review.model.DTO.ReviewDTO;
 import com.tn.review.model.VO.ReviewVO;
 import com.tn.review.service.ReviewService;
 import com.tn.cart.model.dto.CartDTO;
@@ -129,7 +129,8 @@ public class BookListController {
 		String returnBDetail = "";
 		List<BookDetailInfo> bookDetailInfo = null;
 		
-		List<ReviewVO> reviewVO = null;// 김가윤 : 리뷰 리스트 불러오기
+		List<ReviewDTO> reviewDTO = null;// 김가윤 : 리뷰 리스트 불러오기
+		int reviewCnt = 0;
 
 	         String ipAddr = GetClientIPAddr.getClientIP(request);
 //	         System.out.println(ipAddr + "가 " + bookNo + "번 책 정보를 검색한다!!");
@@ -142,7 +143,8 @@ public class BookListController {
 	        	  	
 			        returnBDetail = "/bookList/bookDetail";
 			        bookDetailInfo = bService.read(bookNo, ipAddr);
-			        reviewVO = reviewService.getBookNoReview(bookNo);// 김가윤 : 리뷰 리스트 불러오기
+			        reviewDTO = reviewService.getBookNoReview(bookNo);// 김가윤 : 리뷰 리스트 불러오기
+			        reviewCnt = reviewService.reviewCnt(bookNo);
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -150,7 +152,8 @@ public class BookListController {
 	         }
 
 	      model.addAttribute("bookDetailInfo", bookDetailInfo);
-	      model.addAttribute("review", reviewVO);// 김가윤 : 리뷰 리스트 불러오기
+	      model.addAttribute("review", reviewDTO);// 김가윤 : 리뷰 리스트 불러오기
+	      model.addAttribute("reviewCnt", reviewCnt);
 
 		
 		return returnBDetail;

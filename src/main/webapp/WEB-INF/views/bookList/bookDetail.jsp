@@ -30,6 +30,8 @@
 </head>
 <script>
 	$(function() {
+		var modifyModal = $("#modifyModal");
+		var deleteModal = $("#deleteModal");
 		//let bDetail = $('.bDetail');
 		//$('#main_content').html(bDetail);
 		setRecenyBook();
@@ -99,6 +101,12 @@
 		// 로그인 이전에 적은 내용을 다시 집어 넣음
 		$('#review').html(localStorage.getItem('reviewContent'));
 
+	
+		 $(".close").on("click", function () {
+			 modifyModal.hide();  // 모달 닫기
+			 deleteModal.hide(); 
+	        });
+	
 	});
 
 	// 별점기능------------------------------------------------------------------------------------
@@ -106,8 +114,22 @@
 	        const starGroups = Array.from(document.querySelectorAll(".rating")).map(group => 
 	          Array.from(group.querySelectorAll(".rating__star"))
 	        );
+	        
 	        executeRating(starGroups);
 	      });
+	
+	   document.addEventListener("click", () => {
+	        const starGroups = Array.from(document.querySelectorAll("#ratingModal")).map(group => 
+	          Array.from(group.querySelectorAll(".rating__star"))
+	        );
+	        console.log($(starGroups)+ "---------------------")
+	        executeRating(starGroups);
+	        
+	      });
+	
+
+	
+	   
 	   // 별점기능------------------------------------------------------------------------------------
 	
 	function handleZzim(userId, bookNo) {
@@ -318,9 +340,90 @@
 		}		
 	}
 	
-	function editReview(reviewId, element) {
-		console.log(reviewId);
-		console.log(element);
+	function modifyReview() {
+		
+		let reviewNo = $('#reviewNo').val();
+		let reviewContent = $('#reviewModal').val();
+		const reviewScore = $(".rating > .fas").length;
+		
+		if (reviewContent.length < 1) {
+			alert('리뷰 내용을 입력해주세요.');
+		} else if (reviewScore == 0) {
+			alert('별점을 입력해주세요.');
+		} else {
+			const reviewModifyData = {
+					'reviewNo' : reviewNo,
+					'reviewContent' : reviewContent,
+					'reviewScore' : reviewScore
+				};
+				
+				console.log(JSON.stringify(reviewModifyData));
+				
+				$.ajax({
+					url:'/review/modifyReview',
+					type:'POST',
+					contentType:'application/json',
+					data:JSON.stringify(reviewModifyData),
+					success: function(response) {
+		                alert('리뷰가 성공적으로 수정되었습니다.');
+		        		modifyModal.remove();	
+		        		location.reload();
+		            },
+		            error: function(xhr, status, error) {
+		                alert('리뷰 수정 중 오류가 발생했습니다: ' + error);
+		                console.error('Error details:', xhr.responseText); // 오류 로그 출력
+		            }
+				});
+		
+		
+	}
+		
+	}
+	
+	function editReview(reviewNo,reviewScore, reviewContent) {
+		$('#reviewModal').val(reviewContent);
+		$('#modifyModal').show();
+		
+		console.log(reviewScore);
+		
+		let star = '';
+		
+		for(let i=1; i<=reviewScore;i++){
+			star+='<i class="rating__star fas fa-star"></i>'
+		}
+		
+		for(let i=1; i<=5-reviewScore;i++){
+			star+='<i class="rating__star far fa-star"></i>'
+		}
+		console.log(star);
+		$('#ratingModal').html(star);
+		$('#reviewNo').val(reviewNo);
+
+	}
+	
+	function deleteReviewModal(reviewNo) {
+		$('#deleteModal').show();
+		$('#reviewNo').val(reviewNo);
+		
+	}
+	
+	function deleteModal(){
+		let reviewNo = $('#reviewNo').val();
+		console.log('삭제할 리뷰 번호 : ', reviewNo);
+		$.ajax({
+			url:'/review/deleteReview',
+			type:'POST',
+			data: { reviewNo: reviewNo },
+			success: function(response) {
+                alert('리뷰가 삭제되었습니다.');
+                $('#deleteModal').remove();	
+        		location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert('리뷰 삭제 중 오류가 발생했습니다: ' + error);
+                console.error('Error details:', xhr.responseText); // 오류 로그 출력
+            }
+		});
 	}
 	
 	// ------------------------ 김가윤 ------------------------
@@ -410,7 +513,6 @@
 									<c:forEach var="bookInfo" items="${bookDetailInfo}">
 										<img class="bookImagelarge" src="${bookInfo.thumbNail}" alt="">
 										<input type="hidden" value="${bookInfo.bookNo}" id="bs">
-										
 								</div>
 
 							</div>
@@ -423,7 +525,7 @@
 										class="fa fa-star"></i> <i class="fa fa-star"></i> <i
 										class="fa fa-star-half-o"></i> <span>(18 reviews)</span>
 								</div>
-								<div class="author">${bookInfo.author} 지음</div>
+								<div class="author">${bookInfo.author}지음</div>
 								<div class="information">
 									<p>&nbsp;</p>
 
@@ -433,7 +535,7 @@
 												value="${bookInfo.price}" type="currency" /></span>
 									</p>
 									<p>
-										<b>판매가</b> <span style="font-size:25px;"><fmt:formatNumber
+										<b>판매가</b> <span style="font-size: 25px;"><fmt:formatNumber
 												value="${bookInfo.salePrice}" type="currency" /></span>
 									</p>
 									<p>
@@ -444,21 +546,22 @@
 									</p>
 
 								</div>
-								
-								<div class="qtyControl" style="display: flex; align-items: center; gap: 10px;">
-								<span><b>수량 </b></span> 
-								<span class="count">
-									<button type="button" class="minus" style="border: none;"
-										onclick="count('minus');">-</button> <span><input
-										type="text" id="bqty" name="bqty" value="1"
-										readonly="readonly"
-										style="text-align: center; width: 60px; border: none;"></span>
-									<button type="button" class="plus" style="border: none;"
-										onclick="count('plus');">+</button>
-								</span> <input type="hidden" value="${bookInfo.inven }" id="inven">
 
-								<!-- 선택 수량이 2개 이상일 때 가격을 표시하는 기능 -->
-								<input type="hidden" value="${bookInfo.salePrice }" id="salePrice">
+								<div class="qtyControl"
+									style="display: flex; align-items: center; gap: 10px;">
+									<span><b>수량 </b></span> <span class="count">
+										<button type="button" class="minus" style="border: none;"
+											onclick="count('minus');">-</button> <span><input
+											type="text" id="bqty" name="bqty" value="1"
+											readonly="readonly"
+											style="text-align: center; width: 60px; border: none;"></span>
+										<button type="button" class="plus" style="border: none;"
+											onclick="count('plus');">+</button>
+									</span> <input type="hidden" value="${bookInfo.inven }" id="inven">
+
+									<!-- 선택 수량이 2개 이상일 때 가격을 표시하는 기능 -->
+									<input type="hidden" value="${bookInfo.salePrice }"
+										id="salePrice">
 									<div id="totalPrice" style="display: none;">
 										총 상품 금액: <span id="priceVal" style="color: red;"></span> 원
 									</div>
@@ -517,32 +620,40 @@
 													style="background-color: #7FAD38; border: 0; width: 70px; height: 55px;"
 													onclick="saveReview();">저장</button>
 											</div>
-											
+
 											<div class="reviewList">
 												<c:forEach var="review" items="${review}">
-													<div class="review-item" data-review-content="${review.reviewContent}">
-														<div class="review-content">
+													<div class="review-item"
+														data-review-content="${review.reviewContent}">
+														<div
+															class="review-content review_'${review.reviewContent}'">
 															<p>${review.reviewWriter}</p>
-															<p><fmt:formatDate value="${review.reviewDate}" pattern="yyyy-MM-dd" /></p>
+															<p>
+																<fmt:formatDate value="${review.reviewDate}"
+																	pattern="yyyy-MM-dd" />
+															</p>
 															<p>${review.reviewContent}</p>
-															
-															<div class="reviewArea" style="display: flex; align-items: center; gap: 5px;">
+
+															<div class="reviewArea"
+																style="display: flex; align-items: center; gap: 5px;">
 																<div class="showRating">
 																	<c:forEach begin="1" end="${review.reviewScore}">
-																		<i class="rating__star fas fa-star"></i> 
+																		<i class="rating__star fas fa-star"></i>
 																	</c:forEach>
 																	<c:forEach begin="1" end="${5-review.reviewScore}">
-																		<i class="rating__star far fa-star"></i> 
+																		<i class="rating__star far fa-star"></i>
 																	</c:forEach>
 																</div>
 															</div>
-															
+
 															<!-- 세션에 저장된 userId와 reviewWriter 비교 -->
-													     	<c:if test="${sessionScope.loginMember.userId != null && sessionScope.loginMember.userId == review.reviewWriter}">
-													     		<button onclick="editReview()">수정</button>
-													     		<button onclick="deleteReview()">삭제</button>
-													     	</c:if>
-													     </div>													     
+															<c:if
+																test="${sessionScope.loginMember.userId != null && sessionScope.loginMember.userId == review.reviewWriter}">
+																<button
+																	onclick="editReview(${review.reviewNo},${review.reviewScore},'${review.reviewContent}')">수정</button>
+																<button onclick="deleteReviewModal(${review.reviewNo})">삭제</button>
+															</c:if>
+														</div>
 													</div>
 												</c:forEach>
 											</div>
@@ -583,6 +694,75 @@
 						<button type="button" class="btn btn-danger modalCloseBtn"
 							data-bs-dismiss="modal">취소</button>
 					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<!-- The Modal -->
+		<div class="modal" id="deleteModal" style="display: none;">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title">떡잎서점</h4>
+						<button type="button" class="btn-close close"
+							data-bs-dismiss="modal"></button>
+					</div>
+
+					<!-- Modal body -->
+					<div class="modal-body">해당 리뷰를 삭제하시겠습니까?</div>
+
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" onclick="deleteModal();">삭제</button>
+						<button type="button" class="btn btn-secondary close"
+							data-bs-dismiss="modal">취소</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+		<!-- 수정 모달 -->
+		<div class="modal" id="modifyModal" style="height: 800px;">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title">리뷰 수정</h4>
+					</div>
+
+					<!-- Modal body -->
+
+					<form>
+						<div class="modal-body">
+
+							<ul id="modifyForm">
+
+								<div class="reviewArea"
+									style="display: flex; align-items: center; gap: 5px;">
+									<div class="rating" id="ratingModal"></div>
+									<textarea class="reviewForm" id="reviewModal" name="review"
+										placeholder="리뷰 내용을 작성해주세요" style="width: 150%;"></textarea>
+									<input type="hidden" id="reviewNo">
+								</div>
+
+							</ul>
+
+						</div>
+
+						<!-- Modal footer -->
+						<div class="modal-footer">
+						<button type="button" class="btn btn-primary" onclick="modifyReview();">저장</button>
+						
+						<button type="button" class="btn btn-secondary close">취소</button>
+						</div>
+					</form>
+					
 
 				</div>
 			</div>
