@@ -51,8 +51,10 @@
 		on userOrder.bookNo = b.bookNo order by userOrder.orderPk desc limit
 		0,3; -->
 		select b.* from
-		(select o.orderPk , o.bookNo from (select ob.bookNo , o.orderPK ,o.orderWho from mbcac2024.Order o inner join OrderBook ob on o.orderNo = ob.orderNo) o inner Join Member m on
-		o.orderWho = m.userId where o.orderWho = #{userId}) as userOrder
+		(select o.orderPk , o.bookNo 
+		from (select ob.bookNo , o.orderPK ,o.orderWho from mbcac2024.Order o inner join OrderBook ob on o.orderNo = ob.orderNo) o 
+		inner Join Member m 
+		on o.orderWho = m.userId where o.orderWho = #{userId}) as userOrder
 		inner join BookList b
 		on userOrder.bookNo = b.bookNo order by userOrder.orderPk desc limit
 		0,3;

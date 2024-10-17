@@ -1,5 +1,6 @@
 package com.tn.admin.dao;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,9 @@ import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.RestockVO;
+import com.tn.admin.model.vo.SalesVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
+import com.tn.admin.model.vo.TopPublisherVO;
 
 @Repository
 public class ProductAdminDAOImpl implements ProductAdminDAO {
@@ -191,6 +194,45 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 		
 		return ses.selectOne(NS + ".selectTotalRestockCount");
 	}
+	@Override
+	public List<ProductVO> getTopBooks() throws Exception {
+		
+		return ses.selectList(NS + ".getTopBooks");
+	}
+	@Override
+	public List<TopPublisherVO> getTopPublisher() throws Exception {
+		
+		return ses.selectList(NS + ".getTopPublisher");
+	}
+	@Override
+	public List<SalesVO> getSales() throws Exception {
+		
+		return ses.selectList(NS + ".getSales" );
+	}
+	@Override
+	public void insertExcelFile(int bookNo, String title, String author, String publisher, String pubDate, int genre,
+			int price, int salePrice, int inven, String thumbNail, String introduction, int zzim, int reviewCnt,
+			String base64ProfileImg) throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("bookNo", bookNo);
+		params.put("title", title);
+		params.put("author", author);
+		params.put("publisher", publisher);
+		params.put("pubDate", pubDate);
+		params.put("genre", genre);
+		params.put("price", price);
+		params.put("salePrice", salePrice);
+		params.put("inven", inven);
+		params.put("thumbNail", thumbNail);
+		params.put("introduction", introduction);
+		params.put("zzim", zzim);
+		params.put("reviewCnt", reviewCnt);
+		params.put("base64ProfileImg", base64ProfileImg);
+		
+		
+		ses.insert(NS + ".insertExcelFile", params);
+	}
+	
 	
 	
 	
