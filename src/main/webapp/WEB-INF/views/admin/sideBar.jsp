@@ -58,15 +58,15 @@
                         
                         
                         <li class="nav-header">상품 관리</span></li>
-                        <li class="nav-item"> <a href="/admin/productAdmin" class="nav-link"> <i class="nav-icon bi bi-download"></i>
+                        <li class="nav-item"> <a href="/admin/productAdmin" class="nav-link"> <i class="nav-icon bi bi-grip-horizontal"></i>
                                 <p>상품 목록</p>
                             </a> </li>
-                        <li class="nav-item"> <a href="/admin/registProduct" class="nav-link"> <i class="nav-icon bi bi-grip-horizontal"></i>
+                        <li class="nav-item"> <a href="/admin/registProduct" class="nav-link"> <i class="nav-icon bi bi-download"></i>
                                 <p>상품 등록</p>
                             </a> </li>
                         
                             <ul class="nav nav-treeview">
-                                <li class="nav-item"> <a href="./docs/components/main-header.html" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                                <li class="nav-item"> <a href="./docs/components/main-header.html" class="nav-link"> <i class="bi bi-bar-chart"></i>
                                         <p>asd</p>
                                     </a> </li>
                                 <li class="nav-item"> <a href="./docs/components/main-sidebar.html" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
@@ -75,7 +75,7 @@
                             </ul>
                         </li>
                         
-                        <li class="nav-item"> <a href="./docs/browser-support.html" class="nav-link"> <i class="nav-icon bi bi-browser-edge"></i>
+                        <li class="nav-item" style="margin-left: 7;"> <a href="/admin/home" class="nav-link"> <i class="bi bi-bar-chart"></i>
                                 <p>상품 통계</p>
                             </a> </li>
                         <li class="nav-item"> <a href="/admin/restockList" class="nav-link"> <i class="nav-icon bi bi-hand-thumbs-up-fill"></i>
@@ -87,8 +87,8 @@
                             
                             
                         <li class="nav-header">주문 관리</li>
-                        <li class="nav-item"> <a href="./docs/introduction.html" class="nav-link"> <i class="nav-icon bi bi-download"></i>
-                                <p>상품 관리</p>
+                        <li class="nav-item"> <a href="/admin/orderDelivery" class="nav-link"> <i class="nav-icon bi bi-download"></i>
+                                <p>주문 및 배송관리</p>
                             </a> </li>
                         <li class="nav-item"> <a href="./docs/layout.html" class="nav-link"> <i class="nav-icon bi bi-grip-horizontal"></i>
                                 <p>회원 관리</p>

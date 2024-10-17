@@ -21,6 +21,10 @@ import lombok.ToString;
 public class PaymentInfoVO {
 	// -------- 박근영 --------
 	private int bookNo;
+	private String qty;
+	private String orderNo;
+	private String orderPK;
+	private int userTotalPay;
 	// -------- 박근영 --------
 	
 

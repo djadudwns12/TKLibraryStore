@@ -35,7 +35,8 @@
 		setRecenyBook();
 
 		let userId = '${sessionScope.loginMember.userId}';
-		let bookNo = '${product.bookNo}';
+		let bookNo = '${param.bookNo}';
+		console.log('지금 책 번호: ' + bookNo);
 		
 		let zzimed = false;
 		//  ------------------------찜기능
@@ -87,11 +88,27 @@
 		}
 		
 		// 별점 기능을 위한 배열 선언
-		const ratingStars = [...document.getElementsByClassName("rating__star")];
-		executeRating(ratingStars);
+		/* const ratingStars = [...document.getElementsByClassName("rating__star")];
+		executeRating(ratingStars); */
+		
+		
+		$('.nav-tabs .nav-item a[href="#tabs-2"]').tab('show');
+		
+		
+		
+		// 로그인 이전에 적은 내용을 다시 집어 넣음
+		$('#review').html(localStorage.getItem('reviewContent'));
 
 	});
 
+	// 별점기능------------------------------------------------------------------------------------
+	   document.addEventListener("DOMContentLoaded", () => {
+	        const starGroups = Array.from(document.querySelectorAll(".rating")).map(group => 
+	          Array.from(group.querySelectorAll(".rating__star"))
+	        );
+	        executeRating(starGroups);
+	      });
+	   // 별점기능------------------------------------------------------------------------------------
 	
 	function handleZzim(userId, bookNo) {
 		$.ajax({
@@ -175,88 +192,139 @@
 		
 	}
 
-	// 장바구니 버튼 누르면 (1)로그인여부 체크, (2)로그인했다면 장바구니에 담고, 장바구니 이동 여부 물어보기
-	function addCart() {
+	// 장바구니 버튼 누르면 (1)로그인여부 체크, (2)로그인했다면 장바구니에 담고, (3)장바구니에 겹치는 상품이 있는지 여부 확인+장바구니로 이동 여부 물어보기
+ 	function addToCart() {
 		let userId = '${sessionScope.loginMember.userId}';
-		var bookNo = document.getElementById("bookNo").value;
-		var totalQty = document.getElementById("bqty").value;
+		let bookNo = document.getElementById("bs").value;
+		let totalQty = document.getElementById("bqty").value;
 		
 		console.log(bookNo + ' 번 책 ' + totalQty + ' 권을 장바구니에 담자!');
-
+		
 		if (userId == '') {
-			alert('로그인이 필요한 메뉴입니다');	// '확인' 버튼 누르면 로그인 창으로 이동 
-			window.location.href = "/member/loginPage";
-
+			confirm("로그인이 필요한 메뉴입니다. 로그인하시겠습니까?");
+			window.location.href='/member/loginPage';
+			
 		} else {
-			// (1) 해당 user의 장바구니에 겹치는 상품이 있는 경우: '장바구니에 이미 담은 상품입니다. 장바구니로 고고?'
-			$.ajax({
-		        url: '/cart/cartPage',
+			 $.ajax({
+		        url: '/bookList/insertCart',	// 데이터 보내는 곳 URL
 		        type: 'POST',
-		        data: {
+		        contentType: 'application/json',
+		        data: JSON.stringify({
 		            userId: userId,
 		            qty: totalQty,  // 최종 선택한 수량
 		            bookNo: bookNo
-		        },
+		        }),
 		        success: function(response) {
-		        	if(reponse.success) {
-		        		alert('장바구니에 상품이 담겼습니다. 장바구니로 이동하시겠습니까?');
-		        		location.href='/cart/cartPage?userId="${userId}"';
-		        	} else {
-		        		alert('장바구니 담기에 실패했습니다. 다시 시도해주세요.');
-		        	}
+		        	// (1) 해당 user의 장바구니에 겹치는 상품이 있는 경우
+		        	if(response == 'updateTrue') {
+		        		if(confirm('장바구니에 이미 있는 상품입니다. 장바구니로 이동하시겠습니까?')){
+		        			location.href='/cart/cartPage';
+		        		}
+		        	// (2) 해당 user의 장바구니에 겹치는 상품이 없는 경우	
+		        	} else if(response == 'insertTrue'){
+		        		if(confirm('장바구니에 상품을 추가했습니다. 장바구니로 이동하시겠습니까?')){
+		        			location.href='/cart/cartPage';
+		        		}
+		        	} 
 		            
 		        },
 		        error: function(error) {
-		        	console.log('AJAX로 데이터 송신 중 에러 발생');
-		            alert('에러가 발생했습니다. 다시 시도해주세요.');
+		            alert('장바구니 담기에 실패했습니다. 다시 확인해주세요.' + error);
 		        }
-		    });
+		    }); 
 			
-			// (2-1) 장바구니에 겹치는 상품이 없는 경우: cart(userId, qty, booNo) 업데이트 
-			// (2-2) '장바구니에 상품이 담겼습니다. 장바구니로 고고?'
 		}
-	}
-	
-	function executeRating(stars) {
+	} 
+	 
+	function executeRating(starGroups) {
 		  const starClassActive = "rating__star fas fa-star";
 		  const starClassInactive = "rating__star far fa-star";
-		  const starsLength = stars.length;
-		  let i;
-		  
-		  stars.map((star) => {
-			    star.onclick = () => {
-			      i = stars.indexOf(star);
 
-			      if (star.className===starClassInactive) {
-			        for (i; i >= 0; --i) 
-			        	stars[i].className = starClassActive;
-			      } else {
-			        for (i; i < starsLength; ++i) 
-			        	stars[i].className = starClassInactive;
-			      }
-			    };
-			  });
-		  
+		  // 각 별점 그룹마다 개별적으로 적용
+		  starGroups.forEach(stars => {
+		    const starsLength = stars.length;
+
+		    stars.forEach((star, index) => {
+		      star.onclick = () => {
+		        if (star.className === starClassInactive) {
+		          // 현재 클릭한 별과 그 이전의 모든 별을 활성화
+		          for (let i = 0; i <= index; ++i) {
+		            stars[i].className = starClassActive;
+		          }
+		        } else {
+		          // 현재 클릭한 별과 그 이후의 모든 별을 비활성화
+		          for (let i = index; i < starsLength; ++i) {
+		            stars[i].className = starClassInactive;
+		          }
+		        }
+		      };
+		    });
+		  });
 		}
 	
-	function saveReview() {
-		let result = false;
-		let review = $('#review').val();
+	function validReviewWriter() {
+		let reviewWriter = '${sessionScope.loginMember.userId}';
+		let reviewContent = $('#review').val();
+		const reviewScore = $(".fas").length;
+		const bookNo = '${param.bookNo}';
 		
-		console.log(review);
-
-		if (rating == '' && review == null) {
-
-			//별점을 입력하지 않고 리뷰 내용도 작성하지 않았을 때 
-			alert("별점을 입력하거나 리뷰 내용을 작성하셔야 합니다");
-			$('#review').focus();
+		if(reviewWriter == '' || reviewWriter == null) {
+			if(reviewContent != '') {
+	            localStorage.setItem("reviewContent", reviewContent);
+	            localStorage.setItem("reviewScore", reviewScore);
+	         }	        
+	        location.href = "/member/loginPage?redirectUri=/bookList/bookDetail?bookNo=${param.bookNo}";
 		} else {
-			// 둘 중 하나라도 입력했을 때 
-			result = true;
+			return '${sessionScope.loginMember.userId}';
 		}
-
-		return result;
 	}
+	
+	// ------------------------ 김가윤 ------------------------
+	function saveReview() {
+		let reviewWriter = validReviewWriter();
+		let bookNo = '${param.bookNo}';
+		let reviewContent = $('#review').val();
+		const reviewScore = $(".rating > .fas").length;
+		
+		localStorage.setItem('reviewContent',reviewContent);
+				
+		
+		if (reviewContent.length < 1) {
+			alert('리뷰 내용을 입력해주세요.');
+		} else if (reviewScore == 0) {
+			alert('별점을 입력해주세요.');
+		} else {
+			const reviewData = {
+					'reviewContent' : reviewContent,
+					'reviewScore' : reviewScore,
+					'bookNo' : bookNo
+				};
+				
+				console.log(JSON.stringify(reviewData));
+				
+				$.ajax({
+					url:'/review/insertReview',
+					type:'POST',
+					contentType:'application/json',
+					data:JSON.stringify(reviewData),
+					success: function(response) {
+		                alert('리뷰가 성공적으로 저장되었습니다.');
+		            },
+		            error: function(xhr, status, error) {
+		                alert('리뷰 저장 중 오류가 발생했습니다: ' + error);
+		                console.error('Error details:', xhr.responseText); // 오류 로그 출력
+		            }
+				});
+		}		
+	}
+	
+	function editReview(reviewId, element) {
+		console.log(reviewId);
+		console.log(element);
+	}
+	
+	// ------------------------ 김가윤 ------------------------
+	
 	
 	// localStorege에 최근본 책 넣는 내용
 	function setRecenyBook(){
@@ -264,7 +332,6 @@
 		let boll = $('#bs').val();
 		
 		let book = '${param.bookNo}';
-		alert(book);
 		let localbook = localStorage.getItem("localbook");
 
 		let bookList = new Set([]);
@@ -341,6 +408,7 @@
 									<c:forEach var="bookInfo" items="${bookDetailInfo}">
 										<img class="bookImagelarge" src="${bookInfo.thumbNail}" alt="">
 										<input type="hidden" value="${bookInfo.bookNo}" id="bs">
+										
 								</div>
 
 							</div>
@@ -401,10 +469,10 @@
 										onclick="location.href='/order'"
 										style="background-color: #DA8359;">바로주문</button>
 									<button type="button" class="primary-btn"
-										onclick="addCart();">장바구니 담기</button>
+										onclick="addToCart();">장바구니 담기</button>
 									<span class="zzimHeart"> <img
 										src="/resources/images/emptyHeart.png">
-									</span><input type="hidden" value="${bookInfo.bookNo}" id="bookNo">
+									</span>
 
 								</div>
 							</div>
@@ -417,7 +485,7 @@
 										aria-selected="true">책 소개</a></li>
 
 									<li class="nav-item"><a class="nav-link" data-toggle="tab"
-										href="#tabs-2" role="tab" aria-selected="false">회원 리뷰<span>(1)</span></a></li>
+										href="#tabs-2" role="tab" aria-selected="false">회원 리뷰<span>()</span></a></li>
 
 								</ul>
 								<div class="tab-content">
@@ -445,7 +513,36 @@
 													placeholder="리뷰 내용을 작성해주세요" style="width: 80%;"></textarea>
 												<button type="submit" class="btn btn-primary"
 													style="background-color: #7FAD38; border: 0; width: 70px; height: 55px;"
-													onclick="return saveReview();">저장</button>
+													onclick="saveReview();">저장</button>
+											</div>
+											
+											<div class="reviewList">
+												<c:forEach var="review" items="${review}">
+													<div class="review-item" data-review-content="${review.reviewContent}">
+														<div class="review-content">
+															<p>${review.reviewWriter}</p>
+															<p><fmt:formatDate value="${review.reviewDate}" pattern="yyyy-MM-dd" /></p>
+															<p>${review.reviewContent}</p>
+															
+															<div class="reviewArea" style="display: flex; align-items: center; gap: 5px;">
+																<div class="showRating">
+																	<c:forEach begin="1" end="${review.reviewScore}">
+																		<i class="rating__star fas fa-star"></i> 
+																	</c:forEach>
+																	<c:forEach begin="1" end="${5-review.reviewScore}">
+																		<i class="rating__star far fa-star"></i> 
+																	</c:forEach>
+																</div>
+															</div>
+															
+															<!-- 세션에 저장된 userId와 reviewWriter 비교 -->
+													     	<c:if test="${sessionScope.loginMember.userId != null && sessionScope.loginMember.userId == review.reviewWriter}">
+													     		<button onclick="editReview()">수정</button>
+													     		<button onclick="deleteReview()">삭제</button>
+													     	</c:if>
+													     </div>													     
+													</div>
+												</c:forEach>
 											</div>
 											<p></p>
 										</div>

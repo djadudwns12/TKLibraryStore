@@ -27,6 +27,10 @@ public class PaymentInfoDTO {
    private String userId;
    private List<String> cartId;
    private String address;
+   private String totalPoint;
+   private List<String> bookQty;
+   private int orderPK;
+   private int userTotalPay;
    // ------ 박근영 ---------
 
 }

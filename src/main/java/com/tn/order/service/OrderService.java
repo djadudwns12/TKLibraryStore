@@ -16,7 +16,11 @@ public interface OrderService {
 	// 결제에 필요한 정보 담기
 	OrderInfo otherOrderInfo (String userId, OrderInfo orderInfo) throws Exception;
 	// 결제 완료 후 적용할 정보의 묶음
-	boolean paymentInfoApply(PaymentInfoDTO paymentInfoDTO);
+	void paymentInfoApply(PaymentInfoDTO paymentInfoDTO) throws Exception;
+	// 하루가 지난 주문 '배송중' 변경
+	void orderStatusToShipping() throws Exception;
+	// 3일이 지난 주문 '배송완료' 변경
+	void orderStatusToDelivered() throws Exception;
 // -----------------------------------------박근영-------------------------------------------------
 
 // -----------------------------------------엄영준-------------------------------------------------
@@ -49,4 +53,5 @@ public interface OrderService {
 
 //-----------------------------------------최미설-------------------------------------------------
 	
+
 }

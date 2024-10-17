@@ -48,6 +48,8 @@ import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.dto.RegisterDTO;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.member.model.vo.MyAddressVO;
+import com.tn.member.model.dto.MyAddressDTO;
 import com.tn.member.model.vo.ProfileResponseWithoutData;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.service.MemberService;
@@ -80,6 +82,106 @@ public class MemberController {
 	private OrderService oService;
 	@Autowired
 	private ProfileFileProcess fileProcess;
+	
+// -------------------------------- 김가윤 --------------------------------
+	
+	@RequestMapping("/address")
+	public String bringAddress(Model model, HttpSession session) {
+		String userId = ((MemberVO)session.getAttribute("loginMember")).getUserId();
+		
+		try {
+			List<MyAddressVO> list = mService.getAddressList(userId);
+			
+			model.addAttribute("address", list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "/member/address";
+	}
+	
+	@RequestMapping("/insertAddress")
+	public void goInsertAddress() {
+		
+	}
+	
+	@RequestMapping("/modifyAddress")
+	public String modifyAddress(Model model, @RequestParam("addressId") int addressId) {
+		// 수정 페이지에 addressId로 기존 정보 가져오기
+		try {
+			MyAddressVO address = mService.selectById(addressId);
+			
+			model.addAttribute("address", address);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return "/member/modifyAddress";
+	}
+	
+	@PostMapping(value="/insertNewAddress", produces = "application/text; charset=UTF-8;")
+	public ResponseEntity<String> insertAddress(@RequestBody MyAddressDTO addressDTO, HttpSession session) {
+		// 세션에서 로그인된 사용자의 정보 가져오기
+	    MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
+	    System.out.println("배송지 목록을 수정하려는 유저의 아이디 : " + loginMember.getUserId());
+	    
+	    // addressDTO에 userId 설정
+	    addressDTO.setUserId(loginMember.getUserId());
+	    
+	    try {
+	        mService.insertAddress(addressDTO);
+
+	        System.out.println("추가할 주소 내용 : " + addressDTO.toString());
+	        return ResponseEntity.ok("추가 완료.");
+	       
+	    } catch (Exception e) {
+	        e.printStackTrace(); // 예외 로그 출력
+	        // 예외 발생 시 500 서버 오류 응답
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("추가 실패");
+	    }
+	}
+	
+	@PostMapping(value="/saveModifyAddress", produces = "application/text; charset=UTF-8;")
+	public ResponseEntity<String> saveModifyAddress(@RequestBody MyAddressDTO addressDTO, HttpSession session) {
+		
+		// 세션에서 로그인된 사용자의 정보 가져오기
+	    MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
+	    System.out.println("배송지 목록을 수정하려는 유저의 아이디 : " + loginMember.getUserId());
+	    
+	    // addressDTO에 userId 설정
+	    addressDTO.setUserId(loginMember.getUserId());
+		
+	    try {
+	        mService.modifyUpdateAddress(addressDTO);
+
+	        System.out.println("수정할 주소 내용 : " + addressDTO.toString());
+	        return ResponseEntity.ok("수정되었습니다.");
+	       
+	    } catch (Exception e) {
+	        e.printStackTrace(); // 예외 로그 출력
+	        // 예외 발생 시 500 서버 오류 응답
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수정 실패");
+	    }
+	}
+	
+	@PostMapping(value="/removeAddr", produces = "application/text; charset=UTF-8;")
+	public ResponseEntity<String> removeAddr(@RequestParam("addressId") int addressId) {
+		
+		try {
+			mService.removeAddress(addressId);
+			
+			return ResponseEntity.ok("삭제 완료");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("주소 삭제 실패");
+		}
+	}
+	
+
+// -------------------------------- 김가윤 --------------------------------
 
 	
 //	-------------------------------------------------------------(엄영준) Start-----------------------------------------------------------------------------------
@@ -425,14 +527,24 @@ public class MemberController {
 	}
 	
 	//박근영
-	private ImgFileVODTO fileSave(MultipartFile imgFile, String userId, HttpServletRequest request) throws IOException { // 파일의 기본정보 가져옴 
+	private ImgFileVODTO fileSave(MultipartFile imgFile, String userId, HttpServletRequest request) { // 파일의 기본정보 가져옴 
 		
 		String originalFileName = imgFile.getOriginalFilename();
 		System.out.println("여긴는" + originalFileName);
-		byte[] upfile = imgFile.getBytes(); // 파일의 실제 데이터를 읽어옴
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/profileImgs");
-		
-		ImgFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, userId, originalFileName); 
+		ImgFileVODTO fileInfo = null;
+		byte[] upfile;
+		try {
+			upfile = imgFile.getBytes();
+			// 파일의 실제 데이터를 읽어옴
+			String realPath = request.getSession().getServletContext().getRealPath("/resources/profileImgs");
+			
+			fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, userId, originalFileName); 
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		return fileInfo; 
 	}
 	  

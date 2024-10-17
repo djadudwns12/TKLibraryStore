@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,14 +18,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tn.booklist.model.dto.PagingInfo;
 import com.tn.booklist.model.dto.PagingInfoDTO;
 import com.tn.booklist.model.vo.BookDetailInfo;
 import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.booklist.service.BooklistService;
+
+import com.tn.review.model.VO.ReviewVO;
+import com.tn.review.service.ReviewService;
+import com.tn.cart.model.dto.CartDTO;
+import com.tn.cart.model.vo.CartVO;
+import com.tn.cart.service.CartService;
+import com.tn.member.model.vo.MemberVO;
 import com.tn.util.GetClientIPAddr;
 
 /**
@@ -38,6 +48,14 @@ public class BookListController {
 	
 	@Autowired
 	private BooklistService bService;
+	
+	@Autowired
+	private ReviewService reviewService;
+	@Autowired		
+	private CartService cService;
+
+	private CartDTO cdto;
+	
 
 	
 	// 책 전체 리스트를 불러오는 메서드 
@@ -107,6 +125,8 @@ public class BookListController {
 		
 		String returnBDetail = "";
 		List<BookDetailInfo> bookDetailInfo = null;
+		
+		List<ReviewVO> reviewVO = null;// 김가윤 : 리뷰 리스트 불러오기
 
 	         String ipAddr = GetClientIPAddr.getClientIP(request);
 //	         System.out.println(ipAddr + "가 " + bookNo + "번 책 정보를 검색한다!!");
@@ -119,6 +139,7 @@ public class BookListController {
 	        	  	
 			        returnBDetail = "/bookList/bookDetail";
 			        bookDetailInfo = bService.read(bookNo, ipAddr);
+			        reviewVO = reviewService.getBookNoReview(bookNo);// 김가윤 : 리뷰 리스트 불러오기
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -126,18 +147,37 @@ public class BookListController {
 	         }
 
 	      model.addAttribute("bookDetailInfo", bookDetailInfo);
+	      model.addAttribute("review", reviewVO);// 김가윤 : 리뷰 리스트 불러오기
 
 		
 		return returnBDetail;
+		
 		
 	}
 	
 
 	// 수량 선택해 장바구니 버튼을 누르면 카트에 상품이 담기는 메서드
-	// (1) 선택한 수량이 장바구니에 적용돼야 한다
-	// (2) 장바구니 담기 버튼을 누르면 회원의 카트에 상품이 추가(update)돼야 한다.(PK, qty, userId)
-	// (3) 로그인하지 않은 유저는 로그인페이지로 이동하도록 유도해야 한다.
+	@PostMapping("/insertCart")
+	@ResponseBody
+	public String addToCart(@RequestParam("qty") int qty, @RequestParam("bookNo") int bookNo, HttpSession ses) {
+		
+		
+	String result = null;
+		
+		MemberVO loginMember = (MemberVO) ses.getAttribute("loginMember");
+		String userId = loginMember.getUserId();
+//		
+		System.out.println(qty +"bookNo"+ bookNo + userId);
+		try {
+			result = cService.findBookByBookNo(bookNo, userId, qty);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return result;
+			
+	}
 
-	
 }
 

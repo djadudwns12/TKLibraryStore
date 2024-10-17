@@ -24,8 +24,6 @@ public class CartDAOImpl implements CartDAO {
 	@Override
 	public List<CartDTO> selectCartList(String userId) throws Exception {
 		
-		System.out.println("CartDAOImpl / " + userId + " Cart List");
-		
 		return ses.selectList(NS + ".getCartList", userId);
 	}
 	
@@ -38,15 +36,11 @@ public class CartDAOImpl implements CartDAO {
 	@Override
 	public int deleteOneCart(String cartId) throws Exception {
 		
-		System.out.println("CartDAOImpl / " + cartId + "���� ��������~~~");
-		
 		return ses.delete(NS + ".deleteCartWithId", cartId);
 	}
 
 	@Override
 	public int updateQty(int cartId, int qty) throws Exception {
-		
-		System.out.println("CartDAOImpl / " + cartId + "���� ������ " + qty + "���� ��������~~~~~~~");
 		
 		// �Ķ���͸� Map�� ����
 	    Map<String, Object> params = new HashMap<>();
@@ -60,17 +54,45 @@ public class CartDAOImpl implements CartDAO {
 	@Override
 	public int deleteCartsByIds(List<Integer> cartIds) throws Exception {
 		
-		System.out.println("CartDAOImpl : 삭제할 cartId - " + cartIds);
-		
 		return ses.delete(NS + ".deleteSelectedItems", cartIds);
 	}
 
 	@Override
 	public int getCartCnt(String userId) throws Exception {
 		
-		System.out.println("CartDAOImpl : 장바구니 갯수를 가져올 회원의 아이디 : " + userId);
-		
 		return ses.selectOne(NS + ".countCartList", userId);
 	}
+
+	// ============================== (이아림 start) =====================================
+	
+
+	@Override
+	public int isExistInCart(int bookNo, String userId) throws Exception {
+		Map<String, Object> params = new HashMap<>();
+	    params.put("userId", userId);
+	    params.put("bookNo", bookNo);
+		return ses.selectOne(NS + ".isExistInCart", params);
+	}
+
+	@Override
+	public int updateCart(String userId, int bookNo, int qty) {
+		Map<String, Object> params = new HashMap<>();
+	    params.put("userId", userId);
+	    params.put("bookNo", bookNo);
+	    params.put("qty", qty);
+		return ses.update(NS + ".updateCart", params);
+	}
+
+	@Override
+	public int insertCart(String userId, int bookNo, int qty) throws Exception {
+		Map<String, Object> params = new HashMap<>();
+	    params.put("userId", userId);
+	    params.put("bookNo", bookNo);
+	    params.put("qty", qty);
+		return ses.insert(NS + ".insertCart", params);
+	}
+	
+	
+	// ================================ (이아림 end) ======================================
 
 }

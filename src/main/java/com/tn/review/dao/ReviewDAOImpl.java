@@ -32,11 +32,15 @@ public class ReviewDAOImpl implements ReviewDAO {
 	// ===================================== 최미설 =====================================//		
 
 	@Override
-	public int insertNewReview(ReviewDTO reviewDTO) {
+	public int insertReview(ReviewDTO reviewDTO) throws Exception {
 		
-		return ses.insert(NS + ".insertNewReview", reviewDTO);
+		return ses.insert(NS + ".insertReviewDTO", reviewDTO);
 	}
-
-
+  
+  @Override
+  public List<ReviewVO> getReview(int bookNo) throws Exception {
+		
+		return ses.selectList(NS + ".getReviewWithBookNo", bookNo);
+  }
 
 }

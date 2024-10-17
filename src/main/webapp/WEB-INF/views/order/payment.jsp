@@ -8,14 +8,22 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<link
+   href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap"
+   rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 <title>주문/결제 페이지</title>
 <style>
+* {
+   font-family: "Gowun Batang", serif;
+   font-weight: 600;
+   font-style: normal;
+}
+
 body {
-	font-family: 'Arial', sans-serif;
 	background-color: #f4f4f4;
 	margin: 0;
 	padding: 20px;
@@ -618,6 +626,13 @@ async function requestPayment() {
 	      </c:forEach>
 	   ];
 	 const address = $('#deliveryAddress').text();
+	 const totalPoint = ${orderInfo.totalPoint}
+	 const bookQty = [
+	      <c:forEach var="bookQty" items="${orderInfo.cartQty}">
+	         '${bookQty}'<c:if test="${!status.last}">, </c:if>
+	      </c:forEach>
+	   ];
+	 
 	console.log(orderTitleList);
 	const paymentRequestData = {
 		    storeId: "${orderInfo.storeId}",
@@ -653,7 +668,9 @@ async function requestPayment() {
     			orderName: paymentRequestData.orderName,
     			titleName: orderTitleList,
     			cartId: cartIdList,
-    			address: address
+    			address: address,
+    			totalPoint: totalPoint,
+    			bookQty: bookQty
 			})
 		  });
 		  if (notified.ok) {
@@ -662,6 +679,8 @@ async function requestPayment() {
 		    } else {
 		    	console.log(notified.message);
 		        alert('결제 완료 요청에 실패했습니다.');
+		        const redirectUrl =await notified.text();
+		        window.location = redirectUrl;
 		    }
 
 		}

@@ -24,6 +24,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			// 이전에 접속하던 페이지 페이지가 있다면 페이지를 얻어오기 
 			if(request.getParameter("redirectUri") != null) {
 				String redirectUri =(String)request.getParameter("redirectUri");
+				request.getSession().setAttribute("destPath", redirectUri);
+				
 			}
 			// 로그인 하지 않은경우 로그인 페이지를 보여준다. 
 			if(request.getSession().getAttribute("loginMember") == null) { 					
