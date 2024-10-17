@@ -33,7 +33,7 @@ public interface MemberDAO {
 	// 회원정보 INSERT(가입시)
 	public int insertMember(RegisterDTO registerDTO, ImgFileVODTO fileInfo) throws Exception;
 	// 회원주소 INSERT(가입시)
-	public int insertAddress(RegisterDTO registerDTO, String address);
+	public int insertAddress(RegisterDTO registerDTO, String address) throws Exception;
 	
 	// ID 중복확인 SELECT
 	public int selectId(String tmpUserId) throws Exception;

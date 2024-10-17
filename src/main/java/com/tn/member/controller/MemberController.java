@@ -490,14 +490,24 @@ public class MemberController {
 	}
 	
 	//박근영
-	private ImgFileVODTO fileSave(MultipartFile imgFile, String userId, HttpServletRequest request) throws IOException { // 파일의 기본정보 가져옴 
+	private ImgFileVODTO fileSave(MultipartFile imgFile, String userId, HttpServletRequest request) { // 파일의 기본정보 가져옴 
 		
 		String originalFileName = imgFile.getOriginalFilename();
 		System.out.println("여긴는" + originalFileName);
-		byte[] upfile = imgFile.getBytes(); // 파일의 실제 데이터를 읽어옴
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/profileImgs");
-		
-		ImgFileVODTO fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, userId, originalFileName); 
+		ImgFileVODTO fileInfo = null;
+		byte[] upfile;
+		try {
+			upfile = imgFile.getBytes();
+			// 파일의 실제 데이터를 읽어옴
+			String realPath = request.getSession().getServletContext().getRealPath("/resources/profileImgs");
+			
+			fileInfo = fileProcess.saveFileToRealPath(upfile, realPath, userId, originalFileName); 
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		return fileInfo; 
 		}
 	  

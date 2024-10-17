@@ -28,7 +28,7 @@ public class OrderInfo {
     private String totalPrice;
     private String totalSalePrice;
     private String totalPay;
-    private String totalPoint;
+    private String totalPoint;	      // 적립예정 포인트
 	private AddressVO defaultAddress;
 	private List<AddressVO> address;
 	private int userPoint;

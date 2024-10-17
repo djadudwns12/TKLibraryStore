@@ -46,12 +46,14 @@ import com.tn.admin.model.vo.TopPublisherVO;
 import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.MyResponseWithData;
 import com.tn.admin.model.vo.MyResponseWithoutData;
+import com.tn.admin.model.vo.OrderDeliveryVO;
 import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.RestockVO;
 import com.tn.admin.model.vo.SalesVO;
 import com.tn.admin.service.MemberAdminService;
+import com.tn.admin.service.OrderDeliveryService;
 import com.tn.admin.service.ProductAdminService;
 import com.tn.qa.model.vo.QAVO;
 import com.tn.qa.service.QAService;
@@ -89,6 +91,10 @@ public class AdminController {
 
 	@Autowired
 	private BookFileProcess fileProcess;
+	
+	@Autowired
+	private OrderDeliveryService odService;
+	
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -808,6 +814,72 @@ public class AdminController {
 		}
 		
 		// 엄영준(end) =============================================================================================================
+		
+// -----------------------------------------박근영-------------------------------------------------
+
+		
+		@RequestMapping("/orderDelivery")
+		public String orderDelivery() {
+		    // 리퀘스트 파라미터로 기본 정보만 넘김
+		    return "redirect:/admin/orderDeliveryAdmin";
+		}
+
+		@RequestMapping("/orderDeliveryAdmin")
+		public String orderDeliveryAdmin(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+		                                 @RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize,
+		                                 @RequestParam(value = "ra", defaultValue = "default") String sortBy, 
+		                                 SearchCriteriaDTO searchCriteria, 
+		                                 HttpServletRequest request, 
+		                                 HttpServletResponse response) {
+			System.out.println(pageNo + "페이징 확인" + pagingSize + "서치" + searchCriteria + "알에이" + sortBy);
+		    PagingInfoDTO dto = PagingInfoDTO.builder().pageNo(pageNo).pagingSize(pagingSize).build();
+		    Map<String, Object> result = null;
+
+		    try {
+		        // 페이징된 주문 목록 가져오기
+		        result = odService.listAllOrderDelivery(dto, searchCriteria, sortBy);
+		        PagingInfo pi = (PagingInfo) result.get("pagingInfo");
+		        
+		        List<OrderDeliveryVO> orderList = (List<OrderDeliveryVO>) result.get("orderList");
+		        System.out.println("보내기전 확인"+pi+"오더리스트도 확인 :" + orderList);
+		        
+		        model.addAttribute("odInfo", orderList); // 페이징된 주문 목록 데이터 바인딩
+		        model.addAttribute("pagingInfo", pi);
+		        model.addAttribute("search", searchCriteria);
+		        model.addAttribute("ra", sortBy);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        model.addAttribute("exception", "error");
+		    }
+
+	
+
+		    return "/admin/orderDeliveryAdmin";
+		}
+
+	
+		
+		@RequestMapping("/cancelOrders")
+		public ResponseEntity<String> cancelOrders(@RequestBody List<String> orderNos) {
+			System.out.println("진입 확인 cancelOrders" + orderNos);
+			try {
+			odService.cancelOrder(orderNos);
+			
+				return new ResponseEntity<String>("취소 성공", HttpStatus.OK);
+			} catch (Exception e) {
+				return new ResponseEntity<String>("취소 실패", HttpStatus.NOT_ACCEPTABLE);
+			}
+		
+			
+			
+		    
+		    
+		}
+		
+		
+		
+		
+// -----------------------------------------박근영-------------------------------------------------
 		
 		
 }

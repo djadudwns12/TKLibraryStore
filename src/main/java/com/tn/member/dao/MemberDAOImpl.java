@@ -69,7 +69,7 @@ public class MemberDAOImpl implements MemberDAO  {
 //-----------------------------------------박근영-------------------------------------------------
 	//박근영
 	@Override
-	public int insertMember(RegisterDTO registerDTO, ImgFileVODTO fileInfo) {
+	public int insertMember(RegisterDTO registerDTO, ImgFileVODTO fileInfo) throws Exception {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("registerDTO", registerDTO);
 		paramMap.put("fileInfo", fileInfo);
@@ -82,7 +82,7 @@ public class MemberDAOImpl implements MemberDAO  {
 	}
 	//박근영
 	@Override
-	public int insertAddress(RegisterDTO registerDTO, String address) {
+	public int insertAddress(RegisterDTO registerDTO, String address) throws Exception {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("registerDTO", registerDTO);
 		paramMap.put("address", address);

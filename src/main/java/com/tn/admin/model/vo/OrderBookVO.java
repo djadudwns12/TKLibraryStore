@@ -1,8 +1,5 @@
-package com.tn.order.model.vo;
+package com.tn.admin.model.vo;
 
-
-
-import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,14 +15,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class PaymentInfoVO {
-	// -------- 박근영 --------
-	private int bookNo;
-	private String qty;
+public class OrderBookVO {
 	private String orderNo;
-	private String orderPK;
-	private int userTotalPay;
-	// -------- 박근영 --------
+	private String bookNo;
+	private int qty;
+	private String thumbNail;
 	
-
 }
