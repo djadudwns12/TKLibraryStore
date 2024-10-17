@@ -50,8 +50,6 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public List<ReviewDTO> getBookNoReview(int bookNo) throws Exception {
 		
-		System.out.println("ReviewServiceImpl 리뷰 가져오기 : " + bookNo + "번 글");
-		
 		List<ReviewDTO> list = reviewDao.getReview(bookNo);
 		
 		return list;
