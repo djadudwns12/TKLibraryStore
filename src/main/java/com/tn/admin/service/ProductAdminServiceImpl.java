@@ -14,6 +14,8 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.mariadb.jdbc.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +30,7 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 	
 	
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
 	public Map<String, Object> listAll(PagingInfoDTO dto, SearchCriteriaDTO searchCriteria, String sortBy) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		List<ProductVO> list = null;
@@ -168,7 +170,7 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 
 
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
 	public boolean addZzim(String userId, int bookNo) throws Exception {
 		boolean result = false;
 		// 찜 테이블에 insert
@@ -183,7 +185,7 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 	}
 	
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
 	public boolean removeZzim(String userId, int bookNo) throws Exception {
 		boolean result = false;
 		// 찜 테이블에 delete
