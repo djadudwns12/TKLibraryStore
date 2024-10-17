@@ -15,8 +15,6 @@ public interface ReviewService {
 	
 	
 // ===================================== 최미설 =====================================//	
-	// 새 리뷰와 별점을 작성, 저장하는 메서드
-	boolean saveBoard(ReviewDTO reviewDTO);
 
 	
 	List<ReviewVO> getRecentReview(String userId) throws Exception;

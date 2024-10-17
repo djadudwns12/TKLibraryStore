@@ -179,6 +179,7 @@ function recentViews() {
 			<li class="myInfo"><a href="/member/address">ㅤ> 주소록 관리</a></li>
 			<li><a href="#"><h5><b>찜</b></h5></a></li>
 			<li><a href="/cart/cartPage"><h5><b>장바구니</b></h5></a></li>
+			 <li><a href="/member/OrderStatus"><h5><b>주문현황</b></h5></a></li>
 			<li><a href="#"><h5><b>알림</b></h5></a></li>
 			<li><a href="#"><h5><b>나의 회원등급</b></h5></a></li>
 			<li><a href="#"><h5><b>나의 포인트 적립기록</b></h5></a></li>
@@ -299,11 +300,11 @@ function recentViews() {
 								<td>${order.salePrice}</td>
 							</tr>
 						</c:forEach>
-						<c:if test="${orderList.size() == 0}">
+						<%-- <c:if test="${orderList.size() == 0}">
 							<tr>
 								<td colspan="3">데이터가 없습니다.</td>
 							</tr>
-						</c:if>
+						</c:if> --%>
 					</tbody>
 				</table>
 			</div>

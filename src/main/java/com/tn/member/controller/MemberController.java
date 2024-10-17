@@ -317,43 +317,6 @@ public class MemberController {
 	
 //-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
 
-
-	// -----------------------------------------최미설-------------------------------------------------
-	/**
-	 * @작성자 : 최미설
-	 * @작성일 : 2024. 9. 6.
-	 * @method_name : getMemberInfo
-	 * @param :String userId(로그인 기능 구현 이후 세션에서 로그인 정보 받아와서 파라미터로 받을 예정)
-	 * @param :Model  model
-	 * @return : memberVO
-	 * @throws :
-	 * @description : 회원정보수정을 위해 회원정보를 불러오는 메서드
-	 */
-
-	@RequestMapping(value = "/edit")
-	public void getEditMemeberInfo(HttpSession ses,  Model model) { 
-		try {
-			MemberVO loginMember = mService.getEditMemberInfo(((MemberVO)ses.getAttribute("loginMember")).getUserId());
-			System.out.println(loginMember.toString());
-			model.addAttribute("loginMember", loginMember);
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * @작성자 : 최미설
-	 * @작성일 : 2024. 9. 9.
-	 * @클래스명 : MemberController
-	 * @메서드명 : saveEditInfo
-	 * @param : MemberDTO, RedirectAttributes
-	 * @return : void
-	 * @throws
-	 * @description : 회원정보수정 페이지에서 수정된 정보를 저장하는 메서드
-	 *
-	 */
 	@RequestMapping(value = "/mypage")
 	public String myPage(MemberDTO loginMember,Model model,HttpSession sess) {
 
@@ -411,7 +374,7 @@ public class MemberController {
 		try {
 			if(mService.saveEditInfo(editMember)) {
 				redirectAttributes.addAttribute("editStatus", "success");
-				return "/member/mypage";
+				return "/member/myPage";
 			}
 		} catch (Exception e) {
 			redirectAttributes.addAttribute("editStatus", "fail");

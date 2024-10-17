@@ -19,7 +19,7 @@ public interface CartDAO {
 	float getPointRate(String userId) throws Exception;
 
 	int getCartCnt(String userId) throws Exception;
-
+	
 	// ============================== (이아림 start) =====================================
 	int isExistInCart(int bookNo, String userId)throws Exception;
 

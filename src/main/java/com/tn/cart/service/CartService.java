@@ -24,7 +24,6 @@ public interface CartService {
 	// ============================== (이아림 start) =====================================
 	// 상세페이지에서 장바구니에 담으려는 상품이 장바구니에 이미 존재하는지 확인 
 	String findBookByBookNo(int bookNo, String userId, int qty) throws Exception;
-	boolean insertCart(CartVO cartVO) throws Exception;
 	
 	// ================================ (이아림 end) ======================================
 

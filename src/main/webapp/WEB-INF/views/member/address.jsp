@@ -81,6 +81,7 @@ body {
 			<li class="myInfo"><a href="/member/address">ㅤ> 주소록 관리</a></li>
 			<li><a href="#"><h5><b>찜</b></h5></a></li>
 			<li><a href="/cart/cartPage"><h5><b>장바구니</b></h5></a></li>
+			 <li><a href="/member/OrderStatus"><h5><b>주문현황</b></h5></a></li>
 			<li><a href="#"><h5><b>알림</b></h5></a></li>
 			<li><a href="#"><h5><b>나의 회원등급</b></h5></a></li>
 			<li><a href="#"><h5><b>나의 포인트 적립기록</b></h5></a></li>
@@ -154,7 +155,7 @@ body {
 						<div class="AddressName" id="addrName">
 							<strong>${address.address_key}</strong> 
 						</div>
-						<div><span class="badge rounded-pill bg-primary" style="color: white;">일반 배송지</span></div>
+						<div><span class="badge rounded-pill bg-primary" style="color: white;">기본 배송지</span></div>
 						<div class="detailAddress">
 							<div>${address.receiver_name}/${address.receiver_phone}</div>
 							<div>${address.address}</div>

@@ -208,12 +208,12 @@
 			 $.ajax({
 		        url: '/bookList/insertCart',	// 데이터 보내는 곳 URL
 		        type: 'POST',
-		        contentType: 'application/json',
-		        data: JSON.stringify({
+		        //contentType: 'application/json',
+		        data: {
 		            userId: userId,
 		            qty: totalQty,  // 최종 선택한 수량
 		            bookNo: bookNo
-		        }),
+		        },
 		        success: function(response) {
 		        	// (1) 해당 user의 장바구니에 겹치는 상품이 있는 경우
 		        	if(response == 'updateTrue') {

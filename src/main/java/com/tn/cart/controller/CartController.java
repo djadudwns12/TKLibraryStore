@@ -120,25 +120,5 @@ public class CartController {
 	    }
 	    return ResponseEntity.ok(response);
 	}
-	
-	@PostMapping(value = "/insertCart", produces = "application/json; charset=UTF-8;")
-	public ResponseEntity<Map<String, String>> insertCart(@RequestBody CartVO cartVO, HttpSession session) {
-		String userId = ((MemberVO)session.getAttribute("loginMember")).getUserId();
-		cartVO.setUserId(userId);
-		System.out.println(userId + "님의 카트에 추가될 책번호 : " + cartVO.getBookNo() + ", 수량 : " + cartVO.getQty());
-		
-		Map<String, String> response = new HashMap<>();
-		
-		try {
-			cService.insertCart(cartVO);
-			response.put("message", "장바구니에 추가되었습니다.");
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			response.put("message", "장바구니에 담지 못했습니다.");
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		}
-	}
 
 }

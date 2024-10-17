@@ -87,8 +87,6 @@
 	<delete id="removeAddress">
 		delete from Address where addressId = #{addressId}
 	</delete>
-	
-  </mapper>
 	<!-- 박근영 -->
 	<!-- 회원 가입를 위하여 회원 정보를 DB에 저장하며, 회원가입시 프로필 이미지 등록 유무에 따른 inser문 if문으로 구별 -->
 	<insert id="insertRegisterMember">
