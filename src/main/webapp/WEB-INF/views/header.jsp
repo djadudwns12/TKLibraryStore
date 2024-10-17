@@ -68,14 +68,14 @@ $(function(){
 	}
 	
 });
+
+
 </script>
 
 
 <style>
-div#category_young {
-	display: flex;
-	justify-content: flex-start;
-}
+
+
 
 </style>
 <script type="text/javascript">
@@ -90,6 +90,8 @@ function showHide(){
 	$('.showInfo').toggle();
 	$('.hideInfo').toggle();
 }
+
+
 </script>
 
 
@@ -107,7 +109,7 @@ function showHide(){
 	<div class="humberger__menu__wrapper">
 		<div class="humberger__menu__logo">
 			<a href="#"><img
-				src="${pageContext.request.contextPath}/resources/template/img/logo.png"
+				src="${pageContext.request.contextPath}/resources/images/TKlogo.png"
 				alt=""></a>
 		</div>
 		<div class="humberger__menu__cart">
@@ -135,7 +137,7 @@ function showHide(){
 				<a href="#"><i class="fa fa-user"></i> Login</a>
 			</div>
 		</div>
-		<nav class="humberger__menu__nav mobile-menu">
+		<nav class="humberger__menu__nav mobile-menu" >
 			<ul>
 				<li class="active"><a href="./index.html">Home</a></li>
 				<li><a href="./shop-grid.html">Shop</a></li>
@@ -171,25 +173,26 @@ function showHide(){
 			<div class="row">
 				<div class="col-lg-3">
 					<div class="header__logo">
-						<a href="./index.html"><img
-							src="${pageContext.request.contextPath}/resources/template/img/logo.png"
-							alt=""></a>
+						<a href="/"><img
+							src="/resources/images/TKlogo.png"
+							alt="" style="width: 60px; height: 80px;"></a>
+							<span style="font-weight: 700; font-size: 25px; padding: 5px;">   떡잎 서점</span>
 					</div>
 				</div>
 				<div class="col-lg-6">
-					<nav class="header__menu">
+					<nav class="header__menu" style="margin-left: 80px;">
 						<ul>
 							<li class="active"><a href="/">Home</a></li>
-							<li><a href="./shop-grid.html">Shop</a></li>
-							<li><a href="#">Pages</a>
+							
+							<li><a href="/member/mypage">myPages</a>
 								<ul class="header__menu__dropdown">
 									<li><a href="./shop-details.html">Shop Details</a></li>
 									<li><a href="./shoping-cart.html">Shopping Cart</a></li>
 									<li><a href="./checkout.html">Check Out</a></li>
 									<li><a href="./blog-details.html">Blog Details</a></li>
 								</ul></li>
-							<li><a href="./blog.html">Blog</a></li>
-							<li><a href="./contact.html">Contact</a></li>
+							<li><a href="/qa/qaList">Q&A</a></li>
+							<li><a href="/member/register">Sign up</a></li>
 						</ul>
 					</nav>
 				</div>
@@ -240,7 +243,7 @@ function showHide(){
 				<div class="col-lg-3">
 					<div class="hero__categories">
 						<div class="hero__categories__all">
-							<i class="fa fa-bars"></i> <span>All departments</span>
+							<i class="fa fa-bars"></i> <span>메뉴</span>
 						</div>
 						<ul id="categoryList" style="display: none">
 							<c:if test="${loginMember != null}">
@@ -263,64 +266,22 @@ function showHide(){
 						<div class="hero__search__form">
 							<form action="#">
 								<div class="hero__search__categories">
-									All Categories <span class="arrow_carrot-down"></span>
+									검색 조건 <span class="arrow_carrot-down"></span>
 								</div>
-								<input type="text" placeholder="What do you need?">
-								<button type="submit" class="site-btn">SEARCH</button>
+								<input type="text" placeholder="검색어를 입력하세요.">
+								<button type="submit" class="site-btn">검색</button>
 							</form>
 						</div>
-						<div class="hero__search__phone">
-							<div class="hero__search__phone__icon">
-								<i class="fa fa-phone"></i>
-							</div>
-							<div class="hero__search__phone__text">
-								<h5>+65 11.188.888</h5>
-								<span>support 24/7</span>
-							</div>
-						</div>
+						
 					</div>
-					<!-- 카테고리 -->
-					<div class="categoryArea" style="display: none;">
-						<input type="hidden" class="categoryNo">
-						<div id="category_young">
-							<select id="high_class" onchange="category(this)">
-								<option value="">선택</option>
-								<option value="05">인문</option>
-							</select>
-							<!-- 중분류 -->
-							<select id="mid_class" onchange="category(this)">
-								<option value="-1">선택</option>
-							</select>
-							<!-- 소분류 -->
-							<select id="low_class" onchange="category(this)">
-								<option value="-1">선택</option>
-							</select>
-						</div>
-						<div id="main_content"></div>
-					</div>
+					
 				</div>
 			</div>
 		</div>
 	</section>
 	<!-- Hero Section End -->
 
-	<!-- Js Plugins -->
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/jquery-3.3.1.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/bootstrap.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/jquery.nice-select.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/jquery-ui.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/jquery.slicknav.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/mixitup.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/owl.carousel.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/template/js/main.js"></script>
+	
 </body>
 
 

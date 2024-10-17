@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.RestockVO;
+import com.tn.admin.model.vo.SalesVO;
 import com.tn.admin.model.vo.SearchCriteriaDTO;
+import com.tn.admin.model.vo.TopPublisherVO;
 
 @Service
 public interface ProductAdminService {
@@ -43,6 +46,14 @@ public interface ProductAdminService {
 	int insertRestockBook(RestockVO restockBook)throws Exception;
 
 	Map<String, Object> restockList(PagingInfoDTO dto, SearchCriteriaDTO searchCriteria) throws Exception;
+
+	List<ProductVO> getTopBooks() throws Exception;
+
+	List<TopPublisherVO> getTopPublisher() throws Exception;
+
+	List<SalesVO> getSales() throws Exception;
+
+	void saveExcelData(MultipartFile excelFile) throws Exception;
 
 
 

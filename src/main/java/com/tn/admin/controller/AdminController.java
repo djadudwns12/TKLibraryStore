@@ -42,6 +42,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tn.admin.model.vo.SearchCriteriaDTO;
+import com.tn.admin.model.vo.TopPublisherVO;
 import com.tn.admin.model.vo.BoardUpFileVODTO;
 import com.tn.admin.model.vo.MyResponseWithData;
 import com.tn.admin.model.vo.MyResponseWithoutData;
@@ -49,6 +50,7 @@ import com.tn.admin.model.vo.PagingInfo;
 import com.tn.admin.model.vo.PagingInfoDTO;
 import com.tn.admin.model.vo.ProductVO;
 import com.tn.admin.model.vo.RestockVO;
+import com.tn.admin.model.vo.SalesVO;
 import com.tn.admin.service.MemberAdminService;
 import com.tn.admin.service.ProductAdminService;
 import com.tn.qa.model.vo.QAVO;
@@ -573,8 +575,67 @@ public class AdminController {
 		return new ResponseEntity<>("실패", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	// 차트 구현
 	
-	
+	 @GetMapping("/bookChart")
+	    @ResponseBody
+	    public List<ProductVO> getTopBooks() {
+	        
+		 List<ProductVO> book = null;
+		 try {
+				book = pService.getTopBooks();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 return book;
+	    }
+	 
+	 @GetMapping("/publisherChart")
+	    @ResponseBody
+	    public List<TopPublisherVO> publisherChart() {
+	        
+		 List<TopPublisherVO> publisher = null;
+		 try {
+			 publisher = pService.getTopPublisher();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 return publisher;
+	    }
+	 
+	 @GetMapping("/salesChart")
+	    @ResponseBody
+	    public List<SalesVO> salesChart() {
+	        
+		 List<SalesVO> sales = null;
+		 try {
+			 sales = pService.getSales();
+			 
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 return sales;
+	    }
+		
+	 
+	 @PostMapping(value = "/uploadExcel", produces = "application/json; charset=UTF-8")
+	 @ResponseBody
+	    public String uploadExcel(@RequestParam("file") MultipartFile excelFile) {
+	        try {
+	            pService.saveExcelData(excelFile); // 엑셀 파일 처리 후 DB 저장
+	        		       	
+	            return "파일 저장에 성공했습니다.";
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            
+	            return  "파일 저장에 실패했습니다. 양식을 확인해주세요.";
+	        }
+	       
+	    }
+	 
 	// ================================================= 한준형 ===========================================================
 	
 	//========================================최미설===================================//

@@ -11,45 +11,195 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+	<!-- Google Fonts에서 Gowun Batang 폰트 불러오기 -->
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script>
 
+<script type="text/javascript"
+	src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+	
+$(function() {
+	// Ajax로 데이터 요청
+    $.ajax({
+        url: '/admin/bookChart',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            drawBookChart(data);
+        },
+        error: function (error) {
+            console.error("Error fetching data", error);
+        }
+    });
+	
+    $.ajax({
+        url: '/admin/publisherChart',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            drawPublisherChart(data);
+        },
+        error: function (error) {
+            console.error("Error fetching data", error);
+        }
+    });
+
+    function drawBookChart(bookData) {
+        var dataArray = [['', '찜 수', '리뷰 수']];
+        bookData.forEach(function (book) {
+            dataArray.push([book.title, book.zzim, book.reviewCnt]);
+        });
+
+        var data = google.visualization.arrayToDataTable(dataArray);
+
+        var options = {
+            chart: {
+                title: '인기 책',
+                subtitle: '찜이 가장 많은 책 5개의 찜과 리뷰수',
+            },
+            bars: 'horizontal'
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+    
+    function drawPublisherChart(publisherData) {
+        var dataArray = [['Task', 'Hours per Day']];
+        publisherData.forEach(function (publisher) {
+            dataArray.push([publisher.publisher, publisher.publisher_count]);
+        });
+
+        var data = google.visualization.arrayToDataTable(dataArray);
+
+        var options = {
+            title: '출판사별 책 종류',
+            pieHole: 0.4
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+    }
+});
+
+
+google.charts.load('current', { packages: ['corechart', 'bar'] });
+
+// 라이브러리 로드 완료 후 차트 그리기 함수 호출
+google.charts.setOnLoadCallback(loadChartData);
+
+// Ajax로 서버에서 데이터 가져오기
+function loadChartData() {
+    $.ajax({
+        url: '/admin/salesChart',  // 서버에서 데이터 가져오는 URL
+        method: 'GET',
+        dataType: 'json',  // 서버 응답 형식을 JSON으로 설정
+        success: function (data) {
+            drawBasic(data);  // 데이터를 받아서 차트를 그리는 함수 호출
+        },
+        error: function (error) {
+            console.error("데이터를 가져오는 중 오류 발생: ", error);
+        }
+    });
+}
+
+function drawBasic(salesData) {
+    // Google Charts 데이터 형식으로 변환
+    var dataArray = [['월', '매출']];  // 첫 행에 헤더 추가
+    salesData.forEach(function(row) {
+        dataArray.push([row.order_month, row.total_pay]);
+    });
+
+    var data = google.visualization.arrayToDataTable(dataArray);
+
+    var options = {
+        title: '월별 매출',
+        chartArea: { width: '60%' },
+        hAxis: {
+            title: '매출 단위(원)',
+            minValue: 0
+        },
+        vAxis: {
+            title: '출판사'
+        }
+    };
+
+    var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+}
+	
 </script>
 
 
 <style>
-img {
-	width: 100px;
-	height: 100px;
+* {
+	font-family: "Gowun Batang", serif;
+	font-weight: 530;
+	font-style: normal;
 }
 
+
 .content1 {
-	margin-left: 100px;
+	margin-left: 50px;
 	margin-top: 30px;
+	 margin-bottom: 50px;
 }
+
+ /* h4 태그 스타일 */
+ .content1 h4 {
+     
+     font-size: 30px;
+     font-weight: bold;
+     text-align: center;
+     padding: 10px;
+     color: #333;
+     border-bottom: 2px solid #e0e0e0;
+    
+ }
 
 .content2 {
 	display: flex;
 	flex-direction: row;
-	margin-left: 100px;
+	margin-left: 50px;
 	margin-right: 100px;
 	justify-content: space-around;
+	border-bottom: 2px solid #e0e0e0;
 }
 
-.content3 {
-	margin-left: 100px;
-	margin-top: 300px;
+.content2 div{
+	margin-bottom: 30px;
 }
+
+
+.content3 {
+	margin-left: 50px;
+	margin-top: 30px;
+	 margin-bottom: 50px;
+}
+
+.content3 h4 {
+     
+     font-size: 30px;
+     font-weight: bold;
+     text-align: center;
+     padding: 10px;
+     color: #333;
+     border-bottom: 2px solid #e0e0e0;
+    
+ }
 
 .content4 {
 	display: flex;
 	flex-direction: row;
-	margin-left: 100px;
+	margin-left: 50px;
 	margin-right: 100px;
 	justify-content: space-around;
+	border-bottom: 2px solid #e0e0e0;
 }
 </style>
 </head>
@@ -68,16 +218,16 @@ img {
 				<h4>상품 통계</h4>
 			</div>
 
-			
+
 			<div class="content2">
 				<div>
-					<img src="/resources/images/TKlogo.png">
+					<div id="chart_div" style="width: 500px; height: 300px; margin-right: 50px;"></div>
 				</div>
 				<div>
-					<img src="/resources/images/TKlogo.png">
+					<div id="donutchart" style="width: 500px; height: 300px; margin-right: 50px;"></div>
 				</div>
 				<div>
-					<img src="/resources/images/TKlogo.png">
+					<div id="barchart_material" style="width: 500px; height: 300px;"></div>
 				</div>
 
 
@@ -89,13 +239,13 @@ img {
 
 			<div class="content4">
 				<div>
-					<img src="/resources/images/TKlogo.png">
+					
 				</div>
 				<div>
-					<img src="/resources/images/TKlogo.png">
+					
 				</div>
 				<div>
-					<img src="/resources/images/TKlogo.png">
+					
 				</div>
 			</div>
 

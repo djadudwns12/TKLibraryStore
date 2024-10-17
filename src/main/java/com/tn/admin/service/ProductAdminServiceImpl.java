@@ -1,13 +1,23 @@
 package com.tn.admin.service;
 
+import java.io.InputStream;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.mariadb.jdbc.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tn.admin.model.vo.*;
 import com.tn.admin.dao.ProductAdminDAO;
@@ -18,8 +28,9 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 	@Autowired
 	private ProductAdminDAO pDao;
 	
+	
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
 	public Map<String, Object> listAll(PagingInfoDTO dto, SearchCriteriaDTO searchCriteria, String sortBy) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		List<ProductVO> list = null;
@@ -159,7 +170,7 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 
 
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
 	public boolean addZzim(String userId, int bookNo) throws Exception {
 		boolean result = false;
 		// 찜 테이블에 insert
@@ -174,7 +185,7 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 	}
 	
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
 	public boolean removeZzim(String userId, int bookNo) throws Exception {
 		boolean result = false;
 		// 찜 테이블에 delete
@@ -232,6 +243,7 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		return resultMap;
 	}
 	
+	//입고요청페이지 페이징을위해 메서드를 새로 만듦
 	private PagingInfo makeRestockPagingInfo(PagingInfoDTO dto, SearchCriteriaDTO sc) throws Exception {
 		PagingInfo pi = new PagingInfo(dto);
 		
@@ -249,6 +261,73 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		
 		
 		return pi;
+	}
+
+	// 차트 찜기준 탑 5
+	@Override
+	public List<ProductVO> getTopBooks() throws Exception {
+		
+		return pDao.getTopBooks();
+	}
+
+
+	@Override
+	public List<TopPublisherVO> getTopPublisher() throws Exception {
+		
+		return pDao.getTopPublisher();
+	}
+
+
+	@Override
+	public List<SalesVO> getSales() throws Exception {
+		// TODO Auto-generated method stub
+		return pDao.getSales();
+	}
+
+
+	@Override
+	public void saveExcelData(MultipartFile excelFile) throws Exception {
+		 // 엑셀 파일을 읽기 위한 InputStream 생성
+        InputStream inputStream = excelFile.getInputStream();
+        Workbook workbook = WorkbookFactory.create(inputStream);
+        Sheet sheet = workbook.getSheetAt(0); // 첫 번째 시트 사용
+
+        // 시트의 각 행을 반복
+        for (Row row : sheet) {
+//			  현재의 경우에는 헤더가 없음을 가정하기 때문에 일단 주석
+//            if (row.getRowNum() == 0) { 
+//                // 첫 번째 행은 보통 헤더이므로 건너뜀
+//                continue;
+//            }
+            
+            // 셀 데이터 읽기
+        	int bookNo = (int) row.getCell(0).getNumericCellValue();
+        	String title = row.getCell(1).getStringCellValue();
+            String author = row.getCell(2).getStringCellValue();
+            String publisher = row.getCell(3).getStringCellValue();
+            
+            // Date String으로 변환
+            java.util.Date date =  row.getCell(4).getDateCellValue();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  // 원하는 포맷으로 변환
+            String pubDate = dateFormat.format(date);  // String으로 변환
+            
+            int genre = (int)row.getCell(5).getNumericCellValue();
+            int price = (int) row.getCell(6).getNumericCellValue();
+            int salePrice = (int) row.getCell(7).getNumericCellValue();
+            int inven = (int) row.getCell(8).getNumericCellValue(); 
+            String thumbNail = row.getCell(9).getStringCellValue(); 
+            String introduction = row.getCell(10).getStringCellValue();
+            int zzim = (int)row.getCell(11).getNumericCellValue();
+            int reviewCnt = (int) row.getCell(12).getNumericCellValue();
+            String base64ProfileImg = row.getCell(13).getStringCellValue();
+            // 읽은 데이터를 DB에 삽입
+            
+            //ProductVO excel = new ProductVO(bookNo, title, author, publisher, date, price, salePrice, inven, thumbNail, introduction, zzim, reviewCnt, base64ProfileImg);
+            pDao.insertExcelFile(bookNo, title, author, publisher, pubDate, genre, price, salePrice, inven, thumbNail, introduction, zzim, reviewCnt, base64ProfileImg);
+        }
+
+        workbook.close();
+		
 	}
 
 

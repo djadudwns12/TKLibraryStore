@@ -15,6 +15,8 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+	<!-- Google Fonts에서 Gowun Batang 폰트 불러오기 -->
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 
@@ -364,7 +366,7 @@
 							// 실행시키기 위해선 컨트롤러단에서 json데이터로 변환 후 데이터를 보내주어야한다.
 							alert(pro_check + "개의 상품을 삭제했습니다.");
 							location.href = '/admin/productAdmin?ra=${param.ra}&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
-
+	
 						},
 						error : function(data) {
 							console.log(data);
@@ -665,10 +667,13 @@ a:visited {
 					<button type="submit" class="btn btn-outline-dark btn"
 						onclick="return isValid()">검색</button>
 				</form>
-				<div style="display: flex; margin-left: 50px; width: 200px;">
-					<button type="button" class="btn btn-outline-dark btn"
-						onclick="location.href='/admin/registProduct';">Add
-						Product</button>
+				<div style="display: flex;">
+					<div style="margin-left: 50px; width: 200px;">
+						<button type="button" class="btn btn-outline-dark btn"
+							onclick="location.href='/admin/registProduct';">Add
+							Product</button>
+					</div>
+										
 				</div>
 
 				<div
@@ -939,10 +944,9 @@ a:visited {
 	href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap"
 	rel="stylesheet">
 <style>
-<!--
-폰트 영역 -->* {
+* {
 	font-family: "Gowun Batang", serif;
-	font-weight: 400;
+	font-weight: 530;
 	font-style: normal;
 }
 
