@@ -157,9 +157,9 @@ $(function() {
 							src="${loginMember.userImg}">
 					</div>
 				</div>
-				<div class="d-grid gap-2" style="text-align: right;">
+				<div class="d-grid gap-2" style="text-align: right;"><!-- return isValid(); -->
 					<button type="submit" class="btn btn-primary saveEditInfo"
-						onclick="return isValid();"
+						onclick="isValid()" 
 						style="border-color: #7fad38; background-color: #7fad38;">수정완료</button>
 					<button type="reset" class="btn btn-danger resetBtn">되돌리기</button>
 					<button type="button" class="btn btn-secondary"
@@ -329,11 +329,11 @@ function clearError(obj) {
 // 아래의 조건이 모두 만족할 때 회원수정 진행되도록
  	function isValid(){
 	// 빈칸 없음, 비밀번호 확인, 이메일 변경시 이메일 인증 진행
-	let pwdChecked = userPwdValid();
+	//let pwdChecked = userPwdValid();
 	let birthChecked = userBirthValid();
 	let emailChecked = userEmailValid();
 	let phoneNumChecked = phoneNumValid();
-	if(pwdChecked && birthChecked && emailChecked && phoneNumChecked){
+	if( birthChecked && emailChecked && phoneNumChecked){ //pwdChecked &&
 		fileUpload(uploadedFiles);
 		return true;
 	} else {
