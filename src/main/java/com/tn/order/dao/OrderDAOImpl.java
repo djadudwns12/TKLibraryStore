@@ -142,20 +142,41 @@ public class OrderDAOImpl implements OrderDAO {
 //-----------------------------------------엄영준-------------------------------------------------
 
 
+//-----------------------------------------최미설-------------------------------------------------
+	@Override
+	public int updatePoint(String userId, OrderVO sinOrder) throws Exception {
+		Map<String, Object> params = new HashMap<>();
+		params.put("userId", userId);
+		params.put("orderNo", sinOrder.getOrderNo());
+		
+		return ses.update(NS + ".updatePoint", params);
+	}
+	
+	@Override
+	public OrderVO getSinOrder(String userId) {
+		return ses.selectOne(NS + ".getSinOrder", userId);
+	}
+		
+	@Override
+	public int recordPointLog(String userId, OrderVO sinOrder) throws Exception {
+		Map<String, Object> params = new HashMap<>();
+		params.put("userId", userId);
+		params.put("pWhy", sinOrder.getOrderNo());
+		params.put("pScore", sinOrder.getPlannedPoint());
+		
+		return ses.insert(NS + ".recordPointLog", params);
+	}	
+	
 
+	@Override
+	public int updateUnregisterInfo(String deletedMember) throws Exception {
+		return ses.update(NS + ".updateUnregisterInfo", deletedMember);
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+	@Override
+	public List<OrderVO> checkRemainOrder(String deletedMember) throws Exception {
+		return ses.selectList(NS + ".checkRemainOrder", deletedMember);
+	}
+//-----------------------------------------최미설-------------------------------------------------
 
 }

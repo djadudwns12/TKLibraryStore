@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<!-- Google Fonts에서 Gowun Batang 폰트 불러오기 -->
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 	<!--begin::App Wrapper-->
@@ -27,7 +29,7 @@
 
 			<div class="mb-3 profile">	
 				<div >
-					<img src="/resources/userImg/${memberDetail.userImg }" style="width:200px; border-radius: 50%; margin-left:30px;"/>
+					<img src="${memberDetail.userImg }" style="width:200px; border-radius: 50%; margin-left:30px;"/>
 				</div>
 			
 				<div class="content1">
@@ -84,8 +86,6 @@
 				      <tr>
 				        <th>주문일</th>
 				        <th>주문번호</th>
-<!-- 				        <th>제목</th>
-				        <th>수량</th> -->
 				        <th>주문상태</th>
 				      </tr>
 				    </thead>
@@ -99,9 +99,8 @@
 						      <tr>
 						        <td>${recentOrder.orderDate}</td>
 						        <td>${recentOrder.orderNo}</td>
-<%-- 						        <td>${recentOrder.title}</td>
-						        <td>${recentOrder.qty}</td> --%>
 						        <td>${recentOrder.orderStatus}</td>
+						        
 						      </tr>
 							</c:forEach>
 						</c:otherwise>	
@@ -119,7 +118,7 @@
 							<div class="card-body">
 								<h4 class="card-title"><${recentReview.title}></h4>
 								<div class="card-text">${recentReview.reviewContent}</div>
-								<a href="#" class="btn btn-primary">자세히..</a>
+								<a href="#" class="btn btn-primary" style="border-color: #7fad38; background-color: #7fad38;">자세히..</a>
 							</div>
 						</div>
 					</c:forEach>
@@ -137,6 +136,11 @@
 	</div>
 
 <style>
+* {
+   font-family: "Gowun Batang", serif;
+   font-weight: 550;
+   font-style: normal;
+}
 .fileBtns {
 	display: flex;
 	justify-content: flex-end;

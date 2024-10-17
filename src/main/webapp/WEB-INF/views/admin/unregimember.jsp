@@ -13,9 +13,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Google Fonts에서 Gowun Batang 폰트 불러오기 -->
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
-<!--  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">-->
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
-<title>회원관리페이지</title>
+<title>탈퇴회원관리</title>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 	<div class="app-wrapper">
@@ -26,7 +26,7 @@
 		<div class="header">
 			<jsp:include page="header.jsp" />
 			<div class="content">
-				<h1 class="jemok">회원관리페이지</h1>
+				<h1 class="jemok">탈퇴회원관리</h1>
 				
 				<!-- The form -->
 				<form class="search"style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: center;" action="" method="post">
@@ -82,7 +82,7 @@
 				<table>
 					<thead>
 						<tr>
-							<!-- <th><input type="checkbox" onclick="selectAll(this)"> selectAll </th> -->
+							<th><input type="checkbox" onclick="selectAll(this)"> selectAll </th>
 							<th>프로필사진</th>
 							<th>아이디</th>
 							<th>이름</th>
@@ -91,16 +91,16 @@
 							<th>이메일</th>
 							<th>회원등급</th>
 							<th>적립포인트</th>
-							<!--  
-							<th><button type="button" class="btn btn-danger btn" id="delBtn" style="width:90px; font-size:small;" onclick="deletememberList();" >0개 삭제</button></th> 
-							<th><button type="button" class="btn btn-success btn" id="soldOutBtn" style="width:90px; font-size:small;" onclick="soldOutmemberList();">0개 품절</button></th>
+							
+							
+							<!--  <th><button type="button" class="btn btn-success btn" id="soldOutBtn" style="width:90px; font-size:small;" onclick="soldOutmemberList();">0개 품절</button></th>
 							-->
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="memberList" items="${memberList}">
+						<c:forEach var="memberList" items="${unregiMemberList}">
 							<tr>
-								<!--<td><input type="checkbox" name="proCheck" value="${memberList.userId}" onclick="updateCheck()"></td>-->
+								<td><input type="checkbox" name="proCheck" value="${memberList.userId}" onclick="updateButton()"></td>
 								
 								<td><img src="${memberList.userImg}" width="30px" height="30"></td>
 								<td onclick="location.href='/admin/memberDetail?userId=${memberList.userId}'">${memberList.userId}</td>
@@ -114,12 +114,13 @@
 						</c:forEach>
 					</tbody>
 				</table>
+				<button type="button" class="btn btn-danger btn" id="delBtn" style="width:90px; font-size:small;" onclick="deleteCheckedMember()" >0명 삭제</button>
 			</div>
 			<div class="pagination justify-content-center" style="margin: 20px 0">
 				<ul class="pagination">
 					<c:if test="${param.pageNo > 1 }">
-						<li class="page-item"><a class="page-link" href="/admin/memberadmin?pageNo=1&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> << </a></li>
-						<li class="page-item"><a class="page-link" href="/admin/memberadmin?pageNo=${pagingInfo.pageNo-1} &pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
+						<li class="page-item"><a class="page-link" href="/admin/unregimember?pageNo=1&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> << </a></li>
+						<li class="page-item"><a class="page-link" href="/admin/unregimember?pageNo=${pagingInfo.pageNo-1} &pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
 					</c:if>
 
 					<c:forEach var="i" begin="${pagingInfo.startPageNoCurBlock }"
@@ -127,21 +128,21 @@
 						<c:choose>
 							<c:when test="${param.pageNo == i }">
 								<li class="page-item active" id="${i}"><a class="page-link"
-									href="/admin/memberadmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
+									href="/admin/unregimember?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item" id="${i}"><a class="page-link"
-									href="/admin/memberadmin?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
+									href="/admin/unregimember?pageNo=${i}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">${i }</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 
 					<c:if test="${pagingInfo.pageNo < pagingInfo.totalPageCnt}">
 						<li class="page-item"><a class="page-link"
-							href="/admin/memberadmin?pageNo=${pagingInfo.pageNo+1}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Next</a></li>
+							href="/admin/unregimember?pageNo=${pagingInfo.pageNo+1}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Next</a></li>
 						
 						<li class="page-item"><a class="page-link"
-							href="/admin/memberadmin?pageNo=${pagingInfo.totalPageCnt}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> >> </a></li>
+							href="/admin/unregimember?pageNo=${pagingInfo.totalPageCnt}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> >> </a></li>
 					</c:if>
 				</ul>
 			</div>
@@ -328,21 +329,21 @@ $(function () {
 			pageNo = parseInt(pageNo);
 		}
 		
-		location.href = '/admin/memberadmin?pagingSize='+ $(this).val() + '&pageNo=1&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}';
+		location.href = '/admin/unregimember?pagingSize='+ $(this).val() + '&pageNo=1&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}';
 	});
 	
 	
 	$('.sortByWhat').change(function(){
 		console.log($(this).val());						
 		 
-		location.href = '/admin/memberadmin?sortBy='+ $(this).val() + '&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
+		location.href = '/admin/unregimember?sortBy='+ $(this).val() + '&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
 	});
 			
 });
 
 function pagingInfo() {
-	let memberList = '${param.memberList}';
-	console.log(memberList);
+	let memberList = '${param.unregiMemberList}';
+	console.log(unregiMemberList);
 }
 
 function isValid() {
@@ -361,19 +362,21 @@ function isValid() {
 	return result;
 	
 }
-
+const selectedItems = [];
 function updateCheck() {
 	const checkboxes = document.querySelectorAll('input[name="proCheck"]:checked');
-	const selectedItems = [];
+	
             
 	checkboxes.forEach((checkbox) => {
 		selectedItems.push(checkbox.value);
+		console.log(checkbox.value);
 	});
 
 	document.getElementById("result").innerHTML = selectedItems.length > 0
 		? '선택된 항목: ' + selectedItems.join(', ')
 		: '선택된 항목이 없습니다.';
 	
+
 }
 function selectAll(selectAll) {
     // 모든 체크박스 선택
@@ -384,8 +387,64 @@ function selectAll(selectAll) {
         $(this).prop('checked', $(selectAll).prop('checked'));
         updateCheck();
     });
-
 }
+function deleteCheckedMember() {
+	let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
+	let delNo = [];
+	if (pro_check == 0) {
+		alert('한 명 이상의 회원을 선택해주세요.');
+		return false;
+	}
+	$('input:checkbox[name=proCheck]').each(function(index) {
+		if ($(this).is(":checked") == true) {
+			selectedItems.push($(this).val());
+		}
+	});
+	console.log(selectedItems);
+	if (confirm(pro_check + "명의 회원정보를 삭제하시겠습니까? \n삭제된 내용은 복구할 수 없습니다.")) {
+		$.ajax({
+			url : "/admin/removeMemberInfo",
+			type : "post",
+			dataType : "text",
+			contentType : 'application/json; charset=utf-8',
+			data : JSON.stringify(selectedItems),
+			success : function(data) {
+				// 실행시키기 위해선 컨트롤러단에서 json데이터로 변환 후 데이터를 보내주어야한다.
+				alert(pro_check + "명의 회원정보를 삭제했습니다.");
+				location.href = '/admin/unregimember?ra=${param.ra}&pageNo=${param.pageNo}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}';
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		});
+	} else {
+		
+	}
+	
+}
+function updateButton() {
+	// 체크박스 선택된 개수 가져오기
+	let pro_check = $('input[name="proCheck"]:checked').length;
+	// 버튼 텍스트 업데이트
+	$('#delBtn').text(pro_check + "명 삭제");
+}
+/* function deleteCheckedMember(selectedItems){
+	$.ajax({
+		url: "/admin/removeMemberInfo", 
+        type: "post",
+        dataType: "text",
+        contentType : 'application/json; charset=utf-8',
+        data: JSON.stringify(selectedItems),
+        success: function(data) {
+        	console.log(data)
+        },
+        error : function(data){
+        	console.log(data)
+        	alert("선택회원 정보 삭제 실패....");
+        }
+	});
+} */
+
 </script>
 
 </body>

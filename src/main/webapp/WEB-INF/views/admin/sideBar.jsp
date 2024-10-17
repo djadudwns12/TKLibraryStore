@@ -16,8 +16,14 @@
                     <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                         
                         <li class="nav-header">회원 관리</li>
+                        <li class="nav-item"> <a href="/admin/memberadmin" class="nav-link"> <i class="nav-icon bi bi-grip-horizontal"></i>
+                                <p>회원 관리</p>
+                            </a> </li>
+                        <li class="nav-item"> <a href="/admin/unregimember" class="nav-link"> <i class="nav-icon bi bi-grip-horizontal"></i>
+                                <p>탈퇴 회원 관리</p>
+                            </a> </li>
                         <li class="nav-item"> <a href="./docs/introduction.html" class="nav-link"> <i class="nav-icon bi bi-download"></i>
-                                <p>asd</p>
+                                <p></p>
                             </a> </li>
                         <li class="nav-item"> <a href="./docs/layout.html" class="nav-link"> <i class="nav-icon bi bi-grip-horizontal"></i>
                                 <p>sda</p>
@@ -118,9 +124,7 @@
                         <li class="nav-item"> <a href="./docs/introduction.html" class="nav-link"> <i class="nav-icon bi bi-download"></i>
                                 <p>상품 관리</p>
                             </a> </li>
-                        <li class="nav-item"> <a href="/admin/memberadmin" class="nav-link"> <i class="nav-icon bi bi-grip-horizontal"></i>
-                                <p>회원 관리</p>
-                            </a> </li>
+
                         
                             <ul class="nav nav-treeview">
                                 <li class="nav-item"> <a href="./docs/components/main-header.html" class="nav-link"> <i class="nav-icon bi bi-circle"></i>

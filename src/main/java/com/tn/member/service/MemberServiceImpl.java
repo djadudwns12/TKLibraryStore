@@ -59,7 +59,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public boolean saveEditInfo(MemberDTO editMember) throws Exception {
+	public boolean saveEditInfo(MemberVO editMember) throws Exception {
 		boolean result = false;
 		if (dao.updateEditMember(editMember) == 1) {
 			result = true;
@@ -67,6 +67,25 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
+	@Override
+	public boolean saveEditImg(ImgFileVODTO fileInfo, String userId) throws Exception {
+		boolean result = false;
+		if(dao.saveEditImg(fileInfo, userId) == 1) {
+			result=true;
+		}
+		return result; 
+	}
+	
+	@Override
+	public boolean saveEditPwd(String userPwd, String userId) throws Exception {
+		boolean result = false;
+		if(dao.saveEditPwd(userPwd, userId) == 1) {
+			result=true;
+		}
+		return result;
+		
+	}
+	
 	@Override
 	public boolean deleteMember(String userId) throws Exception {
 		boolean result = false;
@@ -141,6 +160,7 @@ public class MemberServiceImpl implements MemberService {
 
 		return result;
 	}
+
 
 //-----------------------------------------박근영-------------------------------------------------
 

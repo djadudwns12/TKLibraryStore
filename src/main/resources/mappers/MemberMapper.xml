@@ -7,11 +7,14 @@
   	<select id="getMember" resultType="com.tn.member.model.vo.MemberVO">
   		select * from Member;
   	</select>
+
   	<!-- 로그인 하는 쿼리문 -->
   	<select id="getLoginMember" resultType="com.tn.member.model.vo.MemberVO">
   		select * from Member where userId = #{userId} and userPwd = sha1(md5(#{userPwd}))
   	</select>
   	
+  	
+<!-- =====================================최미설======================================== -->  	
   	<!-- 회원정보수정을 위해 회원정보를 얻어오는 쿼리문 -->
   	<select id="getEditMemberInfo" resultType="com.tn.member.model.vo.MemberVO">
   		select * from Member where userId=#{userId}
@@ -19,14 +22,30 @@
   	
   	<!-- 수정된 회원정보를 DB에 저장한는 쿼리문 -->
   	<update id="updateEditMember">
-  		update Member set userPwd=#{userPwd}, userBirth=#{userBirth}, phoneNum=#{phoneNum}, email=#{email} where userId=#{userId}
+  		update Member set 
+  		userBirth=#{userBirth}, phoneNum=#{phoneNum}, email=#{email} 
+  		where userId=#{userId}
   	</update>
-
+	
+	<!-- 수정된 프로필이미지를 DB에 저장하는 쿼리문 -->
+	<update id="saveEditImg">
+		update Member set userImg=#{fileName},
+		base64ProfileImg=#{base64Img} 
+		where userId=#{userId};
+	</update>
+	
+	<!-- 비밀번호를 변경하는 메서드 -->
+	<update id="saveEditPwd">
+		update Member set userPwd=sha1(md5(#{userPwd}))
+		where userId=#{userId}
+	</update>
+	
 	<!-- 회원탈퇴 -->
-	<delete id="deleteMember">
-		delete from Member where userId=#{userId}
-	</delete>
-  	
+	<update id="deleteMember">
+		update Member set isDelete='Y' where userId=#{userId}
+	</update>
+<!-- =====================================최미설======================================== -->
+ 	
 <!-- 박근영 -->
 	<!-- 회원 가입를 위하여 회원 정보를 DB에 저장하며, 회원가입시 프로필 이미지 등록 유무에 따른 inser문 if문으로 구별 -->
 	<insert id="insertRegisterMember">

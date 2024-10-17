@@ -63,6 +63,7 @@ import com.tn.util.BookFileProcess;
 import com.tn.member.model.vo.MemberVO;
 import com.tn.member.service.MemberService;
 import com.tn.order.model.vo.OrderVO;
+import com.tn.order.service.OrderService;
 import com.tn.review.model.VO.ReviewVO;
 import com.tn.review.service.ReviewService;
 
@@ -80,14 +81,14 @@ public class AdminController {
 	@Autowired
 	private QAService qaService;
 
-
-
-
 	@Autowired
 	private MemberAdminService mService;
+
 	@Autowired
 	private ReviewService rService;
 	
+	@Autowired
+	private OrderService oService;
 
 	@Autowired
 	private BookFileProcess fileProcess;
@@ -644,7 +645,7 @@ public class AdminController {
 	 
 	// ================================================= 한준형 ===========================================================
 	
-	//========================================최미설===================================//
+	//===================================================최미설===========================================================//
 	// 회원관리페이지
 	@RequestMapping("/memberadmin")
 	public void memberList(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
@@ -682,7 +683,7 @@ public class AdminController {
 		try {
 			memberDetail = mService.getMemberInfo(userId);
 			recentOrder = mService.getRecentOrder(userId);
-			recentReview = rService.getRecentReview(userId);
+			recentReview = rService.getRecentReviewForAdmin(userId);
 			model.addAttribute("memberDetail", memberDetail);
 			model.addAttribute("recentOrder", recentOrder);
 			model.addAttribute("recentReview", recentReview);
@@ -692,7 +693,80 @@ public class AdminController {
 		return "/admin/memberDetail";
 	}
 	
+	// 탈퇴한 회원목록
+	@RequestMapping("/unregimember")
+	public void unregisterMember (Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+			@RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize, @RequestParam(value="sortBy", defaultValue = "default") String sortBy,
+			SearchCriteriaDTO searchCriteria){
+		Map<String, Object> unregiMemberList = null;
 
+		PagingInfoDTO pDTO = PagingInfoDTO.builder()
+				.pageNo(pageNo)
+				.pagingSize(pagingSize)
+				.build(); 
+		
+		List<MemberVO> list = null;
+		Map<String, Object> result = null;
+		try {
+			result = mService.getUnregiMember(pDTO, searchCriteria, sortBy);
+			list = (List<MemberVO>) result.get("unregiMemberList");
+			PagingInfo pi = (PagingInfo) result.get("pagingInfo");
+			
+			model.addAttribute("pagingInfo", pi); // 데이터 바인딩
+			model.addAttribute("unregiMemberList", list); // 데이터 바인딩
+			model.addAttribute("search", searchCriteria); // 데이터 바인딩
+		} catch (Exception e) {
+			e.printStackTrace(); 
+		}
+	}
+	// 회원정보 삭제
+	@RequestMapping(value="/removeMemberInfo", method = RequestMethod.POST, produces = "application/text; charset=UTF-8;") 
+	@ResponseBody
+	public String removeMemberInfo (@RequestBody String[] deletedMembers) {
+		
+		try {
+			if(deletedMembers.length > 0) {
+				System.out.println("선택회원삭제 : " + deletedMembers.toString());
+				for(String deletedMember : deletedMembers) {
+					// 리뷰삭제
+					rService.removeUndefinedReview(deletedMember);
+					// 문의글 삭제
+					qaService.removeUndefinedQA(deletedMember);
+					// 결제내역 업데이트
+					oService.updateUnregisterInfo(deletedMember);
+					// 회원정보 삭제
+					mService.removeMemberInfo(deletedMember);
+					
+//					// 리뷰삭제
+//					if(rService.removeUndefinedReview(deletedMember)) {
+//						System.out.println("선택한 회원 리뷰 삭제!!!");
+//					}	
+//					// 문의글 삭제
+//					if(qaService.removeUndefinedQA(deletedMember)) {
+//						System.out.println("선택한 회원 QA삭제!!!");
+//					}	
+//					// 결제내역 업데이트
+//					if(oService.updateUnregisterInfo(deletedMember)) {
+//						System.out.println("선택한 회원 주문정보 수정!!!");
+//					}
+//					// 회원정보 삭제
+//					if(mService.removeMemberInfo(deletedMember)) {
+//						System.out.println("선택한 회원 삭제!!!");
+//					}
+				}
+			} else {
+				System.out.println("안 되네요..................");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+			
+		return "success";
+	}
+	
+	//===================================================최미설===========================================================//
+	
 	@RequestMapping("/registProduct")
 	public String registProduct() {
 		

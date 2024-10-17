@@ -15,7 +15,26 @@ import com.tn.review.model.VO.ReviewVO;
 public class ReviewServiceImpl implements ReviewService {
 
 	@Autowired
-	ReviewDAO reviewDao;
+  ReviewDAO reviewDao;
+
+	// ===================================== 최미설 =====================================//		
+	@Override
+	public List<ReviewVO> getRecentReviewForAdmin(String userId) throws Exception {
+		
+		return reviewDao.getRecentReviewForAdmin(userId);
+	}
+	
+		@Override
+	public boolean removeUndefinedReview(String deletedMember) throws Exception {
+		boolean result = false;
+		if(reviewDao.removeUndefinedReview(deletedMember) == 1) {
+			result = true;
+		}
+		return result;
+	}
+		
+	// ===================================== 최미설 =====================================//	
+	
 	
 	// ---------------------------------------------- 최미설 ---------------------------------------------- 
 	
@@ -37,8 +56,6 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		return list;
 	}
-
-
 	@Override
 	public boolean insertReview(ReviewDTO reviewDTO) throws Exception {
 		
@@ -53,7 +70,7 @@ public class ReviewServiceImpl implements ReviewService {
 		return result;
 	}
 
-	
+
 	
 
 }

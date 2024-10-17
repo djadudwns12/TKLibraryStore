@@ -102,4 +102,36 @@
 		0,3;
 	</select>
 
+<!-- ==================================================최미설========================================================================== -->
+	<!-- 배송완료 주문건 가져오기 -->
+	<select id="getSinOrder" resultType="com.tn.order.model.vo.OrderVO">
+		select * from `Order` where orderWho=#{userId} and orderNo='92162920-2cd5-4ff9-ae87-7dd3ce4d2cms' and orderStatus="배송완료"
+	</select>
+	
+	<!-- 포인트 업데이트 -->
+	<update id="updatePoint">
+	update Member
+	set userPoint = userPoint + (select plannedPoint from `Order`
+	where orderWho=#{userId} and orderNo=#{orderNo} and orderStatus="배송완료")
+	where userId=#{userId}
+	</update>
+	
+	<!-- 포인트로그 추가 -->
+	<insert id="recordPointLog">
+		insert into PointLog(pWho, pWhy, pScore) 
+		values (#{userId}, #{pWhy}, #{pScore})
+	</insert>
+
+	<!-- 탈퇴한 회원의 주소와 아이디 업데이트 -->
+	<update id="updateUnregisterInfo">
+		UPDATE `Order`
+		SET orderAddress = '탈퇴한 회원입니다...', orderWho='unregist'
+		WHERE orderWho = #{deletedMember}
+	</update>
+	
+	<!-- 탈퇴요청하는 회원의 주문을 확인하는 쿼리문 -->
+	<select id="checkRemainOrder" resultType="com.tn.order.model.vo.OrderVO">
+		select * from `Order` where orderStatus!='배송완료' and orderWho=#{deletedMember}
+	</select>
+<!-- ==================================================최미설========================================================================== -->
 </mapper>

@@ -194,7 +194,7 @@ table.table th {
 </head>
 
 <body>
-<!-- <c:import url="../header.jsp"></c:import> -->
+  <c:import url="../header.jsp"></c:import>
 
     <div class="register-box userInfoDiv"> 
         <!-- Swiper Image Slider -->

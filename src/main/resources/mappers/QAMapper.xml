@@ -93,4 +93,12 @@
 	<update id="saveQaAnswer">
 		update QA set qAnswer = #{qAnswer} , qAnswerYN = 'Y' where qNo = #{qNo}
 	</update>
+	
+	<!-- ================================== 최미설 ====================================== -->
+	
+	<!-- 탈퇴한 회원의 QA문의글을 삭제하는 쿼리문 -->
+	<delete id="removeUndefinedQA">
+		DELETE FROM `QA` WHERE qWriter=#{deletedMember}
+	</delete>
+	<!-- ================================== 최미설 ====================================== -->	
 </mapper>

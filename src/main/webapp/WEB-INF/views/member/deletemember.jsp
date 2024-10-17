@@ -11,9 +11,15 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title> 마이페이지 | 회원탈퇴</title>
 <!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
+* {
+   font-family: "Gowun Batang", serif;
+   font-weight: 550;
+   font-style: normal;
+}
 .register-box{
 	display : flex;
 	justify-content: center;

@@ -258,7 +258,7 @@ function showHide(){
 						</div>
 						<ul id="categoryList" style="display: none">
 							<c:if test="${loginMember != null}">
-								<li><a href="/member/myPage">마이페이지</a></li>
+								<li><a href="/member/mypage">마이페이지</a></li>
 							</c:if>
 							<li><a href="#">Vegetables</a></li>
 							<li><a href="#">Fruit & Nut Gifts</a></li>

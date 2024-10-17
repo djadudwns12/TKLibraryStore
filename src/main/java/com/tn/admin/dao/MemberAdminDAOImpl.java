@@ -100,6 +100,68 @@ public class MemberAdminDAOImpl implements MemberAdminDAO {
 		return ses.selectList(NS + ".getRecentOrder", userId);
 	}
 
+	@Override
+	public int removeMemberInfo(String deletedMember) throws Exception {
+		
+		return ses.delete(NS + ".removeDeletedMember", deletedMember);
+	}
+	
+// -----------------------------------탈퇴회원처리-------------------------------------------//
+	@Override
+	public List<MemberVO> getUnregiMemberList1(PagingInfo pi) throws Exception {
+		 Map<String, Object> params = new HashMap<String, Object>();
+		 params.put("startRowIndex",pi.getStartRowIndex());
+		 params.put("viewPostCntPerPage", pi.getViewPostCntPerPage());
+
+		 return ses.selectList(NS + ".getUnregiMember",params); 
+	}
+
+	@Override
+	public List<MemberVO> getUnregiMemberList2(PagingInfo pi, String sortBy) throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sortBy", sortBy);
+		params.put("startRowIndex", pi.getStartRowIndex());
+		params.put("viewPostCntPerPage", pi.getViewPostCntPerPage());
+
+		return ses.selectList(NS + ".getUnregiMemberSorted", params);
+	}
+
+	@Override
+	public int getTotalPostCntForUR() throws Exception {
+		return ses.selectOne(NS + ".selectUnregiTotalCount");
+	}
+
+	@Override
+	public int getTotalPostCntForUR(SearchCriteriaDTO sc) throws Exception {
+		SearchCriteriaDTO sc2 = new SearchCriteriaDTO(sc.getSearchType(), "%" + sc.getSearchWord() + "%");
+		return ses.selectOne(NS + ".selectTotalCountWithSearchCriteriaForUR", sc2);
+	}
+
+	@Override
+	public List<MemberVO> selectUnregiBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria) throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("searchType", searchCriteria.getSearchType());
+		params.put("searchWord", "%" + searchCriteria.getSearchWord() + "%");
+		params.put("startRowIndex", pi.getStartRowIndex());
+		params.put("viewPostCntPerPage", pi.getViewPostCntPerPage());
+		System.out.println("MemberAdminDAO(SelectAllBoard) : " + params);
+		return ses.selectList(NS + ".getSearchedUnregiMemberPaged", params);
+	}
+
+	@Override
+	public List<MemberVO> selectUnregiBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria, String sortBy)
+			throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+//		System.out.println(">> MemberAdminDAO(selectAllBoard)");
+		params.put("sortBy", sortBy);
+		params.put("startRowIndex", pi.getStartRowIndex());
+		params.put("viewPostCntPerPage", pi.getViewPostCntPerPage());
+		params.put("searchType", searchCriteria.getSearchType());
+		params.put("searchWord", "%" + searchCriteria.getSearchWord() + "%");
+
+		return ses.selectList(NS + ".getUnregiMemberSearchedSorted", params);
+	}
+
 	// 더미데이터 만들기
 //	@Override
 //	public int insertDummyMember(MemberDTO dto) throws Exception {

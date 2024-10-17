@@ -28,6 +28,7 @@ public class OrderVO {
 	private int qty;
 	private int totalPay;
 	private String orderNo;
+	private int plannedPoint;
 	
 	private String title; // 조인으로 Board테이블에서 가져온 책제목
 	

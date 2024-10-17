@@ -3,8 +3,10 @@ package com.tn.member.controller;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
@@ -35,9 +37,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tn.admin.model.vo.BoardUpFileVODTO;
+import com.tn.admin.model.vo.MyResponseWithoutData;
+import com.tn.admin.model.vo.ProductVO;
 import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.member.model.dto.RegisterDTO;
@@ -231,6 +237,34 @@ public class MemberController {
 		}
 		
 	}
+	
+	/**
+	 * @작성자 : 802-10
+	 * @작성일 : 2024. 9. 9.
+	 * @클래스명 : tnbookstore
+	 * @메서드명 : logout
+	 * @param
+	 * @param
+	 * @return : void
+	 * @throws
+	 * @description : 로그아웃시키는 메서드
+	 *
+	 */
+	@RequestMapping(value = "/logout")
+	public String logout(HttpSession session) {
+		System.out.println("로그아웃 이전의 세션값 : " + session.getId());
+
+		if (session.getAttribute("loginMember") != null) {
+			// 세션에 저장했던 값들을 지우고,
+			session.removeAttribute("loginMember");
+			// 세션 무효화
+			session.invalidate();
+		}
+
+		System.out.println("로그아웃 이후의 세션값 : " + session.getId()); // 로그아웃 한다고 세션이 사라지지는 않는다. 세션의 값만 무효화
+
+		return "redirect:/";
+	}
 //	/**
 //	 * @작성자 : 엄영준
 //	 * @작성일 : 2024. 9. 27. 
@@ -247,56 +281,11 @@ public class MemberController {
 //	public void gotoMyPage(Model model,HttpSession sess) {
 //		model.addAttribute("loginMember", (MemberVO)sess.getAttribute("loginMember"));
 //	}
-//-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
-
-
-	// -----------------------------------------최미설-------------------------------------------------
-	/**
-	 * @작성자 : 최미설
-	 * @작성일 : 2024. 9. 6.
-	 * @method_name : getMemberInfo
-	 * @param :String userId(로그인 기능 구현 이후 세션에서 로그인 정보 받아와서 파라미터로 받을 예정)
-	 * @param :Model  model
-	 * @return : memberVO
-	 * @throws :
-	 * @description : 회원정보수정을 위해 회원정보를 불러오는 메서드
-	 */
-
-	@RequestMapping(value = "/edit")
-	public void getEditMemeberInfo(HttpSession ses,  Model model) { 
-		try {
-			MemberVO loginMember = mService.getEditMemberInfo(((MemberVO)ses.getAttribute("loginMember")).getUserId());
-			System.out.println(loginMember.toString());
-			model.addAttribute("loginMember", loginMember);
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * @작성자 : 최미설
-	 * @작성일 : 2024. 9. 9.
-	 * @클래스명 : MemberController
-	 * @메서드명 : saveEditInfo
-	 * @param : MemberDTO, RedirectAttributes
-	 * @return : void
-	 * @throws
-	 * @description : 회원정보수정 페이지에서 수정된 정보를 저장하는 메서드
-	 *
-	 */
+	
 	@RequestMapping(value = "/mypage")
-	public String saveEditInfo(MemberDTO loginMember,Model model,HttpSession sess) {
+	public String myPage(MemberDTO loginMember,Model model,HttpSession sess) {
 
 		try {
-			// 회원정보 수정하는 부분
-			if(mService.saveEditInfo(loginMember)) {
-				// 회원정보를 수정하였을 경우 수정되 회원정보를 세션에 저장하여 사용하도록함.
-				sess.setAttribute("loginMember", loginMember);
-			}else {
-				loginMember.setUserId(((MemberVO)sess.getAttribute("loginMember")).getUserId());
-			}
 			// 회원정보를 불러오는 부분? 근데 왜 세션에서 불러옴? 뷰단에서 세션을 불러도될것으로 보임
 			model.addAttribute("loginMember", (MemberVO) sess.getAttribute("loginMember"));
 			
@@ -307,16 +296,86 @@ public class MemberController {
 			
 			//model.addAttribute("orderList", list);
 			model.addAttribute("orderList", list);
-			model.addAttribute("status", "editSuccess");
 		} catch (Exception e) {
 			e.printStackTrace();
-			model.addAttribute("status", "editFail");
 		}
 		
 		return "/member/mypage";
 
 	}
+//-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
 
+
+	// -----------------------------------------최미설-------------------------------------------------
+
+	// 회원정보 불러오기
+	@RequestMapping("/edit")
+	public void getEditMember(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		MemberVO loginMember = (MemberVO)session.getAttribute("loginMember");
+//		MemberVO loginMember = mService.getEditMemberInfo(((MemberVO)ses.getAttribute("loginMember")).getUserId()); // HttpSession ses
+		String userId = loginMember.getUserId();
+		try {
+			MemberVO editMember = mService.getEditMemberInfo(userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	// 회원정보 수정 > 저장
+	@RequestMapping("/saveMemberEdit")
+	public String modifyInfoSave (MemberVO editMember, RedirectAttributes redirectAttributes) {
+		try {
+			if(mService.saveEditInfo(editMember)) {
+				redirectAttributes.addAttribute("editStatus", "success");
+				return "/member/mypage";
+			}
+		} catch (Exception e) {
+			redirectAttributes.addAttribute("editStatus", "fail");
+			e.printStackTrace();
+		}
+		return "redirect:/member/edit";
+	}
+	
+	// 회원 이미지 변경>저장	// 쪼개져서온 'file' 파일을 재조립해주는 인터페이스 MultipartFile, @RequestParam로 save
+	@RequestMapping(value = "/profileImgEdit", method = RequestMethod.POST, produces = "application/json; charset=UTF-8;")
+	public ResponseEntity<MyResponseWithoutData> saveMemberWithFile(@RequestParam(value="file", required = false) MultipartFile file,
+			@RequestParam(value="userId", required = false)String userId, HttpServletRequest request) {
+		ResponseEntity<MyResponseWithoutData> result = null;
+
+		try {
+			ImgFileVODTO fileInfo = fileSave(file, userId, request);
+			if (mService.saveEditImg(fileInfo, userId)) {
+				MyResponseWithoutData mrw = MyResponseWithoutData.builder()
+						.code(200)
+						.msg("success")
+						.build();
+				result = new ResponseEntity<MyResponseWithoutData>(mrw, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new ResponseEntity<MyResponseWithoutData>(HttpStatus.NOT_ACCEPTABLE);
+		}
+
+		return result;
+	}	
+
+	// 회원 비밀번호 저장
+	@RequestMapping(value="/pwdChange", method = RequestMethod.POST, produces = "application/text; charset=UTF-8;") 
+	@ResponseBody
+//	public void savePwdChange (@RequestParam(value="userPwd")String userPwd, @RequestParam(value="userId")String userId){
+	public String savePwdChange (@RequestBody Map<String, String> userInfo){
+		System.out.println(userInfo);
+		String userPwd = userInfo.get("userPwd");
+		String userId = userInfo.get("userId");
+		System.out.println("비번, 아이디 : " + userPwd + ", " + userId);
+		try {
+			mService.saveEditPwd(userPwd, userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "success";
+	}
 	/**
 	 * @작성자 : 최미설
 	 * @작성일 : 2024. 9. 9.
@@ -385,33 +444,7 @@ public class MemberController {
 		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
 
-	/**
-	 * @작성자 : 802-10
-	 * @작성일 : 2024. 9. 9.
-	 * @클래스명 : tnbookstore
-	 * @메서드명 : logout
-	 * @param
-	 * @param
-	 * @return : void
-	 * @throws
-	 * @description : 로그아웃시키는 메서드
-	 *
-	 */
-	@RequestMapping(value = "/logout")
-	public String logout(HttpSession session) {
-		System.out.println("로그아웃 이전의 세션값 : " + session.getId());
 
-		if (session.getAttribute("loginMember") != null) {
-			// 세션에 저장했던 값들을 지우고,
-			session.removeAttribute("loginMember");
-			// 세션 무효화
-			session.invalidate();
-		}
-
-		System.out.println("로그아웃 이후의 세션값 : " + session.getId()); // 로그아웃 한다고 세션이 사라지지는 않는다. 세션의 값만 무효화
-
-		return "redirect:/";
-	}
 
 	@RequestMapping("/deletemember")
 	public void deleteMember() {
@@ -425,17 +458,21 @@ public class MemberController {
 		try {
 			MemberVO memberVO = (MemberVO)ses.getAttribute("loginMember");
 			String userId = memberVO.getUserId();
-			System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제함..");
-			mService.deleteMember(userId);
-			logout(ses); // 로그아웃 및 세션에 저장된 회원정보 무효화
-			return "redirect:/";
+			if(oService.checkRemainOrder(userId)) {
+				System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제요청..");
+				mService.deleteMember(userId);
+				logout(ses); // 로그아웃 및 세션에 저장된 회원정보 무효화
+				return "redirect:/";
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace(); 
 			return "redirect:/member/loginPage";
-		} 
-		
-		
+		}
+		return "redirect:/";
 	}
+	
+	
 // -----------------------------------------박근영-------------------------------------------------
 	@PostMapping(value = "/checkedDupl")
 	public ResponseEntity<String> checkedDupl(@RequestParam(value = "tmpUserId") String tmpUserId){
@@ -476,7 +513,7 @@ public class MemberController {
 				result = new ResponseEntity<Void>(HttpStatus.OK);
 			}
 			
-			}
+		}
 			
 			System.out.println("결과를 보냅니다 파일 저장 완료");
 			
@@ -509,7 +546,7 @@ public class MemberController {
 			e.printStackTrace();
 		} 
 		return fileInfo; 
-		}
+	}
 	  
 	 //박근영
 	@RequestMapping(value = "/register")

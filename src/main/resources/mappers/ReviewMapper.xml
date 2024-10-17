@@ -3,8 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.tn.mapper.ReviewMapper">
-  
-  <select id="getRecentReview" resultType="com.tn.review.model.VO.ReviewVO">
+  <!-- ===================================== 최미설 ===================================== -->
+  <select id="getRecentReviewForAdmin" resultType="com.tn.review.model.VO.ReviewVO">
 	SELECT r.*, b.title, b.thumbNail 
 	FROM Review r 
 	LEFT JOIN BookList b ON b.bookNo = r.bookNo 
@@ -12,6 +12,11 @@
 	ORDER BY r.reviewDate DESC 
 	LIMIT 5;
   </select>
+  <!-- 회원탈퇴 시 작성한 리뷰를 지우는 쿼리문 -->
+  <delete id="removeUndefinedReview">
+  	delete from Review where reviewWriter=#{deletedMember}
+  </delete>
+  <!-- ===================================== 최미설 ===================================== -->
   
   <insert id="insertNewReview">
   	INSERT INTO Review (reviewWriter, reviewContent, reviewDate, reviewScore, bookNo) 
