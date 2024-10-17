@@ -35,7 +35,8 @@
 		setRecenyBook();
 
 		let userId = '${sessionScope.loginMember.userId}';
-		let bookNo = '${product.bookNo}';
+		let bookNo = '${param.bookNo}';
+		console.log('지금 책 번호: ' + bookNo);
 		
 		let zzimed = false;
 		//  ------------------------찜기능
@@ -191,24 +192,21 @@
 		
 	}
 
-
-	// 장바구니 버튼 누르면 (1)로그인여부 체크, (2)로그인했다면 장바구니에 담고, 장바구니 이동 여부 물어보기
-	function addCart() {
+	// 장바구니 버튼 누르면 (1)로그인여부 체크, (2)로그인했다면 장바구니에 담고, (3)장바구니에 겹치는 상품이 있는지 여부 확인+장바구니로 이동 여부 물어보기
+ 	function addToCart() {
 		let userId = '${sessionScope.loginMember.userId}';
-		var bookNo = document.getElementById("bookNo").value;
-		var totalQty = document.getElementById("bqty").value;
+		let bookNo = document.getElementById("bs").value;
+		let totalQty = document.getElementById("bqty").value;
 		
-		console.log(userId + '님께서 ' + bookNo + ' 번 책 ' + totalQty + ' 권을 장바구니에 담았습니다.');
-
+		console.log(bookNo + ' 번 책 ' + totalQty + ' 권을 장바구니에 담자!');
+		
 		if (userId == '') {
-			alert('로그인이 필요한 메뉴입니다');	// '확인' 버튼 누르면 로그인 창으로 이동 
-			window.location.href = "/member/loginPage";
-
-		} else {
+			confirm("로그인이 필요한 메뉴입니다. 로그인하시겠습니까?");
+			window.location.href='/member/loginPage';
 			
-			// (1) 해당 user의 장바구니에 겹치는 상품이 있는 경우: '장바구니에 이미 담은 상품입니다. 장바구니로 고고?'
-			$.ajax({
-		        url: '/cart/insertCart',
+		} else {
+			 $.ajax({
+		        url: '/bookList/insertCart',	// 데이터 보내는 곳 URL
 		        type: 'POST',
 		        contentType: 'application/json',
 		        data: JSON.stringify({
@@ -217,20 +215,27 @@
 		            bookNo: bookNo
 		        }),
 		        success: function(response) {
-		        	alert(response.message);
+		        	// (1) 해당 user의 장바구니에 겹치는 상품이 있는 경우
+		        	if(response == 'updateTrue') {
+		        		if(confirm('장바구니에 이미 있는 상품입니다. 장바구니로 이동하시겠습니까?')){
+		        			location.href='/cart/cartPage';
+		        		}
+		        	// (2) 해당 user의 장바구니에 겹치는 상품이 없는 경우	
+		        	} else if(response == 'insertTrue'){
+		        		if(confirm('장바구니에 상품을 추가했습니다. 장바구니로 이동하시겠습니까?')){
+		        			location.href='/cart/cartPage';
+		        		}
+		        	} 
+		            
 		        },
-		        error: function(xhr, status, error) {
-		        	alert('xxxxx');
-		        	console.error('xxxxx :', xhr.responseText);
+		        error: function(error) {
+		            alert('장바구니 담기에 실패했습니다. 다시 확인해주세요.' + error);
 		        }
-		    });
+		    }); 
 			
-			// (2-1) 장바구니에 겹치는 상품이 없는 경우: cart(userId, qty, booNo) 업데이트 
-			// (2-2) '장바구니에 상품이 담겼습니다. 장바구니로 고고?'
 		}
-	}
-	
-	// 수정했음(김가윤)
+	} 
+	 
 	function executeRating(starGroups) {
 		  const starClassActive = "rating__star fas fa-star";
 		  const starClassInactive = "rating__star far fa-star";
@@ -327,7 +332,6 @@
 		let boll = $('#bs').val();
 		
 		let book = '${param.bookNo}';
-		//alert(book);
 		let localbook = localStorage.getItem("localbook");
 
 		let bookList = new Set([]);
@@ -465,10 +469,10 @@
 										onclick="location.href='/order'"
 										style="background-color: #DA8359;">바로주문</button>
 									<button type="button" class="primary-btn"
-										onclick="addCart();">장바구니 담기</button>
+										onclick="addToCart();">장바구니 담기</button>
 									<span class="zzimHeart"> <img
 										src="/resources/images/emptyHeart.png">
-									</span><input type="hidden" value="${bookInfo.bookNo}" id="bookNo">
+									</span>
 
 								</div>
 							</div>

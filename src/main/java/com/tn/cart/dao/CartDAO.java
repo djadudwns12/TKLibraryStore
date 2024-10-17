@@ -1,6 +1,7 @@
 package com.tn.cart.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.tn.cart.model.dto.CartDTO;
 import com.tn.cart.model.vo.CartVO;
@@ -19,6 +20,14 @@ public interface CartDAO {
 
 	int getCartCnt(String userId) throws Exception;
 
-	int insertCart(CartVO cartVO) throws Exception;
+	// ============================== (이아림 start) =====================================
+	int isExistInCart(int bookNo, String userId)throws Exception;
+
+	int updateCart(String userId, int bookNo, int qty) throws Exception;
+
+	int insertCart(String userId, int bookNo, int qty) throws Exception;
+	// ================================ (이아림 end) ======================================
+
+	
 
 }

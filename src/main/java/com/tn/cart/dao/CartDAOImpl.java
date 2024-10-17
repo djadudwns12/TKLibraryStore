@@ -63,10 +63,36 @@ public class CartDAOImpl implements CartDAO {
 		return ses.selectOne(NS + ".countCartList", userId);
 	}
 
+	// ============================== (이아림 start) =====================================
+	
+
 	@Override
-	public int insertCart(CartVO cartVO) throws Exception {
-		
-		return ses.insert(NS + ".insertCart", cartVO);
+	public int isExistInCart(int bookNo, String userId) throws Exception {
+		Map<String, Object> params = new HashMap<>();
+	    params.put("userId", userId);
+	    params.put("bookNo", bookNo);
+		return ses.selectOne(NS + ".isExistInCart", params);
 	}
+
+	@Override
+	public int updateCart(String userId, int bookNo, int qty) {
+		Map<String, Object> params = new HashMap<>();
+	    params.put("userId", userId);
+	    params.put("bookNo", bookNo);
+	    params.put("qty", qty);
+		return ses.update(NS + ".updateCart", params);
+	}
+
+	@Override
+	public int insertCart(String userId, int bookNo, int qty) throws Exception {
+		Map<String, Object> params = new HashMap<>();
+	    params.put("userId", userId);
+	    params.put("bookNo", bookNo);
+	    params.put("qty", qty);
+		return ses.insert(NS + ".insertCart", params);
+	}
+	
+	
+	// ================================ (이아림 end) ======================================
 
 }
