@@ -397,7 +397,7 @@ function deleteCheckedMember() {
 	}
 	$('input:checkbox[name=proCheck]').each(function(index) {
 		if ($(this).is(":checked") == true) {
-			delNo.push($(this).val());
+			selectedItems.push($(this).val());
 		}
 	});
 	console.log(selectedItems);
