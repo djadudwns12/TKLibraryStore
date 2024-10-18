@@ -519,20 +519,20 @@
 				<div class="bookContainer">
 					<div class="row">
 						<div class="col-lg-6 col-md-6">
-							<div class="product__details__pic">
-								<div class="product__details__pic__item">
+							<div class="product__details__pic" >
+								<div class="product__details__pic__item" style="width: 350px; margin-left: 100px;">
 
 									<c:forEach var="bookInfo" items="${bookDetailInfo}">
-										<img class="bookImagelarge" src="${bookInfo.thumbNail}" alt="">
+										<img class="bookImagelarge" src="${bookInfo.thumbNail}" style="width: 150px; height: 500px;"/>
 										<input type="hidden" value="${bookInfo.bookNo}" id="bs">
 								</div>
 
 							</div>
 						</div>
-						<div class="col-lg-6 col-md-6">
+						<div class="col-lg-6 col-md-6" >
 							<div class="bookBriefInfo">
 
-								<h4>${bookInfo.title}</h4>
+								<span style="font-weight:600; font-size:x-large;">${bookInfo.title}</span>
 								<div class="product__details__rating">
 									<div class="showRating">
 										<c:forEach begin="1" end="${avgReviewScore}">
@@ -545,7 +545,7 @@
 									</div>
 								</div>
 
-								<div class="author">${bookInfo.author}지음</div>
+								<div class="author">${bookInfo.author} 지음</div>
 								<div class="information">
 									<p>
 										<b>가격 </b> <span style="font-size: 20px;"><strong><fmt:formatNumber
@@ -558,7 +558,7 @@
 									</p>
 									<p>
 										<b>적립 </b> <span>:
-											${fn:substringBefore((bookInfo.salePrice*expectedPointRate), '.')}P</span>
+											<fmt:formatNumber value="${fn:substringBefore((bookInfo.salePrice*expectedPointRate), '.')}" />P</span>
 									</p>
 
 
