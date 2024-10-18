@@ -213,6 +213,7 @@ public boolean updateUnregisterInfo(String deletedMember) throws Exception {
 @Override
 public boolean checkRemainOrder(String deletedMember) throws Exception {
 	boolean result = true;
+	System.out.println("OrderSevice - 배송완료 전 주문 조회 : " + oDao.checkRemainOrder(deletedMember).size());
 	if(oDao.checkRemainOrder(deletedMember).size() > 0 ) {
 		result=false;
 	}

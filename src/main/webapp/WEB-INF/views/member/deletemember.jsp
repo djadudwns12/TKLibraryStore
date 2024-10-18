@@ -67,23 +67,47 @@
 			
 				<!-- Modal footer -->
 				<div class="modal-footer">
-					<button type="button" class="btn btn-info" data-bs-dismiss="modal" style="border-color:#7fad38; background-color:#7fad38; color:white;" onclick="location.href='/member/deleteconfirm';">확인</button>
+					<button type="button" class="btn btn-info" data-bs-dismiss="modal" style="border-color:#7fad38; background-color:#7fad38; color:white;" onclick="deleteConfirm()">확인</button><!-- onclick="location.href='/member/deleteconfirm'"; -->
 				</div>
 			</div>
 		</div>
 	</div>
 <script>
-	//onclick="location.href='/member/deleteconfirm?userId=${param.userId}';"
-	function deleteConfirm(){
-		$('#myModal').show(500);
-		$(function() {
-			// Close, X 버튼 클릭하면 모달창 종료
-			$('.modalCloseBtn').click(function() {
-				$('#myModal').hide(100);
-			});
-		});
-		$('.modal-body').html("그동안 이용해주셔서 감사합니다.");
-	}
+//onclick="location.href='/member/deleteconfirm?userId=${param.userId}';"
+$(function() {
+	// Close, X 버튼 클릭하면 모달창 종료
+	$('.modalCloseBtn').click(function() {
+		$('#myModal').hide(100);
+	});
+});
+var userId = ${sessionScope.loginMember.userId};	
+function deleteConfirm(){
+
+	$('#myModal').show(500);
+	$.ajax({
+		url: "/member/deleteconfirm", 
+        type: "text",
+/*         data : {
+        	"userId" : userId
+        }, */
+        success: function(response) {
+        	console.log(response)
+        	if (response.status ==='success') {
+				console.log(data);
+				$('.modal-body').html("그동안 이용해주셔서 감사합니다.");
+				$('#myModal').hide();
+				location.href="/"
+        	} else if (response.status ==='fail') {
+        		$('.modal-body').html("주문의 배송이 완료된 후에 탈퇴 가능합니다.");
+        		$('#myModal').hide();
+        		return;
+        	}
+        },
+        error : function(data){
+        	console.log(data)
+        }
+	});
+}
 </script>
 </body>
 </html>

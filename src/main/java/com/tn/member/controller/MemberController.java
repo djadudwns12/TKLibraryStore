@@ -56,6 +56,7 @@ import com.tn.member.model.vo.ProfileResponseWithoutData;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.service.MemberService;
 import com.tn.member.service.SendMailService;
+import com.tn.order.dao.OrderDAO;
 import com.tn.order.model.vo.OrderVO;
 import com.tn.order.service.OrderService;
 
@@ -499,24 +500,29 @@ public class MemberController {
 	public void deleteMember() {
 	}
 	
-	@RequestMapping("/deleteconfirm")
-	public String deleteMember(HttpSession ses) {
-		System.out.println("MemberController deleteMember() : " + ses.getAttribute("loginMember"));
+	@Autowired
+	private OrderDAO oDao;
+	
+	@RequestMapping(value="/deleteconfirm", method = RequestMethod.POST, produces = "application/text; charset=UTF-8;") 
+	public String deleteMember(HttpSession ses, Model model) {
 		// 회원수정페이지 하단에 '회원탈퇴 버튼을 눌러서 페이지 이동
 		// 회원탈퇴 페이지에서 안내문 하단의 체크박스 체크 후 버튼을 누르면 회원탈퇴 처리
 		try {
 			MemberVO memberVO = (MemberVO)ses.getAttribute("loginMember");
 			String userId = memberVO.getUserId();
+			System.out.println("배송완료전인 주문건수 : " + oDao.checkRemainOrder(userId));
 			if(oService.checkRemainOrder(userId)) {
 				System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제요청..");
 				mService.deleteMember(userId);
 				logout(ses); // 로그아웃 및 세션에 저장된 회원정보 무효화
+				model.addAttribute("status", "success");
 				return "redirect:/";
+			} else {
+				model.addAttribute("status", "fail");
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace(); 
-			return "redirect:/member/loginPage";
 		}
 		return "redirect:/";
 	}
