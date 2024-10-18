@@ -63,4 +63,10 @@ public class ReviewDAOImpl implements ReviewDAO {
 		return ses.selectOne(NS + ".reviewCnt", bookNo);
 	}
 
+	@Override
+	public int getAverage(int bookNo) throws Exception {
+		
+		return ses.selectOne(NS + ".getAverageReviewScore", bookNo);
+	}
+
 }

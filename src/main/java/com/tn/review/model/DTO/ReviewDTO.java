@@ -23,6 +23,6 @@ public class ReviewDTO {
 	private String reviewContent;
 	private int reviewScore;
 	private int bookNo;
-	
+	private int avgReviewScore;
 
 }

@@ -101,6 +101,12 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDao.reviewCnt(bookNo);
 	}
 
+	@Override
+	public int getAvergaeScore(int bookNo) throws Exception {
+		
+		return reviewDao.getAverage(bookNo);
+	}
+
 	
 
 }

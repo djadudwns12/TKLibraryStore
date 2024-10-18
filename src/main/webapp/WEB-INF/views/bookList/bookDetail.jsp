@@ -530,9 +530,15 @@
 							<div class="bookBriefInfo">
 								<h3>${bookInfo.title}</h3>
 								<div class="product__details__rating">
-									<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-										class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-										class="fa fa-star-half-o"></i> <span>(${reviewCnt}개의 리뷰)</span>
+									<div class="showRating">
+										<c:forEach begin="1" end="${avgReviewScore}">
+											<i class="rating__star fas fa-star"></i>
+										</c:forEach>
+										<c:forEach begin="1" end="${5-avgReviewScore}">
+											<i class="rating__star far fa-star"></i>
+										</c:forEach>
+										<span>(${reviewCnt}개의 리뷰)</span>
+									</div>
 								</div>
 								<div class="author">${bookInfo.author}지음</div>
 								<div class="information">

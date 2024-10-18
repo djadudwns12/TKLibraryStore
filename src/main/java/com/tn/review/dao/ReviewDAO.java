@@ -33,4 +33,6 @@ public interface ReviewDAO {
 	int deleteReview(int reviewNo) throws Exception;
 
 	int reviewCnt(int bookNo) throws Exception;
+
+	int getAverage(int bookNo) throws Exception;
 }

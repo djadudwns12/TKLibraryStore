@@ -32,6 +32,8 @@ public interface ReviewService {
 
 	int reviewCnt(int bookNo) throws Exception;
 
+	int getAvergaeScore(int bookNo) throws Exception;
+
 	
 
 

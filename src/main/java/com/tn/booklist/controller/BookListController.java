@@ -131,6 +131,7 @@ public class BookListController {
 		
 		List<ReviewDTO> reviewDTO = null;// 김가윤 : 리뷰 리스트 불러오기
 		int reviewCnt = 0;
+		int avgReviewScore = 0;
 
 	         String ipAddr = GetClientIPAddr.getClientIP(request);
 //	         System.out.println(ipAddr + "가 " + bookNo + "번 책 정보를 검색한다!!");
@@ -145,6 +146,7 @@ public class BookListController {
 			        bookDetailInfo = bService.read(bookNo, ipAddr);
 			        reviewDTO = reviewService.getBookNoReview(bookNo);// 김가윤 : 리뷰 리스트 불러오기
 			        reviewCnt = reviewService.reviewCnt(bookNo);
+			        avgReviewScore = reviewService.getAvergaeScore(bookNo);
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -154,6 +156,7 @@ public class BookListController {
 	      model.addAttribute("bookDetailInfo", bookDetailInfo);
 	      model.addAttribute("review", reviewDTO);// 김가윤 : 리뷰 리스트 불러오기
 	      model.addAttribute("reviewCnt", reviewCnt);
+	      model.addAttribute("avgReviewScore", avgReviewScore);
 
 		
 		return returnBDetail;
