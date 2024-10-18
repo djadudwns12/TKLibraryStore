@@ -206,7 +206,7 @@
 		if (totalQty >= 2) {
 			var totalPrice = totalQty * bookPrice;
 
-			// 세 자리마다 콤마를 찍어서 출력
+			// 세 자리마다 콤마를 찍어서 출력(김가윤)
 	        var formattedPrice = totalPrice.toLocaleString();
 
 	        document.getElementById("priceVal").innerText = formattedPrice;
@@ -531,7 +531,8 @@
 						</div>
 						<div class="col-lg-6 col-md-6">
 							<div class="bookBriefInfo">
-								<h3>${bookInfo.title}</h3>
+							<div>
+								<h4>${bookInfo.title}</h4>
 								<div class="product__details__rating">
 									<div class="showRating">
 										<c:forEach begin="1" end="${avgReviewScore}">
@@ -543,21 +544,20 @@
 										<span>(${reviewCnt}개의 리뷰)</span>
 									</div>
 								</div>
+								
 								<div class="author">${bookInfo.author}지음</div>
 								<div class="information">
 									<p>
-										<b>정가</b> <span><fmt:formatNumber
+										<b>가격 </b> <span style="font-size: 20px;"><strong><fmt:formatNumber
+													value="${bookInfo.salePrice}" type="currency" /></strong></span><span
+											style="text-decoration: line-through; margin-left: 10px;"><fmt:formatNumber
 												value="${bookInfo.price}" type="currency" /></span>
 									</p>
 									<p>
-										<b>판매가</b> <span style="font-size: 25px;"><fmt:formatNumber
-												value="${bookInfo.salePrice}" type="currency" /></span>
+										<b>배송예정일 </b> <span>: 주문일로부터 3일 이내</span>
 									</p>
 									<p>
-										<b>배송예정일</b> <span>주문일로부터 3일 이내</span>
-									</p>
-									<p>
-										<b>적립</b> <span>책 정가의 10%</span>
+										<b>적립 </b> <span>: 책 정가의 10%</span>
 									</p>
 
 								</div>
@@ -731,7 +731,8 @@
 
 					<!-- Modal footer -->
 					<div class="modal-footer">
-						<button type="button" class="btn btn-danger" onclick="deleteModal();">삭제</button>
+						<button type="button" class="btn btn-danger"
+							onclick="deleteModal();">삭제</button>
 						<button type="button" class="btn btn-secondary close"
 							data-bs-dismiss="modal">취소</button>
 					</div>
@@ -772,12 +773,13 @@
 
 						<!-- Modal footer -->
 						<div class="modal-footer">
-						<button type="button" class="btn btn-primary" onclick="modifyReview();">저장</button>
-						
-						<button type="button" class="btn btn-secondary close">취소</button>
+							<button type="button" class="btn btn-primary"
+								onclick="modifyReview();">저장</button>
+
+							<button type="button" class="btn btn-secondary close">취소</button>
 						</div>
 					</form>
-					
+
 
 				</div>
 			</div>
