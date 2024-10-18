@@ -2,6 +2,7 @@ package com.tn.order.service;
 
 import com.tn.order.model.dto.OrderDTO;
 import com.tn.order.model.dto.PaymentInfoDTO;
+import com.tn.order.model.vo.OrderBookVO;
 import com.tn.order.model.vo.OrderDetailVO;
 import com.tn.order.model.vo.OrderInfo;
 
@@ -37,7 +38,7 @@ public interface OrderService {
 	 * @description : 회원이 최근주문한 목록을 불러오는 메서드
 	 *
 	 */
-	List<BooklistVO> getRecentOrderList(MemberDTO loginMember) throws Exception;
+	List<OrderBookVO> getRecentOrderList(MemberDTO loginMember) throws Exception;
 	
 	List<OrderVO> getOrderList(MemberDTO loginMember) throws Exception;
 	List<OrderDetailVO> getDetailOrder(String orderNo) throws Exception;

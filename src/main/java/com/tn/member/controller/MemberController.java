@@ -56,6 +56,7 @@ import com.tn.member.model.vo.ProfileResponseWithoutData;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.service.MemberService;
 import com.tn.member.service.SendMailService;
+import com.tn.order.model.vo.OrderBookVO;
 import com.tn.order.model.vo.OrderVO;
 import com.tn.order.service.OrderService;
 
@@ -220,7 +221,7 @@ public class MemberController {
 	 *
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public void login(@RequestParam("userId") String userId, @RequestParam("userPwd") String userPwd,
+	public void login(@RequestParam("userId") String userId, @RequestParam("userPwd") String userPwd, 
 			HttpSession session,Model model) {
 		System.out.println(userId + ": " + userPwd);
 		// 로그인 시키는 메서드
@@ -321,11 +322,14 @@ public class MemberController {
 	public String myPage(MemberDTO loginMember,Model model,HttpSession sess) {
 
 		try {
+			
+			
+			loginMember.setUserId(((MemberVO)sess.getAttribute("loginMember")).getUserId());
 			// 회원정보를 불러오는 부분? 근데 왜 세션에서 불러옴? 뷰단에서 세션을 불러도될것으로 보임
 			model.addAttribute("loginMember", (MemberVO) sess.getAttribute("loginMember"));
 			
 			// 회원의 주문목록을 불러오는 메서드
-			List<BooklistVO> list = oService.getRecentOrderList(loginMember);
+			List<OrderBookVO> list = oService.getRecentOrderList(loginMember);
 			
 			// 회원의 찜목록을 불러오는 메서드
 			List<BooklistVO> zzimList = pService.getZzimList(loginMember);
@@ -347,7 +351,7 @@ public class MemberController {
 			e.printStackTrace();
 		}
 		
-		return "/member/myPage";
+		return "/member/mypage";
 
 	}
 //-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
