@@ -206,11 +206,14 @@
 		if (totalQty >= 2) {
 			var totalPrice = totalQty * bookPrice;
 
-			document.getElementById("priceVal").innerText = totalPrice;
-			document.getElementById("totalPrice").style.display = "block";
-		} else {
-			document.getElementById("totalPrice").style.display = "none";
-		}
+			// 세 자리마다 콤마를 찍어서 출력
+	        var formattedPrice = totalPrice.toLocaleString();
+
+	        document.getElementById("priceVal").innerText = formattedPrice;
+	        document.getElementById("totalPrice").style.display = "block";
+	    } else {
+	        document.getElementById("totalPrice").style.display = "none";
+	    }
 		
 	}
 
@@ -542,9 +545,6 @@
 								</div>
 								<div class="author">${bookInfo.author}지음</div>
 								<div class="information">
-									<p>&nbsp;</p>
-
-
 									<p>
 										<b>정가</b> <span><fmt:formatNumber
 												value="${bookInfo.price}" type="currency" /></span>
