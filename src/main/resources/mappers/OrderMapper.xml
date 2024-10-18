@@ -129,10 +129,9 @@
 	
 	<!-- 포인트 업데이트 -->
 	<update id="updatePoint">
-	update Member
-	set userPoint = userPoint + (select plannedPoint from `Order`
-	where orderWho=#{userId} and orderNo=#{orderNo} and orderStatus="배송완료")
-	where userId=#{userId}
+		update Member
+		set userPoint = userPoint + #{plannedPoint}
+		where userId=#{userId}
 	</update>
 	
 	<!-- 포인트로그 추가 -->
@@ -149,8 +148,16 @@
 	</update>
 	
 	<!-- 탈퇴요청하는 회원의 주문을 확인하는 쿼리문 -->
-	<select id="checkRemainOrder" resultType="com.tn.order.model.vo.OrderVO">
+	<select id="checkRemainOrder" resultType="com.tn.order.model.vo.DeliveryComplete">
 		select * from `Order` where orderStatus!='배송완료' and orderWho=#{deletedMember}
+	</select>
+	<!-- 스케줄러 : 매일 오후 3시에 배송완료된 주문건을 가져오는 쿼리문 -->
+	<select id="findDeliveriesCompleted" resultType="com.tn.order.model.vo.DeliveryComplete">
+	    SELECT `orderWho`, `plannedPoint`, `orderNo`
+	    FROM `Order`
+	    WHERE `orderStatus` = '배송완료'
+	    AND `orderDate` &gt; DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL 1 DAY)
+	    AND `orderDate` &lt;= CURRENT_TIMESTAMP()
 	</select>
 <!-- ==================================================최미설========================================================================== -->
 </mapper>
