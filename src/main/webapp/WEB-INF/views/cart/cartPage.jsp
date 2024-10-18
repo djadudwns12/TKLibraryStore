@@ -126,7 +126,7 @@
                         class="selectItem" data-price="${cart.price}"
                         data-salePrice="${cart.salePrice}" data-cart-id="${cart.cartId}"></td>
                      <td class="thumbnail"><img src="${cart.thumbNail}"
-                        style="width: 70px;" name="thumbNail" /></td>
+                        style="width: 70px; cursor: pointer;" name="thumbNail" onclick="location.href='/bookList/bookDetail?bookNo='+${cart.bookNo}"/></td>
                      <td class="common-td" name="title">${cart.title}</td>
                      <td class="common-td">
                         <div name="price">

@@ -263,4 +263,16 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
+	@Override
+	public double getPointRate(String userId) throws Exception {
+		
+		double rate = 0;
+		
+		if (userId != null) {
+			rate = dao.getPointRate(userId);
+		}
+		
+		return rate;
+	}
+
 }

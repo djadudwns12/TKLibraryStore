@@ -38,6 +38,7 @@ import com.tn.cart.model.dto.CartDTO;
 import com.tn.cart.model.vo.CartVO;
 import com.tn.cart.service.CartService;
 import com.tn.member.model.vo.MemberVO;
+import com.tn.member.service.MemberService;
 import com.tn.util.GetClientIPAddr;
 
 /**
@@ -56,7 +57,10 @@ public class BookListController {
 	private ReviewService reviewService;
 	@Autowired		
 	private CartService cService;
-
+	
+	@Autowired
+	private MemberService mService;
+	
 	private CartDTO cdto;
 	
 
@@ -124,7 +128,10 @@ public class BookListController {
 	
 	// 책 상세페이지를 불러오는 메서드 
 	@RequestMapping("/bookDetail")
-	public String bookDetail(@RequestParam("bookNo") int bookNo, Model model, HttpServletRequest request) {
+	public String bookDetail(@RequestParam("bookNo") int bookNo, Model model, HttpServletRequest request, HttpSession session) {
+		
+		boolean isLoggedIn = request.getSession().getAttribute("loginMember") != null;
+		String userId = isLoggedIn ? (String) ((MemberVO)request.getSession().getAttribute("loginMember")).getUserId() : null;
 		
 		String returnBDetail = "";
 		List<BookDetailInfo> bookDetailInfo = null;
@@ -132,6 +139,7 @@ public class BookListController {
 		List<ReviewDTO> reviewDTO = null;// 김가윤 : 리뷰 리스트 불러오기
 		int reviewCnt = 0;
 		int avgReviewScore = 0;
+		double expectedPointRate = 0;
 
 	         String ipAddr = GetClientIPAddr.getClientIP(request);
 //	         System.out.println(ipAddr + "가 " + bookNo + "번 책 정보를 검색한다!!");
@@ -147,6 +155,12 @@ public class BookListController {
 			        reviewDTO = reviewService.getBookNoReview(bookNo);// 김가윤 : 리뷰 리스트 불러오기
 			        reviewCnt = reviewService.reviewCnt(bookNo);
 			        avgReviewScore = reviewService.getAvergaeScore(bookNo);
+			        if(isLoggedIn) {
+			        	expectedPointRate = mService.getPointRate(userId);
+			        } else {
+			        	expectedPointRate = 0.02;
+			        }
+			        
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -157,6 +171,7 @@ public class BookListController {
 	      model.addAttribute("review", reviewDTO);// 김가윤 : 리뷰 리스트 불러오기
 	      model.addAttribute("reviewCnt", reviewCnt);
 	      model.addAttribute("avgReviewScore", avgReviewScore);
+	      model.addAttribute("expectedPointRate", expectedPointRate);
 
 		
 		return returnBDetail;

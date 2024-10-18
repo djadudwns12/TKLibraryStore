@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -531,7 +531,7 @@
 						</div>
 						<div class="col-lg-6 col-md-6">
 							<div class="bookBriefInfo">
-							<div>
+
 								<h4>${bookInfo.title}</h4>
 								<div class="product__details__rating">
 									<div class="showRating">
@@ -544,7 +544,7 @@
 										<span>(${reviewCnt}개의 리뷰)</span>
 									</div>
 								</div>
-								
+
 								<div class="author">${bookInfo.author}지음</div>
 								<div class="information">
 									<p>
@@ -557,8 +557,11 @@
 										<b>배송예정일 </b> <span>: 주문일로부터 3일 이내</span>
 									</p>
 									<p>
-										<b>적립 </b> <span>: 책 정가의 10%</span>
+										<b>적립 </b> <span>:
+											${fn:substringBefore((bookInfo.salePrice*expectedPointRate), '.')}P</span>
 									</p>
+
+
 
 								</div>
 
@@ -640,6 +643,20 @@
 												<c:forEach var="review" items="${review}">
 													<div class="review-item"
 														data-review-content="${review.reviewContent}">
+
+
+														<div class="reviewArea"
+															style="display: flex; align-items: center; gap: 5px;">
+															<div class="showRating">
+																<c:forEach begin="1" end="${review.reviewScore}">
+																	<i class="rating__star fas fa-star"></i>
+																</c:forEach>
+																<c:forEach begin="1" end="${5-review.reviewScore}">
+																	<i class="rating__star far fa-star"></i>
+																</c:forEach>
+															</div>
+														</div>
+
 														<div
 															class="review-content review_'${review.reviewContent}'">
 															<p>${review.reviewWriter}</p>
@@ -648,18 +665,6 @@
 																	pattern="yyyy-MM-dd" />
 															</p>
 															<p>${review.reviewContent}</p>
-
-															<div class="reviewArea"
-																style="display: flex; align-items: center; gap: 5px;">
-																<div class="showRating">
-																	<c:forEach begin="1" end="${review.reviewScore}">
-																		<i class="rating__star fas fa-star"></i>
-																	</c:forEach>
-																	<c:forEach begin="1" end="${5-review.reviewScore}">
-																		<i class="rating__star far fa-star"></i>
-																	</c:forEach>
-																</div>
-															</div>
 
 															<!-- 세션에 저장된 userId와 reviewWriter 비교 -->
 															<c:if
