@@ -47,11 +47,17 @@
 		where userId=#{userId}
 	</update>
 	
-	<!-- 회원탈퇴 -->
+	<!-- 회원탈퇴요청 -->
 	<update id="deleteMember">
 		update Member set isDelete='Y' where userId=#{userId}
 	</update>
 	
+	<!-- 회원탈퇴요청 기록 -->
+	<insert id="recordUnregister">
+        INSERT INTO Unregister (userId)
+        VALUES (#{userId})
+    </insert>
+    
 	<!-- 관리자페이지에 회원목록을 불러오는 쿼리문 -->
   	<select id="getMemberList" resultType="com.tn.member.model.vo.MemberVO">
   		select * from Member order by userId;
