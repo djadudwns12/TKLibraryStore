@@ -12,8 +12,14 @@
 	<select id="getLoginMember"
 		resultType="com.tn.member.model.vo.MemberVO">
 		select * from Member where userId = #{userId} and userPwd =
-		sha1(md5(#{userPwd})) and isDelete = 'N'
+		sha1(md5(#{userPwd})) 
 	</select>
+	
+<!-- 	<select id="getLoginMember"
+		resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member where userId = #{userId} and userPwd =
+		sha1(md5(#{userPwd})) and isDelete = 'N'
+	</select> -->
   	
 <!-- =====================================최미설======================================== -->  	
   	<!-- 회원정보수정을 위해 회원정보를 얻어오는 쿼리문 -->
@@ -45,10 +51,20 @@
 	<update id="deleteMember">
 		update Member set isDelete='Y' where userId=#{userId}
 	</update>
+	
 	<!-- 관리자페이지에 회원목록을 불러오는 쿼리문 -->
   	<select id="getMemberList" resultType="com.tn.member.model.vo.MemberVO">
   		select * from Member order by userId;
   	</select>
+  	
+  	<!-- 계정복구 -->
+  	<update id="validateAccount">
+  		update Member set isDelete='N' where userId=#{userId}
+  	</update>
+  	
+  	<delete id="removeUnregiTable">
+  		delete from Unregister where userId=#{userId}
+  	</delete>
 <!-- =====================================최미설======================================== -->
 
 <!-- 김가윤 -->

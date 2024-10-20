@@ -190,6 +190,11 @@ public class MemberAdminDAOImpl implements MemberAdminDAO {
 		return ses.selectList(NS + ".findExpiredMember");
 	}
 
+	@Override
+	public void deleteUnregister(String deleteId) throws Exception {
+		ses.delete(NS + ".deleteUnregister", deleteId);
+	}
+
 	// 더미데이터 만들기
 //	@Override
 //	public int insertDummyMember(MemberDTO dto) throws Exception {

@@ -31,6 +31,9 @@ public class UnregisterScheduler {
 
 	@Autowired
 	private MemberAdminService mService;
+	
+	@Autowired
+	private MemberAdminDAO mDAO;
 
 	@Autowired
 	private ReviewService rService;
@@ -56,8 +59,11 @@ public class UnregisterScheduler {
 					// 사진 삭제
 					String imgPath = mService.getMemberInfo(deleteId).getUserImg();
 					mService.removeImg(imgPath); 
+					// Unregister테이블에서도 삭제
+					mDAO.deleteUnregister(deleteId);
 					// 회원정보 삭제
 					mService.removeMemberInfo(deleteId);
+					
 	    		}
 			} catch (Exception e) {
 				e.printStackTrace();

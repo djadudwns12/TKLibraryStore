@@ -77,6 +77,9 @@ public interface MemberAdminDAO {
 	// 탈퇴요청후 30일이 지난 멤버리스트 
 	List<String> findExpiredMember() throws Exception;
 
+	// Unregister 테이블에서 삭제된 회원목록 지우기 
+	void deleteUnregister(String deleteId) throws Exception;
+
 	
 
 	

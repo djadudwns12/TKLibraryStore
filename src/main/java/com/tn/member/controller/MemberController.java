@@ -237,6 +237,9 @@ public class MemberController {
 				boolean addVisitHistory =  mService.addVisitHistory();
 				System.out.println("방문자 추가 성공여부 : "+ addVisitHistory);
 				
+				// 탈퇴요청 후에 30일 이내에 로그인을 시도할 경우 계정 유효화 - 최미설
+				mService.validateAccount(userId);
+				
 			} else { // 로그인 실패시
 				System.out.println("로그인 실패");
 				model.addAttribute("status", "loginFail");
