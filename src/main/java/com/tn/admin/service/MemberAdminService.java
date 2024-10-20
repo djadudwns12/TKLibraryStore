@@ -32,5 +32,8 @@ public interface MemberAdminService {
 
 	boolean removeImg(String imgPath);
 
+	// 탈퇴요청 후 30일이 지난 회원 목록을 가져오는 메서드
+	List<String> findExpiredMember() throws Exception;
+
 
 }

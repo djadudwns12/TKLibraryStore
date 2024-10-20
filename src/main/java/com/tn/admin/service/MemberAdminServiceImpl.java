@@ -177,6 +177,13 @@ public class MemberAdminServiceImpl implements MemberAdminService {
 		}
 		return result;
 	}
+	
+	// 탈퇴요청 후 30일 지난 회원 리스트
+	@Override
+	public List<String> findExpiredMember() throws Exception {
+		
+		return dao.findExpiredMember();
+	}
 // ==============================================최미설====================================================================//	
 	
 	@Override
@@ -199,6 +206,7 @@ public class MemberAdminServiceImpl implements MemberAdminService {
 		
 		return resultMap;
 	}
+
 
 
 	
