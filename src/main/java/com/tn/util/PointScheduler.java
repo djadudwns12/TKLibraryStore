@@ -34,7 +34,7 @@ public class PointScheduler {
 	    		for(DeliveryComplete del : delCom) {
 	    			String userId = del.getOrderWho();
 	    			int plannedPoint = del.getPlannedPoint();
-	    			String orderNo = del.getOrderNo();
+	    			int orderNo = del.getOrderPK();
 	    			//System.out.println(userId + "/" + plannedPoint + "/" + orderNo);
 	    			// Member테이블에 포인트 업데이트
 	    			oService.updatePoint(userId, plannedPoint);

@@ -19,5 +19,5 @@ import lombok.ToString;
 public class DeliveryComplete {
     private String orderWho;
     private int plannedPoint;
-    private String orderNo;
+    private int orderPK;
 }

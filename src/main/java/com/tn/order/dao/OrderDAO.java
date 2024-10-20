@@ -65,7 +65,7 @@ public interface OrderDAO {
   int updatePoint(String userId, int plannedPoint) throws Exception;
   
   // 포인트로그 추가
-  int recordPointLog(String userId, int plannedPoint, String orderNo) throws Exception;
+  int recordPointLog(String userId, int plannedPoint, int orderNo) throws Exception;
   
   // 탈퇴회원 주문건 업데이트
   int updateUnregisterInfo(String deletedMember) throws Exception;

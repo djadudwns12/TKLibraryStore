@@ -193,7 +193,7 @@ public boolean updatePoint(String userId, int plannedPoint) throws Exception {
 }
 
 @Override
-public boolean recordPointLog(String userId, int plannedPoint, String orderNo) throws Exception {
+public boolean recordPointLog(String userId, int plannedPoint, int orderNo) throws Exception {
 	boolean result=false;
 	if(oDao.recordPointLog(userId, plannedPoint, orderNo)==1) {
 		result=true;

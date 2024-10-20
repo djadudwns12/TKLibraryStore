@@ -186,7 +186,7 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 		
 	@Override
-	public int recordPointLog(String userId, int plannedPoint, String orderNo) throws Exception {
+	public int recordPointLog(String userId, int plannedPoint, int orderNo) throws Exception {
 		Map<String, Object> params = new HashMap<>();
 		params.put("userId", userId);
 		params.put("pWhy",orderNo);
