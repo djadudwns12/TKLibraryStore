@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html> -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -67,7 +67,7 @@
 			
 				<!-- Modal footer -->
 				<div class="modal-footer">
-					<button type="button" class="btn btn-info" data-bs-dismiss="modal" style="border-color:#7fad38; background-color:#7fad38; color:white;" onclick="deleteConfirm()">확인</button><!-- onclick="location.href='/member/deleteconfirm'"; -->
+					<button type="button" class="btn btn-info modalConfirmBtn" data-bs-dismiss="modal" style="border-color:#7fad38; background-color:#7fad38; color:white;" >확인</button><!-- onclick="location.href='/member/deleteconfirm'"; -->
 				</div>
 			</div>
 		</div>
@@ -79,33 +79,44 @@ $(function() {
 	$('.modalCloseBtn').click(function() {
 		$('#myModal').hide(100);
 	});
+	$('.modalConfirmBtn').click(function(){
+		$('#myModal').hide();
+	})
 });
-var userId = ${sessionScope.loginMember.userId};	
-function deleteConfirm(){
 
-	$('#myModal').show(500);
+function deleteConfirm() {
+	var userId = "${sessionScope.loginMember.userId}";
 	$.ajax({
 		url: "/member/deleteconfirm", 
-        type: "text",
-/*         data : {
-        	"userId" : userId
-        }, */
-        success: function(response) {
-        	console.log(response)
-        	if (response.status ==='success') {
-				console.log(data);
-				$('.modal-body').html("그동안 이용해주셔서 감사합니다.");
-				$('#myModal').hide();
-				location.href="/"
-        	} else if (response.status ==='fail') {
-        		$('.modal-body').html("주문의 배송이 완료된 후에 탈퇴 가능합니다.");
-        		$('#myModal').hide();
-        		return;
-        	}
-        },
-        error : function(data){
-        	console.log(data)
-        }
+		type: "post",
+		dataType: 'text', // 응답을 텍스트로 받아옴
+		data: {
+			"userId": userId
+		}, 
+		success: function(response) {
+			try {
+				var jsonResponse = JSON.parse(response); // JSON으로 변환
+				console.log(jsonResponse);
+				if (jsonResponse.status === 'success') {
+					$('#myModal').show();
+					$('.modal-body').html("그동안 이용해주셔서 감사합니다.");
+					location.href = "/";
+				} else if (jsonResponse.status === 'fail') {
+					$('.modal-body').html("주문의 배송이 완료된 후에 탈퇴 가능합니다.");
+					$('#myModal').show();
+				}
+       	        } catch (e) {
+       	            console.error("JSON 변환 오류:", e);
+       	            $('.modal-body').html("응답 처리 중 오류가 발생했습니다.");
+       	            $('#myModal').show();
+       	        }
+       	    },
+       	    error: function(xhr, status, error) {
+       	        console.error("오류 발생:", error);
+				$('#myModal').show();
+				$('.modal-body').html("오류가 발생했습니다. 다시 시도해 주세요.");
+       	    }
+		
 	});
 }
 </script>
