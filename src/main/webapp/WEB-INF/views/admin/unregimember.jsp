@@ -54,6 +54,10 @@
 					</section>
 						<button type="submit" class="btn btn-outline-dark btn" onclick="return isValid()">검색</button>
 				</form>
+				<div style="clear: right; display: flex; flex-direction: row;">
+					<button type="button" class="btn btn-danger btn" id="delBtn" style="width:90px; font-size:small; margin-left:30px; margin-right:20px;" onclick="deleteCheckedMember()" >0명 삭제</button>
+					<div id="result"></div>
+				</div>
 				<div style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: right; margin-bottom: 50px;">
 					<div class="boardC" >
 						<select class="form-select sortByWhat" id="sortBy" style="width: 150px ">
@@ -63,7 +67,7 @@
 							<option value="userBirth">생년월일순</option>
 						</select>
 					</div>
-					
+
 					<div class="boardControll">
 						<select class="form-select pagingSize" id="pagingSize" style="width: 150px ">
 							<option value="0">정렬 기준</option>
@@ -110,7 +114,7 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				<button type="button" class="btn btn-danger btn" id="delBtn" style="width:90px; font-size:small;" onclick="deleteCheckedMember()" >0명 삭제</button>
+
 			</div>
 			<div class="pagination justify-content-center" style="margin: 20px 0">
 				<ul class="pagination">
@@ -365,27 +369,32 @@ function updateCheck() {
 	checkboxes.forEach((checkbox) => {
 		selectedItems.push(checkbox.value);
 		console.log(checkbox.value);
+		/* 
+		document.getElementById("result").innerHTML = selectedItems.length > 0
+		? '선택된 항목: ' + selectedItems.join(', ')
+		: '선택된 항목이 없습니다.'; */
 	});
 
-	document.getElementById("result").innerHTML = selectedItems.length > 0
-		? '선택된 항목: ' + selectedItems.join(', ')
-		: '선택된 항목이 없습니다.';
+	
 	
 
 }
+
 function selectAll(selectAll) {
     // 모든 체크박스 선택
     const checkboxes = $('input[type="checkbox"]');
-    
+    let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
     // jQuery의 each 메서드를 사용하여 모든 체크박스 요소의 checked 속성을 selectAll.checked 값으로 설정
     checkboxes.each(function() {
         $(this).prop('checked', $(selectAll).prop('checked'));
-        updateCheck();
+        
     });
+    
+    updateButton();
 }
 function deleteCheckedMember() {
 	let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
-	let delNo = [];
+	let selectedItems = [];
 	if (pro_check == 0) {
 		alert('한 명 이상의 회원을 선택해주세요.');
 		return false;
@@ -423,22 +432,7 @@ function updateButton() {
 	// 버튼 텍스트 업데이트
 	$('#delBtn').text(pro_check + "명 삭제");
 }
-/* function deleteCheckedMember(selectedItems){
-	$.ajax({
-		url: "/admin/removeMemberInfo", 
-        type: "post",
-        dataType: "text",
-        contentType : 'application/json; charset=utf-8',
-        data: JSON.stringify(selectedItems),
-        success: function(data) {
-        	console.log(data)
-        },
-        error : function(data){
-        	console.log(data)
-        	alert("선택회원 정보 삭제 실패....");
-        }
-	});
-} */
+
 
 </script>
 
