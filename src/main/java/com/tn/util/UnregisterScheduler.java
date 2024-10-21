@@ -59,7 +59,7 @@ public class UnregisterScheduler {
 					// 사진 삭제
 					String imgPath = mService.getMemberInfo(deleteId).getUserImg();
 					mService.removeImg(imgPath); 
-					// Unregister테이블에서도 삭제
+					// Unregister테이블에서도 삭제 
 					mDAO.deleteUnregister(deleteId);
 					// 회원정보 삭제
 					mService.removeMemberInfo(deleteId);
