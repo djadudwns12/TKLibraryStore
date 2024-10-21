@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tn.mapper.categoryMapper">
+  	
+  	<select id="selectCategory" resultType="com.tn.category.model.vo.CategoryVO">
+  		select * from Genre where parentCode = #{category}
+  	</select>  	
+  </mapper>
