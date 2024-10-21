@@ -187,7 +187,7 @@ function showHide(){
 						<a href="/"><img
 							src="/resources/images/TKlogo.png"
 							alt="" style="width: 60px; height: 80px;"></a>
-							<span style="font-weight: 700; font-size: 25px; padding: 5px;">   떡잎 서점</span>
+							<span style="font-weight: 700; font-size: 25px; padding: 5px; cursor:pointer;" onclick="location.href='/'">   떡잎 서점</span>
 					</div>
 				</div>
 				<div class="col-lg-6">
