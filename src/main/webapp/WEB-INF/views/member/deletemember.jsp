@@ -100,10 +100,17 @@ function deleteConfirm() {
 				if (jsonResponse.status === 'success') {
 					$('#myModal').show();
 					$('.modal-body').html("그동안 이용해주셔서 감사합니다.");
-					location.href = "/";
+					$('.modalConfirmBtn').off("click").on("click", function() {
+						$('#myModal').hide();
+						location.href="/";
+			        });
 				} else if (jsonResponse.status === 'fail') {
 					$('.modal-body').html("주문의 배송이 완료된 후에 탈퇴 가능합니다.");
 					$('#myModal').show();
+					$('.modalConfirmBtn').off("click").on("click", function() {
+						$('#myModal').hide();
+						location.href="/member/OrderStatus";
+			        });
 				}
        	        } catch (e) {
        	            console.error("JSON 변환 오류:", e);
