@@ -41,8 +41,7 @@ public class UnregisterScheduler {
 	@Autowired
 	private OrderService oService;	
 	
-		@Transactional
-	    @Scheduled(cron = "0 0 12 * * ?") // 매일 오후 12시 0분 0초에 실행
+	    @Scheduled(cron = "0 0 0 * * ?") // 매일 0시 0분 0초에 실행
 	    public void withdrawMember() {
 	    	
 	        System.out.println("============탈퇴요청 회원 삭제 스케줄러 작동================");
