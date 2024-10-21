@@ -204,8 +204,9 @@ body {
         
      			<!-- Modal Header -->
      			<div class="modal-header">
-     				<h4 class="modal-title">MiniProject</h4>
-     				<button type="button" class="btn-close modalCloseBtn" data-bs-dismiss="modal"></button>
+     				<span class="modal-title"
+							style="font-weight: 600; font-size: x-large;">떡잎 서점</span>
+
      			</div>
         
      			<!-- Modal body -->
