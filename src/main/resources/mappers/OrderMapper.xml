@@ -132,7 +132,7 @@
 		0,3;
 	</select>
 	<select id="selectMyPageOrderList" resultType="com.tn.order.model.vo.OrderVO">
-		SELECT * FROM mbcac2024.Order where orderWho = #{userId} and orderStatus in ('배송중','결제완료')
+		SELECT * FROM mbcac2024.Order where orderWho = #{userId}
 	</select>
 	<select id="selectDetailOrder" resultType="com.tn.order.model.vo.OrderDetailVO">
 		select ob.orderNo, ob.qty,b.thumbNail,b.title,b.author,b.salePrice
