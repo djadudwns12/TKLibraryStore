@@ -157,7 +157,7 @@
                               data-cart-id="${cart.cartId}">+</button>
                         </div>
                      </td>
-                     <td class="common-td"><img
+                     <td class="common-td" style="cursor:pointer;"><img
                         src="/resources/images/cart_delete.png" width="30px"
                         onclick="showDeleteModal('${cart.cartId}', this);"></td>
                   </tr>
