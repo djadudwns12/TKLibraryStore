@@ -343,18 +343,16 @@ td:hover .book-info-container {
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 	<!--begin::App Wrapper-->
-
 	<div class="app-wrapper">
+	
 		<!--begin::Header-->
 		<div class="sideBar">
 			<jsp:include page="sideBar.jsp" />
 		</div>
 		<div class="header">
 			<jsp:include page="header.jsp" />
-
 			<div class="content">
 				<h1 class="jemok">OrderList</h1>
-
 
 				<!-- The form -->
 				<form class="search"
@@ -389,8 +387,6 @@ td:hover .book-info-container {
 					<button type="submit" class="btn btn-outline-dark btn"
 						onclick="return isValid()">검색</button>
 				</form>
-			
-
 				<div
 					style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: right; margin-bottom: 50px;">
 
@@ -414,12 +410,6 @@ td:hover .book-info-container {
 						</select>
 					</div>
 				</div>
-
-
-
-
-
-
 				<div style="overflow-x: auto;">
 				<button type="button" class="btn btn-danger btn"
 										id="cancelBtn" style="width: 120px; font-size: small;"
@@ -436,12 +426,10 @@ td:hover .book-info-container {
 								<th>제품정보</th>
 								<th>사용포인트</th>
 								<th>결제금액</th>
-								
-					
-							
 							</tr>
 						</thead>
 						<tbody>
+						
 							<c:forEach var="order" items="${odInfo}">
 								<tr>
 									<td><input type="checkbox" name="proCheck"
@@ -465,12 +453,8 @@ td:hover .book-info-container {
 									    </c:forEach>
 									  </div>
 									</td>
-
-
-
 									<td>${order.usePoint}</td>
-									<td>${order.totalPay}</td>
-								
+									<td>${order.totalPay}</td>					
 								</tr>
 							</c:forEach>
 
@@ -481,7 +465,6 @@ td:hover .book-info-container {
 			<div class="pagination justify-content-center" style="margin: 20px 0">
 
 				<ul class="pagination">
-
 					<c:if test="${param.pageNo > 1 }">
 						<li class="page-item"><a class="page-link"
 							href="/admin/orderDeliveryAdmin?pageNo=1
@@ -520,67 +503,6 @@ td:hover .book-info-container {
 			</div>
 
 			<!-- 모달 영역 시작 -->
-			<div id="recentSearchModal" class="modal">
-				<div class="modal-content">
-					<div class="content-top">
-						<span class="close" style="margin-left: 500px; height: 10px;">&times;</span>
-					</div>
-					<div class="content-body">
-						<div class="recent-searches">
-							<h5>최근 검색 기록</h5>
-							<ul id="recentSearchesList">
-								<!-- 검색 기록이 동적으로 삽입될 곳 -->
-							</ul>
-						</div>
-						<div class="divider"></div>
-						<!-- 세로선 -->
-						
-
-					</div>
-
-				</div>
-			</div>
-
-			<div id="recentSearchModal" class="modal">
-				<div class="modal-content">
-					<div class="rccontent-top">
-						<div>
-							<h5>최근 검색 기록</h5>
-						</div>
-						<div>
-							<h5>인기 검색어</h5>
-						</div>
-						<div>
-							<span class="close" style="margin-left: 500px; height: 10px;">&times;</span>
-						</div>
-
-
-
-
-					</div>
-					<div class="content-body">
-						<!-- 최근 검색 기록 영역 -->
-						<div class="recent-searches">
-
-							<ul id="recentSearchesList">
-								<!-- 검색 기록이 동적으로 삽입될 곳 -->
-							</ul>
-						</div>
-
-						<!-- 세로선 -->
-						<div class="divider"></div>
-
-						<!-- 인기 검색어 영역 -->
-						<div class="popular-searches">
-
-							<ul id="popularSearchesList">
-								<!-- 인기 검색어가 동적으로 삽입될 곳 -->
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-
 			<div id="recommendSearchModal" class="modal">
 				<div class="modal-content">
 					<div class="rcContent-top">
@@ -594,51 +516,13 @@ td:hover .book-info-container {
 					</div>
 					<div class="content-body">
 						<div class="recommend-searches">
-
 							<ul id="searchRecommend">
 								<!-- 추천 검색어가 동적으로 삽입될 곳 -->
 							</ul>
 						</div>
-
-					</div>
-
-				</div>
-			</div>
-
-			<div class="modal" id="restockModal" style="height: 800px;">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-
-						<!-- Modal Header -->
-						<div class="modal-header">
-							<h4 class="modal-title">입고 신청</h4>
-							<button type="button" class="btn-close close" data-bs-dismiss="modal"></button>
-						</div>
-
-						<!-- Modal body -->
-						<div class="modal-body" >
-							<div style="display:flex;">
-								<input type="text" style="width:330px; margin-right: 20px;"placeholder="검색할 책을 입력하세요." id="searchValue" />
-								<button  class="btn btn-outline-dark btn" id="searchBtn" >검색</button>
-							</div>
-							<ul id="restockList" >
-								<!-- 추천 검색어가 동적으로 삽입될 곳 -->
-							</ul>
-							
-						</div>
-
-						<!-- Modal footer -->
-						<div class="modal-footer">
-							<button type="button" class="btn btn-danger close"
-								data-bs-dismiss="modal">Close</button>
-						</div>
-
 					</div>
 				</div>
 			</div>
-
-
-
 		</div>
 	</div>
 
@@ -953,14 +837,14 @@ td:hover .book-info-container {
 		               
 		                if (data.msg === "notPresent") {
 		                	$("#searchRecommend").empty();
-		                  $("#searchRecommend").append('<li> 일치하는 상품이 없습니다. </li><input type="button" value= "입고 신청" style="margin-top:20px;" onclick="showRestockModal(\'' + searchWord + '\')" />');
+		                  $("#searchRecommend").append('<li> 일치하는 상품이 없습니다. </li>');
 		                  
 		                  // 일치하는 책이 있을 때
 		                } else if (data.msg === "isPresent") {
 		                	console.log(data.data)
 		                	$("#searchRecommend").empty();
 		                	$.each(data.data, function(index, title) {
-		                		 $("#searchRecommend").append('<li style="margin-bottom:10px;"><a href= "/admin/orderDeliveryAdmin?searchType=title&searchWord=' + title + '";>' + title + '</a></li>');
+		                		 $("#searchRecommend").append('<li style="margin-bottom:10px;"><a href= "/admin/orderDeliveryAdmin?searchType=orderName&searchWord=' + title + '";>' + title + '</a></li>');
 		                	 });
 		                }
 		              },

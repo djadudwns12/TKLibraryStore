@@ -893,9 +893,17 @@ $(function(){
 
 	$('#useAllPoints').click(function() {
 		let myPoints = Number($('#userPoint').text().replace(/[^0-9]/g, ''));
-		$('#userPointInput').val(myPoints);
-		pointPayment(myPoints);
-		deduct(myPoints);
+		if (myPoints < totalPay){
+			$('#userPointInput').val(myPoints);
+			pointPayment(myPoints);
+			deduct(myPoints);
+		}else{
+			$('#userPointInput').val(totalPay);
+			pointPayment(totalPay);
+			deduct(totalPay);
+			
+		}
+		
 		
 	});
 

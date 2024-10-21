@@ -48,8 +48,8 @@ public interface OrderDeliveryDAO {
 	
 	
 	
-	int getTotalOrderCount() throws Exception; // 전체 주문 수를 가져오는 메서드
-    int getTotalOrderCount(SearchCriteriaDTO searchCriteria) throws Exception; // 검색 조건에 따른 주문 수를 가져오는 메서드
+	List<OrderDeliveryVO> getTotalOrderCount() throws Exception; // 전체 주문 수를 가져오는 메서드
+	public List<OrderDeliveryVO> getTotalOrderSearchCount(SearchCriteriaDTO searchCriteria) throws Exception; // 검색 조건에 따른 주문 수를 가져오는 메서드
 
 
 
