@@ -378,7 +378,7 @@ public class MemberController {
 		try {
 			if(mService.saveEditInfo(editMember)) {
 				redirectAttributes.addAttribute("editStatus", "success");
-				return "/member/myPage";
+				return "/member/mypage";
 			}
 		} catch (Exception e) {
 			redirectAttributes.addAttribute("editStatus", "fail");
