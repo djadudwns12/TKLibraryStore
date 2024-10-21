@@ -193,7 +193,9 @@
 		}
 		
 		showTotalPrice();
+		showTotalPoint();
 	}
+	
 
 	// 책 수량을 2권 이상 선택하면 총 가격을 화면에 출력하는 기능
 	function showTotalPrice() {
@@ -438,6 +440,17 @@
 		});
 	}
 	
+	function closeThisModal() {
+	    // 현재 열린 모달 요소를 가져옴
+	    var modalElement = document.querySelector('.modal.show');
+	    
+	    if (modalElement) {
+	        // 모달 인스턴스가 없으면 새로 생성
+	        var modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+	        modalInstance.hide();
+	    }
+	}
+	
 	// ------------------------ 김가윤 ------------------------
 	
 	
@@ -519,20 +532,22 @@
 				<div class="bookContainer">
 					<div class="row">
 						<div class="col-lg-6 col-md-6">
-							<div class="product__details__pic" >
-								<div class="product__details__pic__item" style="width: 350px; margin-left: 100px;">
+							<div class="product__details__pic">
+								<div class="product__details__pic__item"
+									style="width: 350px; margin-left: 100px;">
 
 									<c:forEach var="bookInfo" items="${bookDetailInfo}">
-										<img class="bookImagelarge" src="${bookInfo.thumbNail}" style="width: 150px; height: 500px;"/>
+										<img class="bookImagelarge" src="${bookInfo.thumbNail}"
+											style="width: 150px; height: 500px;" />
 										<input type="hidden" value="${bookInfo.bookNo}" id="bs">
 								</div>
 
 							</div>
 						</div>
-						<div class="col-lg-6 col-md-6" >
+						<div class="col-lg-6 col-md-6">
 							<div class="bookBriefInfo">
 
-								<span style="font-weight:600; font-size:x-large;">${bookInfo.title}</span>
+								<span style="font-weight: 600; font-size: x-large;">${bookInfo.title}</span>
 								<div class="product__details__rating">
 									<div class="showRating">
 										<c:forEach begin="1" end="${avgReviewScore}">
@@ -545,7 +560,7 @@
 									</div>
 								</div>
 
-								<div class="author">${bookInfo.author} 지음</div>
+								<div class="author">${bookInfo.author}지음</div>
 								<div class="information">
 									<p>
 										<b>가격 </b> <span style="font-size: 20px;"><strong><fmt:formatNumber
@@ -557,8 +572,8 @@
 										<b>배송예정일 </b> <span>: 주문일로부터 3일 이내</span>
 									</p>
 									<p>
-										<b>적립 </b> <span>:
-											<fmt:formatNumber value="${fn:substringBefore((bookInfo.salePrice*expectedPointRate), '.')}" />P</span>
+										<b>적립 </b> 
+											<span> : ${expectedPointRate}%</span>
 									</p>
 
 
@@ -568,21 +583,22 @@
 								<div class="qtyControl"
 									style="display: flex; align-items: center; gap: 10px;">
 									<span><b>수량 </b></span> <span class="count">
-										<button type="button" class="minus" style="border: none;"
+										<button type="button" class="minus" style="border: none; cursor:pointer;"
 											onclick="count('minus');">-</button> <span><input
 											type="text" id="bqty" name="bqty" value="1"
 											readonly="readonly"
 											style="text-align: center; width: 60px; border: none;"></span>
-										<button type="button" class="plus" style="border: none;"
+										<button type="button" class="plus" style="border: none; cursor:pointer;"
 											onclick="count('plus');">+</button>
-									</span> <input type="hidden" value="${bookInfo.inven }" id="inven">
+									</span> <input type="hidden" value="${bookInfo.inven}" id="inven">
 
 									<!-- 선택 수량이 2개 이상일 때 가격을 표시하는 기능 -->
-									<input type="hidden" value="${bookInfo.salePrice }"
+									<input type="hidden" value="${bookInfo.salePrice}"
 										id="salePrice">
 									<div id="totalPrice" style="display: none;">
 										총 상품 금액: <span id="priceVal" style="color: red;"></span> 원
 									</div>
+									
 								</div>
 								<br>
 
@@ -614,14 +630,16 @@
 								<div class="tab-content">
 									<div class="tab-pane active" id="tabs-1" role="tabpanel">
 										<div class="product__details__tab__desc">
-											<h4>책 소개</h4>
+											<span style="font-weight: 600; font-size: x-large;">책
+												소개</span>
 											<p>${bookInfo.introduction}</p>
 										</div>
 									</div>
 
 									<div class="tab-pane" id="tabs-2" role="tabpanel">
 										<div class="product__details__tab__desc">
-											<h4>회원 리뷰</h4>
+											<span style="font-weight: 600; font-size: x-large;">회원
+												리뷰</span>
 											<p></p>
 											<div class="reviewArea"
 												style="display: flex; align-items: center; gap: 5px;">
@@ -639,45 +657,61 @@
 													onclick="saveReview();">저장</button>
 											</div>
 
-											<div class="reviewList">
+
+
+
+
+											<div class="reviewList" style="margin-top:20px;">
 												<c:forEach var="review" items="${review}">
-													<div class="review-item"
+													<div class="review-item" style="position: relative;"
 														data-review-content="${review.reviewContent}">
 
+														<!-- reviewHeader를 추가하여 reviewWriter, reviewDate를 왼쪽에 배치하고 showRating을 오른쪽에 배치 -->
+														<div class="reviewHeader"
+															style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+															<!-- reviewWriter와 reviewDate를 나란히 배치 -->
+															<div class="review-content"
+																style="display: flex; align-items: center; gap:5px;">
+																<p style="margin: 0;">${review.reviewWriter}</p>
+																<p style="font-size: 10px; margin-top:23px;">
+																	<fmt:formatDate value="${review.reviewDate}"
+																		pattern="yyyy-MM-dd" />
+																</p>
+															</div>
 
-														<div class="reviewArea"
-															style="display: flex; align-items: center; gap: 5px;">
-															<div class="showRating">
+															<!-- showRating -->
+															<div class="showRating"
+																style="display: flex; align-items: center;">
 																<c:forEach begin="1" end="${review.reviewScore}">
 																	<i class="rating__star fas fa-star"></i>
 																</c:forEach>
-																<c:forEach begin="1" end="${5-review.reviewScore}">
+																<c:forEach begin="1" end="${5 - review.reviewScore}">
 																	<i class="rating__star far fa-star"></i>
 																</c:forEach>
 															</div>
 														</div>
 
-														<div
-															class="review-content review_'${review.reviewContent}'">
-															<p>${review.reviewWriter}</p>
-															<p>
-																<fmt:formatDate value="${review.reviewDate}"
-																	pattern="yyyy-MM-dd" />
-															</p>
-															<p>${review.reviewContent}</p>
+														<!-- reviewContent 표시 -->
+														<p style="margin-left: 20px;">${review.reviewContent}</p>
 
-															<!-- 세션에 저장된 userId와 reviewWriter 비교 -->
+														<!-- 수정, 삭제 버튼을 우측 하단에 배치 -->
+														<div style="position: absolute; bottom: 0; right: 0;">
 															<c:if
 																test="${sessionScope.loginMember.userId != null && sessionScope.loginMember.userId == review.reviewWriter}">
-																<button
-																	onclick="editReview(${review.reviewNo},${review.reviewScore},'${review.reviewContent}')">수정</button>
-																<button onclick="deleteReviewModal(${review.reviewNo})">삭제</button>
+																<button class="badge bg-secondary"
+																	onclick="editReview(${review.reviewNo}, ${review.reviewScore}, '${review.reviewContent}')">수정</button>
+																<button class="badge bg-danger"
+																	onclick="deleteReviewModal(${review.reviewNo})">삭제</button>
 															</c:if>
 														</div>
 													</div>
 												</c:forEach>
 											</div>
-											<p></p>
+
+
+
+
+
 										</div>
 									</div>
 
@@ -700,7 +734,7 @@
 
 					<!-- Modal Header -->
 					<div class="modal-header">
-						<h4 class="modal-title">떡잎서점</h4>
+						<span class="modal-title">떡잎서점</span>
 						<button type="button" class="btn-close modalCloseBtn"
 							data-bs-dismiss="modal"></button>
 					</div>
@@ -726,7 +760,8 @@
 
 					<!-- Modal Header -->
 					<div class="modal-header">
-						<h4 class="modal-title">떡잎서점</h4>
+						<span class="modal-title"
+							style="font-weight: 600; font-size: x-large;">떡잎서점</span>
 						<button type="button" class="btn-close close"
 							data-bs-dismiss="modal"></button>
 					</div>
@@ -738,8 +773,6 @@
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger"
 							onclick="deleteModal();">삭제</button>
-						<button type="button" class="btn btn-secondary close"
-							data-bs-dismiss="modal">취소</button>
 					</div>
 
 				</div>
@@ -754,7 +787,10 @@
 
 					<!-- Modal Header -->
 					<div class="modal-header">
-						<h4 class="modal-title">리뷰 수정</h4>
+						<span class="modal-title"
+							style="font-weight: 600; font-size: x-large;">리뷰 수정</span>
+						<button type="button" class="btn-close close"
+							data-bs-dismiss="modal"></button>
 					</div>
 
 					<!-- Modal body -->
@@ -780,8 +816,6 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-primary"
 								onclick="modifyReview();">저장</button>
-
-							<button type="button" class="btn btn-secondary close">취소</button>
 						</div>
 					</form>
 
