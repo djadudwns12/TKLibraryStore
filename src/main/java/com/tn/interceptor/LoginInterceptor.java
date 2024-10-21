@@ -13,6 +13,20 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.tn.member.model.vo.MemberVO;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
+	
+	
+	 // 금지할 패턴 예시 (SQL 인젝션에 자주 사용되는 키워드들)
+    private static final String[] SQL_INJECTION_KEYWORDS = { 
+        "SELECT", "INSERT", "UPDATE", "DELETE", "DROP", "--", ";", "'",
+        "OR ",
+        "CREATE",
+	      "EXEC",
+	      "UNION",
+	      "FETCH",
+	      "DECLARE",
+	      "TRUNCATE"
+    };
+	
 
 	// 컨트롤러로 이동하기전 
 	@Override
@@ -20,6 +34,20 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		boolean isLoginPageShow = false; // 컨트롤러로 보낼지 여부 결정변수
 		// 로그인 버튼을 눌러서 들어왔는가? + 로그인하는 곳으로 이동하는것인가?
+		
+		
+		 // 모든 파라미터 값을 검사
+        for (Object param : request.getParameterMap().keySet()) {
+            String[] values = request.getParameterValues(param.toString());
+            for (String value : values) {
+                if (containsSQLInjectionKeywords(value)) {
+                    // SQL 인젝션이 의심되는 입력일 경우 요청을 차단
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "SQL Injection detected.");
+                    return false; // 요청 처리 중단
+                }
+            }
+        }
+        
 		if(request.getMethod().toUpperCase().equals("GET")) {
 			// 이전에 접속하던 페이지 페이지가 있다면 페이지를 얻어오기 
 			
@@ -88,6 +116,17 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		}
 		super.postHandle(request, response, handler, modelAndView);
 	}
+	
+	// SQL 인젝션 키워드가 포함되어 있는지 검사
+    private boolean containsSQLInjectionKeywords(String input) {
+        if (input == null) return false;
+        for (String keyword : SQL_INJECTION_KEYWORDS) {
+            if (input.toUpperCase().contains(keyword)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	
 }

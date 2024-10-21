@@ -149,6 +149,9 @@ input[type="button"] {
 			userIdsave();
 			returnYn = true;
 		}
+		
+		returnYn = checkSearchKeyword();
+		
 		return returnYn;
 
 	}
@@ -158,6 +161,49 @@ input[type="button"] {
 	function kakaoLogin(){
 		
 	}
+	
+	const checkSearchKeyword = () => {
+		  let keyword = document.getElementById("userPwd").value;
+
+		  if (keyword.length > 0) {
+		    //특수문자 제거
+		    let expText = /[%=*><]/;
+		    if (expText.test(keyword)) {
+		      alert("[No SQL Injection] 특수문자를 입력 할 수 없습니다.");
+		      keyword = keyword.split(expText).join("");
+		      return false;
+		    }
+
+		    //특정문자열(sql예약어의 앞뒤공백포함) 제거
+		    let sqlArray = new Array(
+		      //sql 예약어
+		      "OR ",
+		      "SELECT",
+		      "INSERT",
+		      "DELETE",
+		      "UPDATE",
+		      "CREATE",
+		      "DROP",
+		      "EXEC",
+		      "UNION",
+		      "FETCH",
+		      "DECLARE",
+		      "TRUNCATE"
+		    );
+
+		    let regex;
+		    for (let i = 0; i < sqlArray.length; i++) {
+		      regex = new RegExp(sqlArray[i], "gi");
+		      if (regex.test(keyword)) {
+		        alert('[No SQL Injection] "' + sqlArray[i] + '"와(과) 같은 문자는 입력이 불가능 합니다.');
+		        keyword = keyword.replace(regex, "");
+		        return false;
+		      }
+		    }
+		  }
+		  return true;
+		};
+	
 </script>
 
 </head>
