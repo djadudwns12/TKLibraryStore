@@ -176,7 +176,7 @@ function showHide(){
 			</ul>
 		</div>
 	</div>
-	<!-- Humberger End -->
+	<!-- Humberger End myPage
 
 	<!-- Header Section Begin -->
 	<header class="header">
@@ -195,7 +195,7 @@ function showHide(){
 						<ul>
 							<li class="active"><a href="/">Home</a></li>
 							
-							<li><a href="/member/mypage">myPages</a>
+							<li><a href="/member/myPage">myPages</a>
 								<ul class="header__menu__dropdown">
 									<li><a href="./shop-details.html">Shop Details</a></li>
 									<li><a href="./shoping-cart.html">Shopping Cart</a></li>
@@ -221,7 +221,7 @@ function showHide(){
 										class="fa fa-user-secret"></i></a></li>
 							</c:if>
 
-              <li><a href="/member/mypage"><i class="fa fa-heart"></i> <span id="heartCount"></span></a></li>
+              <li><a href="/member/myPage"><i class="fa fa-heart"></i> <span id="heartCount"></span></a></li>
 							<li><a href="/cart/cartPage"><i class="fa fa-shopping-bag"></i>
 								<c:if test="${sessionScope.CartCnt > 0}">
             						<span>${sessionScope.CartCnt}</span>
@@ -258,7 +258,7 @@ function showHide(){
 						</div>
 						<ul id="categoryList" style="display: none">
 							<c:if test="${loginMember != null}">
-								<li><a href="/member/mypage">마이페이지</a></li>
+								<li><a href="/member/myPage">마이페이지</a></li>
 							</c:if>
 							<li><a href="#">Vegetables</a></li>
 							<li><a href="#">Fruit & Nut Gifts</a></li>
