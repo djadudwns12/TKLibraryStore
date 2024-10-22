@@ -6,29 +6,32 @@
 
 	<select id="getMember"
 		resultType="com.tn.member.model.vo.MemberVO">
-		select * from Member where isDelete = 'N';
+		select * from Member;
 	</select>
 	<!-- 로그인 하는 쿼리문 -->
-	<select id="getLoginMember"
+	<select id="getLoginMember" resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member where userId = #{userId} and userPwd = sha1(md5(#{userPwd})) 
+	</select>
+	
+<!-- 	<select id="getLoginMember"
 		resultType="com.tn.member.model.vo.MemberVO">
 		select * from Member where userId = #{userId} and userPwd =
 		sha1(md5(#{userPwd})) and isDelete = 'N'
-	</select>
-
-	<!-- =====================================최미설======================================== -->
-	<!-- 회원정보수정을 위해 회원정보를 얻어오는 쿼리문 -->
-	<select id="getEditMemberInfo"
-		resultType="com.tn.member.model.vo.MemberVO">
-		select * from Member where userId=#{userId}
-	</select>
-
-	<!-- 수정된 회원정보를 DB에 저장한는 쿼리문 -->
-	<update id="updateEditMember">
-		update Member set
-		userBirth=#{userBirth}, phoneNum=#{phoneNum}, email=#{email}
-		where userId=#{userId}
-	</update>
-
+	</select> -->
+  	
+<!-- =====================================최미설======================================== -->  	
+  	<!-- 회원정보수정을 위해 회원정보를 얻어오는 쿼리문 -->
+  	<select id="getEditMemberInfo" resultType="com.tn.member.model.vo.MemberVO">
+  		select * from Member where userId=#{userId}
+  	</select>
+  	
+  	<!-- 수정된 회원정보를 DB에 저장한는 쿼리문 -->
+  	<update id="updateEditMember">
+  		update Member set 
+  		userBirth=#{userBirth}, phoneNum=#{phoneNum}, email=#{email} 
+  		where userId=#{userId}
+  	</update>
+	
 	<!-- 수정된 프로필이미지를 DB에 저장하는 쿼리문 -->
 	<update id="saveEditImg">
 		update Member set userImg=#{fileName},
@@ -43,16 +46,32 @@
 		userId=#{userId}
 	</update>
 
-	<!-- 회원탈퇴 -->
+	
+	<!-- 회원탈퇴요청 -->
 	<update id="deleteMember">
 		update Member set isDelete='Y' where userId=#{userId}
 	</update>
+	
+	<!-- 회원탈퇴요청 기록 -->
+	<insert id="recordUnregister">
+        INSERT INTO Unregister (userId)
+        VALUES (#{userId})
+    </insert>
+    
 	<!-- 관리자페이지에 회원목록을 불러오는 쿼리문 -->
-	<select id="getMemberList"
-		resultType="com.tn.member.model.vo.MemberVO">
-		select * from Member order by userId;
-	</select>
-	<!-- =====================================최미설======================================== -->
+  	<select id="getMemberList" resultType="com.tn.member.model.vo.MemberVO">
+  		select * from Member order by userId;
+  	</select>
+  	
+  	<!-- 계정복구 -->
+  	<update id="validateAccount">
+  		update Member set isDelete='N' where userId=#{userId}
+  	</update>
+  	
+  	<delete id="removeUnregiTable">
+  		delete from Unregister where userId=#{userId}
+  	</delete>
+<!-- =====================================최미설======================================== -->
 
 	<!-- 김가윤 -->
 	<select id="getAddressList"

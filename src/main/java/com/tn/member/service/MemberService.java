@@ -38,6 +38,10 @@ public interface MemberService {
 	
 	// 회원탈퇴
 	boolean deleteMember(String userId) throws Exception;
+	
+	// 계정복구
+	void validateAccount(String userId) throws Exception;
+	
 //-----------------------------------------최미설-------------------------------------------------
 
 	public ResponseEntity<Integer> sendOne(String phone) throws Exception;
@@ -81,6 +85,8 @@ public interface MemberService {
 //-----------------------------------------엄영준------------------------------------------------- 	
 
 	
+
+
 
 
 

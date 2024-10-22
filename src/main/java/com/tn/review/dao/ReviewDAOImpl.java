@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.tn.member.model.dto.MemberDTO;
 import com.tn.review.model.DTO.ReviewDTO;
 import com.tn.review.model.VO.ReviewVO;
 
@@ -68,5 +69,20 @@ public class ReviewDAOImpl implements ReviewDAO {
 		
 		return ses.selectOne(NS + ".getAverageReviewScore", bookNo);
 	}
+
+  	//---------------------------------------------- 이아림(start) ----------------------------------------------
+	@Override
+	public List<ReviewVO> getMyReview(MemberDTO loginMember) throws Exception {
+		
+		return ses.selectList(NS + ".getMyReview", loginMember);
+	}
+
+	@Override
+	public List<ReviewVO> getMyReviewById(String userId) throws Exception {
+		
+		return ses.selectList(NS + ".getMyReviewById", userId);
+	}
+	
+	// ---------------------------------------------- 이아림(end) ----------------------------------------------
 
 }

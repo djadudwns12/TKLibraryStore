@@ -41,6 +41,8 @@ import com.tn.member.model.vo.MemberVO;
 import com.tn.member.service.MemberService;
 import com.tn.util.GetClientIPAddr;
 
+
+
 /**
  * Handles requests for the application home page.
  */
@@ -126,7 +128,7 @@ public class BookListController {
 	
 //	====================================================================엄영준(end)=============================================================================
 	
-	// 책 상세페이지를 불러오는 메서드 
+	// 책 상세페이지를 불러오는 메서드 (1)
 	@RequestMapping("/bookDetail")
 	public String bookDetail(@RequestParam("bookNo") int bookNo, Model model, HttpServletRequest request, HttpSession session) {
 		
@@ -141,12 +143,12 @@ public class BookListController {
 		int avgReviewScore = 0;
 		double expectedPointRate = 0;
 
-	         String ipAddr = GetClientIPAddr.getClientIP(request);
-//	         System.out.println(ipAddr + "가 " + bookNo + "번 책 정보를 검색한다!!");
+	         String ipAddr = GetClientIPAddr.getClientIP(request);	         
+	         System.out.println(ipAddr + "가 " + bookNo + "번 책 정보를 검색한다!!");
 	         
 	         if (request.getRequestURI().contains("/bookDetail")) {
 	        	 	
-//	        	 	System.out.println("상세페이지 호출..................");
+        	 	System.out.println("상세페이지 호출..................");
 	        	 	
 	        	 	try {   
 	        	  	
@@ -173,11 +175,11 @@ public class BookListController {
 	      model.addAttribute("avgReviewScore", avgReviewScore);
 	      model.addAttribute("expectedPointRate", expectedPointRate);
 
-		
 		return returnBDetail;
 		
-		
 	}
+	
+
 	
 
 	// 수량 선택해 장바구니 버튼을 누르면 카트에 상품이 담기는 메서드
@@ -190,7 +192,7 @@ public class BookListController {
 		
 		MemberVO loginMember = (MemberVO) ses.getAttribute("loginMember");
 		String userId = loginMember.getUserId();
-//		
+		
 		System.out.println(qty +"bookNo"+ bookNo + userId);
 		try {
 			result = cService.findBookByBookNo(bookNo, userId, qty);
@@ -202,6 +204,7 @@ public class BookListController {
 		return result;
 			
 	}
+	
 
 	@PostMapping(value = "getRecentViews")
 	public ResponseEntity<Map<String, Object>> getRecentViews(@RequestBody List<Integer> list) {
@@ -226,6 +229,8 @@ public class BookListController {
 		return result;
 		
 	}
+	
+	
 	
 	
 }

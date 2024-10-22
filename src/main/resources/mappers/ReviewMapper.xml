@@ -64,4 +64,17 @@
 		WHERE bookNo = #{bookNo};
 	</select>
 
+<!--  ====================== 이아림(start) ====================== -->
+  
+  <!-- 마이페이지에 내가 쓴 리뷰를 가져오는 쿼리문 -->
+  <select id="getMyReview" resultType = "com.tn.review.model.VO.ReviewVO">
+  	select reviewNo, reviewWriter, reviewContent, reviewDate, reviewScore, bookNo 
+  	from Review r left join Member m
+  	on r.reviewWriter = m.userId
+  	where userId = #{userId};
+  
+  </select>
+
+<!-- ====================== 이아림(end) ====================== -->
+
 </mapper>

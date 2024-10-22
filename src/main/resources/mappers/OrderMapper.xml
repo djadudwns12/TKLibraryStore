@@ -84,17 +84,47 @@
 
 <!-- 엄영준 -->
     <!-- 회원이 주문한 목록 최근꺼 3개를 가지고 오는 쿼리문 -->
-	<select id="selectRecentOrderList"
-		resultType="com.tn.booklist.model.vo.BooklistVO">
+    <!-- OrderBookVO 매핑을 위한 ResultMap -->
+    
+    <resultMap type="com.tn.booklist.model.vo.BooklistVO" id="BooklistVOMap">
+    <!-- BookList 테이블 필드 매핑 -->
+        <result property="bookNo" column="bookNo" />
+        <result property="title" column="title" javaType="String" />
+        <result property="author" column="author" />
+        <result property="publisher" column="publisher" />
+        <result property="pubDate" column="pubDate" />
+        <result property="genre" column="genre" />
+        <result property="price" column="price" />
+        <result property="salePrice" column="salePrice" />
+        <result property="inven" column="inven" />
+        <result property="thumbNail" column="thumbNail" />
+        <result property="introduction" column="introduction" />
+        <result property="zzim" column="zzim" />
+        <result property="reviewCnt" column="reviewCnt" />
+    </resultMap>
+    
+    <resultMap type="com.tn.order.model.vo.OrderBookVO" id="OrderBookVOMap">    	
+        
+        
+        <!-- 주문 정보 필드 매핑 -->
+        
+        <result property="orderBookPK" column="orderBookPK" />
+        <result property="bookNo" column="bookNo" />
+        <result property="qty" column="qty" />
+        <!-- 중첩된 BooklistVO 매핑 -->
+        <association property="booklistVO" resultMap="BooklistVOMap" />
+    </resultMap>
+ 
+	<select id="selectRecentOrderList" resultMap="OrderBookVOMap">
 		<!-- select b.* from
 		(select o.orderPk , o.bookNo from mbcac2024.Order o inner Join Member m on
 		o.orderWho = m.userId where o.orderWho = #{userId}) as userOrder
 		inner join BookList b
 		on userOrder.bookNo = b.bookNo order by userOrder.orderPk desc limit
 		0,3; -->
-		select b.* from
-		(select o.orderPk , o.bookNo 
-		from (select ob.bookNo , o.orderPK ,o.orderWho from mbcac2024.Order o inner join OrderBook ob on o.orderNo = ob.orderNo) o 
+		select b.* , userOrder.qty from
+		(select o.orderPk , o.bookNo ,o.qty
+		from (select ob.bookNo , o.orderPK ,o.orderWho,ob.qty from mbcac2024.Order o inner join OrderBook ob on o.orderNo = ob.orderNo) o 
 		inner Join Member m 
 		on o.orderWho = m.userId where o.orderWho = #{userId}) as userOrder
 		inner join BookList b
@@ -102,7 +132,7 @@
 		0,3;
 	</select>
 	<select id="selectMyPageOrderList" resultType="com.tn.order.model.vo.OrderVO">
-		SELECT * FROM mbcac2024.Order where orderWho = #{userId} and orderStatus in ('배송중','결제완료')
+		SELECT * FROM mbcac2024.Order where orderWho = #{userId}
 	</select>
 	<select id="selectDetailOrder" resultType="com.tn.order.model.vo.OrderDetailVO">
 		select ob.orderNo, ob.qty,b.thumbNail,b.title,b.author,b.salePrice
@@ -129,10 +159,9 @@
 	
 	<!-- 포인트 업데이트 -->
 	<update id="updatePoint">
-	update Member
-	set userPoint = userPoint + (select plannedPoint from `Order`
-	where orderWho=#{userId} and orderNo=#{orderNo} and orderStatus="배송완료")
-	where userId=#{userId}
+		update Member
+		set userPoint = userPoint + #{plannedPoint}
+		where userId=#{userId}
 	</update>
 	
 	<!-- 포인트로그 추가 -->
@@ -149,8 +178,16 @@
 	</update>
 	
 	<!-- 탈퇴요청하는 회원의 주문을 확인하는 쿼리문 -->
-	<select id="checkRemainOrder" resultType="com.tn.order.model.vo.OrderVO">
+	<select id="checkRemainOrder" resultType="com.tn.order.model.vo.DeliveryComplete">
 		select * from `Order` where orderStatus!='배송완료' and orderWho=#{deletedMember}
+	</select>
+	<!-- 스케줄러 : 매일 오후 3시에 배송완료된 주문건을 가져오는 쿼리문 -->
+	<select id="findDeliveriesCompleted" resultType="com.tn.order.model.vo.DeliveryComplete">
+	    SELECT `orderWho`, `plannedPoint`, `orderNo`
+	    FROM `Order`
+	    WHERE `orderStatus` = '배송완료'
+	    AND `orderDate` &gt; DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL 1 DAY)
+	    AND `orderDate` &lt;= CURRENT_TIMESTAMP()
 	</select>
 <!-- ==================================================최미설========================================================================== -->
 </mapper>

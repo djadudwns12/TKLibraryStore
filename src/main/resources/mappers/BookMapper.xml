@@ -38,6 +38,13 @@
 		select * from BookList where bookNo = #{bookNo}
 	</select>
 	
+	<!-- 유저의 멤버십 등급에 따른 적립률을 가져오는 쿼리문 -->
+	<select id="getPointRateByUserId" resultType = "double">
+		select cRate 
+		from Member m, ClassDef c 
+		where m.userClass = c.className and m.userId = #{userId}
+	</select>
+	
 	<!-- ====================================================엄영준============================================================= -->
 	<!-- 카테고리화된 것을 페이징 하여 가지고 가는 것 -->
 	<select id="selectCategoryBooklist" resultType="com.tn.booklist.model.vo.BooklistVO">

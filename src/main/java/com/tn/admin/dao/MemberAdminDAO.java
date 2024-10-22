@@ -74,6 +74,12 @@ public interface MemberAdminDAO {
 	// 회원등급을 가지고 오는  메서드
 	List<MemberClassVO> selectMemberClass() throws Exception;
 
+	// 탈퇴요청후 30일이 지난 멤버리스트 
+	List<String> findExpiredMember() throws Exception;
+
+	// Unregister 테이블에서 삭제된 회원목록 지우기 
+	void deleteUnregister(String deleteId) throws Exception;
+
 	
 
 	

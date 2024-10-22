@@ -40,6 +40,7 @@
 		let bookNo = '${param.bookNo}';
 		console.log('지금 책 번호: ' + bookNo);
 		
+		
 		let zzimed = false;
 		//  ------------------------찜기능
 		$('.zzimHeart').on('click', function() {
@@ -88,10 +89,6 @@
 				}
 			});
 		}
-		
-		// 별점 기능을 위한 배열 선언
-		/* const ratingStars = [...document.getElementsByClassName("rating__star")];
-		executeRating(ratingStars); */
 		
 		
 		$('.nav-tabs .nav-item a[href="#tabs-2"]').tab('show');
@@ -174,7 +171,7 @@
 		});
 	}
 
-	// (-) (+) 버튼을 누르면 표시되는 수량 변경
+	// (-) (+) 버튼을 누르면, 표시되는 수량 변경
 	function count(action) {
 		var maxQty = $("#inven").val();	// bqty의 최대값(재고량)
 		var qtyInput = document.getElementById("bqty");	// 수량 입력 필드
@@ -235,7 +232,6 @@
 			 $.ajax({
 		        url: '/bookList/insertCart',	// 데이터 보내는 곳 URL
 		        type: 'POST',
-		        //contentType: 'application/json',
 		        data: {
 		            userId: userId,
 		            qty: totalQty,  // 최종 선택한 수량
@@ -262,6 +258,7 @@
 			
 		}
 	} 
+	
 	 
 	function executeRating(starGroups) {
 		  const starClassActive = "rating__star fas fa-star";
@@ -547,7 +544,9 @@
 						<div class="col-lg-6 col-md-6">
 							<div class="bookBriefInfo">
 
+
 								<span style="font-weight: 600; font-size: x-large;">${bookInfo.title}</span>
+
 								<div class="product__details__rating">
 									<div class="showRating">
 										<c:forEach begin="1" end="${avgReviewScore}">
@@ -605,7 +604,7 @@
 								<div class="btns"
 									style="display: flex; align-items: center; gap: 5px;">
 									<button type="button" class="primary-btn"
-										onclick="location.href='/order'"
+										onclick="directOrder();"
 										style="background-color: #DA8359;">바로주문</button>
 									<button type="button" class="primary-btn"
 										onclick="addToCart();">장바구니 담기</button>

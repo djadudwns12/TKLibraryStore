@@ -23,34 +23,32 @@ public class SendMailService {
 	ResourceLoader resourceLoader;
 	
 	private String username;
-	private String password; // ÀÌÈÄ¿¡ propertiesÆÄÀÏ·Î ÀúÀåÇÏ¿© git¿¡ ¿Ã¸®Áö ¾Ê±â
+	private String password; 
 	
 	public void sendMail(String emailAddr, String activationCode) throws AddressException, MessagingException, IOException {
-		String subject = "miniproject.com¿¡¼­ º¸³»´Â È¸¿ø°¡ÀÔ ÀÌ¸ŞÀÏ ÀÎÁõ¹øÈ£ ÀÔ´Ï´Ù.";
-		String message = "È¸¿ø°¡ÀÔÀ» È¯¿µÇÕ´Ï´Ù.. \n ÀÎÁõ¹øÈ£ : " + activationCode + "¸¦ ÀÔ·ÂÇÏ½Ã°í È¸¿ø°¡ÀÔÀ» ¿Ï·áÇÏ¼¼¿ä.";
+		String subject = "ë–¡ìì„œì  íšŒì›ì •ë³´ìˆ˜ì • ì„œë¹„ìŠ¤ :: ì´ë©”ì¼ ì¸ì¦ì„ ì™„ë£Œí•´ì£¼ì„¸ìš”.";
+		String message = "ì…ë ¥ì°½ì— ì¸ì¦ì½”ë“œë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš” \nì¸ì¦ì½”ë“œ: " + activationCode + "\n ê°ì‚¬í•©ë‹ˆë‹¤.";
 	
-		// naver ÀÌ¸ŞÀÏ¼­¹öÀÇ ¸ŞÀÏ È¯°æ ¼³Á¤
-		// Properties°´Ã¼ : ºÎ¸ğ°¡ Map, key¿Í value·Î µ¥ÀÌÅÍ¸¦ °ü¸®, ÆÄÀÏ·Î ÀúÀåÇÏ°Å³ª ÀĞ¾î¿Ã ¼ö ÀÖ´Ù
+		
 		Properties props = new Properties();
-		props.put("mail.smtp.host", "smtp.naver.com");  // smtp È£½ºÆ® ÁÖ¼Ò µî·Ï
-		props.put("mail.smtp.port", "465"); // naver smtpÀÇ Æ÷Æ®¹øÈ£
-		props.put("mail.smtp.starttls.required", "true"); // µ¿±â½Ä Àü¼ÛÀ» À§ÇØ ¼³Á¤
+		props.put("mail.smtp.host", "smtp.naver.com");  
+		props.put("mail.smtp.port", "465"); 
+		props.put("mail.smtp.starttls.required", "true"); 
 		props.put("mail.smtp.ssl.protocols", "TLSv1.2");
-		props.put("mail.smtp.ssl.enable", "true");  // SSL »ç¿ë	
-		props.put("mail.smtp.auth", "true"); // ÀÎÁõ °úÁ¤À» °ÅÄ¡°Ú´Ù.
+		props.put("mail.smtp.ssl.enable", "true");  
+		props.put("mail.smtp.auth", "true"); 
 		getAccount();
 		Session mailSession = Session.getInstance(props, new Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(username, password);
 			}
-		}); // Åë½ÅÀÌ ¿¬°áµÆÀ» ¶§ 
+		}); 
 		System.out.println(mailSession.toString());
 		if(mailSession!=null) {
 			MimeMessage mime = new MimeMessage(mailSession);
-			mime.setFrom(new InternetAddress("miseol93@naver.com")); // º¸³»´Â»ç¶÷ ¸ŞÀÏÁÖ¼Ò
+			mime.setFrom(new InternetAddress("miseol93@naver.com")); 
 			mime.addRecipient(RecipientType.TO, new InternetAddress(emailAddr));
-			// ¸ŞÀÏ Á¦¸ñ°ú º»¹®¼³Á¤
 			mime.setSubject(subject);
 			mime.setText(message);
 			

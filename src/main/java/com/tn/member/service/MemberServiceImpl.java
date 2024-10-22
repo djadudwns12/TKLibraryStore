@@ -53,6 +53,7 @@ public class MemberServiceImpl implements MemberService {
 		return dao.getMember();
 	}
 
+// ========================================최미설===============================================//
 	@Override
 	public MemberVO getEditMemberInfo(String userId) throws Exception {
 
@@ -91,8 +92,9 @@ public class MemberServiceImpl implements MemberService {
 	public boolean deleteMember(String userId) throws Exception {
 		boolean result = false;
 		if (dao.deleteMember(userId) == 1) {
-			result = true;
-
+			if(dao.recordUnregister(userId) == 1) {
+				result = true;
+			}
 		}
 		return result;
 	}
@@ -102,6 +104,16 @@ public class MemberServiceImpl implements MemberService {
 
 		return dao.getMember(userId, userPwd);
 	}
+	
+	@Override
+	public void validateAccount(String userId) throws Exception {
+		// isDelete='N'
+		dao.validateAccount(userId);
+		// Unregister 테이블에서 삭제
+		dao.removeUnregiTable(userId);
+	}
+	
+// ========================================최미설===============================================//
 
 //-----------------------------------------박근영-------------------------------------------------
 	// 박근영
@@ -263,6 +275,7 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
+
 	@Override
 	public double getPointRate(String userId) throws Exception {
 		
@@ -274,5 +287,6 @@ public class MemberServiceImpl implements MemberService {
 		
 		return rate;
 	}
+
 
 }

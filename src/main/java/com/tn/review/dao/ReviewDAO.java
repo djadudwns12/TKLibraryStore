@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.tn.member.model.dto.MemberDTO;
 import com.tn.review.model.DTO.ReviewDTO;
 import com.tn.review.model.VO.ReviewVO;
 
@@ -35,4 +36,14 @@ public interface ReviewDAO {
 	int reviewCnt(int bookNo) throws Exception;
 
 	int getAverage(int bookNo) throws Exception;
+	
+	
+	//--------------------- 이아림(start) ---------------------------- 
+	
+	// 로그인 한 회원의 마이페이지에 '내 리뷰'를 가져오는 메서드
+	List<ReviewVO> getMyReview(MemberDTO loginMember) throws Exception;
+
+	List<ReviewVO> getMyReviewById(String userId) throws Exception;
+	
+	//--------------------- 이아림(end) ---------------------------- 
 }

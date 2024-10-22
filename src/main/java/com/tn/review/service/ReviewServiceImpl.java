@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tn.member.model.dto.MemberDTO;
 import com.tn.review.dao.ReviewDAO;
 import com.tn.review.model.DTO.ReviewDTO;
 import com.tn.review.model.VO.ReviewVO;
@@ -106,6 +107,27 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		return reviewDao.getAverage(bookNo);
 	}
+
+	
+	
+	// ---------------------------------------------- 이아림(start) ----------------------------------------------
+	
+	@Override
+	public List<ReviewVO> getMyReview(MemberDTO loginMember) throws Exception {
+		
+//		System.out.println(loginMember + "가 쓴 리뷰를 불러온다!!!!!!!!!!!!");
+		
+		return reviewDao.getMyReview(loginMember);
+	}
+
+	@Override
+	public List<ReviewVO> getMyReviewList(String userId) throws Exception {
+		
+		return reviewDao.getMyReviewById(userId);
+	}
+	
+	// ---------------------------------------------- 이아림(start) ----------------------------------------------
+	
 
 	
 
