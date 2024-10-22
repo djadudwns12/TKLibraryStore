@@ -1,12 +1,14 @@
 package com.tn.order.dao;
 
 
+import java.sql.Timestamp;
 import java.util.List;
 import com.tn.booklist.model.vo.BooklistVO;
 import com.tn.member.model.dto.MemberDTO;
 import com.tn.order.model.vo.OrderVO;
 import com.tn.order.model.dto.PaymentInfoDTO;
 import com.tn.order.model.vo.AddressVO;
+import com.tn.order.model.vo.DeliveryComplete;
 import com.tn.order.model.vo.OrderBookListVO;
 import com.tn.order.model.vo.OrderBookVO;
 import com.tn.order.model.vo.OrderDetailVO;
@@ -61,16 +63,20 @@ public interface OrderDAO {
   OrderVO getSinOrder(String userId);
   
   // 포인트 업데이트
-  int updatePoint(String userId, OrderVO sinOrder) throws Exception;
+  int updatePoint(String userId, int plannedPoint) throws Exception;
   
   // 포인트로그 추가
-  int recordPointLog(String userId, OrderVO sinOrder) throws Exception;
+  int recordPointLog(String userId, int plannedPoint, int orderNo) throws Exception;
   
   // 탈퇴회원 주문건 업데이트
   int updateUnregisterInfo(String deletedMember) throws Exception;
   
   // 탈퇴요청 회원의 주문건을 확인해서 주문이 없거나 배송완료되었을 때만 탈퇴가 진행되도록 한다.
   List<OrderVO> checkRemainOrder(String deletedMember) throws Exception;
+  
+  // 스케줄러 작동시점 이후의 주문건 중 "배송완료"된 주문의 목록을 가져옴
+  List<DeliveryComplete> findDeliveriesCompleted(Timestamp time);
+  
   
 //-----------------------------------------최미설-------------------------------------------------
 

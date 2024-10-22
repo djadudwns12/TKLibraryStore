@@ -243,11 +243,24 @@
 		</choose>
 		 limit #{startRowIndex}, #{viewPostCntPerPage}
 	</select>
+	
+	<!-- 탈퇴요청 후 30일이 지난 회원리스트 -->
+	<select id="findExpiredMember" resultType="String">
+		SELECT userId
+	    FROM Unregister
+	    WHERE withdrawDate &lt;= DATE_SUB(NOW(), INTERVAL 30 DAY)
+	</select>
+	
+	<!-- Unregister 테이블에서 내용삭제 -->
+	<delete id="deleteUnregister">
+		delete from Unregister where userId=#{deleteId}
+	</delete>
 	<!-- ==============================탈퇴회원처리============================== -->
 	<select id="selectVisitHistory" resultType="com.tn.admin.model.vo.VisitHistory">
 		<![CDATA[SELECT * FROM mbcac2024.VisitHistory where  datediff(CURDATE() , visitDate) < 10 order by visitDate asc]]>
 	</select>
 	
+
 	
 	
 	<!-- 엄영준 -->

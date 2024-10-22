@@ -185,18 +185,18 @@ public OrderVO getSinOrder(String userId) throws Exception {
 }
 
 @Override
-public boolean updatePoint(String userId, OrderVO sinOrder) throws Exception {
+public boolean updatePoint(String userId, int plannedPoint) throws Exception {
 	boolean result=false;
-	if(oDao.updatePoint(userId, sinOrder)==1) {
+	if(oDao.updatePoint(userId, plannedPoint)==1) {
 		result=true;
 	}
 	return result;
 }
 
 @Override
-public boolean recordPointLog(String userId, OrderVO sinOrder) throws Exception {
+public boolean recordPointLog(String userId, int plannedPoint, int orderNo) throws Exception {
 	boolean result=false;
-	if(oDao.recordPointLog(userId, sinOrder)==1) {
+	if(oDao.recordPointLog(userId, plannedPoint, orderNo)==1) {
 		result=true;
 	}
 	return result;
@@ -214,6 +214,7 @@ public boolean updateUnregisterInfo(String deletedMember) throws Exception {
 @Override
 public boolean checkRemainOrder(String deletedMember) throws Exception {
 	boolean result = true;
+	System.out.println("OrderSevice - 배송완료 전 주문 조회 : " + oDao.checkRemainOrder(deletedMember).size());
 	if(oDao.checkRemainOrder(deletedMember).size() > 0 ) {
 		result=false;
 	}

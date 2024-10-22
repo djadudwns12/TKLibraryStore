@@ -217,7 +217,7 @@ function recentViews() {
 </head>
 
 <body>
-	<c:import url="../header.jsp"></c:import>
+	<!--<c:import url="../header.jsp"></c:import>-->
 
 	<div class="register-box userInfoDiv">
 		<div class="ex1">

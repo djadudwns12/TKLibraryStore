@@ -32,8 +32,17 @@ public interface MemberDAO {
 	// 비밀번호를 변경하는 메서드
 	int saveEditPwd(String userPwd, String userId) throws Exception;
 	
-	// 회원탈퇴
+	// 회원탈퇴요청
 	int deleteMember(String userId) throws Exception;
+	
+	// 탈퇴요청 리스트에 추가
+	int recordUnregister(String userId) throws Exception;
+	
+	// 계정복구
+	void validateAccount(String userId) throws Exception;
+	
+	// 계정복구 - Unregister테이블에서 제거
+	void removeUnregiTable(String userId);
 //=============================최미설========================================//
 	
 //-----------------------------------------박근영-------------------------------------------------
@@ -75,6 +84,12 @@ public interface MemberDAO {
 	public int updateInsertIsDefault(String userId) throws Exception;
 
 	public int removeAddress(int addressId) throws Exception;
+
+
+
+
+
+
 
 
 

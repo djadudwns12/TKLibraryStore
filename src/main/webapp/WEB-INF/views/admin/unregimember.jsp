@@ -1,21 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
 <head>
+<title>탈퇴회원 관리</title>
+<!--  <link rel="stylesheet" href="resources/template/css/adminlte.css"> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://kit.fontawesome.com/b948e77617.js" crossorigin="anonymous"></script>
 <!-- Load icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Google Fonts에서 Gowun Batang 폰트 불러오기 -->
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
-<meta charset="UTF-8">
-<title>탈퇴회원관리</title>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 	<div class="app-wrapper">
@@ -58,6 +54,10 @@
 					</section>
 						<button type="submit" class="btn btn-outline-dark btn" onclick="return isValid()">검색</button>
 				</form>
+				<div style="clear: right; display: flex; flex-direction: row;">
+					<button type="button" class="btn btn-danger btn" id="delBtn" style="width:90px; font-size:small; margin-left:30px; margin-right:20px;" onclick="deleteCheckedMember()" >0명 삭제</button>
+					<div id="result"></div>
+				</div>
 				<div style="clear: right; display: flex; flex-direction: row; align-items: center; justify-content: right; margin-bottom: 50px;">
 					<div class="boardC" >
 						<select class="form-select sortByWhat" id="sortBy" style="width: 150px ">
@@ -67,7 +67,7 @@
 							<option value="userBirth">생년월일순</option>
 						</select>
 					</div>
-					
+
 					<div class="boardControll">
 						<select class="form-select pagingSize" id="pagingSize" style="width: 150px ">
 							<option value="0">정렬 기준</option>
@@ -114,7 +114,7 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				<button type="button" class="btn btn-danger btn" id="delBtn" style="width:90px; font-size:small;" onclick="deleteCheckedMember()" >0명 삭제</button>
+
 			</div>
 			<div class="pagination justify-content-center" style="margin: 20px 0">
 				<ul class="pagination">
@@ -153,13 +153,12 @@
 
 
 <style>
-<!--폰트 영역 -->
+
 * {
    font-family: "Gowun Batang", serif;
    font-weight: 550;
    font-style: normal;
 }
-
 
 .page-item .page-link {
 	color: #999;
@@ -370,27 +369,32 @@ function updateCheck() {
 	checkboxes.forEach((checkbox) => {
 		selectedItems.push(checkbox.value);
 		console.log(checkbox.value);
+		/* 
+		document.getElementById("result").innerHTML = selectedItems.length > 0
+		? '선택된 항목: ' + selectedItems.join(', ')
+		: '선택된 항목이 없습니다.'; */
 	});
 
-	document.getElementById("result").innerHTML = selectedItems.length > 0
-		? '선택된 항목: ' + selectedItems.join(', ')
-		: '선택된 항목이 없습니다.';
+	
 	
 
 }
+
 function selectAll(selectAll) {
     // 모든 체크박스 선택
     const checkboxes = $('input[type="checkbox"]');
-    
+    let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
     // jQuery의 each 메서드를 사용하여 모든 체크박스 요소의 checked 속성을 selectAll.checked 값으로 설정
     checkboxes.each(function() {
         $(this).prop('checked', $(selectAll).prop('checked'));
-        updateCheck();
+        
     });
+    
+    updateButton();
 }
 function deleteCheckedMember() {
 	let pro_check = document.querySelectorAll('input[name="proCheck"]:checked').length;
-	let delNo = [];
+	let selectedItems = [];
 	if (pro_check == 0) {
 		alert('한 명 이상의 회원을 선택해주세요.');
 		return false;
@@ -428,22 +432,7 @@ function updateButton() {
 	// 버튼 텍스트 업데이트
 	$('#delBtn').text(pro_check + "명 삭제");
 }
-/* function deleteCheckedMember(selectedItems){
-	$.ajax({
-		url: "/admin/removeMemberInfo", 
-        type: "post",
-        dataType: "text",
-        contentType : 'application/json; charset=utf-8',
-        data: JSON.stringify(selectedItems),
-        success: function(data) {
-        	console.log(data)
-        },
-        error : function(data){
-        	console.log(data)
-        	alert("선택회원 정보 삭제 실패....");
-        }
-	});
-} */
+
 
 </script>
 
