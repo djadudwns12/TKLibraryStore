@@ -2,10 +2,196 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="com.tn.mapper.memberMapper">
+<mapper namespace="com.tn.mapper.memberMapper">
+
+	<select id="getMember"
+		resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member;
+	</select>
+	<!-- 로그인 하는 쿼리문 -->
+	<select id="getLoginMember" resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member where userId = #{userId} and userPwd = sha1(md5(#{userPwd})) 
+	</select>
+	
+<!-- 	<select id="getLoginMember"
+		resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member where userId = #{userId} and userPwd =
+		sha1(md5(#{userPwd})) and isDelete = 'N'
+	</select> -->
   	
-  	<select id="getMember" resultType="com.tn.member.model.vo.MemberVO">
-  		select * from Member;
+<!-- =====================================최미설======================================== -->  	
+  	<!-- 회원정보수정을 위해 회원정보를 얻어오는 쿼리문 -->
+  	<select id="getEditMemberInfo" resultType="com.tn.member.model.vo.MemberVO">
+  		select * from Member where userId=#{userId}
   	</select>
   	
-  </mapper>
+  	<!-- 수정된 회원정보를 DB에 저장한는 쿼리문 -->
+  	<update id="updateEditMember">
+  		update Member set 
+  		userBirth=#{userBirth}, phoneNum=#{phoneNum}, email=#{email} 
+  		where userId=#{userId}
+  	</update>
+	
+	<!-- 수정된 프로필이미지를 DB에 저장하는 쿼리문 -->
+	<update id="saveEditImg">
+		update Member set userImg=#{fileName},
+		base64ProfileImg=#{base64Img}
+		where userId=#{userId};
+	</update>
+
+	<!-- 비밀번호를 변경하는 메서드 -->
+	<update id="saveEditPwd">
+		update Member set userPwd=sha1(md5(#{userPwd}))
+		where
+		userId=#{userId}
+	</update>
+
+	
+	<!-- 회원탈퇴요청 -->
+	<update id="deleteMember">
+		update Member set isDelete='Y' where userId=#{userId}
+	</update>
+	
+	<!-- 회원탈퇴요청 기록 -->
+	<insert id="recordUnregister">
+        INSERT INTO Unregister (userId)
+        VALUES (#{userId})
+    </insert>
+    
+	<!-- 관리자페이지에 회원목록을 불러오는 쿼리문 -->
+  	<select id="getMemberList" resultType="com.tn.member.model.vo.MemberVO">
+  		select * from Member order by userId;
+  	</select>
+  	
+  	<!-- 계정복구 -->
+  	<update id="validateAccount">
+  		update Member set isDelete='N' where userId=#{userId}
+  	</update>
+  	
+  	<delete id="removeUnregiTable">
+  		delete from Unregister where userId=#{userId}
+  	</delete>
+<!-- =====================================최미설======================================== -->
+
+	<!-- 김가윤 -->
+	<select id="getAddressList"
+		resultType="com.tn.member.model.vo.MyAddressVO">
+		select * from Address where userId = #{userId}
+	</select>
+
+	<select id="selectByAddressId"
+		resultType="com.tn.member.model.vo.MyAddressVO">
+		select * from Address where addressId = #{addressId}
+	</select>
+
+	<update id="modifyAddress"
+		parameterType="com.tn.member.model.dto.MyAddressDTO">
+		UPDATE Address SET
+		receiver_name = #{receiver_name},
+		address_key = #{address_key},
+		receiver_phone = #{receiver_phone},
+		address = #{address},
+		request = #{request},
+		isDefault = #{isDefault}
+		WHERE addressId = #{addressId};
+	</update>
+
+	<update id="updateOtherIsDefault" parameterType="String">
+		UPDATE Address SET isDefault = 'Y' WHERE userId = #{userId} AND isDefault =
+		'N'
+	</update>
+
+	<insert id="insertNewAddress">
+		insert into Address (userId, address_key,
+		receiver_name, receiver_phone, address, isDefault, request)
+		values(#{userId}, #{address_key}, #{receiver_name}, #{receiver_phone},
+		#{address}, #{isDefault}, #{request})
+	</insert>
+
+	<update id="updateInsertIsDefault">
+		UPDATE Address SET isDefault = 'Y' WHERE userId =
+		#{userId}
+	</update>
+
+	<delete id="removeAddress">
+		delete from Address where addressId = #{addressId}
+	</delete>
+
+	<select id="getPointRate" resultType="double">
+		SELECT c.cRate
+		FROM Member m
+		INNER JOIN ClassDef c ON m.userclass = c.className
+		WHERE m.userId = #{userId}
+	</select>
+
+
+	<!-- 김가윤 -->
+
+	<!-- 박근영 -->
+	<!-- 회원 가입를 위하여 회원 정보를 DB에 저장하며, 회원가입시 프로필 이미지 등록 유무에 따른 inser문 if문으로 구별 -->
+	<insert id="insertRegisterMember">
+		INSERT INTO Member (
+		userId, userPwd, userName, userBirth, phoneNum,
+		email
+		<if test="fileInfo != null">
+			, userImg, base64ProfileImg
+		</if>
+		)
+		VALUES (
+		#{registerDTO.userId}, sha1(md5(#{registerDTO.password})),
+		#{registerDTO.userName},
+		#{registerDTO.birthday}, #{registerDTO.phone},
+		#{registerDTO.email}
+		<if test="fileInfo != null">
+			, #{fileInfo.newFileName}, #{fileInfo.base64Img}
+		</if>
+		)
+	</insert>
+	<insert id="insertRegisterAddress">
+		INSERT INTO Address (userId, receiver_name,
+		receiver_phone, address)
+		VALUES (#{registerDTO.userId},
+		#{registerDTO.userName}, #{registerDTO.phone}, #{address});
+	</insert>
+
+	<select id="selectCompareId" resultType="int">
+		SELECT COUNT(*) FROM
+		Member WHERE userId = #{tmpUserId}
+	</select>
+
+	<select id="selectUserAddress"
+		resultType="com.tn.order.model.vo.AddressVO">
+		SELECT receiver_name, address_key, receiver_phone, address,
+		isDefault, request FROM Address WHERE userId = #{userId}
+	</select>
+
+	<select id="selectUserPoint" resultType="int">
+		SELECT userPoint FROM
+		Member WHERE userId = #{userId}
+	</select>
+	<!-- 박근영 -->
+
+
+	<!-- 엄영준 -->
+
+	<!-- 로그인시 방문자수를 증가시키는 쿼리문 -->
+	<!-- 오늘 방문한 사람이 없을경우에는 방문자수가 1명으로 INSERT 되고 -->
+	<!-- 이미 오늘날짜에 방문한 사람이 있을경우 UPDATE 시키는 쿼리문 -->
+	<insert id="mergeIntoVisitHistor">
+		INSERT INTO VisitHistory(visitDate, visitCount)
+		VALUES(now(), 1)
+		ON DUPLICATE KEY UPDATE
+		visitCount = visitCount+1;
+	</insert>
+
+	<!-- -->
+	<select id="selectPointLog"
+		resultType="com.tn.member.model.vo.PointLogVO">
+		SELECT * FROM PointLog where pWho = #{userId}
+	</select>
+
+
+
+
+
+</mapper>

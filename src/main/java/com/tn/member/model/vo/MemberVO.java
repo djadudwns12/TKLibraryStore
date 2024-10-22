@@ -21,9 +21,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-/**
- * Handles requests for the application home page.
- */
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -39,6 +36,8 @@ public class MemberVO {
 	private String phoneNum;
 	private String email;
 	private String userTotalPay;
-	private String userPoint;
+	private int userPoint;
+	private String userClass;
+	private String userImg; 
 	
 }

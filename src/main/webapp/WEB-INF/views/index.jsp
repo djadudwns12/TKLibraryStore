@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,35 +18,23 @@
 	rel="stylesheet">
 
 <!-- Css Styles -->
-<link rel="stylesheet" href="resources/template/css/bootstrap.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="resources/template/css/font-awesome.min.css" type="text/css">
-<link rel="stylesheet" href="resources/template/css/elegant-icons.css"
-	type="text/css">
-<link rel="stylesheet" href="resources/template/css/nice-select.css"
-	type="text/css">
-<link rel="stylesheet" href="resources/template/css/slicknav.min.css"
-	type="text/css">
-<link rel="stylesheet" href="resources/template/css/style.css"
-	type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/jquery-ui.min.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/owl.carousel.min.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/elegant-icons.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/nice-select.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/slicknav.min.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/css/style.css" type="text/css">
+  
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/category.js"/>
 </head>
 
 <body>
 	
 	<c:import url="header.jsp"></c:import>
-
-	<!-- Js Plugins -->
-	<!-- <script src="resources/template/js/jquery-3.3.1.min.js"></script>
-	<script src="resources/template/js/bootstrap.min.js"></script>
-	<script src="resources/template/js/jquery.nice-select.min.js"></script>
-	<script src="resources/template/js/jquery-ui.min.js"></script>
-	<script src="resources/template/js/jquery.slicknav.js"></script>
-	<script src="resources/template/js/mixitup.min.js"></script>
-	<script src="resources/template/js/owl.carousel.min.js"></script>
-	<script src="resources/template/js/main.js"></script> -->
 	
-	<c:import url="tnFooter.jsp"></c:import>
+	<c:import url="footer.jsp"></c:import>
 	
 	
 </body>

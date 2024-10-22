@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tn.mapper.MemberAdminMapper">
+  	
+
+   	<select id="getMember" resultType="com.tn.member.model.vo.MemberVO">
+  		select * from Member where isDelete='N' order by userId limit #{startRowIndex}, #{viewPostCntPerPage}
+  	</select>
+  	
+	
+	<select id="selectTotalCount" resultType="int">
+		select count(*) from Member	where isDelete='N'
+	</select>
+	
+	<!-- 검색어가 있을 경우의 데이터 갯수 가져오기 -->
+	<select id="selectTotalCountWithSearchCriteria" resultType="int">
+		select count(*) from Member
+		<choose>
+			<when test="searchType == 'userId'">
+				where userId like #{searchWord}
+			</when>
+			<when test="searchType == 'userName'">
+				where userName like #{searchWord}
+			</when>
+			<when test="searchType == 'phoneNum'">
+				where phoneNum like #{searchWord}
+			</when>
+		</choose>
+		and isDelete='N'
+	</select>
+	
+	<!-- 조건별 정렬 -->
+	<select id="getMemberSorted" resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member where isDelete='N'
+		<choose>
+			<when test="sortBy == 'userId'">
+				order by userId
+			</when>
+			<when test="sortBy == 'userName'">
+				order by userName
+			</when>
+			<when test="sortBy == 'userBirth'">
+				order by userBirth
+			</when>
+		</choose>		
+		limit #{startRowIndex}, #{viewPostCntPerPage}
+	</select>
+	
+	<!-- 검색어가 있을 때 리스트가져오기 -->
+	<select id="getSearchedMemberPaged" resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member
+		<choose>
+			<when test="searchType == 'userId'">
+				where userId like #{searchWord}
+			</when>
+			<when test="searchType == 'userName'">
+				where userName like #{searchWord}
+			</when>
+			<when test="searchType == 'phoneNum'">
+				where phoneNum like #{searchWord}
+			</when>
+		</choose>
+		 and isDelete='N' limit #{startRowIndex}, #{viewPostCntPerPage}
+	</select>
+	
+	<!-- 검색어가 있을 때 정렬 조건 적용 -->
+	<!-- select * from BookList where title like '마음' order by salePrice desc limit desc limit #{startRowIndex}, #{viewPostCntPerPage}  -->
+	<select id="getMemberSearchedSorted" resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member
+		<choose>
+			<when test="searchType == 'userId'">
+				where userId like #{searchWord} and isDelete='N'
+				<choose>
+					<when test="sortBy == 'userId'">
+						order by userId
+					</when>
+					<when test="sortBy == 'userName'">
+						order by userName
+					</when>
+					<when test="sortBy == 'userBirth'">
+						order by userBirth
+					</when>
+				</choose>
+			</when>
+			<when test="searchType == 'userName'">
+				where userName like #{searchWord} and isDelete='N'
+				<choose>
+					<when test="sortBy == 'userId'">
+						order by userId
+					</when>
+					<when test="sortBy == 'userName'">
+						order by userName
+					</when>
+					<when test="sortBy == 'userBirth'">
+						order by userBirth
+					</when>
+				</choose>
+			</when>
+			<when test="searchType == 'phoneNum'">
+				where phoneNum like #{searchWord} and isDelete='N'
+				<choose>
+					<when test="sortBy == 'userId'">
+						order by userId
+					</when>
+					<when test="sortBy == 'userName'">
+						order by userName
+					</when>
+					<when test="sortBy == 'userBirth'">
+						order by userBirth
+					</when>
+				</choose>
+			</when>
+		</choose>
+		 limit #{startRowIndex}, #{viewPostCntPerPage}
+	</select>
+	
+	<select id="getMemberInfo" resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member where userId=#{userId} 
+	</select>
+	
+	<select id="getRecentOrder" resultType="com.tn.order.model.vo.OrderVO">
+		select * from `Order` 
+		where orderWho=#{userId} 
+	</select>
+	
+	<!-- 회원탈퇴한 회원정보 삭제 -->
+	<delete id="removeDeletedMember">
+		delete from Member where userId=#{deletedMember}
+	</delete>
+	
+	<!-- ==============================탈퇴회원처리============================== -->	
+	<!-- isDelete='Y' -->
+	<!-- 페이징된 회원목록을 불러오는 메서드 -->
+	<select id="getUnregiMember" resultType="com.tn.member.model.vo.MemberVO">
+  		select * from Member where isDelete='Y' 
+  		order by userId 
+  		limit #{startRowIndex}, #{viewPostCntPerPage}
+  	</select>
+  	
+  	<!-- 회원관리페이지에서 회원목록을 불러오는 메서드(페이징, 검색) -->
+  	<select id="getUnregiMemberSorted" resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member where isDelete='Y'
+		<choose>
+			<when test="sortBy == 'userId'">
+				order by userId
+			</when>
+			<when test="sortBy == 'userName'">
+				order by userName
+			</when>
+			<when test="sortBy == 'userBirth'">
+				order by userBirth
+			</when>
+		</choose>		
+		limit #{startRowIndex}, #{viewPostCntPerPage}
+	</select>
+	
+	<!-- (검색어가 없을 때)게시글의 총 갯수를 가져오는 메서드 -->
+	<select id="selectUnregiTotalCount" resultType="int">
+		select count(*) from Member	where isDelete='Y'
+	</select>
+	
+	<!-- 검색어가 있을 경우의 데이터 갯수 가져오기 -->
+	<select id="selectTotalCountWithSearchCriteriaForUR" resultType="int">
+		select count(*) from Member
+		<choose>
+			<when test="searchType == 'userId'">
+				where userId like #{searchWord}
+			</when>
+			<when test="searchType == 'userName'">
+				where userName like #{searchWord}
+			</when>
+			<when test="searchType == 'phoneNum'">
+				where phoneNum like #{searchWord}
+			</when>
+		</choose>
+		and isDelete='Y'
+	</select>
+	
+	<!-- 검색어가 있을 때 리스트가져오기 -->
+	<select id="getSearchedUnregiMemberPaged" resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member
+		<choose>
+			<when test="searchType == 'userId'">
+				where userId like #{searchWord}
+			</when>
+			<when test="searchType == 'userName'">
+				where userName like #{searchWord}
+			</when>
+			<when test="searchType == 'phoneNum'">
+				where phoneNum like #{searchWord}
+			</when>
+		</choose>
+		 and isDelete='Y' limit #{startRowIndex}, #{viewPostCntPerPage}
+	</select>
+	
+	<!-- 검색어가 있을 때 정렬 조건 적용 -->
+	<select id="getUnregiMemberSearchedSorted" resultType="com.tn.member.model.vo.MemberVO">
+		select * from Member
+		<choose>
+			<when test="searchType == 'userId'">
+				where userId like #{searchWord} and isDelete='Y'
+				<choose>
+					<when test="sortBy == 'userId'">
+						order by userId
+					</when>
+					<when test="sortBy == 'userName'">
+						order by userName
+					</when>
+					<when test="sortBy == 'userBirth'">
+						order by userBirth
+					</when>
+				</choose>
+			</when>
+			<when test="searchType == 'userName'">
+				where userName like #{searchWord} and isDelete='Y'
+				<choose>
+					<when test="sortBy == 'userId'">
+						order by userId
+					</when>
+					<when test="sortBy == 'userName'">
+						order by userName
+					</when>
+					<when test="sortBy == 'userBirth'">
+						order by userBirth
+					</when>
+				</choose>
+			</when>
+			<when test="searchType == 'phoneNum'">
+				where phoneNum like #{searchWord} and isDelete='Y'		<choose>
+					<when test="sortBy == 'userId'">
+						order by userId
+					</when>
+					<when test="sortBy == 'userName'">
+						order by userName
+					</when>
+					<when test="sortBy == 'userBirth'">
+						order by userBirth
+					</when>
+				</choose>
+			</when>
+		</choose>
+		 limit #{startRowIndex}, #{viewPostCntPerPage}
+	</select>
+	
+	<!-- 탈퇴요청 후 30일이 지난 회원리스트 -->
+	<select id="findExpiredMember" resultType="String">
+		SELECT userId
+	    FROM Unregister
+	    WHERE withdrawDate &lt;= DATE_SUB(NOW(), INTERVAL 30 DAY)
+	</select>
+	
+	<!-- Unregister 테이블에서 내용삭제 -->
+	<delete id="deleteUnregister">
+		delete from Unregister where userId=#{deleteId}
+	</delete>
+	<!-- ==============================탈퇴회원처리============================== -->
+	<select id="selectVisitHistory" resultType="com.tn.admin.model.vo.VisitHistory">
+		<![CDATA[SELECT * FROM mbcac2024.VisitHistory where  datediff(CURDATE() , visitDate) < 10 order by visitDate asc]]>
+	</select>
+	
+
+	
+	
+	<!-- 엄영준 -->
+	<!-- 회원의 연령대를 가져로는 쿼리문 -->
+	<select id="selectMemberAge" resultType="com.tn.admin.model.vo.MemberAgeVO">
+	<![CDATA[SELECT 
+	    	CASE 
+	        WHEN (YEAR(CURDATE()) - YEAR(userBirth)) - (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(userBirth, '%m%d')) BETWEEN 0 AND 9 THEN '10대미만'
+	        WHEN (YEAR(CURDATE()) - YEAR(userBirth)) - (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(userBirth, '%m%d')) BETWEEN 10 AND 19 THEN '10대'
+	        WHEN (YEAR(CURDATE()) - YEAR(userBirth)) - (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(userBirth, '%m%d')) BETWEEN 20 AND 29 THEN '20대'
+	        WHEN (YEAR(CURDATE()) - YEAR(userBirth)) - (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(userBirth, '%m%d')) BETWEEN 30 AND 39 THEN '30대'
+	        WHEN (YEAR(CURDATE()) - YEAR(userBirth)) - (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(userBirth, '%m%d')) BETWEEN 40 AND 49 THEN '40대'
+	        WHEN (YEAR(CURDATE()) - YEAR(userBirth)) - (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(userBirth, '%m%d')) BETWEEN 50 AND 59 THEN '50대'
+	        WHEN (YEAR(CURDATE()) - YEAR(userBirth)) - (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(userBirth, '%m%d')) BETWEEN 60 AND 69 THEN '60대'
+	        ELSE '70세 이상'
+	        
+	    END AS age_group,
+	    COUNT(*) AS user_count
+	FROM Member
+	GROUP BY YEAR(CURDATE()), age_group
+	ORDER BY YEAR(CURDATE()), age_group
+	]]>
+	</select>
+	<!-- 회원의등급별로 가져오는 쿼리문 -->
+	<select id="selectMemberClass" resultType="com.tn.admin.model.vo.MemberClassVO">
+		SELECT 
+		    CASE 
+		        WHEN userClass='FRIENDS' THEN 'FRIENDS'
+		        WHEN userClass='GOLD' THEN 'GOLD'
+		        WHEN userClass='PLATINUM' THEN 'PLATINUM'
+		        WHEN userClass='SILVER' THEN 'SILVER'
+		        ELSE 'Unknowen'
+		    END AS userClass_group,
+		    COUNT(*) AS user_count
+		FROM Member
+		GROUP BY YEAR(CURDATE()), userClass_group
+		ORDER BY YEAR(CURDATE()), userClass_group;
+	</select>
+	
+	
+	
+	
+<!--	 더미 멤버 만들기.. 
+	<insert id="insertDummyMember">
+		insert into Member(userId, userPwd, userName, userBirth, phoneNum, email, userImg)
+		values(#{userId}, #{userPwd}, #{userName}, #{userBirth}, #{phoneNum}, #{email}, #{userImg})
+	</insert>
+-->
+  </mapper>
