@@ -195,7 +195,7 @@ function showHide(){
 						<ul>
 							<li class="active"><a href="/">Home</a></li>
 							
-							<li><a href="/member/mypage">myPages</a>
+							<li><a href="/member/myPage">myPages</a>
 								<ul class="header__menu__dropdown">
 									<li><a href="./shop-details.html">Shop Details</a></li>
 									<li><a href="./shoping-cart.html">Shopping Cart</a></li>

@@ -604,16 +604,18 @@ public class MemberController {
 		
 		String userId = registerDTO.getUserId();
 		ResponseEntity<Void> result = null;
-
+		ImgFileVODTO fileInfo = null;
+		
 		try {
 			if(imgFile != null && !imgFile.isEmpty()) {
-			ImgFileVODTO fileInfo = fileSave(imgFile, userId, request);
+			fileInfo = fileSave(imgFile, userId, request);
+			}
 			
 			if(mService.registerMember(registerDTO, fileInfo)) {
 				result = new ResponseEntity<Void>(HttpStatus.OK);
 			}
 			
-		}
+		
 			
 			System.out.println("결과를 보냅니다 파일 저장 완료");
 			

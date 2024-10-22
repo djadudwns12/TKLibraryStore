@@ -53,7 +53,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			
 			System.out.println(request.getHeader("referer"));
 			// destPath가 없다면 이전페이지로 설정하는 코드
-			if(request.getSession().getAttribute("destPath") == null) {				
+			if(request.getSession().getAttribute("destPath") == null && !request.getHeader("referer").contains("member/register")) {				
 				request.getSession().setAttribute("destPath", request.getHeader("referer"));
 			}
 			
