@@ -188,6 +188,12 @@ public class MemberDAOImpl implements MemberDAO  {
 		return sess.delete(NS + ".removeAddress", addressId);
 	}
 
+	@Override
+	public double getPointRate(String userId) throws Exception {
+		
+		return sess.selectOne(NS + ".getPointRate", userId);
+	}
+
 
 
 

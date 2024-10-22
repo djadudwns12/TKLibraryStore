@@ -72,7 +72,7 @@ public interface MemberService {
 
 	boolean removeAddress(int addressId) throws Exception;
 
-
+	double getPointRate(String userId) throws Exception;
 
 
 
@@ -83,6 +83,8 @@ public interface MemberService {
 	
 	List<PointLogVO> getPointLog(MemberDTO loginMember) throws Exception;
 //-----------------------------------------엄영준------------------------------------------------- 	
+
+	
 
 
 

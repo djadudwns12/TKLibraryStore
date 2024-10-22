@@ -242,9 +242,9 @@ table td, table th {
 							<tr>
 								<td
 									onclick="location.href='/bookList/bookDetail?bookNo=${list.bookNo}';"><img
-									src="${list.thumbNail}" style="width: 80px; height: 100px;"></td>
+									src="${list.thumbNail}" style="width: 80px; height: 100px; cursor:pointer;"></td>
 								<td
-									onclick="location.href='/bookList/bookDetail?bookNo=${list.bookNo}';">${list.title}</td>
+									onclick="location.href='/bookList/bookDetail?bookNo=${list.bookNo}';" style="cursor:pointer;">${list.title}</td>
 								<td>${list.author}</td>
 								<td>${list.publisher}</td>
 								<td>${list.pubDate}</td>

@@ -49,11 +49,9 @@ public class ReviewServiceImpl implements ReviewService {
 	// ---------------------------------------------- 김가윤 ---------------------------------------------- 
 
 	@Override
-	public List<ReviewVO> getBookNoReview(int bookNo) throws Exception {
+	public List<ReviewDTO> getBookNoReview(int bookNo) throws Exception {
 		
-		System.out.println("ReviewServiceImpl 리뷰 가져오기 : " + bookNo + "번 글");
-		
-		List<ReviewVO> list = reviewDao.getReview(bookNo);
+		List<ReviewDTO> list = reviewDao.getReview(bookNo);
 		
 		return list;
 	}
@@ -69,6 +67,45 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public boolean updateReview(ReviewDTO reviewDTO) throws Exception {
+		
+		boolean result = false;
+		
+		if(reviewDao.updateReview(reviewDTO) == 1) {
+			result = true;
+		} else {
+			result = false;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean deleteReview(int reviewNo) throws Exception {
+		
+		boolean result = false;
+		
+		if(reviewDao.deleteReview(reviewNo) == 1) {
+			result = true;
+		} else {
+			result = false;
+		}
+		return result;
+	}
+
+	@Override
+	public int reviewCnt(int bookNo) throws Exception {
+		
+		return reviewDao.reviewCnt(bookNo);
+	}
+
+	@Override
+	public int getAvergaeScore(int bookNo) throws Exception {
+		
+		return reviewDao.getAverage(bookNo);
 	}
 
 	

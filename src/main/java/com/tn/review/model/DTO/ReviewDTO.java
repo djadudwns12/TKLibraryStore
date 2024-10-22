@@ -17,12 +17,12 @@ import lombok.ToString;
 @ToString
 @Builder
 public class ReviewDTO {
-	private int reviewId;
+	private int reviewNo;
 	private Timestamp reviewDate;
 	private String reviewWriter;
 	private String reviewContent;
 	private int reviewScore;
 	private int bookNo;
-	
+	private int avgReviewScore;
 
 }

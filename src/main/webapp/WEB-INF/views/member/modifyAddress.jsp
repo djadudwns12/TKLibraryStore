@@ -252,19 +252,24 @@ input[readonly] {
 
 	    console.log(addressData); // 데이터 확인을 위한 로그
 
-	    // AJAX 요청
-	    $.ajax({
-	        url: '/member/saveModifyAddress',  // Controller로 요청할 URL
-	        type: 'POST',
-	        contentType: 'application/json',  // JSON 타입으로 전송
-	        data: JSON.stringify(addressData),
-	    }).done(function() {
-	        alert('수정 성공');
-	        window.location.href = '/member/address';
-	    }).fail(function(jqXHR) {
-	        console.error('Error:', jqXHR.responseText); // 오류 메시지 로그
-	        alert('수정 실패: ' + jqXHR.status + ' ' + jqXHR.statusText);
-	    });
+	 	// 모든 값이 null이 아닐 때만 AJAX 요청
+	    if (Object.values(addressData).every(value => value !== null && value !== '')) {
+	        // AJAX 요청
+	        $.ajax({
+	            url: '/member/saveModifyAddress',  // Controller로 요청할 URL
+	            type: 'POST',
+	            contentType: 'application/json',  // JSON 타입으로 전송
+	            data: JSON.stringify(addressData),
+	        }).done(function() {
+	            alert('수정 성공');
+	            window.location.href = '/member/address';
+	        }).fail(function(jqXHR) {
+	            console.error('Error:', jqXHR.responseText); // 오류 메시지 로그
+	            alert('수정 실패: ' + jqXHR.status + ' ' + jqXHR.statusText);
+	        });
+	    } else {
+	        alert('모든 칸을 입력해주세요'); // 모든 필드를 채우라는 경고 메시지
+	    }
 	}
 	
 

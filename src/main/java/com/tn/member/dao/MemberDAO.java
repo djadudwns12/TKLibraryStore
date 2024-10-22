@@ -85,6 +85,8 @@ public interface MemberDAO {
 
 	public int removeAddress(int addressId) throws Exception;
 
+	public double getPointRate(String userId) throws Exception;
+
 
 
 
