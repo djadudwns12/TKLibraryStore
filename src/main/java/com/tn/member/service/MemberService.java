@@ -72,7 +72,7 @@ public interface MemberService {
 
 	boolean removeAddress(int addressId) throws Exception;
 
-	double getPointRate(String userId) throws Exception;
+	int getPointRate(String userId) throws Exception;
 
 
 

@@ -546,7 +546,7 @@
 
 
 								<span style="font-weight: 600; font-size: x-large;">${bookInfo.title}</span>
-
+								<div class="author">${bookInfo.author}지음</div>
 								<div class="product__details__rating">
 									<div class="showRating">
 										<c:forEach begin="1" end="${avgReviewScore}">
@@ -559,7 +559,7 @@
 									</div>
 								</div>
 
-								<div class="author">${bookInfo.author}지음</div>
+								
 								<div class="information">
 									<p>
 										<b>가격 </b> <span style="font-size: 20px;"><strong><fmt:formatNumber

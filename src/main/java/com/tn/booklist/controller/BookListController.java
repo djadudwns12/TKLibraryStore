@@ -141,7 +141,7 @@ public class BookListController {
 		List<ReviewDTO> reviewDTO = null;// 김가윤 : 리뷰 리스트 불러오기
 		int reviewCnt = 0;
 		int avgReviewScore = 0;
-		double expectedPointRate = 0;
+		int expectedPointRate = 0;
 
 	         String ipAddr = GetClientIPAddr.getClientIP(request);	         
 	         System.out.println(ipAddr + "가 " + bookNo + "번 책 정보를 검색한다!!");
@@ -160,7 +160,7 @@ public class BookListController {
 			        if(isLoggedIn) {
 			        	expectedPointRate = mService.getPointRate(userId);
 			        } else {
-			        	expectedPointRate = 0.02;
+			        	expectedPointRate = 2;
 			        }
 			        
 					
