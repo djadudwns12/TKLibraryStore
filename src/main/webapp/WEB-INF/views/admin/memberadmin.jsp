@@ -115,7 +115,7 @@
 				<ul class="pagination">
 					<c:if test="${param.pageNo > 1 }">
 						<li class="page-item"><a class="page-link" href="/admin/memberadmin?pageNo=1&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> << </a></li>
-						<li class="page-item"><a class="page-link" href="/admin/memberadmin?pageNo=${pagingInfo.pageNo-1} &pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
+						<li class="page-item"><a class="page-link" href="/admin/memberadmin?pageNo=${pagingInfo.pageNo-1}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
 					</c:if>
 
 					<c:forEach var="i" begin="${pagingInfo.startPageNoCurBlock }"

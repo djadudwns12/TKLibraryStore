@@ -212,7 +212,7 @@ function showHide(){
 						<ul style="margin-right: -26px;">
 							<!-- 마이페이지 이동 -->
 							<li><a
-								href="${pageContext.request.contextPath}/member/mypage"><i
+								href="${pageContext.request.contextPath}/member/myPage"><i
 									class="fa fa-user"></i></a></li>
 
 							<!-- 관리자페이지이동 -->

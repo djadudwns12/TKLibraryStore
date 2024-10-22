@@ -535,7 +535,7 @@
 
 									<c:forEach var="bookInfo" items="${bookDetailInfo}">
 										<img class="bookImagelarge" src="${bookInfo.thumbNail}"
-											style="width: 150px; height: 500px;" />
+											style="width: 200px; height: 500px;" />
 										<input type="hidden" value="${bookInfo.bookNo}" id="bs">
 								</div>
 

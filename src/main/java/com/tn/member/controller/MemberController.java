@@ -366,7 +366,7 @@ public class MemberController {
 			e.printStackTrace();
 		}
 		
-		return "/member/mypage";
+		return "/member/myPage";
 
 	}
 //-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
