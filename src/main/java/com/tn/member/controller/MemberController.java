@@ -2,7 +2,6 @@ package com.tn.member.controller;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -61,9 +60,6 @@ import com.tn.order.dao.OrderDAO;
 import com.tn.order.model.vo.OrderBookVO;
 import com.tn.order.model.vo.OrderVO;
 import com.tn.order.service.OrderService;
-import com.tn.qa.model.vo.QAVO;
-import com.tn.review.model.VO.ReviewVO;
-import com.tn.review.service.ReviewService;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -93,9 +89,6 @@ public class MemberController {
 	
 	@Autowired
 	private ProfileFileProcess fileProcess;
-	
-	@Autowired
-	private ReviewService rService;
 	
 // -------------------------------- 김가윤 --------------------------------
 	
@@ -229,7 +222,7 @@ public class MemberController {
 	 *
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public void login(@RequestParam("userId") String userId, @RequestParam("userPwd") String userPwd, 
+	public void login(@RequestParam("userId") String userId, @RequestParam("userPwd") String userPwd,
 			HttpSession session,Model model) {
 		System.out.println(userId + ": " + userPwd);
 		// 로그인 시키는 메서드
@@ -333,9 +326,6 @@ public class MemberController {
 	public String myPage(MemberDTO loginMember,Model model,HttpSession sess) {
 
 		try {
-			
-			
-			loginMember.setUserId(((MemberVO)sess.getAttribute("loginMember")).getUserId());
 			// 회원정보를 불러오는 부분? 근데 왜 세션에서 불러옴? 뷰단에서 세션을 불러도될것으로 보임
 			model.addAttribute("loginMember", (MemberVO) sess.getAttribute("loginMember"));
 			
@@ -348,9 +338,6 @@ public class MemberController {
 			// 회원의 포인트 적립내역을 가지고 오는 메서드
 			List<PointLogVO> pointList = mService.getPointLog(loginMember);
 			
-			// 회원의 리뷰 목록을 불러오는 메서드 (이아림)
-			List<ReviewVO> review = rService.getMyReview(loginMember);
-			
 			
 			
 			System.out.println(list);
@@ -361,7 +348,6 @@ public class MemberController {
 			model.addAttribute("zzimList", zzimList);
 			model.addAttribute("pointList", pointList);
 			model.addAttribute("status", "editSuccess");
-			model.addAttribute("review", review);	//(이아림)
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -371,30 +357,6 @@ public class MemberController {
 	}
 //-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
 
-	//----------------------------------------- 이아림 (Start) ------------------------------------------
-	
-	@RequestMapping(value = "/myReview", method = RequestMethod.GET)
-	public void my(HttpSession ses, Model model) {
-		
-		// user id불러오기
-		String userId = ((MemberVO)ses.getAttribute("loginMember")).getUserId();
-		
-		// 내가 쓴 리뷰 가져오기 
-		List<ReviewVO> list = new ArrayList<ReviewVO>();
-		try {
-			list = rService.getMyReviewList(userId);
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-		}
-		
-		
-		logger.info(list.toString());
-		model.addAttribute("list", list);
-		
-		
-	}
-	//----------------------------------------- 이아림 (end) ------------------------------------------
 
 	// -----------------------------------------최미설-------------------------------------------------
 
@@ -420,10 +382,11 @@ public class MemberController {
 	public String modifyInfoSave (MemberVO editMember) {
 	    try {
 	        if (mService.saveEditInfo(editMember)) {
-	            return "redirect:/member/mypage";
+	            return "redirect:/member/myPage";
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
+	        return "redirect:/member/myPage";
 	    }
 	    return "redirect:/member/edit";
 	}
