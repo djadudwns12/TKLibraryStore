@@ -443,7 +443,7 @@ public class MemberController {
 	public ResponseEntity<String> sendAuthMail(@RequestParam("tmpEmail") String tmpEmail, HttpSession session) {
 		String authCode = UUID.randomUUID().toString();
 		try {
-//			new SendMailService().sendMail(tmpEmail, authCode); // 이메일 전송 메서드 구현 완료... 
+			new SendMailService().sendMail(tmpEmail, authCode); // 이메일 전송 메서드 구현 완료... 
 			session.setAttribute("emailAuthCode", authCode);
 			System.out.println("인증코드 : " + authCode);
 			return new ResponseEntity<String>("emailAuthSend", HttpStatus.OK);
