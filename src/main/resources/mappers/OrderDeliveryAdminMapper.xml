@@ -26,6 +26,53 @@
 	        <result property="thumbNail" column="thumbNail"/>
 	    </collection>
 	</resultMap>
+	
+	<!-- 전체 주문 수 가져오기 -->
+    <select id="getTotalOrderCount" resultMap="orderResultMap">
+        SELECT o.orderDate, o.orderStatus, o.orderWho, o.orderAddress, o.usePoint, o.totalPay, 
+	           o.orderNo, o.orderName, b.bookNo, b.qty, l.thumbNail 
+	    FROM `Order` o
+	    INNER JOIN 
+	    (
+	        SELECT o2.orderNo
+	        FROM `Order` o2
+	        INNER JOIN Member m ON o2.orderWho = m.userId 
+	        WHERE m.isDelete = 'N'
+	        ORDER BY o2.orderDate DESC 
+	    ) sub ON o.orderNo = sub.orderNo
+	    LEFT JOIN OrderBook b ON sub.orderNo = b.orderNo
+	    LEFT JOIN BookList l ON b.bookNo = l.bookNo
+	    ORDER BY o.orderDate DESC
+    </select>
+    
+    
+        <!-- 검색 조건에 따른 주문 수 가져오기 -->
+	<select id="getTotalOrderCountWithSearch" parameterType="com.tn.admin.model.vo.SearchCriteriaDTO" resultMap="orderResultMap">
+	    SELECT o.orderDate, o.orderStatus, o.orderWho, o.orderAddress, o.usePoint, o.totalPay, 
+	           o.orderNo, o.orderName, b.bookNo, b.qty, l.thumbNail 
+	    FROM `Order` o
+	    INNER JOIN 
+	    (
+	        SELECT o2.orderNo
+	        FROM `Order` o2
+	        INNER JOIN Member m ON o2.orderWho = m.userId 
+	        WHERE m.isDelete = 'N'
+	        ORDER BY o2.orderDate DESC 
+	    ) sub ON o.orderNo = sub.orderNo
+	    LEFT JOIN OrderBook b ON sub.orderNo = b.orderNo
+	    LEFT JOIN BookList l ON b.bookNo = l.bookNo
+	    <where>
+	        <choose>
+	            <when test="searchType == 'orderName'">
+	                o.orderName LIKE '%${searchWord}%'
+	            </when>
+	            <when test="searchType == 'orderWho'">
+	                o.orderWho LIKE '%${searchWord}%'
+	            </when>
+	        </choose>
+	    </where>
+	</select>
+	
 
 
 	
@@ -149,45 +196,8 @@
 	    </foreach>
 	</update>
 
-    <!-- 전체 주문 수 가져오기 -->
-    <select id="getTotalOrderCount" resultType="int">
-        SELECT COUNT(*) 
-	    FROM `Order` o
-	    INNER JOIN 
-	    (
-	        SELECT o2.orderNo
-	        FROM `Order` o2
-	        INNER JOIN Member m ON o2.orderWho = m.userId 
-	        WHERE m.isDelete = 'N'
-	    ) sub ON o.orderNo = sub.orderNo
-	    LEFT JOIN OrderBook b ON sub.orderNo = b.orderNo
-	    LEFT JOIN BookList l ON b.bookNo = l.bookNo
-    </select>
+    
 
-    <!-- 검색 조건에 따른 주문 수 가져오기 -->
-	<select id="getTotalOrderCountWithSearch" parameterType="com.tn.admin.model.vo.SearchCriteriaDTO" resultType="int">
-	         SELECT COUNT(*) 
-	    FROM `Order` o
-	    INNER JOIN 
-	    (
-	        SELECT o2.orderNo
-	        FROM `Order` o2
-	        INNER JOIN Member m ON o2.orderWho = m.userId 
-	        WHERE m.isDelete = 'N'
-	    ) sub ON o.orderNo = sub.orderNo
-	    LEFT JOIN OrderBook b ON sub.orderNo = b.orderNo
-	    LEFT JOIN BookList l ON b.bookNo = l.bookNo
-	    <where>
-	        <choose>
-	            <when test="searchType == 'orderName'">
-	                orderName LIKE '%${searchWord}%'
-	            </when>
-	            <when test="searchType == 'orderWho'">
-	                orderWho LIKE '%${searchWord}%'
-	            </when>
-	        </choose>
-	    </where>
-	</select>
 
 
 

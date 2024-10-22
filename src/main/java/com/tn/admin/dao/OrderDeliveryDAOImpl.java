@@ -103,13 +103,13 @@ public class OrderDeliveryDAOImpl implements OrderDeliveryDAO {
 
 	
 	 @Override
-	    public int getTotalOrderCount() throws Exception {
-	        return ses.selectOne(NS + ".getTotalOrderCount");
+	    public List<OrderDeliveryVO> getTotalOrderCount() throws Exception {
+	        return ses.selectList(NS + ".getTotalOrderCount");
 	    }
 
 	    @Override
-	    public int getTotalOrderCount(SearchCriteriaDTO searchCriteria) throws Exception {
-	        return ses.selectOne(NS + ".getTotalOrderCountWithSearch", searchCriteria);
+	    public List<OrderDeliveryVO> getTotalOrderSearchCount(SearchCriteriaDTO searchCriteria) throws Exception {
+	        return ses.selectList(NS + ".getTotalOrderCountWithSearch", searchCriteria);
 	    }
 
 		@Override

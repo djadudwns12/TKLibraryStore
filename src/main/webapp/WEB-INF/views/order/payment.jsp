@@ -12,6 +12,42 @@
    href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap"
    rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+
+<!-- header, footer -->
+<!-- Css Styles -->
+<link rel="stylesheet" href="/resources/template/css/jquery-ui.min.css"
+	type="text/css">
+<link rel="stylesheet" href="/resources/template/css/bootstrap.min.css"
+	type="text/css">
+<link rel="stylesheet" href="/resources/template/css/elegant-icons.css"
+	type="text/css">
+<link rel="stylesheet" href="/resources/template/css/nice-select.css"
+	type="text/css">
+<link rel="stylesheet" href="/resources/template/css/slicknav.min.css"
+	type="text/css">
+<link rel="stylesheet"
+	href="/resources/template/css/owl.carousel.min.css" type="text/css">
+<link rel="stylesheet"
+	href="/resources/template/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="/resources/template/css/style.css"
+	type="text/css">
+<link rel="stylesheet" href="/resources/template/css/style.css"
+	type="text/css">
+<!-- header, footer -->
+
+<!-- header, footer -->
+<!-- Js Plugins -->
+<script src="${pageContext.request.contextPath}/resources/template/js/jquery-3.3.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/js/jquery.nice-select.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/js/jquery-ui.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/js/jquery.slicknav.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/js/mixitup.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/js/owl.carousel.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/js/main.js"></script>
+<!-- header, footer -->
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
@@ -24,14 +60,15 @@
 }
 
 body {
-	background-color: #f4f4f4;
+
 	margin: 0;
 	padding: 20px;
 }
 
 .paymentContainer {
-	width: 1200px;
+	width: 1180px;
 	margin: 0 auto;
+	padding-left: 25px;
 	display: flex;
 	justify-content: space-between;
 	gap: 20px;
@@ -317,7 +354,193 @@ span.addressModalClose {
 </style>
 </head>
 <body>
-<c:import url="../header.jsp"></c:import>
+
+<!-- header -->
+	<!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+
+	<!-- Humberger Begin -->
+	<div class="humberger__menu__overlay"></div>
+	<div class="humberger__menu__wrapper">
+		<div class="humberger__menu__logo">
+			<a href="#"><img
+				src="${pageContext.request.contextPath}/resources/images/TKlogo.png"
+				alt=""></a>
+		</div>
+		<div class="humberger__menu__cart">
+			<ul>
+				<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+				<!-- <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li> -->
+			</ul>
+			<div class="header__cart__price">
+				item: <span>$150.00</span>
+			</div>
+		</div>
+		<div class="humberger__menu__widget">
+			<div class="header__top__right__language">
+				<img
+					src="${pageContext.request.contextPath}/resources/template/img/language.png"
+					alt="">
+				<div>English</div>
+				<span class="arrow_carrot-down"></span>
+				<ul>
+					<li><a href="#">Spanish</a></li>
+					<li><a href="#">English</a></li>
+				</ul>
+			</div>
+			<div class="header__top__right__auth">
+				<a href="#"><i class="fa fa-user"></i> Login</a>
+			</div>
+		</div>
+		<nav class="humberger__menu__nav mobile-menu" >
+			<ul>
+				<li class="active"><a href="./index.html">Home</a></li>
+				<li><a href="./shop-grid.html">Shop</a></li>
+				<li><a href="#">Pages</a>
+					<ul class="header__menu__dropdown">
+						<li><a href="./shop-details.html">Shop Details</a></li>
+						<li><a href="./shoping-cart.html">Shopping Cart</a></li>
+						<li><a href="./checkout.html">Check Out</a></li>
+						<li><a href="./blog-details.html">Blog Details</a></li>
+					</ul></li>
+				<li><a href="./blog.html">Blog</a></li>
+				<li><a href="./contact.html">Contact</a></li>
+			</ul>
+		</nav>
+		<div id="mobile-menu-wrap"></div>
+		<div class="header__top__right__social">
+			<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
+				class="fa fa-twitter"></i></a> <a href="#"><i class="fa fa-linkedin"></i></a>
+			<a href="#"><i class="fa fa-pinterest-p"></i></a>
+		</div>
+		<div class="humberger__menu__contact">
+			<ul>
+				<li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+				<li>Free Shipping for all Order of $99</li>
+			</ul>
+		</div>
+	</div>
+	<!-- Humberger End -->
+
+	<!-- Header Section Begin -->
+	<header class="header">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3">
+					<div class="header__logo">
+						<a href="/"><img
+							src="/resources/images/TKlogo.png"
+							alt="" style="width: 60px; height: 80px;"></a>
+							<span style="font-weight: 700; font-size: 25px; padding: 5px;">   떡잎 서점</span>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<nav class="header__menu" style="margin-left: 80px;">
+						<ul>
+							<li class="active"><a href="/">Home</a></li>
+							
+							<li><a href="/member/mypage">myPages</a>
+								<ul class="header__menu__dropdown">
+									<li><a href="./shop-details.html">Shop Details</a></li>
+									<li><a href="./shoping-cart.html">Shopping Cart</a></li>
+									<li><a href="./checkout.html">Check Out</a></li>
+									<li><a href="./blog-details.html">Blog Details</a></li>
+								</ul></li>
+							<li><a href="/qa/qaList">Q&A</a></li>
+							<li><a href="/member/register">Sign up</a></li>
+						</ul>
+					</nav>
+				</div>
+				<div class="col-lg-3">
+					<div class="header__cart">
+						<ul style="margin-right: -26px;">
+							<!-- 마이페이지 이동 -->
+							<li><a
+								href="${pageContext.request.contextPath}/member/mypage"><i
+									class="fa fa-user"></i></a></li>
+
+							<!-- 관리자페이지이동 -->
+							<c:if test="${sessionScope.loginMember.userId == 'admin'}">
+								<li><a href="${pageContext.request.contextPath}/admin/home"><i
+										class="fa fa-user-secret"></i></a></li>
+							</c:if>
+
+              <li><a href="/member/mypage"><i class="fa fa-heart"></i> <span id="heartCount"></span></a></li>
+							<li><a href="/cart/cartPage"><i class="fa fa-shopping-bag"></i>
+								<c:if test="${sessionScope.CartCnt > 0}">
+            						<span>${sessionScope.CartCnt}</span>
+        						</c:if>
+							</li>
+							<li><a href="/qa/qaList"><i class="fa fa-question-circle"></i></a></li>
+							<c:if test="${sessionScope.loginMember == null}">
+								<li><a
+									href="${pageContext.request.contextPath}/member/loginPage"><button class="site-btn">로그인</button></a></li>
+							</c:if>
+							<c:if test="${sessionScope.loginMember != null}">
+								<li><a
+									href="${pageContext.request.contextPath}/member/logout"><button class="site-btn">로그아웃</button></a></li>
+							</c:if>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="humberger__open">
+				<i class="fa fa-bars"></i>
+			</div>
+		</div>
+	</header>
+	<!-- Header Section End -->
+
+	<!-- Hero Section Begin -->
+	<section class="hero hero-normal">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3">
+					<div class="hero__categories">
+						<div class="hero__categories__all">
+							<i class="fa fa-bars"></i> <span>메뉴</span>
+						</div>
+						<ul id="categoryList" style="display: none">
+							<c:if test="${loginMember != null}">
+								<li><a href="/member/mypage">마이페이지</a></li>
+							</c:if>
+							<li><a href="#">Vegetables</a></li>
+							<li><a href="#">Fruit & Nut Gifts</a></li>
+							<li><a href="#">Fresh Berries</a></li>
+							<li><a href="#">Vegetables</a></li>
+							<li><a href="#">Fruit & Nut Gifts</a></li>
+							<li><a href="#">Fresh Berries</a></li>
+							<li><a href="#">Vegetables</a></li>
+							<li><a href="#">Fruit & Nut Gifts</a></li>
+							<li><a href="#">Fresh Berries</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-9">
+					<div class="hero__search">
+						<div class="hero__search__form">
+							<form action="#">
+								<div class="hero__search__categories">
+									검색 조건 <span class="arrow_carrot-down"></span>
+								</div>
+								<input type="text" placeholder="검색어를 입력하세요.">
+								<button type="submit" class="site-btn">검색</button>
+							</form>
+						</div>
+						
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Hero Section End -->
+<!-- header -->
+
+
+
 	<div class="paymentContainer">
 		<!-- 왼쪽 섹션 -->
 		<div class="left-section">
@@ -438,7 +661,92 @@ span.addressModalClose {
 			<button class="btn-submit" onclick="requestPayment();">결제하기</button>
 		</div>
 	</div>
-	<c:import url="../footer.jsp"></c:import>
+
+
+<!-- footer -->
+	<!-- Footer Section Begin -->
+	<footer class="footer spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="footer__about">
+						<div class="footer__about__logo">
+							<a href="./index.html"><img src="${pageContext.request.contextPath}/resources/template/img/logo.png" alt=""></a>
+						</div>
+						<ul>
+							<li>Address: 60-49 Road 11378 New York</li>
+							<li>Phone: +65 11.188.888</li>
+							<li>Email: hello@colorlib.com</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1"> 
+					<div class="footer__widget">
+						<h6>Useful Links</h6>
+						<ul>
+							<li><a href="#">About Us</a></li>
+							<li><a href="#">About Our Shop</a></li>
+							<li><a href="#">Secure Shopping</a></li>
+							<li><a href="#">Delivery infomation</a></li>
+							<li><a href="#">Privacy Policy</a></li>
+							<li><a href="#">Our Sitemap</a></li>
+						</ul>
+						<ul>
+							<li><a href="#">Who We Are</a></li>
+							<li><a href="#">Our Services</a></li>
+							<li><a href="#">Projects</a></li>
+							<li><a href="#">Contact</a></li>
+							<li><a href="#">Innovation</a></li>
+							<li><a href="#">Testimonials</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-12">
+					<div class="footer__widget">
+						<h6>Join Our Newsletter Now</h6>
+						<p>Get E-mail updates about our latest shop and special
+							offers.</p>
+						<form action="#">
+							<input type="text" placeholder="Enter your mail">
+							<button type="submit" class="site-btn">Subscribe</button>
+						</form>
+						<div class="footer__widget__social">
+							<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
+								class="fa fa-instagram"></i></a> <a href="#"><i
+								class="fa fa-twitter"></i></a> <a href="#"><i
+								class="fa fa-pinterest"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="footer__copyright">
+						<div class="footer__copyright__text">
+							<p>
+								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+								Copyright &copy;
+								<script>
+									document.write(new Date().getFullYear());
+								</script>
+								All rights reserved | This template is made with <i
+									class="fa fa-heart" aria-hidden="true"></i> by <a
+									href="https://colorlib.com" target="_blank">Colorlib</a>
+								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+							</p>
+						</div>
+						<div class="footer__copyright__payment">
+							<img src="${pageContext.request.contextPath}/resources/template/img/payment-item.png" alt="">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- Footer Section End -->
+<!-- footer -->
+
+
 	
 							<!-- The Modal -->
 						<div id="myModal" class="addressModal">
@@ -479,9 +787,49 @@ let finalInputPoint = null; // 결제 후 insert할 최종 사용 포인트
 
 let totalAmount = null; // 포인트 차감후 실제 결제되는 결제 금액
 
+<!-- header, footer -->
+function showHide(){
+	$('.myInfo').toggle('myInfoHide');
+	$('.showInfo').toggle();
+	$('.hideInfo').toggle();
+}
+<!-- header, footer -->
 
 
 $(function(){
+	
+	<!-- header, footer -->
+	let userId = '${sessionScope.loginMember.userId}' 
+		
+		if(userId){
+			var heartCount = 0;
+			$.ajax({
+		        url: '/admin/zzimCount',
+		        type: 'POST',
+		        data: { userId: userId },
+		        success: function(data) {
+		        	 console.log(data);
+		        	heartCount = data;
+		        	// 클릭된 div 내의 img 태그의 src 속성 변경
+			        $('#heartCount').text(heartCount);
+		        	
+		        },
+		        error: function(error) {
+		            console.log("heartCount 불러오지못함");
+		        }
+		    });
+		} else {
+			$('#heartCount').text(0);
+		}
+	
+	$('#low_class').next().hide();
+	$('.showInfo').show();
+	$('.hideInfo').hide();
+	<!-- header, footer -->
+	
+	
+	
+	
 	
 	totalPay = Number($('#totalPay').text().replace(/[^0-9]/g, ''));
 	totalAmount =Number($('#totalPay').text().replace(/[^0-9]/g, ''));
@@ -513,28 +861,49 @@ $(function(){
 	
 			// 보유 포인트 초과
 			if (inputValue > myPoints) {
-				alert(`보유 포인트(\${myPoints}원)를 초과할 수 없습니다!`);
-				$(this).val(myPoints); 
-				pointPayment(myPoints);
-				deduct(myPoints);
-				return;
+				if(myPoints > totalPay){
+					alert(`보유 포인트(\${myPoints}원)를 초과할 수 없으며 결제 금액을 넘을 수 없습니다!`);
+					$(this).val(totalPay); 
+					pointPayment(totalPay);
+					deduct(totalPay);
+				}else{
+					alert(`보유 포인트(\${myPoints}원)를 초과할 수 없습니다!`);
+					$(this).val(myPoints); 
+					pointPayment(myPoints);
+					deduct(myPoints);
+				}
 			} else if(totalPay < inputValue){
+				if(totalPay < myPoints){
 				alert(`결제 금액(\${totalPay}원)를 초과할 수 없습니다!`);
-				$(this).val(myPoints); 
-				pointPayment(myPoints);
-				deduct(myPoints);
+				$(this).val(totalPay); 
+				pointPayment(totalPay);
+				deduct(totalPay);
+				}
 				
+			}else{
+				$(this).val(inputValue); 
+				pointPayment(inputValue);
+				deduct(inputValue);
 			}
-			pointPayment(inputValue);
-			deduct(inputValue);
+
+			
+			
 		}
 	});
 
 	$('#useAllPoints').click(function() {
 		let myPoints = Number($('#userPoint').text().replace(/[^0-9]/g, ''));
-		$('#userPointInput').val(myPoints);
-		pointPayment(myPoints);
-		deduct(myPoints);
+		if (myPoints < totalPay){
+			$('#userPointInput').val(myPoints);
+			pointPayment(myPoints);
+			deduct(myPoints);
+		}else{
+			$('#userPointInput').val(totalPay);
+			pointPayment(totalPay);
+			deduct(totalPay);
+			
+		}
+		
 		
 	});
 
