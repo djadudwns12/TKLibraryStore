@@ -85,9 +85,25 @@ public class BooklistServiceImpl implements BooklistService {
 	public List<BookDetailInfo> read(int bookNo, String ipAddr) throws Exception {
 		
 		List<BookDetailInfo> bookInfo = bDao.selectAllByBookNo(bookNo);
-				
+		
 		return bookInfo;
 	}
+	
+
+	@Override
+	public double getPointRate(String userId) throws Exception {
+
+		double pointRate;
+		
+//		if (userId != null) {
+			pointRate = bDao.getPointRateByUserId(userId);
+//		} else {
+//			pointRate = 0.02;
+//		}
+//		
+		return pointRate;
+	}
+	
 
 //	====================================================엄영준=============================================================
 	@Override
@@ -112,7 +128,8 @@ public class BooklistServiceImpl implements BooklistService {
 		
 		return bDao.selectRecentlyBooks(list);
 	}
-	
+
+
 	
 	
 //	====================================================엄영준 END=============================================================

@@ -38,6 +38,7 @@
 		let bookNo = '${param.bookNo}';
 		console.log('지금 책 번호: ' + bookNo);
 		
+		
 		let zzimed = false;
 		//  ------------------------찜기능
 		$('.zzimHeart').on('click', function() {
@@ -86,10 +87,6 @@
 				}
 			});
 		}
-		
-		// 별점 기능을 위한 배열 선언
-		/* const ratingStars = [...document.getElementsByClassName("rating__star")];
-		executeRating(ratingStars); */
 		
 		
 		$('.nav-tabs .nav-item a[href="#tabs-2"]').tab('show');
@@ -152,7 +149,7 @@
 		});
 	}
 
-	// (-) (+) 버튼을 누르면 표시되는 수량 변경
+	// (-) (+) 버튼을 누르면, 표시되는 수량 변경
 	function count(action) {
 		var maxQty = $("#inven").val();	// bqty의 최대값(재고량)
 		var qtyInput = document.getElementById("bqty");	// 수량 입력 필드
@@ -208,7 +205,6 @@
 			 $.ajax({
 		        url: '/bookList/insertCart',	// 데이터 보내는 곳 URL
 		        type: 'POST',
-		        //contentType: 'application/json',
 		        data: {
 		            userId: userId,
 		            qty: totalQty,  // 최종 선택한 수량
@@ -235,6 +231,7 @@
 			
 		}
 	} 
+	
 	 
 	function executeRating(starGroups) {
 		  const starClassActive = "rating__star fas fa-star";
@@ -408,7 +405,7 @@
 								<div class="product__details__pic__item">
 
 									<c:forEach var="bookInfo" items="${bookDetailInfo}">
-										<img class="bookImagelarge" src="${bookInfo.thumbNail}" alt="">
+										<img class="bookImagelarge" src="${bookInfo.thumbNail}" id="thumbNail" value="${bookInfo.thumbNail}">
 										<input type="hidden" value="${bookInfo.bookNo}" id="bs">
 										
 								</div>
@@ -417,7 +414,7 @@
 						</div>
 						<div class="col-lg-6 col-md-6">
 							<div class="bookBriefInfo">
-								<h3>${bookInfo.title}</h3>
+								<h3 id="title" value="${bookInfo.title}">${bookInfo.title}</h3>
 								<div class="product__details__rating">
 									<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
 										class="fa fa-star"></i> <i class="fa fa-star"></i> <i
@@ -429,7 +426,7 @@
 
 
 									<p>
-										<b>정가</b> <span><fmt:formatNumber
+										<b>정가</b> <span id="price"><fmt:formatNumber
 												value="${bookInfo.price}" type="currency" /></span>
 									</p>
 									<p>
@@ -440,7 +437,8 @@
 										<b>배송예정일</b> <span>주문일로부터 3일 이내</span>
 									</p>
 									<p>
-										<b>적립</b> <span>책 정가의 10%</span>
+										<b>적립예정포인트</b> <span id="cRate"> 책 판매가의 2%</span>
+										<%-- <input type="hidden" id="pointRate" value="${pointRate}"> --%>
 									</p>
 
 								</div>
@@ -468,7 +466,7 @@
 								<div class="btns"
 									style="display: flex; align-items: center; gap: 5px;">
 									<button type="button" class="primary-btn"
-										onclick="location.href='/order'"
+										onclick="directOrder();"
 										style="background-color: #DA8359;">바로주문</button>
 									<button type="button" class="primary-btn"
 										onclick="addToCart();">장바구니 담기</button>

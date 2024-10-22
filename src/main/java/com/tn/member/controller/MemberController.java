@@ -2,6 +2,7 @@ package com.tn.member.controller;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +59,9 @@ import com.tn.member.service.MemberService;
 import com.tn.member.service.SendMailService;
 import com.tn.order.model.vo.OrderVO;
 import com.tn.order.service.OrderService;
+import com.tn.qa.model.vo.QAVO;
+import com.tn.review.model.VO.ReviewVO;
+import com.tn.review.service.ReviewService;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -87,6 +91,9 @@ public class MemberController {
 	
 	@Autowired
 	private ProfileFileProcess fileProcess;
+	
+	@Autowired
+	private ReviewService rService;
 	
 // -------------------------------- 김가윤 --------------------------------
 	
@@ -333,6 +340,9 @@ public class MemberController {
 			// 회원의 포인트 적립내역을 가지고 오는 메서드
 			List<PointLogVO> pointList = mService.getPointLog(loginMember);
 			
+			// 회원의 리뷰 목록을 불러오는 메서드 (이아림)
+			List<ReviewVO> review = rService.getMyReview(loginMember);
+			
 			
 			
 			System.out.println(list);
@@ -343,6 +353,7 @@ public class MemberController {
 			model.addAttribute("zzimList", zzimList);
 			model.addAttribute("pointList", pointList);
 			model.addAttribute("status", "editSuccess");
+			model.addAttribute("review", review);	//(이아림)
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -352,6 +363,30 @@ public class MemberController {
 	}
 //-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
 
+	//----------------------------------------- 이아림 (Start) ------------------------------------------
+	
+	@RequestMapping(value = "/myReview", method = RequestMethod.GET)
+	public void my(HttpSession ses, Model model) {
+		
+		// user id불러오기
+		String userId = ((MemberVO)ses.getAttribute("loginMember")).getUserId();
+		
+		// 내가 쓴 리뷰 가져오기 
+		List<ReviewVO> list = new ArrayList<ReviewVO>();
+		try {
+			list = rService.getMyReviewList(userId);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		
+		logger.info(list.toString());
+		model.addAttribute("list", list);
+		
+		
+	}
+	//----------------------------------------- 이아림 (end) ------------------------------------------
 
 	// -----------------------------------------최미설-------------------------------------------------
 

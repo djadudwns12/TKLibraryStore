@@ -2,6 +2,7 @@ package com.tn.review.service;
 
 import java.util.List;
 
+import com.tn.member.model.dto.MemberDTO;
 import com.tn.review.model.DTO.ReviewDTO;
 import com.tn.review.model.VO.ReviewVO;
 
@@ -25,6 +26,18 @@ public interface ReviewService {
 	List<ReviewVO> getBookNoReview(int bookNo) throws Exception;
 
 	boolean insertReview(ReviewDTO reviewDTO) throws Exception;
+
+
+	
+	// ---------------------------------------------- 이아림(start) ----------------------------------------------
+	
+	// userId로 내가 쓴 리뷰를 가져오는 메서드
+	List<ReviewVO> getMyReview(MemberDTO loginMember) throws Exception;
+
+	// userId로 내가 쓴 리뷰를 가져오는 메서드 
+	List<ReviewVO> getMyReviewList(String userId) throws Exception;
+	
+	// ---------------------------------------------- 이아림(end) ----------------------------------------------
 
 	
 

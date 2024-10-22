@@ -40,6 +40,14 @@ public class BooklistDAOImpl implements BooklistDAO {
 		
 		return ses.selectList(NS + ".selectBookDetailInfoByBookNo", bookNo);
 	}
+	
+	@Override
+	public double getPointRateByUserId(String userId) throws Exception {
+		
+		return ses.selectOne(NS + ".getPointRateByUserId", userId);
+	}
+	
+	
 //	====================================================엄영준=============================================================
 
 	@Override
@@ -64,10 +72,6 @@ public class BooklistDAOImpl implements BooklistDAO {
 		// TODO Auto-generated method stub
 		return ses.selectList(NS+".selectRecentlyBooks",list);
 	}
-	
-	
-	
-	
 
 //	====================================================엄영준 END=============================================================
 }
