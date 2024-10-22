@@ -124,7 +124,7 @@
                      <div class="card-body">
                         <h4 class="card-title"><${recentReview.title}></h4>
                         <div class="card-text">${recentReview.reviewContent}</div>
-                        <a href="#" class="btn btn-primary" style="border-color: #7fad38; background-color: #7fad38;">자세히..</a>
+                        <a href="/bookList/bookDetail?bookNo=${recentReview.bookNo}" class="btn btn-primary" style="border-color: #7fad38; background-color: #7fad38;">자세히..</a>
                      </div>
                   </div>
                </c:forEach>
@@ -132,8 +132,8 @@
             
 
              <div style="margin-left: 1400px; margin-top: 50px;">
-               <button class="btn btn-secondary btn" style="width: 70px;" onclick="goBack()">뒤로가기
-               </button>
+               <button class="btn btn-secondary btn" style="width: 100px; margin:20px;" onclick="goBack()">뒤로가기</button>
+               
             </div> 
 
          </div>
