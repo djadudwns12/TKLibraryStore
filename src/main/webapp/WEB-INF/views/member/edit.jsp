@@ -557,7 +557,7 @@ function fileUpload(uploadedFiles) {
 		success : function(data) {		
             console.log(data);
         	if(data.msg == 'success'){
-        		alert ('파일을 업로드 완료');
+        		//alert ('파일을 업로드 완료');
         		result = true;
         		
        		 }

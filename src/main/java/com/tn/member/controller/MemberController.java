@@ -398,8 +398,19 @@ public class MemberController {
 		ResponseEntity<MyResponseWithoutData> result = null;
 
 		try {
-			ImgFileVODTO fileInfo = fileSave(file, userId, request);
-			if (mService.saveEditImg(fileInfo, userId)) {
+			// MultipartFile file이 null(수정시 새로올린 파일이 없음) -> 파일 저장 하지 읺거. 나머지 정보만 update
+			// MultipartFile file이 null이 아니면 (수정시 새로올린 파일이 있음) -> 파일 저장 하거. 나머지 정보 update
+			
+			
+			if (file !=null) {
+				ImgFileVODTO fileInfo = fileSave(file, userId, request);
+				mService.saveEditImg(fileInfo, userId);
+				MyResponseWithoutData mrw = MyResponseWithoutData.builder()
+						.code(200)
+						.msg("success")
+						.build();
+				result = new ResponseEntity<MyResponseWithoutData>(mrw, HttpStatus.OK);
+			} else if (file == null) {
 				MyResponseWithoutData mrw = MyResponseWithoutData.builder()
 						.code(200)
 						.msg("success")
