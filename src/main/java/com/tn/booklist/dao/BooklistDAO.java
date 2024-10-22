@@ -14,7 +14,7 @@ public interface BooklistDAO {
 	// 전체 책의 수를 얻어오는 메서드(검색어 없을 때)
 	int getTotalPostCnt() throws Exception;
 
-	// 책의 상세정보를 얻어오는 메서
+	// 책의 상세정보를 얻어오는 메서드
 	List<BookDetailInfo> selectAllByBookNo(int bookNo) throws Exception;
 
 	//	====================================================엄영준=============================================================
@@ -25,6 +25,10 @@ public interface BooklistDAO {
 	
 	List<BooklistVO> selectRecentlyBooks(List<Integer> list) throws Exception;
 //	====================================================엄영준 END=============================================================
+
+	double getPointRateByUserId(String userId) throws Exception;
+	
+	
 
 	
 

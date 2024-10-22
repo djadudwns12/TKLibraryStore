@@ -118,12 +118,18 @@ public class OrderDeliveryServiceImpl implements OrderDeliveryService {
 	    if (sc.getSearchType() == null || sc.getSearchWord() == null ||
 	        sc.getSearchType().isEmpty() || sc.getSearchWord().isEmpty()) {
 	        // 전체 데이터 수 세팅
-	    	int abc = odDao.getTotalOrderCount();
-	    			System.out.println("총 페이지 수"+abc);
-	        pi.setTotalPostCnt(odDao.getTotalOrderCount());
+	    	List<OrderDeliveryVO> orderCount = odDao.getTotalOrderCount();
+	    	int orderWithoutSearchCount = orderCount.size();
+	    			System.out.println("총 페이지 수"+orderWithoutSearchCount);
+	        pi.setTotalPostCnt(orderWithoutSearchCount);
 	    } else {
 	        // 검색어가 있을 때는 검색한 데이터 수를 얻어오는 것부터 페이징 시작
-	        pi.setTotalPostCnt(odDao.getTotalOrderCount(sc));
+	    	System.out.println(sc.getSearchType() + "   " + sc.getSearchWord());
+	    	List<OrderDeliveryVO> orderWithSearchCount = odDao.getTotalOrderSearchCount(sc);
+	    	
+	    	int orderSearchCount = orderWithSearchCount.size();
+	    	System.out.println("총 페이지 수"+orderSearchCount);
+	        pi.setTotalPostCnt(orderSearchCount);
 	    }
 
 	    // 페이징 정보 설정

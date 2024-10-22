@@ -169,7 +169,7 @@ function mypageNav() {
         <li><a href="#"><h5><b>알림</b></h5></a></li>
         <li><a href="#"><h5><b>나의 회원등급</b></h5></a></li>
         <li><a href="#"><h5><b>나의 포인트 적립기록</b></h5></a></li>
-        <li><a href="#"><h5><b>나의 리뷰</b></h5></a></li>
+        <li><a href="/member/myReview"><h5><b>나의 리뷰</b></h5></a></li>
         <li><a href="/qa/qaList"><h5><b>1:1문의</b></h5></a></li>`;
     $('#categoryList').html(inputHTML);
 }
@@ -313,6 +313,36 @@ function recentViews() {
 					</ul>
 				</div>
 			</div>
+			
+			<div class="pointlog col">
+				<h6>나의 리뷰</h6>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>날짜</th>
+							<th>책</th>
+							<th>리뷰 내용</th>
+							<th>별점</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="review" items="${review}">
+							<tr>
+								<td>${review.reviewDate}</td>
+								<td>${review.bookNo}</td>
+								<td>${review.reviewContent}</td>
+								<td>${review.reviewScore}</td>
+							</tr>
+						</c:forEach>
+						<c:if test="${review.size() == 0}">
+							<tr>
+								<td colspan="4">내가 쓴 리뷰가 없습니다</td>
+							</tr>
+						</c:if>
+					</tbody>
+				</table>
+			</div>
+			
 		</div>
 	</div>
 	<jsp:include page="../footer.jsp"></jsp:include>
