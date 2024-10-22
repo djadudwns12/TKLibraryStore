@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tn.order.dao.OrderDAO;
 import com.tn.order.model.dto.PaymentInfoDTO;
 import com.tn.order.model.vo.AddressVO;
+import com.tn.order.model.vo.OrderBookVO;
 import com.tn.order.model.vo.OrderDetailVO;
 import com.tn.order.model.vo.OrderInfo;
 import com.tn.order.model.vo.OrderVO;
@@ -131,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
 
 // -----------------------------------------엄영준-------------------------------------------------
   @Override
-	public List<BooklistVO> getRecentOrderList(MemberDTO loginMember)throws Exception {
+	public List<OrderBookVO> getRecentOrderList(MemberDTO loginMember)throws Exception {
 		
 		return oDao.selectRecentOrderList(loginMember);
 	}

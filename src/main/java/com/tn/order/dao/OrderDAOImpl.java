@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.tn.order.model.dto.PaymentInfoDTO;
 import com.tn.order.model.vo.AddressVO;
 import com.tn.order.model.vo.OrderBookListVO;
+import com.tn.order.model.vo.OrderBookVO;
 import com.tn.order.model.vo.OrderDetailVO;
 import com.tn.order.model.vo.PaymentInfoVO;
 import com.tn.booklist.model.vo.BooklistVO;
@@ -136,7 +137,7 @@ public class OrderDAOImpl implements OrderDAO {
 
 //-----------------------------------------엄영준-------------------------------------------------
 	@Override
-	public List<BooklistVO> selectRecentOrderList(MemberDTO loginMember) throws Exception {
+	public List<OrderBookVO> selectRecentOrderList(MemberDTO loginMember) throws Exception {
 		
 		return ses.selectList(NS+".selectRecentOrderList", loginMember);
 	}

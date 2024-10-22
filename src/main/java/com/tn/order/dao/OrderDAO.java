@@ -8,6 +8,7 @@ import com.tn.order.model.vo.OrderVO;
 import com.tn.order.model.dto.PaymentInfoDTO;
 import com.tn.order.model.vo.AddressVO;
 import com.tn.order.model.vo.OrderBookListVO;
+import com.tn.order.model.vo.OrderBookVO;
 import com.tn.order.model.vo.OrderDetailVO;
 import com.tn.order.model.vo.PaymentInfoVO;
 
@@ -48,7 +49,7 @@ public interface OrderDAO {
 // -----------------------------------------박근영-------------------------------------------------	
 
 // -----------------------------------------엄영준-------------------------------------------------	
-  List<BooklistVO> selectRecentOrderList(MemberDTO loginMember)throws Exception;
+  List<OrderBookVO> selectRecentOrderList(MemberDTO loginMember)throws Exception;
   
   List<OrderVO> selectMyPageOrderList(MemberDTO loginMember)throws Exception;
   List<OrderDetailVO> selectDetailOrder(String orderNo)throws Exception;

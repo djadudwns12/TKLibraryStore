@@ -29,6 +29,11 @@
 
 <!-- Custom Styles -->
 <style>
+* {
+   font-family: "Gowun Batang", serif;
+   font-weight: 600;
+   font-style: normal;
+}
 /* 전역 스타일 */
 body {
 	font-family: 'Cairo', sans-serif;
@@ -172,23 +177,7 @@ function mypageNav() {
 function recentViews() {
 	let userId = '${sessionScope.loginMember.userId}';
     let localBook = localStorage.getItem(userId+"_localbook");
-}
-	function mypageNav(){
-		let inputHTML = `<li onclick="showHide()"><h5><b>내정보보기<span class="showInfo">▼</span><span class="hideInfo">◀</span></b></h5></li>
-			<li class="myInfo"><a href="/member/edit">ㅤ> 수정</a></li>
-			<li class="myInfo"><a href="/member/address">ㅤ> 주소록 관리</a></li>
-			<li><a href="#"><h5><b>찜</b></h5></a></li>
-			<li><a href="/cart/cartPage"><h5><b>장바구니</b></h5></a></li>
-			 <li><a href="/member/OrderStatus"><h5><b>주문현황</b></h5></a></li>
-			<li><a href="#"><h5><b>알림</b></h5></a></li>
-			<li><a href="#"><h5><b>나의 회원등급</b></h5></a></li>
-			<li><a href="#"><h5><b>나의 포인트 적립기록</b></h5></a></li>
-			<li><a href="/member/myReview"><h5><b>나의 리뷰</b></h5></a></li>
-			<li><a href="/qa/qaList"><h5><b>1:1문의</b></h5></a></li>`;
-		$('#categoryList').html(inputHTML);
-	}
-	function viewRecentlyBook() {
-		let booklist = localStorage.getItem('localbook');
+	let booklist = localStorage.getItem('${sessionScope.loginMember.userId}'+'_localbook');
     let obj = JSON.parse(localBook);
 
     console.log(obj);
@@ -287,7 +276,8 @@ function recentViews() {
 					<thead>
 						<tr>
 							<th>날짜</th>
-							<th>주문 내용</th>
+							<th>주문 한책</th>
+							<th>수량</th>
 							<th>가격</th>
 						</tr>
 					</thead>
@@ -295,9 +285,10 @@ function recentViews() {
 						<!-- 주문 리스트 가져오기 -->
 						<c:forEach var="order" items="${orderList}">
 							<tr>
-								<td>${order.pubDate}</td>
-								<td>${order.title}</td>
-								<td>${order.salePrice}</td>
+								<td>${order.booklistVO.pubDate}</td>
+								<td>${order.booklistVO.title}</td>
+								<td>${order.qty}</td>
+								<td>${order.booklistVO.salePrice * order.qty}</td>
 							</tr>
 						</c:forEach>
 						<%-- <c:if test="${orderList.size() == 0}">
