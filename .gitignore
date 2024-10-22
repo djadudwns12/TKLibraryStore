@@ -166,4 +166,8 @@ userImg/
 config.properties
 # dbconfig.properties 제외
 dbconfig.properties
+
+# mailpop.properties
+mailpop.properties
+
 # End of https://www.gitignore.io/api/git,java,maven,windows,eclipse
