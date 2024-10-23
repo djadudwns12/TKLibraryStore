@@ -153,6 +153,8 @@ table td, table th {
    		display: flex;
    		flex-direction: row;
    }
+   
+
 </style>
 
 
@@ -165,7 +167,7 @@ table td, table th {
 	<!--<img src="https://contents.kyobobook.co.kr/pmtn/2024/event/a40ff528883748dd9d6f73aa4a6f8025.jpg" style="margin-left: 300px; ">-->
 	<!-- <img src="https://contents.kyobobook.co.kr/pmtn/2024/event/9e794bad98b84309806edd2fa150e2b6.png" style="margin-left: 300px; "> -->
 
-	<div class="swiper">
+	<div class="swiper"  style="width:1500px;">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide"><img src="/resources/images/mbanner01.png" style="margin-left: 300px; "></div>
 			<div class="swiper-slide"><img src="/resources/images/mbanner02.png" style="margin-left: 300px; "></div>
@@ -236,21 +238,22 @@ table td, table th {
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="list" items="${listAll}">
+						<c:forEach var="product" items="${productList}">
 
 							<tr>
 								<td
-									onclick="location.href='/bookList/bookDetail?bookNo=${list.bookNo}';"><img
-									src="${list.thumbNail}" style="width: 80px; height: 100px; cursor:pointer;"></td>
+
+									onclick="location.href='/bookList/bookDetail?bookNo=${product.bookNo}';"><img
+									src="${product.thumbNail}" style="width: 80px; height: 100px;"></td>
 								<td
-									onclick="location.href='/bookList/bookDetail?bookNo=${list.bookNo}';" style="cursor:pointer;">${list.title}</td>
-								<td>${list.author}</td>
-								<td>${list.publisher}</td>
-								<td>${list.pubDate}</td>
+									onclick="location.href='/bookList/bookDetail?bookNo=${product.bookNo}';">${product.title}</td>
+								<td>${product.author}</td>
+								<td>${product.publisher}</td>
+								<td>${product.pubDate}</td>
 								<td><span><fmt:formatNumber
-											value="${list.salePrice}" type="currency" /></span></td>
-								<td>${list.zzim}</td>
-								<td>${list.reviewCnt}</td>
+											value="${product.salePrice}" type="currency" /></span></td>
+								<td>${product.zzim}</td>
+								<td>${product.reviewCnt}</td>
 							</tr>
 
 						</c:forEach>
