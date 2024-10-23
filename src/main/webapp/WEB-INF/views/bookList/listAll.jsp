@@ -239,21 +239,21 @@ table td, table th {
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="list" items="${listAll}">
+						<c:forEach var="product" items="${productList}">
 
 							<tr>
 								<td
-									onclick="location.href='/bookList/bookDetail?bookNo=${list.bookNo}';"><img
-									src="${list.thumbNail}" style="width: 80px; height: 100px;"></td>
+									onclick="location.href='/bookList/bookDetail?bookNo=${product.bookNo}';"><img
+									src="${product.thumbNail}" style="width: 80px; height: 100px;"></td>
 								<td
-									onclick="location.href='/bookList/bookDetail?bookNo=${list.bookNo}';">${list.title}</td>
-								<td>${list.author}</td>
-								<td>${list.publisher}</td>
-								<td>${list.pubDate}</td>
+									onclick="location.href='/bookList/bookDetail?bookNo=${product.bookNo}';">${product.title}</td>
+								<td>${product.author}</td>
+								<td>${product.publisher}</td>
+								<td>${product.pubDate}</td>
 								<td><span><fmt:formatNumber
-											value="${list.salePrice}" type="currency" /></span></td>
-								<td>${list.zzim}</td>
-								<td>${list.reviewCnt}</td>
+											value="${product.salePrice}" type="currency" /></span></td>
+								<td>${product.zzim}</td>
+								<td>${product.reviewCnt}</td>
 							</tr>
 
 						</c:forEach>
