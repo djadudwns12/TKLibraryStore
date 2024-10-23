@@ -167,10 +167,9 @@ table td, table th {
 
 	<div class="swiper">
 		<div class="swiper-wrapper">
-			<div class="swiper-slide"><img src="https://contents.kyobobook.co.kr/advrcntr/IMAC/creatives/2024/10/02/75288/kyobo_new_book_resize.png" style="margin-left: 300px; "></div>
-			<div class="swiper-slide"><img src="https://contents.kyobobook.co.kr/display/i_1624_450%204_c0a8a1264c1a44aba4975622222949d7.jpg" style="margin-left: 300px; "></div>
-			<div class="swiper-slide"><img src="https://contents.kyobobook.co.kr/pmtn/2024/event/a40ff528883748dd9d6f73aa4a6f8025.jpg" style="margin-left: 300px; "></div>
-			<div class="swiper-slide"><img src="https://contents.kyobobook.co.kr/pmtn/2024/event/9e794bad98b84309806edd2fa150e2b6.png" style="margin-left: 300px; "></div>
+			<div class="swiper-slide"><img src="/resources/images/mbanner01.png" style="margin-left: 300px; "></div>
+			<div class="swiper-slide"><img src="/resources/images/mbanner02.png" style="margin-left: 300px; "></div>
+			<div class="swiper-slide"><img src="/resources/images/mbanner03.png" style="margin-left: 300px; "></div>
 			
 		</div>
 		<!-- Add Pagination -->
