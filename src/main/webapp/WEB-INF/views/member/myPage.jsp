@@ -319,24 +319,22 @@ function recentViews() {
 				<table class="table">
 					<thead>
 						<tr>
-							<th>날짜</th>
 							<th>책</th>
 							<th>리뷰 내용</th>
-							<th>별점</th>
+							<th>날짜</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="review" items="${review}">
 							<tr>
-								<td>${review.reviewDate}</td>
-								<td>${review.bookNo}</td>
-								<td>${review.reviewContent}</td>
-								<td>${review.reviewScore}</td>
+								<td><img src="${review.thumbNail}" style="width:100px; cursor:pointer;" onclick="location.href='/bookList/bookDetail?bookNo=${review.bookNo}'"></td>
+								<td style="vertical-align: middle !important">${review.reviewContent}</td>
+								<td style="vertical-align: middle !important">${review.reviewDate}</td>
 							</tr>
 						</c:forEach>
 						<c:if test="${review.size() == 0}">
 							<tr>
-								<td colspan="4">내가 쓴 리뷰가 없습니다</td>
+								<td colspan="3">내가 쓴 리뷰가 없습니다</td>
 							</tr>
 						</c:if>
 					</tbody>
