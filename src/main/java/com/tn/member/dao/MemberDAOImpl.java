@@ -189,7 +189,7 @@ public class MemberDAOImpl implements MemberDAO  {
 	}
 
 	@Override
-	public double getPointRate(String userId) throws Exception {
+	public int getPointRate(String userId) throws Exception {
 		
 		return sess.selectOne(NS + ".getPointRate", userId);
 	}

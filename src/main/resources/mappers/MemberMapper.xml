@@ -117,8 +117,8 @@
 		delete from Address where addressId = #{addressId}
 	</delete>
 
-	<select id="getPointRate" resultType="double">
-		SELECT c.cRate
+	<select id="getPointRate" resultType="int">
+		SELECT CAST(c.cRate * 100 AS SIGNED)
 		FROM Member m
 		INNER JOIN ClassDef c ON m.userclass = c.className
 		WHERE m.userId = #{userId}
