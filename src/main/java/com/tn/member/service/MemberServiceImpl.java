@@ -119,7 +119,7 @@ public class MemberServiceImpl implements MemberService {
 	// 박근영
 	@Override
 	public ResponseEntity<Integer> sendOne(String phone) throws Exception {
-		System.out.println("샌드원 확인");
+		// System.out.println("샌드원 확인");
 		Message message = new Message();
 		message.setFrom("010-3888-9567");
 		message.setTo(phone);
@@ -127,7 +127,7 @@ public class MemberServiceImpl implements MemberService {
 		int code = createCode();
 		message.setText("떡잎서점 - 회원가입 인증번호는(" + code + ")입니다. 정확히 입력해 주세요.");
 		SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
-		System.out.println(response);
+		// System.out.println(response);
 
 		if (response.getStatusCode().equals("2000")) {
 			return new ResponseEntity<Integer>(code, HttpStatus.OK);

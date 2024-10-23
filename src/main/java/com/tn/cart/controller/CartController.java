@@ -99,7 +99,7 @@ public class CartController {
 	@PostMapping("/deleteSelected")
 	public ResponseEntity<Map<String, Object>> deleteSelected(@RequestBody List<Integer> cartIds,HttpSession session) {
 		
-		System.out.println("Controller : 체크박스 선택된 " + cartIds + "번 목록들 삭제하기");
+		// System.out.println("Controller : 체크박스 선택된 " + cartIds + "번 목록들 삭제하기");
 	    
 		Map<String, Object> response = new HashMap<>();
 		try {

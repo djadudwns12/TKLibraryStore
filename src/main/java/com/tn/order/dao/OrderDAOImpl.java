@@ -52,8 +52,8 @@ public class OrderDAOImpl implements OrderDAO {
 
 	@Override
 	public List<PaymentInfoVO> selectBookNo(PaymentInfoDTO paymentInfoDTO) throws Exception {
-		System.out.println("DTO 확인: " + paymentInfoDTO);
-		System.out.println("cartId 확인: " + paymentInfoDTO.getCartId());
+		// System.out.println("DTO 확인: " + paymentInfoDTO);
+		// System.out.println("cartId 확인: " + paymentInfoDTO.getCartId());
 		return ses.selectList(NS + ".selectOrderBookNo" , paymentInfoDTO);
 	}
 	
@@ -71,7 +71,7 @@ public class OrderDAOImpl implements OrderDAO {
 	
 	@Override
 	public void insertUsePoint(PaymentInfoDTO paymentInfoDTO) throws Exception {
-		System.out.println(paymentInfoDTO.getPaymentId());
+		// System.out.println(paymentInfoDTO.getPaymentId());
 		ses.insert(NS + ".insertUsePointLog", paymentInfoDTO);
 		
 	}
@@ -116,8 +116,8 @@ public class OrderDAOImpl implements OrderDAO {
 	        // bookNo와 qty 값 가져오기
 	        String qtyStr = book.getQty();  // qty는 String 형태
 	        int qty = Integer.parseInt(qtyStr.trim());  // 문자열을 숫자로 변환
-	        System.out.println(qty);
-	        System.out.println(book.getBookNo());
+	        // System.out.println(qty);
+	        // System.out.println(book.getBookNo());
 	        bookMap.put("bookNo", book.getBookNo());
 	        bookMap.put("qty", qty);
 	        

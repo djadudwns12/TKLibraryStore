@@ -18,7 +18,7 @@ public class Scheduler {
 	
 	   @Scheduled(cron = "0 0 * * * *") // 매 시간마다 실행
 	    public void checkAndUpdateOrderStatus() {
-	        System.out.println("주문 상태 업데이트 스케줄러 작동");
+	        // System.out.println("주문 상태 업데이트 스케줄러 작동");
 
 	        
 	        try {

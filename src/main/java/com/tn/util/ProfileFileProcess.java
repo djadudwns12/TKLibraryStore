@@ -27,7 +27,7 @@ public class ProfileFileProcess{
 		String ext = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
 		newFileName = userId + "." + ext;
 		File saveFile = new File(realPath + File.separator + newFileName);
-		System.out.println(saveFile);
+		// System.out.println(saveFile);
 		
 		FileUtils.writeByteArrayToFile(saveFile, upfile); //저장경로(파일명포함), 실제 파일의 데이터
 		
@@ -40,7 +40,7 @@ public class ProfileFileProcess{
 						.base64Img(base64Str)
 						.build();
 				
-				System.out.println(result.toString());
+				// System.out.println(result.toString());
 				
 		
 		return  result;   

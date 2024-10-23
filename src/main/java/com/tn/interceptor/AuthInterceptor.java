@@ -16,7 +16,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("auth 인터셉터 preHandle" );
+		// System.out.println("auth 인터셉터 preHandle" );
 		
 		boolean goController = false; // 컨트롤러로 보낼지를 결정하는 변수
 		
@@ -41,7 +41,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			ModelAndView modelAndView) throws Exception {
 		// TODO Auto-generated method stub
 		// admin페이지로 들어갈때
-		System.out.println("AuthInterceptor postHandle 들어옴");
+		// System.out.println("AuthInterceptor postHandle 들어옴");
 		adminYn(request,modelAndView);
 		
 		
@@ -55,7 +55,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 	 * 설명 : 로그인한 사람이 admin인지 확인후 admin이면 관리자 페이지로 이동 아니면 /으로 이동
 	 */
 	private void adminYn(HttpServletRequest request, ModelAndView modelAndView) {
-		System.out.println("adminYn 들어옴");
+		// System.out.println("adminYn 들어옴");
 		
 		MemberVO loginMember = (MemberVO) request.getSession().getAttribute("loginMember");
 		

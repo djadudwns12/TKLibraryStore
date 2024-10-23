@@ -85,16 +85,16 @@ public class BookListController {
 			@RequestParam(value = "ra", defaultValue = "default") String sortBy, SearchCriteriaDTO searchCriteria, HttpServletRequest request, HttpServletResponse response) {
 		
 		
-		// System.out.println( searchCriteria.toString()+ "을 검색하자");
+		// // System.out.println( searchCriteria.toString()+ "을 검색하자");
 		com.tn.admin.model.vo.PagingInfoDTO dto = com.tn.admin.model.vo.PagingInfoDTO.builder().pageNo(pageNo).pagingSize(pagingSize).build();
-		// System.out.println(dto.getPagingSize() + "페이징정보?" + dto.getPageNo());
+		// // System.out.println(dto.getPagingSize() + "페이징정보?" + dto.getPageNo());
 		Map<String, Object> result = null;
 
 		try {
 			result = pService.listAll(dto, searchCriteria, sortBy);
 			com.tn.admin.model.vo.PagingInfo pi = (com.tn.admin.model.vo.PagingInfo) result.get("pagingInfo");
 			List<ProductVO> list = (List<ProductVO>) result.get("productList");
-			// System.out.println(pi.toString());
+			// // System.out.println(pi.toString());
 			
 			
 		
@@ -113,7 +113,7 @@ public class BookListController {
 		                for (Cookie cookie : cookies) {
 		                    if ("recentSearch".equals(cookie.getName())) {
 		                        searchHistory = URLDecoder.decode(cookie.getValue(), "UTF-8");
-		                        System.out.println("검색 전 " +searchHistory);
+		                        // System.out.println("검색 전 " +searchHistory);
 		                    }
 		                }
 		            }
@@ -138,7 +138,7 @@ public class BookListController {
 		            }
 
 		            for(String L : historyList) {
-		            	System.out.println("historyList 에 있는 키워드 검색 후 : "  +L);
+		            	// System.out.println("historyList 에 있는 키워드 검색 후 : "  +L);
 		            }
 		            // 쿠키에 기록
 		            Cookie searchCookie = new Cookie("recentSearch", URLEncoder.encode(String.join(",", historyList), "UTF-8"));
@@ -217,7 +217,7 @@ public class BookListController {
 	         
 	         if (request.getRequestURI().contains("/bookDetail")) {
 	        	 	
-        	 	System.out.println("상세페이지 호출..................");
+        	 	// System.out.println("상세페이지 호출..................");
 	        	 	
 	        	 	try {   
 	        	  	
@@ -262,7 +262,7 @@ public class BookListController {
 		MemberVO loginMember = (MemberVO) ses.getAttribute("loginMember");
 		String userId = loginMember.getUserId();
 		
-		System.out.println(qty +"bookNo"+ bookNo + userId);
+		// System.out.println(qty +"bookNo"+ bookNo + userId);
 		try {
 			result = cService.findBookByBookNo(bookNo, userId, qty);
 		} catch (Exception e) {
@@ -278,7 +278,7 @@ public class BookListController {
 	@PostMapping(value = "getRecentViews")
 	public ResponseEntity<Map<String, Object>> getRecentViews(@RequestBody List<Integer> list) {
 		
-		System.out.println(list);
+		// System.out.println(list);
 		
 		ResponseEntity<Map<String, Object>> result = null;
 		Map<String, Object> resultMap = new HashMap<String, Object>();;

@@ -44,11 +44,11 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 			if(sortBy.equals("default")) {
 				
 				list = pDao.getList(pi);
-				//System.out.println("설마 여기도 타는것인가");
+				//// System.out.println("설마 여기도 타는것인가");
 			} else {
 				
 				list = pDao.getList(pi,sortBy);
-				System.out.println(list.get(0).getTitle());
+				// System.out.println(list.get(0).getTitle());
 			}
 						
 		} else {
@@ -62,10 +62,10 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 				pDao.insertOrUpdateSearchKeyword(searchCriteria.getSearchWord());
 				
 				
-				System.out.println("sortby default 일때");
+				// System.out.println("sortby default 일때");
 			} else {
 				list = pDao.selectAllBoard(pi, searchCriteria, sortBy);
-				System.out.println("sortby 가 있을때");
+				// System.out.println("sortby 가 있을때");
 			}
 		}
 		
@@ -87,7 +87,7 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 			pi.setTotalPostCnt(pDao.getTotalPostCnt());		// 전체 데이터 수 세팅
 		} else { 
 			pi.setTotalPostCnt(pDao.getTotalPostCnt(sc)); 	
-			System.out.println(pDao.getTotalPostCnt(sc));
+			// System.out.println(pDao.getTotalPostCnt(sc));
 		}
 			
 		pi.setTotalPageCnt();								// 전체 페이지 수 세팅
@@ -123,7 +123,7 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 			sdCount += pDao.soldOutProduct(sdNo);
 		}
 		
-		System.out.println(sdCount);
+		// System.out.println(sdCount);
 		return sdCount;
 		
 	}
@@ -207,12 +207,12 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		
 		// userId가 bookNo 좋아요를 이미 눌렀다면 true 반환
 		boolean result = false;
-		System.out.println(pDao.checkZzim(userId, bookNo));
+		// System.out.println(pDao.checkZzim(userId, bookNo));
 		if( pDao.checkZzim(userId, bookNo) > 0) {
 			result = true;
 		}
 		
-		System.out.println(userId + "가"  + bookNo +"번글을 좋아요했는가? " + result );
+		// System.out.println(userId + "가"  + bookNo +"번글을 좋아요했는가? " + result );
 		return result;
 	}
 

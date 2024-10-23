@@ -40,7 +40,7 @@ public class CategoryServiecimpl implements CategoryService {
 //		}
 		// 가지고 온것 찍기
 		for (int i = 0; i < categoryList.size(); i++) {
-			System.out.println(categoryList.get(i));
+			// System.out.println(categoryList.get(i));
 		}
 		
 		return categoryList;

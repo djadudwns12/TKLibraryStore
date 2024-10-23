@@ -71,9 +71,9 @@ public class BookFileProcess {
 				
 				//용량이 큰 이미지는 문자열로 만들지 못한다 -> 썸네일 이미지만 base64로 처리할것
 				String base64Str = makeBase64String(saveFilePath + File.separator + newFileName);
-				System.out.println("=========================================================");
-				System.out.println(new StringBuffer(base64Str));
-				System.out.println("=========================================================");
+				// System.out.println("=========================================================");
+				// System.out.println(new StringBuffer(base64Str));
+				// System.out.println("=========================================================");
 				
 				result = BoardUpFileVODTO.builder()
 						
@@ -81,7 +81,7 @@ public class BookFileProcess {
 						.base64Img(base64Str)
 						.build();
 				
-				System.out.println(result.toString());
+				// System.out.println(result.toString());
 			
 		}
 		
@@ -127,8 +127,8 @@ public class BookFileProcess {
 
 		String newFileName = fileNameWithOutExt + "_" + timestamp + "." + ext;
 
-		System.out.println("기존 파일 이름 : " + originalFileName);
-		System.out.println("새로운 파일 이름 : " + newFileName);
+		// System.out.println("기존 파일 이름 : " + originalFileName);
+		// System.out.println("새로운 파일 이름 : " + newFileName);
 
 		return newFileName;
 	}
@@ -142,14 +142,14 @@ public class BookFileProcess {
 
 		for (String name : tmp.list()) {
 			if (name.equals(originalFileName)) {
-				System.out.println("이름이 같은게 있다");
+				// System.out.println("이름이 같은게 있다");
 				isFind = true;
 				break;
 			}
 		}
 
 		if (!isFind) {
-			System.out.println("이름이 같은 파일이 없는 상태");
+			// System.out.println("이름이 같은 파일이 없는 상태");
 		}
 
 		return isFind;

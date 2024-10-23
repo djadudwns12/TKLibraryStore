@@ -114,16 +114,16 @@ public class AdminController {
 			@RequestParam(value = "ra", defaultValue = "default") String sortBy, SearchCriteriaDTO searchCriteria, HttpServletRequest request, HttpServletResponse response) {
 		
 		
-		// System.out.println( searchCriteria.toString()+ "을 검색하자");
+		// // System.out.println( searchCriteria.toString()+ "을 검색하자");
 		PagingInfoDTO dto = PagingInfoDTO.builder().pageNo(pageNo).pagingSize(pagingSize).build();
-		// System.out.println(dto.getPagingSize() + "페이징정보?" + dto.getPageNo());
+		// // System.out.println(dto.getPagingSize() + "페이징정보?" + dto.getPageNo());
 		Map<String, Object> result = null;
 
 		try {
 			result = pService.listAll(dto, searchCriteria, sortBy);
 			PagingInfo pi = (PagingInfo) result.get("pagingInfo");
 			List<ProductVO> list = (List<ProductVO>) result.get("productList");
-			// System.out.println(pi.toString());
+			// // System.out.println(pi.toString());
 			
 			
 		
@@ -142,7 +142,7 @@ public class AdminController {
 		                for (Cookie cookie : cookies) {
 		                    if ("recentSearch".equals(cookie.getName())) {
 		                        searchHistory = URLDecoder.decode(cookie.getValue(), "UTF-8");
-		                        System.out.println("검색 전 " +searchHistory);
+		                        // System.out.println("검색 전 " +searchHistory);
 		                    }
 		                }
 		            }
@@ -167,7 +167,7 @@ public class AdminController {
 		            }
 
 		            for(String L : historyList) {
-		            	System.out.println("historyList 에 있는 키워드 검색 후 : "  +L);
+		            	// System.out.println("historyList 에 있는 키워드 검색 후 : "  +L);
 		            }
 		            // 쿠키에 기록
 		            Cookie searchCookie = new Cookie("recentSearch", URLEncoder.encode(String.join(",", historyList), "UTF-8"));
@@ -207,7 +207,7 @@ public class AdminController {
 			Model model) {
 
 		PagingInfoDTO dto = PagingInfoDTO.builder().pageNo(pageNo).pagingSize(pagingSize).build();
-		// System.out.println(dto.getPagingSize() + "페이징정보?" + dto.getPageNo());
+		// // System.out.println(dto.getPagingSize() + "페이징정보?" + dto.getPageNo());
 		Map<String, Object> result = null;
 
 		try {
@@ -270,7 +270,7 @@ public class AdminController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// System.out.println(product.toString());
+		// // System.out.println(product.toString());
 		model.addAttribute("product", product);
 		return "admin/modifyAdmin";
 	}
@@ -279,14 +279,14 @@ public class AdminController {
 	// 쪼개져서온 'file' 파일을 재조립해주는 인터페이스 MultipartFile, @RequestParam로 save
 	public ResponseEntity<MyResponseWithoutData> saveBoardFile(@RequestParam("file") MultipartFile file,
 			@RequestParam("bookNo") int bookNo, HttpServletRequest request) {
-		System.out.println(bookNo);
-		System.out.println("파일 전송됨, 이제 저장해야함");
+		// System.out.println(bookNo);
+		// System.out.println("파일 전송됨, 이제 저장해야함");
 
 		ResponseEntity<MyResponseWithoutData> result = null;
 
 		try {
 			BoardUpFileVODTO fileInfo = fileSave(file, request);
-			System.out.println("저장된 파일의 정보 : " + fileInfo.toString());
+			// System.out.println("저장된 파일의 정보 : " + fileInfo.toString());
 			if (pService.saveImgInfo(fileInfo, bookNo) > 0) {
 				MyResponseWithoutData mrw = MyResponseWithoutData.builder().code(200).msg("success").build();
 
@@ -304,7 +304,7 @@ public class AdminController {
 
 	@RequestMapping(value = "/modifySave", method = RequestMethod.POST)
 	public String modifySave(ProductVO product, RedirectAttributes redirectAttributes) {
-		System.out.println(product.toString());
+		// System.out.println(product.toString());
 		try {
 			if (pService.modifyProduct(product) > 0) {
 				redirectAttributes.addAttribute("status", "success");
@@ -326,10 +326,9 @@ public class AdminController {
 		long fileSize = file.getSize();
 
 		byte[] upfile = file.getBytes();
-		System.out.println(originalFileName);
+		// System.out.println(originalFileName);
 		// 세션 : getSession(),서블릿 정보 : getServletContext() , 경로 : getRealPath()
-		System.out.println(
-				"서버의 실제 물리적 경로 : " + request.getSession().getServletContext().getRealPath("/resources/bookImgs"));
+		// System.out.println("서버의 실제 물리적 경로 : " + request.getSession().getServletContext().getRealPath("/resources/bookImgs"));
 
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/bookImgs");
 
@@ -430,7 +429,7 @@ public class AdminController {
 			return new ResponseEntity<>("실패", HttpStatus.INTERNAL_SERVER_ERROR);
 		} // 이미 찜했는지 확인
 
-		System.out.println("isZzim의 값 ===========" + isZzim);
+		// System.out.println("isZzim의 값 ===========" + isZzim);
 		return new ResponseEntity<>("없음", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
@@ -445,7 +444,7 @@ public class AdminController {
 			e.printStackTrace();
 
 		}
-		System.out.println("zzimCount의 값 ===========" + zzimCount);
+		// System.out.println("zzimCount의 값 ===========" + zzimCount);
 		return new ResponseEntity<>("없음", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
@@ -458,7 +457,7 @@ public class AdminController {
 
 	@RequestMapping(value = "/searchBook", produces = "application/json; charset=utf-8;")
 	public @ResponseBody String searchBook(@RequestParam("searchValue") String query) {
-		System.out.println(query + "책을 검색하자");
+		// System.out.println(query + "책을 검색하자");
 
 		String clientId = "A9ocfghRQUMc_xDTTgQG"; // 애플리케이션 클라이언트 아이디
 		String clientSecret = "Jot71p0hsd"; // 애플리케이션 클라이언트 시크릿
@@ -478,7 +477,7 @@ public class AdminController {
 
 		String responseBody = get(apiURL, requestHeaders); // 응답된 json
 
-		System.out.println(responseBody);
+		// System.out.println(responseBody);
 
 		return responseBody;
 	}
@@ -717,7 +716,7 @@ public class AdminController {
 		
 		try {
 			if (deletedMembers.length > 0) {
-				System.out.println("선택회원삭제 : " + deletedMembers.toString());
+				// System.out.println("선택회원삭제 : " + deletedMembers.toString());
 				for (String deletedMember : deletedMembers) {
 					// 리뷰삭제
 					rService.removeUndefinedReview(deletedMember);
@@ -734,7 +733,7 @@ public class AdminController {
 
 				}
 			} else {
-				System.out.println("회원삭제 실패");
+				// System.out.println("회원삭제 실패");
 			}
 
 		} catch (Exception e) {
@@ -755,7 +754,7 @@ public class AdminController {
 	@RequestMapping(value = "/registSave", method = RequestMethod.POST)
 	public String registSave(ProductVO product, @RequestParam("bookImgfile") MultipartFile bookImgfile,
 			RedirectAttributes redirectAttributes, HttpServletRequest request) {
-		System.out.println(product.toString());
+		// System.out.println(product.toString());
 		try {
 			BoardUpFileVODTO fileInfo = fileSave(bookImgfile, request);
 			if (pService.registSave(product, fileInfo) > 0) {
@@ -801,7 +800,7 @@ public class AdminController {
 
 			PagingInfo pi = (PagingInfo) result.get("pagingInfo");
 			list = (List<QAVO>) result.get("list");
-			// System.out.println(pi.toString());
+			// // System.out.println(pi.toString());
 
 			model.addAttribute("productList", list); // 데이터 바인딩
 			model.addAttribute("pagingInfo", pi);
@@ -896,7 +895,7 @@ public class AdminController {
 			@RequestParam(value = "pagingSize", defaultValue = "10") int pagingSize,
 			@RequestParam(value = "ra", defaultValue = "default") String sortBy, SearchCriteriaDTO searchCriteria,
 			HttpServletRequest request, HttpServletResponse response) {
-		System.out.println(pageNo + "페이징 확인" + pagingSize + "서치" + searchCriteria + "알에이" + sortBy);
+		// System.out.println(pageNo + "페이징 확인" + pagingSize + "서치" + searchCriteria + "알에이" + sortBy);
 		PagingInfoDTO dto = PagingInfoDTO.builder().pageNo(pageNo).pagingSize(pagingSize).build();
 		Map<String, Object> result = null;
 
@@ -906,7 +905,7 @@ public class AdminController {
 			PagingInfo pi = (PagingInfo) result.get("pagingInfo");
 
 			List<OrderDeliveryVO> orderList = (List<OrderDeliveryVO>) result.get("orderList");
-			System.out.println("보내기전 확인" + pi + "오더리스트도 확인 :" + orderList);
+			// System.out.println("보내기전 확인" + pi + "오더리스트도 확인 :" + orderList);
 
 			model.addAttribute("odInfo", orderList); // 페이징된 주문 목록 데이터 바인딩
 			model.addAttribute("pagingInfo", pi);
@@ -922,7 +921,7 @@ public class AdminController {
 
 	@RequestMapping("/cancelOrders")
 	public ResponseEntity<String> cancelOrders(@RequestBody List<String> orderNos) {
-		System.out.println("진입 확인 cancelOrders" + orderNos);
+		// System.out.println("진입 확인 cancelOrders" + orderNos);
 		try {
 			odService.cancelOrder(orderNos);
 

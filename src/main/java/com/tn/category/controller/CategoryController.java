@@ -39,7 +39,7 @@ public class CategoryController {
 	 */
 	@RequestMapping(value = "/category/{category}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity home(@PathVariable("category") String category) {
-		System.out.println(category+" 카테고리 ");
+		// System.out.println(category+" 카테고리 ");
 		
 		// db에서 카테고리 불러오기 
 		List<CategoryVO> list = null;

@@ -56,7 +56,7 @@ public class BooklistServiceImpl implements BooklistService {
 		pi.setEndPageNoCurBlock();
 		
 		
-		System.out.println(pi.toString());
+		// System.out.println(pi.toString());
 		return pi;
 	}
 
@@ -76,7 +76,7 @@ public class BooklistServiceImpl implements BooklistService {
 		pi.setEndPageNoCurBlock();
 		
 		
-		System.out.println(pi.toString());
+		// System.out.println(pi.toString());
 		return pi;
 	}
 

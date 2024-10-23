@@ -29,9 +29,9 @@ public class MemberDAOImpl implements MemberDAO  {
 	
 	public List<Map<String, String>> getMember() {
 		// TODO Auto-generated method stub
-		System.out.println("asdasd");
+		// System.out.println("asdasd");
 		List<Map<String, String>> aa = sess.selectList(NS+".getMember");
-		System.out.println(sess.selectList(NS+".getMember"));
+		// System.out.println(sess.selectList(NS+".getMember"));
 		return aa;
 	}
 	
@@ -160,7 +160,7 @@ public class MemberDAOImpl implements MemberDAO  {
 
 	@Override
 	public int modifyAddress(MyAddressDTO addressDTO) throws Exception {
-		System.out.println("addressDTO : " + addressDTO.toString());
+		// System.out.println("addressDTO : " + addressDTO.toString());
 		return sess.update(NS + ".modifyAddress", addressDTO);
 	}
 

@@ -64,7 +64,7 @@ public class ProductAdminDAOImpl implements ProductAdminDAO {
 	@Override
 	public List<ProductVO> selectAllBoard(PagingInfo pi, SearchCriteriaDTO searchCriteria, String sortBy) throws Exception {
 		Map<String, Object> params = new HashMap<String, Object>();
-		System.out.println("다오까진 잘 옴-=============");
+		// System.out.println("다오까진 잘 옴-=============");
 		params.put("sortBy", sortBy);
 		params.put("startRowIndex",pi.getStartRowIndex());
 		params.put("viewPostCntPerPage", pi.getViewPostCntPerPage());

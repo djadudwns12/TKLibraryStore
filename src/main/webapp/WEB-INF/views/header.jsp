@@ -311,6 +311,10 @@ $(function(){
 			});
 		}
 	});
+    
+   
+    
+    
 });
 
 function restockBook(item) {
@@ -780,15 +784,10 @@ function showHide(){
 							<c:if test="${loginMember != null}">
 								<li><a href="/member/myPage">마이페이지</a></li>
 							</c:if>
-							<li><a href="#">Vegetables</a></li>
-							<li><a href="#">Fruit & Nut Gifts</a></li>
-							<li><a href="#">Fresh Berries</a></li>
-							<li><a href="#">Vegetables</a></li>
-							<li><a href="#">Fruit & Nut Gifts</a></li>
-							<li><a href="#">Fresh Berries</a></li>
-							<li><a href="#">Vegetables</a></li>
-							<li><a href="#">Fruit & Nut Gifts</a></li>
-							<li><a href="#">Fresh Berries</a></li>
+							<li id="bookList"><a href="/bookList/listAll">도서리스트 보기</a></li>
+							<!-- <li><a href="/member/myPage">마이페이지</a></li> -->
+							<li><a href="/qa/qaList">Q&A</a></li>
+							<li><a href="/cart/cartPage">장바구니</a></li>
 						</ul>
 					</div>
 				</div>
