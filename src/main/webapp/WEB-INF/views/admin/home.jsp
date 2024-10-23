@@ -26,6 +26,7 @@
 google.charts.load('current', {'packages':['corechart']});
 
 $(function() {
+	
 	// Ajax로 데이터 요청
     $.ajax({
         url: '/admin/bookChart',

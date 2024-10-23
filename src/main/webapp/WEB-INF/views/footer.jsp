@@ -15,56 +15,76 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
 	rel="stylesheet">
+	
+	<!-- Google Fonts에서 Gowun Batang 폰트 불러오기 -->
+<link
+   href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap"
+   rel="stylesheet">
 
+<style>
+	.liTeam{
+		margin-bottom : 10px;
+	}
+	
+	* {
+   font-family: "Gowun Batang", serif;
+   font-weight: 550;
+   font-style: normal;
+}
+
+</style>
 </head>
+
 <body>
 	<!-- Footer Section Begin -->
 	<footer class="footer spad">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-3 col-md-6 col-sm-6">
-					<div class="footer__about">
-						<div class="footer__about__logo">
-							<a href="./index.html"><img src="${pageContext.request.contextPath}/resources/template/img/logo.png" alt=""></a>
+					<div class="footer__about" style="width: 350px;">
+						<div class="header__logo">
+							<a href="/"><img src="/resources/images/TKlogo.png" alt=""
+								style="width: 60px; height: 80px;"></a> <span
+								style="font-weight: 700; font-size: 25px; padding: 5px; margin-left: 20px;">
+								떡잎 서점</span>
 						</div>
 						<ul>
-							<li>Address: 60-49 Road 11378 New York</li>
-							<li>Phone: +65 11.188.888</li>
-							<li>Email: hello@colorlib.com</li>
+							<li>TK Library</li>
+							<li>Git: <span><a href="https://github.com/djadudwns12/TKLibraryStore.git" style="color:black;">github.com/djadudwns12/TKLibraryStore.git </a></span></li>
+							<li>Phone: 02-2675-1750</li>
+							
 						</ul>
 					</div>
 				</div>
-				<div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1"> 
+				<div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
 					<div class="footer__widget">
-						<h6>Useful Links</h6>
+						<h6 style="margin-top:30px;">프로젝트 팀원</h6>
 						<ul>
-							<li><a href="#">About Us</a></li>
-							<li><a href="#">About Our Shop</a></li>
-							<li><a href="#">Secure Shopping</a></li>
-							<li><a href="#">Delivery infomation</a></li>
-							<li><a href="#">Privacy Policy</a></li>
-							<li><a href="#">Our Sitemap</a></li>
+							<li class="liTeam">엄영준</li>
+							<li class="liTeam">이아림</li>
+							<li class="liTeam">박근영</li>
+							<li class="liTeam">최미설</li>
+							<li class="liTeam">한준형</li>
+							<li class="liTeam">김가윤</li>
 						</ul>
 						<ul>
-							<li><a href="#">Who We Are</a></li>
-							<li><a href="#">Our Services</a></li>
-							<li><a href="#">Projects</a></li>
-							<li><a href="#">Contact</a></li>
-							<li><a href="#">Innovation</a></li>
-							<li><a href="#">Testimonials</a></li>
+							<li class="liTeam">djadudwns12@naver.com</li>
+							<li class="liTeam">ahrimbau@gmail.com </li>
+							<li class="liTeam">pgyseven@naver.com</li>
+							<li class="liTeam">miseol93@naver.com</li>
+							<li class="liTeam">wnsgud6388@naver.com</li>
+							<li class="liTeam">kgykgy1123@naver.com</li>
 						</ul>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-12">
 					<div class="footer__widget">
-						<h6>Join Our Newsletter Now</h6>
-						<p>Get E-mail updates about our latest shop and special
-							offers.</p>
-						<form action="#">
-							<input type="text" placeholder="Enter your mail">
+						
+						<form action="#" style="margin-left: 50px; margin-top: 50px;">
+							<input type="text" placeholder="Enter your mail" >
 							<button type="submit" class="site-btn">Subscribe</button>
 						</form>
-						<div class="footer__widget__social">
+						<div class="footer__widget__social" style="margin-left: 50px;">
 							<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
 								class="fa fa-instagram"></i></a> <a href="#"><i
 								class="fa fa-twitter"></i></a> <a href="#"><i
@@ -90,7 +110,9 @@
 							</p>
 						</div>
 						<div class="footer__copyright__payment">
-							<img src="${pageContext.request.contextPath}/resources/template/img/payment-item.png" alt="">
+							<img
+								src="${pageContext.request.contextPath}/resources/template/img/payment-item.png"
+								alt="">
 						</div>
 					</div>
 				</div>
