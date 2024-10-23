@@ -172,7 +172,7 @@ $(function(){
 
         // 검색어 목록 표시
         searchArray.forEach(function(keyword) {
-            $("#recentSearchesList").append('<li><a href= "/admin/productAdmin?searchType=title&searchWord=' + keyword + '";>' + keyword + '</a></li>');
+            $("#recentSearchesList").append('<li><a href= "/bookList/listAll?searchType=title&searchWord=' + keyword + '";>' + keyword + '</a></li>');
         });
     }
     
@@ -195,7 +195,7 @@ $(function(){
 	                $.each(data, function(index, keyword) {
 	                	var index = index+1
 	                    //popularList.append('<li>' + index + "　　" + keyword + '</li>');
-	                	popularList.append('<li><a href= "/admin/productAdmin?searchType=title&searchWord=' + keyword + '";>' +  index + "　　" + keyword + '</a></li>');
+	                	popularList.append('<li><a href= "/bookList/listAll?searchType=title&searchWord=' + keyword + '";>' +  index + "　　" + keyword + '</a></li>');
 	                	
 	                });
 			},
@@ -267,7 +267,7 @@ $(function(){
 	                	console.log(data.data)
 	                	$("#searchRecommend").empty();
 	                	$.each(data.data, function(index, title) {
-	                		 $("#searchRecommend").append('<li style="margin-bottom:10px;"><a href= "/admin/productAdmin?searchType=title&searchWord=' + title + '";>' + title + '</a></li>');
+	                		 $("#searchRecommend").append('<li style="margin-bottom:10px;"><a href= "/bookList/listAll?searchType=title&searchWord=' + title + '";>' + title + '</a></li>');
 	                	 });
 	                }
 	              },
@@ -571,8 +571,9 @@ ul {
 
 /* 최근 검색어 */
 a:link {
-	color: 5C636A;
+	color: #000000;
 	text-decoration: inherit;
+	
 }
 
 a:hover {
@@ -605,6 +606,12 @@ a:visited {
 .searchType{
 	display: none;
 }
+.modal-content{
+	width: auto; !important 
+}
+.hero__search__form form .hero__search__categories{
+		width: 16%;
+	} 
 </style>
 
 

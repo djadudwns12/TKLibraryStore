@@ -186,10 +186,10 @@ $(function(){
 			} else {
 			  console.log("모든 필드가 올바르게 입력되었습니다.");
 			  if($('#thumbNail').val() === `${product.thumbNail}`) {
-				    alert('이미지가 그대로임');
+				    alert('수정 완료');
 				   result = true;
 				} else{
-				  alert('이미지가 바뀜');
+				  alert('수정 완료');
 				  fileUpload(uploadedFiles);
 				  result = true;
 			  }

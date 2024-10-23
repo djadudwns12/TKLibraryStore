@@ -55,7 +55,11 @@
 	    $("#bookList").click(function() {
 	        $('html, body').animate({
 	            scrollTop: $("#targetSection").offset().top
+<<<<<<< HEAD
 	        }, 1000); // 1000은 애니메이션 시간 (1초)
+=======
+	        }, 0); // 1000은 애니메이션 시간 (1초)
+>>>>>>> 3161945b091065c6f3d4aa6adae7747271bee210
 	    });
 
 	});
@@ -164,9 +168,20 @@ table td, table th {
    		display: flex;
    		flex-direction: row;
    }
+<<<<<<< HEAD
    .fourImg{
    		margin: 0 auto;
    		position: static;
+=======
+    #fourImg {
+   	display: flex;
+   	justify-content: center;
+   }
+    #comment {
+   	display: flex;
+   	justify-content: center;
+   	margin-bottom: 20px;
+>>>>>>> 3161945b091065c6f3d4aa6adae7747271bee210
    }
    
 
@@ -195,6 +210,7 @@ table td, table th {
 	</div>
 	
 	
+<<<<<<< HEAD
 	<span style="font-size: 20px; font-weight: 700;">독서의 계절 가을, 떡잎서점과 함께♥ @)))))))))) 김밥 한줄과 함께♣</span>
 	<div style="margin-top: 30px;" class="fourImg">
 		<span style="margin-left: 350px; "><img src="/resources/images/autumn1.jpg" style="width: 280px; height: 170px; margin-bottom: 40px; border-radius: 40px; "></span>
@@ -202,6 +218,15 @@ table td, table th {
 		<span style="margin-left: 30px; "><img src="/resources/images/autumn2.jpg" style="width: 280px; height: 170px; margin-bottom: 40px;border-radius: 40px;"></span>
 		<span style="margin-left: 30px; "><img src="/resources/images/book.jpg" style="width: 280px; height: 170px; margin-bottom: 40px;border-radius: 40px;"></span>
 	</div>	
+=======
+	  <span id="comment" style="font-size: 20px; font-weight: 700;">독서의 계절 가을, 떡잎서점과 함께♥ @)))))))))) 김밥 한줄과 함께♣</span>
+	<div id="fourImg">
+      <span><img src="/resources/images/autumn1.jpg" style="width: 280px; height: 170px; margin-bottom: 40px; border-radius: 40px; "></span>
+      <span style="margin-left: 30px; "><img src="/resources/images/library.jpg" style="width: 280px; height: 170px; margin-bottom: 40px;border-radius: 40px;"></span>
+      <span style="margin-left: 30px; "><img src="/resources/images/autumn2.jpg" style="width: 280px; height: 170px; margin-bottom: 40px;border-radius: 40px;"></span>
+      <span style="margin-left: 30px; "><img src="/resources/images/book.jpg" style="width: 280px; height: 170px; margin-bottom: 40px;border-radius: 40px;"></span>
+   </div>  
+>>>>>>> 3161945b091065c6f3d4aa6adae7747271bee210
 		<!-- 카테고리 -->
 				<div class="container" style="margin-bottom: 20px;">
 					

@@ -61,7 +61,7 @@ public class SendMailService {
 	
 	private void getAccount() throws IOException {
 		Properties account = new Properties();
-		account.load(new FileReader("D:\\Project\\TKLibraryStore\\src\\main\\resources\\mailpop.properties"));
+		account.load(new FileReader("D:\\java_pro\\lecture\\Workspace\\tnbookstore\\src\\main\\resources\\mailpop.properties"));
 		this.username = (String)account.get("username");
 		this.password = (String)account.get("password");
 	}

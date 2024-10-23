@@ -60,6 +60,8 @@ import com.tn.order.dao.OrderDAO;
 import com.tn.order.model.vo.OrderBookVO;
 import com.tn.order.model.vo.OrderVO;
 import com.tn.order.service.OrderService;
+import com.tn.review.model.VO.ReviewVO;
+import com.tn.review.service.ReviewService;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -86,6 +88,9 @@ public class MemberController {
 	private OrderService oService;
 	@Autowired
 	private ProductAdminService pService;
+	
+	@Autowired
+	private ReviewService rService;
 	
 	@Autowired
 	private ProfileFileProcess fileProcess;
@@ -326,6 +331,10 @@ public class MemberController {
 	public String myPage(MemberDTO loginMember,Model model,HttpSession sess) {
 
 		try {
+			
+			loginMember.setUserId(((MemberVO)sess.getAttribute("loginMember")).getUserId());
+			
+			
 			// 회원정보를 불러오는 부분? 근데 왜 세션에서 불러옴? 뷰단에서 세션을 불러도될것으로 보임
 			model.addAttribute("loginMember", (MemberVO) sess.getAttribute("loginMember"));
 			
@@ -338,6 +347,9 @@ public class MemberController {
 			// 회원의 포인트 적립내역을 가지고 오는 메서드
 			List<PointLogVO> pointList = mService.getPointLog(loginMember);
 			
+			// 회원의 리뷰 목록을 불러오는 메서드 (이아림)
+			List<ReviewVO> review = rService.getMyReview(loginMember);
+			
 			
 			
 			// System.out.println(list);
@@ -348,6 +360,13 @@ public class MemberController {
 			model.addAttribute("zzimList", zzimList);
 			model.addAttribute("pointList", pointList);
 			model.addAttribute("status", "editSuccess");
+			model.addAttribute("review", review);	//(이아림)
+			
+			
+			
+			
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -370,7 +389,11 @@ public class MemberController {
 		String userId = loginMember.getUserId();
 		try {
 			editMember = mService.getEditMemberInfo(userId);
+<<<<<<< HEAD
 			// System.out.println(editMember.toString());
+=======
+			//System.out.println(editMember.toString());
+>>>>>>> 3161945b091065c6f3d4aa6adae7747271bee210
 			model.addAttribute("loginMember", editMember);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -430,10 +453,17 @@ public class MemberController {
 	@ResponseBody
 //	public void savePwdChange (@RequestParam(value="userPwd")String userPwd, @RequestParam(value="userId")String userId){
 	public String savePwdChange (@RequestBody Map<String, String> userInfo){
+<<<<<<< HEAD
 		// System.out.println(userInfo);
 		String userPwd = userInfo.get("userPwd");
 		String userId = userInfo.get("userId");
 		// System.out.println("비번, 아이디 : " + userPwd + ", " + userId);
+=======
+		//System.out.println(userInfo);
+		String userPwd = userInfo.get("userPwd");
+		String userId = userInfo.get("userId");
+		//System.out.println("비번, 아이디 : " + userPwd + ", " + userId);
+>>>>>>> 3161945b091065c6f3d4aa6adae7747271bee210
 		try {
 			mService.saveEditPwd(userPwd, userId);
 		} catch (Exception e) {
@@ -526,10 +556,17 @@ public class MemberController {
         try {
             MemberVO memberVO = (MemberVO) ses.getAttribute("loginMember");
             String userId = memberVO.getUserId();
+<<<<<<< HEAD
             // System.out.println("배송완료전인 주문건수 : " + oDao.checkRemainOrder(userId));
 
             if (oService.checkRemainOrder(userId)) {
                 // System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제요청..");
+=======
+            //System.out.println("배송완료전인 주문건수 : " + oDao.checkRemainOrder(userId));
+
+            if (oService.checkRemainOrder(userId)) {
+                //System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제요청..");
+>>>>>>> 3161945b091065c6f3d4aa6adae7747271bee210
                 mService.deleteMember(userId);
                 logout(ses); // 로그아웃 및 세션에 저장된 회원정보 무효화
                 
