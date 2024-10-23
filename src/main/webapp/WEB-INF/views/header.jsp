@@ -172,7 +172,7 @@ $(function(){
 
         // 검색어 목록 표시
         searchArray.forEach(function(keyword) {
-            $("#recentSearchesList").append('<li><a href= "/admin/productAdmin?searchType=title&searchWord=' + keyword + '";>' + keyword + '</a></li>');
+            $("#recentSearchesList").append('<li><a href= "/bookList/listAll?searchType=title&searchWord=' + keyword + '";>' + keyword + '</a></li>');
         });
     }
     
@@ -195,7 +195,7 @@ $(function(){
 	                $.each(data, function(index, keyword) {
 	                	var index = index+1
 	                    //popularList.append('<li>' + index + "　　" + keyword + '</li>');
-	                	popularList.append('<li><a href= "/admin/productAdmin?searchType=title&searchWord=' + keyword + '";>' +  index + "　　" + keyword + '</a></li>');
+	                	popularList.append('<li><a href= "/bookList/listAll?searchType=title&searchWord=' + keyword + '";>' +  index + "　　" + keyword + '</a></li>');
 	                	
 	                });
 			},
@@ -267,7 +267,7 @@ $(function(){
 	                	console.log(data.data)
 	                	$("#searchRecommend").empty();
 	                	$.each(data.data, function(index, title) {
-	                		 $("#searchRecommend").append('<li style="margin-bottom:10px;"><a href= "/admin/productAdmin?searchType=title&searchWord=' + title + '";>' + title + '</a></li>');
+	                		 $("#searchRecommend").append('<li style="margin-bottom:10px;"><a href= "/bookList/listAll?searchType=title&searchWord=' + title + '";>' + title + '</a></li>');
 	                	 });
 	                }
 	              },
@@ -311,6 +311,10 @@ $(function(){
 			});
 		}
 	});
+    
+   
+    
+    
 });
 
 function restockBook(item) {
@@ -567,8 +571,9 @@ ul {
 
 /* 최근 검색어 */
 a:link {
-	color: 5C636A;
+	color: #000000;
 	text-decoration: inherit;
+	
 }
 
 a:hover {
@@ -601,6 +606,12 @@ a:visited {
 .searchType{
 	display: none;
 }
+.modal-content{
+	width: auto; !important 
+}
+.hero__search__form form .hero__search__categories{
+		width: 16%;
+	} 
 </style>
 
 
@@ -780,15 +791,10 @@ function showHide(){
 							<c:if test="${loginMember != null}">
 								<li><a href="/member/myPage">마이페이지</a></li>
 							</c:if>
-							<li><a href="#">Vegetables</a></li>
-							<li><a href="#">Fruit & Nut Gifts</a></li>
-							<li><a href="#">Fresh Berries</a></li>
-							<li><a href="#">Vegetables</a></li>
-							<li><a href="#">Fruit & Nut Gifts</a></li>
-							<li><a href="#">Fresh Berries</a></li>
-							<li><a href="#">Vegetables</a></li>
-							<li><a href="#">Fruit & Nut Gifts</a></li>
-							<li><a href="#">Fresh Berries</a></li>
+							<li id="bookList"><a href="/bookList/listAll">도서리스트 보기</a></li>
+							<!-- <li><a href="/member/myPage">마이페이지</a></li> -->
+							<li><a href="/qa/qaList">Q&A</a></li>
+							<li><a href="/cart/cartPage">장바구니</a></li>
 						</ul>
 					</div>
 				</div>

@@ -876,7 +876,7 @@
 									style="display: flex; align-items: center; gap: 5px;">
 									<div class="rating" id="ratingModal"></div>
 									<textarea class="reviewForm" id="reviewModal" name="review"
-										placeholder="리뷰 내용을 작성해주세요" style="width: 150%;"></textarea>
+										placeholder="리뷰 내용을 작성해주세요" style="width: 140%;"></textarea>
 									<input type="hidden" id="reviewNo">
 								</div>
 

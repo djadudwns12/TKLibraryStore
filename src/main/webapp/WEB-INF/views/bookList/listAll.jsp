@@ -46,6 +46,17 @@
 		// let bList = $('.bList'); 
 		// $('#main_content').html(bList);
 		$('.categoryArea').show();
+		
+		$('#bookList').children().removeAttr('href');
+		
+		//<li id="bookList">도서리스트 보기</li>
+		
+		 // 클릭시 해당도서리스트로 이동
+	    $("#bookList").click(function() {
+	        $('html, body').animate({
+	            scrollTop: $("#targetSection").offset().top
+	        }, 0); // 1000은 애니메이션 시간 (1초)
+	    });
 
 	});
 	
@@ -153,6 +164,15 @@ table td, table th {
    		display: flex;
    		flex-direction: row;
    }
+    #fourImg {
+   	display: flex;
+   	justify-content: center;
+   }
+    #comment {
+   	display: flex;
+   	justify-content: center;
+   	margin-bottom: 20px;
+   }
    
 
 </style>
@@ -167,35 +187,26 @@ table td, table th {
 	<!--<img src="https://contents.kyobobook.co.kr/pmtn/2024/event/a40ff528883748dd9d6f73aa4a6f8025.jpg" style="margin-left: 300px; ">-->
 	<!-- <img src="https://contents.kyobobook.co.kr/pmtn/2024/event/9e794bad98b84309806edd2fa150e2b6.png" style="margin-left: 300px; "> -->
 
-	<div class="swiper"  style="width:1500px;">
+	<div class="swiper"  style="width:1200px;">
 		<div class="swiper-wrapper">
-			<div class="swiper-slide"><img src="/resources/images/mbanner01.png" style="margin-left: 300px; "></div>
-			<div class="swiper-slide"><img src="/resources/images/mbanner02.png" style="margin-left: 300px; "></div>
-			<div class="swiper-slide"><img src="/resources/images/mbanner03.png" style="margin-left: 300px; "></div>
+			<div class="swiper-slide"><img src="/resources/images/mbanner01.png" ></div>
+			<div class="swiper-slide"><img src="/resources/images/mbanner02.png" ></div>
+			<div class="swiper-slide"><img src="/resources/images/mbanner03.png" ></div>
 			
 		</div>
 		<!-- Add Pagination -->
 		<div class="swiper-pagination"></div>
 		
 	</div>
-	<span style="position: absolute; bottom:300px; z-index: 3; margin-left: 600px;"> <img src="https://contents.kyobobook.co.kr/display/ico_welcome_marketing_8_64ccb3a5434949dfb0e6b5999329734f.svg"></span>
-	<span style="position: absolute; bottom:280px; z-index: 3; margin-left: 600px;"> 찜 많은책 </span>
-	<span style="position: absolute; bottom:300px; z-index: 3; margin-left: 800px;"> <img src="https://contents.kyobobook.co.kr/display/ico_welcome_marketing_17_4e179570dd0546119a85abad7dead372.svg"></span>
-	<span style="position: absolute; bottom:280px; z-index: 3; margin-left: 800px;"> 새로나온 책 </span>
-	<span style="position: absolute; bottom:300px; z-index: 3; margin-left: 1000px;"> <img src="https://contents.kyobobook.co.kr/display/ico_welcome_marketing_2_adc572c7ef364f42b6226059de30040d.svg"></span>
-	<span style="position: absolute; bottom:280px; z-index: 3; margin-left: 1000px;"> 에디터 픽 </span>
-	<span style="position: absolute; bottom:300px; z-index: 3; margin-left: 1200px;"> <img src="https://contents.kyobobook.co.kr/display/ico_welcome_marketing_4_88ab32b06bd44e0f8e473a4b0d946f60.svg"></span>
-	<span style="position: absolute; bottom:280px; z-index: 3; margin-left: 1200px;"> 이달의 책 </span>	
-	<span style="position: absolute; bottom:300px; z-index: 3; margin-left: 1400px;"> <img src="https://contents.kyobobook.co.kr/display/ico_welcome_marketing_9_e758aa5c7a13468da6dfa86057fb0905.svg"></span>
-	<span style="position: absolute; bottom:280px; z-index: 3; margin-left: 1400px;"> 추천 작가 </span>	
 	
-	<span style="margin-left: 350px; margin-top: 30px; font-size: 20px; font-weight: 700;">독서의 계절 가을, 떡잎서점과 함께♥ @)))))))))) 김밥 한줄과 함께♣</span>
-	<div style="margin-top: 30px;">
-		<span style="margin-left: 350px; "><img src="/resources/images/autumn1.jpg" style="width: 280px; height: 170px; margin-bottom: 40px; border-radius: 40px; "></span>
-		<span style="margin-left: 30px; "><img src="/resources/images/library.jpg" style="width: 280px; height: 170px; margin-bottom: 40px;border-radius: 40px;"></span>
-		<span style="margin-left: 30px; "><img src="/resources/images/autumn2.jpg" style="width: 280px; height: 170px; margin-bottom: 40px;border-radius: 40px;"></span>
-		<span style="margin-left: 30px; "><img src="/resources/images/book.jpg" style="width: 280px; height: 170px; margin-bottom: 40px;border-radius: 40px;"></span>
-	</div>	
+	
+	  <span id="comment" style="font-size: 20px; font-weight: 700;">독서의 계절 가을, 떡잎서점과 함께♥ @)))))))))) 김밥 한줄과 함께♣</span>
+	<div id="fourImg">
+      <span><img src="/resources/images/autumn1.jpg" style="width: 280px; height: 170px; margin-bottom: 40px; border-radius: 40px; "></span>
+      <span style="margin-left: 30px; "><img src="/resources/images/library.jpg" style="width: 280px; height: 170px; margin-bottom: 40px;border-radius: 40px;"></span>
+      <span style="margin-left: 30px; "><img src="/resources/images/autumn2.jpg" style="width: 280px; height: 170px; margin-bottom: 40px;border-radius: 40px;"></span>
+      <span style="margin-left: 30px; "><img src="/resources/images/book.jpg" style="width: 280px; height: 170px; margin-bottom: 40px;border-radius: 40px;"></span>
+   </div>  
 		<!-- 카테고리 -->
 				<div class="container" style="margin-bottom: 20px;">
 					
@@ -224,7 +235,7 @@ table td, table th {
 
 
 			<div class="container">
-				<table class="table">
+				<table class="table" id="targetSection">
 					<thead>
 						<tr>
 							<th class="thumbNail"></th>
