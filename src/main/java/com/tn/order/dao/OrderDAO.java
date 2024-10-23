@@ -77,6 +77,9 @@ public interface OrderDAO {
   // 스케줄러 작동시점 이후의 주문건 중 "배송완료"된 주문의 목록을 가져옴
   List<DeliveryComplete> findDeliveriesCompleted(Timestamp time);
   
+  // 바로 주문시 책정보 가져오기 위한 메서드
+  List<PaymentInfoVO> selectBookNoWithoutCartId(PaymentInfoDTO paymentInfoDTO) throws Exception;
+  
   
 //-----------------------------------------최미설-------------------------------------------------
 

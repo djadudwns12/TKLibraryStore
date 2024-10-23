@@ -149,9 +149,9 @@
 	</insert>
 	<insert id="insertRegisterAddress">
 		INSERT INTO Address (userId, receiver_name,
-		receiver_phone, address)
+		receiver_phone, address, request)
 		VALUES (#{registerDTO.userId},
-		#{registerDTO.userName}, #{registerDTO.phone}, #{address});
+		#{registerDTO.userName}, #{registerDTO.phone}, #{address}, '직접 받고 부재 시 문 앞');
 	</insert>
 
 	<select id="selectCompareId" resultType="int">

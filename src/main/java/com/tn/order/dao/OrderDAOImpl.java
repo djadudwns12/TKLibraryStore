@@ -58,6 +58,11 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 	
 	@Override
+	public List<PaymentInfoVO> selectBookNoWithoutCartId(PaymentInfoDTO paymentInfoDTO) throws Exception {
+		return ses.selectList(NS + ".selectOrderBookNoWithoutCartId" , paymentInfoDTO);
+	}
+	
+	@Override
 	public void insertBooks(List<PaymentInfoVO> bookNo) throws Exception {
 		ses.insert(NS + ".insertOrderBooks", bookNo);
 		

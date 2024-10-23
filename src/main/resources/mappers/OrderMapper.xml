@@ -33,6 +33,11 @@
 		collection="cartId" open="(" separator="," close=")" >#{Id}</foreach> AND userId = #{userId}
 	</select>
 	
+	 <select id="selectOrderBookNoWithoutCartId" parameterType="com.tn.order.model.dto.PaymentInfoDTO" resultType="com.tn.order.model.vo.PaymentInfoVO">
+		SELECT bookNo FROM BookList WHERE title = #{orderName}
+	</select>
+	
+	
 	<insert id="insertOrderBooks" parameterType="java.util.List">
 	    INSERT INTO OrderBook (orderNo, bookNo, qty) 
 	    VALUES 
