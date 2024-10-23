@@ -691,7 +691,7 @@ function showHide(){
 			</ul>
 		</div>
 	</div>
-	<!-- Humberger End -->
+	<!-- Humberger End myPage
 
 	<!-- Header Section Begin -->
 	<header class="header">
