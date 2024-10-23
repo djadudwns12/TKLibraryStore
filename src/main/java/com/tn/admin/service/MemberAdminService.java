@@ -29,4 +29,11 @@ public interface MemberAdminService {
 	// 관리자페이지-탈퇴한회원 목록을 불러오는 메서드
 	Map<String, Object> getUnregiMember(PagingInfoDTO pDTO, SearchCriteriaDTO searchCriteria, String sortBy) throws Exception;
 	Map<String, Object> getVisitorHistory() throws Exception;
+
+	boolean removeImg(String imgPath);
+
+	// 탈퇴요청 후 30일이 지난 회원 목록을 가져오는 메서드
+	List<String> findExpiredMember() throws Exception;
+
+
 }

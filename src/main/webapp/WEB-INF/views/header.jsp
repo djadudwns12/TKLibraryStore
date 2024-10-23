@@ -699,10 +699,10 @@ function showHide(){
 			<div class="row">
 				<div class="col-lg-3">
 					<div class="header__logo">
-						<a href="/"><img src="/resources/images/TKlogo.png" alt=""
-							style="width: 60px; height: 80px;"></a> <span
-							style="font-weight: 700; font-size: 25px; padding: 5px;">
-							떡잎 서점</span>
+						<a href="/"><img
+							src="/resources/images/TKlogo.png"
+							alt="" style="width: 60px; height: 80px;"></a>
+							<span style="font-weight: 700; font-size: 25px; padding: 5px; cursor:pointer;" onclick="location.href='/'">   떡잎 서점</span>
 					</div>
 				</div>
 				<div class="col-lg-6">
@@ -727,7 +727,7 @@ function showHide(){
 						<ul style="margin-right: -26px;">
 							<!-- 마이페이지 이동 -->
 							<li><a
-								href="${pageContext.request.contextPath}/member/mypage"><i
+								href="${pageContext.request.contextPath}/member/myPage"><i
 									class="fa fa-user"></i></a></li>
 
 							<!-- 관리자페이지이동 -->

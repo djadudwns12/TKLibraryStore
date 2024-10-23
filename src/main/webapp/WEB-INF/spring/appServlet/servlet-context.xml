@@ -66,8 +66,9 @@
 			<mapping path="/order/" />
 			<mapping path="/qa/qaList" />
 
-
-			
+			<mapping path="/admin/memberadmin" />
+			<mapping path="/admin/memberDetail" />
+			<mapping path="/admin/unregimember" />
 			<mapping path="/admin/productAdmin" />
 			<mapping path="/admin/registProduct" />
 			<mapping path="/admin/modifyProduct" />
@@ -75,7 +76,7 @@
 			<mapping path="/admin/home" />
 			
 			<mapping path="/member/edit"/>
-      		<mapping path="/member/mypage" />
+      		<mapping path="/member/myPage" />
       		<mapping path="/member/deletemember" />
       		<mapping path="/member/address" />
       		<mapping path="/member/modifyAddress" />

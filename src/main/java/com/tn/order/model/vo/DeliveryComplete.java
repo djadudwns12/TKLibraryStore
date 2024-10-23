@@ -1,4 +1,4 @@
-package com.tn.review.model.DTO;
+package com.tn.order.model.vo;
 
 import java.sql.Timestamp;
 
@@ -10,19 +10,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 @ToString
-@Builder
-public class ReviewDTO {
-	private int reviewNo;
-	private Timestamp reviewDate;
-	private String reviewWriter;
-	private String reviewContent;
-	private int reviewScore;
-	private int bookNo;
-	private int avgReviewScore;
-
+public class DeliveryComplete {
+    private String orderWho;
+    private int plannedPoint;
+    private int orderPK;
 }

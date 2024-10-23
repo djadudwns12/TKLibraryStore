@@ -298,7 +298,7 @@ function orderCancel(){
 	        success: function(data) {
 	        	console.log(data);	
 	        	if(data.result == true){
-	        		alert(checked.length+'개 주문 취소 완료');
+	        		alert(checked.length+'개 주문 취소 요청완료');
 	        		setOrderList(data.orderList)
 	        	}
 	        },
@@ -312,7 +312,12 @@ function setOrderList(orderList){
 	let inputHTML = '';
 	$.each(orderList,function(i,order){
 		inputHTML += '<tr>'
-		inputHTML += `<td><input type="checkbox" value="\${order.orderNo}" name="proCheck" class="ckOrder" onclick="checkallYN(this)"></td>`
+		if(order.orderStatus=='배송중' || order.orderStatus=='결제완료'){
+			inputHTML += `<td><input type="checkbox" value="\${order.orderNo}" name="proCheck" class="ckOrder" onclick="checkallYN(this)"></td>`
+		}else{
+			inputHTML += `<td></td>`
+		}
+		
 		inputHTML += `<td>\${order.orderNo}</td>`
 		let orderDate =	formatDate(order.orderDate);
 		inputHTML += `<td>\${orderDate}</td>`
@@ -350,7 +355,7 @@ function formatDate(longDate) {
 			<!-- 최근 주문 내역 -->
 			<div class="col">
 				<h4>주문내역</h4>
-				<button class='btn btn-info' onclick="orderCancel()" style="float: right; margin-bottom: 15px;">주문취소</button>
+				<button class='btn btn-info' onclick="orderCancel()" style="float: right; margin-bottom: 15px;">주문취소요청</button>
 				<table class="table">
 					<thead>
 						<tr>
@@ -367,7 +372,11 @@ function formatDate(longDate) {
 						<!-- 주문 리스트 가져오기 -->
 						<c:forEach var="order" items="${orderList}">
 							<tr>
-								<td><input type="checkbox" value="${order.orderNo}" name="proCheck" class="ckOrder" onclick="checkallYN(this)"></td>
+								<td>
+									<c:if test="${order.orderStatus == '배송중' || order.orderStatus == '결제완료'}">							
+										<input type="checkbox" value="${order.orderNo}" name="proCheck" class="ckOrder" onclick="checkallYN(this)">
+									</c:if>
+								</td>
 								<td>${order.orderNo}</td>
 								<td>${order.orderDate}</td>
 								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${order.totalPay}" /></td>

@@ -141,61 +141,61 @@ body {
 	<c:import url="../header.jsp"></c:import>
 
 	<div class="container">
-		<div onclick="location.href='/member/insertAddress'"
-			style="display: flex; justify-content: flex-end; align-items: center;">
-			<img src="/resources/images/plus.png" style="width: 20px;" /> <span>배송지
-				추가하기</span>
-		</div>
-		<div class="addressList">
-			<div class="NAddress">
-				<!-- isDefault가 'N'인 항목을 먼저 출력 -->
-				<c:forEach var="address" items="${address}">
-					<input type="hidden" name="addressId" id="addressId" value="${address.addressId}">
-					<c:if test="${address.isDefault == 'N'}">
-						<div class="AddressName" id="addrName">
-							<strong>${address.address_key}</strong> 
-						</div>
-						<div><span class="badge rounded-pill bg-primary" style="color: white;">기본 배송지</span></div>
-						<div class="detailAddress">
-							<div>${address.receiver_name}/${address.receiver_phone}</div>
-							<div>${address.address}</div>
-							<div>${address.request}</div>
-						</div>
-						<div class="btn">
-							<div class="badge rounded-pill bg-success" style="color: white;"
-								onclick="editAddress(${address.addressId});">수정</div>
-							<div class="badge rounded-pill bg-danger" style="color: white;"
-								onclick="showRemoveModal(${address.addressId});">삭제</div>
-						</div>
-					</c:if>
-				</c:forEach>
-			</div>
+    <div onclick="location.href='/member/insertAddress'"
+        style="display: flex; justify-content: flex-end; align-items: center;">
+        <img src="/resources/images/plus.png" style="width: 20px;" /> <span>배송지 추가하기</span>
+    </div>
+    <div class="addressList">
+        <div class="NAddress">
+            <!-- isDefault가 'N'인 항목을 먼저 출력 -->
+            <c:forEach var="address" items="${address}">
+                <input type="hidden" name="addressId" id="addressId" value="${address.addressId}">
+                <c:if test="${address.isDefault == 'N'}">
+                    <div class="AddressName" style="display: flex; align-items: center;">
+                        <strong style="margin-right:5px;">${address.address_key}</strong>
+                        <span class="badge rounded-pill bg-primary" style="color: white;">기본 배송지</span>
+                    </div>
+                    <div class="detailAddress">
+                        <div>${address.receiver_name}/${address.receiver_phone}</div>
+                        <div>${address.address}</div>
+                        <div>${address.request}</div>
+                    </div>
+                    <div class="btn" style="display: flex; justify-content: flex-end;">
+                        <div class="badge rounded-pill bg-success" style="color: white;"
+                            onclick="editAddress(${address.addressId});">수정</div>
+                        <div class="badge rounded-pill bg-danger" style="color: white;"
+                            onclick="showRemoveModal(${address.addressId});">삭제</div>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div>
 
-			<div class="YAddress">
-				<!-- isDefault가 'Y'인 항목을 그 다음에 출력 -->
-				<c:forEach var="address" items="${address}">
-					<input type="hidden" name="addressId" id="addressId" value="${address.addressId}">
-					<c:if test="${address.isDefault == 'Y'}">
-						<div class="AddressName" id="addrName">
-							<strong>${address.address_key}</strong> 
-						</div>
-						<div><span class="badge rounded-pill bg-secondary" style="color: white;">일반 배송지</span></div>
-						<div class="detailAddress">
-							<div>${address.receiver_name}/${address.receiver_phone}</div>
-							<div>${address.address}</div>
-							<div>${address.request}</div>
-						</div>
-						<div class="btn">
-							<div class="badge rounded-pill bg-success" style="color: white;"
-								onclick="editAddress(${address.addressId});">수정</div>
-							<div class="badge rounded-pill bg-danger" style="color: white;"
-								onclick="showRemoveModal(${address.addressId});">삭제</div>
-						</div>
-					</c:if>
-				</c:forEach>
-			</div>
-		</div>
-	</div>
+        <div class="YAddress">
+            <!-- isDefault가 'Y'인 항목을 그 다음에 출력 -->
+            <c:forEach var="address" items="${address}">
+                <input type="hidden" name="addressId" id="addressId" value="${address.addressId}">
+                <c:if test="${address.isDefault == 'Y'}">
+                    <div class="AddressName" style="display: flex; align-items: center;">
+                        <strong style="margin-right:5px;">${address.address_key}</strong>
+                        <span class="badge rounded-pill bg-secondary" style="color: white;">일반 배송지</span>
+                    </div>
+                    <div class="detailAddress">
+                        <div>${address.receiver_name}/${address.receiver_phone}</div>
+                        <div>${address.address}</div>
+                        <div>${address.request}</div>
+                    </div>
+                    <div class="btn" style="display: flex; justify-content: flex-end;">
+                        <div class="badge rounded-pill bg-success" style="color: white;"
+                            onclick="editAddress(${address.addressId});">수정</div>
+                        <div class="badge rounded-pill bg-danger" style="color: white;"
+                            onclick="showRemoveModal(${address.addressId});">삭제</div>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div>
+    </div>
+</div>
+
 	
 	 <!-- The Modal -->
      <div class="modal" id="myModal" style="display: none;">
@@ -204,8 +204,9 @@ body {
         
      			<!-- Modal Header -->
      			<div class="modal-header">
-     				<h4 class="modal-title">MiniProject</h4>
-     				<button type="button" class="btn-close modalCloseBtn" data-bs-dismiss="modal"></button>
+     				<span class="modal-title"
+							style="font-weight: 600; font-size: x-large;">떡잎 서점</span>
+
      			</div>
         
      			<!-- Modal body -->

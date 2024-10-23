@@ -6,10 +6,26 @@
   <mapper namespace="com.tn.mappers.BookMapper">
   
   <!-- 전체 책 리스트를 출간일 내림차순 정렬해 가져오는 쿼리문 -->
+  <!-- 리뷰 갯수 가져오도록 쿼리문 수정했음.(김가윤) -->
   <select id="getAllBooklist" resultType = "com.tn.booklist.model.vo.BooklistVO">
-  	SELECT bookNo, thumbNail, title, author, publisher, pubDate, price, salePrice, introduction, zzim, reviewCnt
-	FROM BookList order by pubDate desc 
-	limit #{startRowIndex}, #{viewPostCntPerPage} 
+  	SELECT 
+        b.bookNo, 
+        b.thumbNail, 
+        b.title, 
+        b.author, 
+        b.publisher, 
+        b.pubDate, 
+        b.price, 
+        b.salePrice, 
+        b.introduction, 
+        b.zzim, 
+        (SELECT COUNT(*) FROM Review r WHERE r.bookNo = b.bookNo) AS reviewCnt
+    FROM 
+        BookList b
+    ORDER BY 
+        b.pubDate DESC 
+    LIMIT 
+        #{startRowIndex}, #{viewPostCntPerPage} 
   </select>
  
   <!-- 전체 책의 개수를 가져오는 쿼리문 -->
@@ -20,6 +36,13 @@
 	<!-- 책의 상세정보를 가져오는 쿼리문 -->
 	<select id="selectBookDetailInfoByBookNo" resultType="com.tn.booklist.model.vo.BookDetailInfo">
 		select * from BookList where bookNo = #{bookNo}
+	</select>
+	
+	<!-- 유저의 멤버십 등급에 따른 적립률을 가져오는 쿼리문 -->
+	<select id="getPointRateByUserId" resultType = "double">
+		select cRate 
+		from Member m, ClassDef c 
+		where m.userClass = c.className and m.userId = #{userId}
 	</select>
 	
 	<!-- ====================================================엄영준============================================================= -->

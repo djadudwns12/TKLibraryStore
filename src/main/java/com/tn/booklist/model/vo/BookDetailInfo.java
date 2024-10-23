@@ -38,8 +38,8 @@ public class BookDetailInfo {
 	private String address;
 	private String isDefault;
 	
-	private int pWhy;
-	private int pScore;
+	private String userClass;
+	private Double cRate;
 	
 	private int reviewNo;
 	private String reviewWriter;

@@ -243,6 +243,7 @@ table td, table th {
 
 							<tr>
 								<td
+
 									onclick="location.href='/bookList/bookDetail?bookNo=${product.bookNo}';"><img
 									src="${product.thumbNail}" style="width: 80px; height: 100px;"></td>
 								<td

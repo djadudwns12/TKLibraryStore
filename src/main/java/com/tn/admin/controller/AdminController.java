@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -710,8 +711,10 @@ public class AdminController {
 	// 회원정보 삭제
 	@RequestMapping(value = "/removeMemberInfo", method = RequestMethod.POST, produces = "application/text; charset=UTF-8;")
 	@ResponseBody
-	public String removeMemberInfo(@RequestBody String[] deletedMembers) {
 
+	@Transactional
+	public String removeMemberInfo (@RequestBody String[] deletedMembers) {
+		
 		try {
 			if (deletedMembers.length > 0) {
 				System.out.println("선택회원삭제 : " + deletedMembers.toString());
@@ -722,28 +725,16 @@ public class AdminController {
 					qaService.removeUndefinedQA(deletedMember);
 					// 결제내역 업데이트
 					oService.updateUnregisterInfo(deletedMember);
+					// 사진 삭제
+					String imgPath = mService.getMemberInfo(deletedMember).getUserImg();
+					mService.removeImg(imgPath); 
 					// 회원정보 삭제
 					mService.removeMemberInfo(deletedMember);
 
-//					// 리뷰삭제
-//					if(rService.removeUndefinedReview(deletedMember)) {
-//						System.out.println("선택한 회원 리뷰 삭제!!!");
-//					}	
-//					// 문의글 삭제
-//					if(qaService.removeUndefinedQA(deletedMember)) {
-//						System.out.println("선택한 회원 QA삭제!!!");
-//					}	
-//					// 결제내역 업데이트
-//					if(oService.updateUnregisterInfo(deletedMember)) {
-//						System.out.println("선택한 회원 주문정보 수정!!!");
-//					}
-//					// 회원정보 삭제
-//					if(mService.removeMemberInfo(deletedMember)) {
-//						System.out.println("선택한 회원 삭제!!!");
-//					}
+
 				}
 			} else {
-				System.out.println("안 되네요..................");
+				System.out.println("회원삭제 실패");
 			}
 
 		} catch (Exception e) {

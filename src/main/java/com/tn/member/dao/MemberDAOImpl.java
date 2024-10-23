@@ -82,6 +82,23 @@ public class MemberDAOImpl implements MemberDAO  {
 	}
 	
 
+	@Override
+	public int recordUnregister(String userId) throws Exception {
+		return sess.insert(NS + ".recordUnregister", userId);
+	}
+
+	
+	@Override
+	public void validateAccount(String userId) throws Exception {
+
+		sess.update(NS + ".validateAccount", userId);
+	}
+	
+	@Override
+	public void removeUnregiTable(String userId) {
+
+		sess.delete(NS + ".removeUnregiTable", userId);
+	}
 	//=============================최미설========================================//
 
 	
@@ -170,6 +187,16 @@ public class MemberDAOImpl implements MemberDAO  {
 		
 		return sess.delete(NS + ".removeAddress", addressId);
 	}
+
+	@Override
+	public double getPointRate(String userId) throws Exception {
+		
+		return sess.selectOne(NS + ".getPointRate", userId);
+	}
+
+
+
+
 
 
 	

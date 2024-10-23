@@ -2,6 +2,7 @@ package com.tn.member.controller;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -56,8 +57,13 @@ import com.tn.member.model.vo.ProfileResponseWithoutData;
 import com.tn.member.model.vo.ImgFileVODTO;
 import com.tn.member.service.MemberService;
 import com.tn.member.service.SendMailService;
+import com.tn.order.dao.OrderDAO;
+import com.tn.order.model.vo.OrderBookVO;
 import com.tn.order.model.vo.OrderVO;
 import com.tn.order.service.OrderService;
+import com.tn.qa.model.vo.QAVO;
+import com.tn.review.model.VO.ReviewVO;
+import com.tn.review.service.ReviewService;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -87,6 +93,9 @@ public class MemberController {
 	
 	@Autowired
 	private ProfileFileProcess fileProcess;
+	
+	@Autowired
+	private ReviewService rService;
 	
 // -------------------------------- 김가윤 --------------------------------
 	
@@ -220,7 +229,7 @@ public class MemberController {
 	 *
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public void login(@RequestParam("userId") String userId, @RequestParam("userPwd") String userPwd,
+	public void login(@RequestParam("userId") String userId, @RequestParam("userPwd") String userPwd, 
 			HttpSession session,Model model) {
 		System.out.println(userId + ": " + userPwd);
 		// 로그인 시키는 메서드
@@ -235,6 +244,9 @@ public class MemberController {
 				// 방문자 수에 추가하는 메서드
 				boolean addVisitHistory =  mService.addVisitHistory();
 				System.out.println("방문자 추가 성공여부 : "+ addVisitHistory);
+				
+				// 탈퇴요청 후에 30일 이내에 로그인을 시도할 경우 계정 유효화 - 최미설
+				mService.validateAccount(userId);
 				
 			} else { // 로그인 실패시
 				System.out.println("로그인 실패");
@@ -317,21 +329,27 @@ public class MemberController {
 	
 //-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
 
-	@RequestMapping(value = "/mypage")
+	@RequestMapping(value = "/myPage")
 	public String myPage(MemberDTO loginMember,Model model,HttpSession sess) {
 
 		try {
+			
+			
+			loginMember.setUserId(((MemberVO)sess.getAttribute("loginMember")).getUserId());
 			// 회원정보를 불러오는 부분? 근데 왜 세션에서 불러옴? 뷰단에서 세션을 불러도될것으로 보임
 			model.addAttribute("loginMember", (MemberVO) sess.getAttribute("loginMember"));
 			
 			// 회원의 주문목록을 불러오는 메서드
-			List<BooklistVO> list = oService.getRecentOrderList(loginMember);
+			List<OrderBookVO> list = oService.getRecentOrderList(loginMember);
 			
 			// 회원의 찜목록을 불러오는 메서드
 			List<BooklistVO> zzimList = pService.getZzimList(loginMember);
 			
 			// 회원의 포인트 적립내역을 가지고 오는 메서드
 			List<PointLogVO> pointList = mService.getPointLog(loginMember);
+			
+			// 회원의 리뷰 목록을 불러오는 메서드 (이아림)
+			List<ReviewVO> review = rService.getMyReview(loginMember);
 			
 			
 			
@@ -343,6 +361,7 @@ public class MemberController {
 			model.addAttribute("zzimList", zzimList);
 			model.addAttribute("pointList", pointList);
 			model.addAttribute("status", "editSuccess");
+			model.addAttribute("review", review);	//(이아림)
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -352,35 +371,61 @@ public class MemberController {
 	}
 //-------------------------------------------------------------(엄영준) END-----------------------------------------------------------------------------------
 
+	//----------------------------------------- 이아림 (Start) ------------------------------------------
+	
+	@RequestMapping(value = "/myReview", method = RequestMethod.GET)
+	public void my(HttpSession ses, Model model) {
+		
+		// user id불러오기
+		String userId = ((MemberVO)ses.getAttribute("loginMember")).getUserId();
+		
+		// 내가 쓴 리뷰 가져오기 
+		List<ReviewVO> list = new ArrayList<ReviewVO>();
+		try {
+			list = rService.getMyReviewList(userId);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		
+		logger.info(list.toString());
+		model.addAttribute("list", list);
+		
+		
+	}
+	//----------------------------------------- 이아림 (end) ------------------------------------------
 
 	// -----------------------------------------최미설-------------------------------------------------
 
 	// 회원정보 불러오기
 	@RequestMapping("/edit")
-	public void getEditMember(HttpServletRequest request) {
+	public void getEditMember(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
-		MemberVO loginMember = (MemberVO)session.getAttribute("loginMember");
-//		MemberVO loginMember = mService.getEditMemberInfo(((MemberVO)ses.getAttribute("loginMember")).getUserId()); // HttpSession ses
+		MemberVO loginMember = null;
+		MemberVO editMember= null;
+		loginMember = (MemberVO)session.getAttribute("loginMember");
 		String userId = loginMember.getUserId();
 		try {
-			MemberVO editMember = mService.getEditMemberInfo(userId);
+			editMember = mService.getEditMemberInfo(userId);
+			System.out.println(editMember.toString());
+			model.addAttribute("loginMember", editMember);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 	// 회원정보 수정 > 저장
 	@RequestMapping("/saveMemberEdit")
-	public String modifyInfoSave (MemberVO editMember, RedirectAttributes redirectAttributes) {
-		try {
-			if(mService.saveEditInfo(editMember)) {
-				redirectAttributes.addAttribute("editStatus", "success");
-				return "/member/myPage";
-			}
-		} catch (Exception e) {
-			redirectAttributes.addAttribute("editStatus", "fail");
-			e.printStackTrace();
-		}
-		return "redirect:/member/edit";
+	public String modifyInfoSave (MemberVO editMember) {
+	    try {
+	        if (mService.saveEditInfo(editMember)) {
+	            return "redirect:/member/mypage";
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return "redirect:/member/edit";
 	}
 	
 	// 회원 이미지 변경>저장	// 쪼개져서온 'file' 파일을 재조립해주는 인터페이스 MultipartFile, @RequestParam로 save
@@ -437,7 +482,7 @@ public class MemberController {
 	public ResponseEntity<String> sendAuthMail(@RequestParam("tmpEmail") String tmpEmail, HttpSession session) {
 		String authCode = UUID.randomUUID().toString();
 		try {
-//			new SendMailService().sendMail(tmpEmail, authCode); // 이메일 전송 메서드 구현 완료... 
+			new SendMailService().sendMail(tmpEmail, authCode); // 이메일 전송 메서드 구현 완료... 
 			session.setAttribute("emailAuthCode", authCode);
 			System.out.println("인증코드 : " + authCode);
 			return new ResponseEntity<String>("emailAuthSend", HttpStatus.OK);
@@ -497,27 +542,35 @@ public class MemberController {
 	public void deleteMember() {
 	}
 	
-	@RequestMapping("/deleteconfirm")
-	public String deleteMember(HttpSession ses) {
-		System.out.println("MemberController deleteMember() : " + ses.getAttribute("loginMember"));
-		// 회원수정페이지 하단에 '회원탈퇴 버튼을 눌러서 페이지 이동
-		// 회원탈퇴 페이지에서 안내문 하단의 체크박스 체크 후 버튼을 누르면 회원탈퇴 처리
-		try {
-			MemberVO memberVO = (MemberVO)ses.getAttribute("loginMember");
-			String userId = memberVO.getUserId();
-			if(oService.checkRemainOrder(userId)) {
-				System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제요청..");
-				mService.deleteMember(userId);
-				logout(ses); // 로그아웃 및 세션에 저장된 회원정보 무효화
-				return "redirect:/";
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace(); 
-			return "redirect:/member/loginPage";
-		}
-		return "redirect:/";
-	}
+	@Autowired
+	private OrderDAO oDao;
+	
+    @RequestMapping(value = "/deleteconfirm", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    public ResponseEntity<Map<String, String>> deleteMember(HttpSession ses) {
+        Map<String, String> response = new HashMap<>();
+
+        try {
+            MemberVO memberVO = (MemberVO) ses.getAttribute("loginMember");
+            String userId = memberVO.getUserId();
+            System.out.println("배송완료전인 주문건수 : " + oDao.checkRemainOrder(userId));
+
+            if (oService.checkRemainOrder(userId)) {
+                System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제요청..");
+                mService.deleteMember(userId);
+                logout(ses); // 로그아웃 및 세션에 저장된 회원정보 무효화
+                
+                response.put("status", "success");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                response.put("status", "fail");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status", "error");
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 	
 	
 // -----------------------------------------박근영-------------------------------------------------

@@ -1,21 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
 <head>
+<title>회원관리</title>
+<!--  <link rel="stylesheet" href="resources/template/css/adminlte.css"> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://kit.fontawesome.com/b948e77617.js" crossorigin="anonymous"></script>
 <!-- Load icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Google Fonts에서 Gowun Batang 폰트 불러오기 -->
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
-<!--  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">-->
-<meta charset="UTF-8">
-<title>회원관리페이지</title>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 	<div class="app-wrapper">
@@ -119,7 +115,7 @@
 				<ul class="pagination">
 					<c:if test="${param.pageNo > 1 }">
 						<li class="page-item"><a class="page-link" href="/admin/memberadmin?pageNo=1&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}"> << </a></li>
-						<li class="page-item"><a class="page-link" href="/admin/memberadmin?pageNo=${pagingInfo.pageNo-1} &pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
+						<li class="page-item"><a class="page-link" href="/admin/memberadmin?pageNo=${pagingInfo.pageNo-1}&pagingSize=${param.pagingSize}&searchType=${search.searchType}&searchWord=${search.searchWord}&ra=${param.ra}">Previous</a></li>
 					</c:if>
 
 					<c:forEach var="i" begin="${pagingInfo.startPageNoCurBlock }"
@@ -152,14 +148,11 @@
 
 
 <style>
-<!--폰트 영역 -->
 * {
    font-family: "Gowun Batang", serif;
-   font-weight: 550;
+   font-weight: 600;
    font-style: normal;
 }
-
-
 .page-item .page-link {
 	color: #999;
 	background-color: #343a40;

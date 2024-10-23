@@ -14,6 +14,8 @@ public interface BooklistService {
 
 	public List<BookDetailInfo> read(int bookNo, String ipAddr) throws Exception;
 	
+	public double getPointRate(String userId) throws Exception;
+	
 //	====================================================엄영준=============================================================
 	/**
 	 * @param dto 

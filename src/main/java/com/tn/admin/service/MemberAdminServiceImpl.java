@@ -1,5 +1,8 @@
 package com.tn.admin.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -157,6 +160,31 @@ public class MemberAdminServiceImpl implements MemberAdminService {
 		return pi;
 	}
 	
+	// 회원탈퇴요청 회원의 프로필이미지 삭제
+	@Override
+	public boolean removeImg(String imgPath) {
+		boolean result = false; 
+		imgPath = "D:\\Project\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\TKLibraryStore"+imgPath;
+				
+		try {
+			if(Files.deleteIfExists(Paths.get(imgPath))) {
+				result=true;
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+		}
+		return result;
+	}
+	
+	// 탈퇴요청 후 30일 지난 회원 리스트
+	@Override
+	public List<String> findExpiredMember() throws Exception {
+		
+		return dao.findExpiredMember();
+	}
+// ==============================================최미설====================================================================//	
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -178,6 +206,9 @@ public class MemberAdminServiceImpl implements MemberAdminService {
 		
 		return resultMap;
 	}
+
+
+
 	
 
 }

@@ -1,6 +1,7 @@
 package com.tn.order.dao;
 
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Repository;
 
 import com.tn.order.model.dto.PaymentInfoDTO;
 import com.tn.order.model.vo.AddressVO;
+import com.tn.order.model.vo.DeliveryComplete;
 import com.tn.order.model.vo.OrderBookListVO;
+import com.tn.order.model.vo.OrderBookVO;
 import com.tn.order.model.vo.OrderDetailVO;
 import com.tn.order.model.vo.PaymentInfoVO;
 import com.tn.booklist.model.vo.BooklistVO;
@@ -136,7 +139,7 @@ public class OrderDAOImpl implements OrderDAO {
 
 //-----------------------------------------엄영준-------------------------------------------------
 	@Override
-	public List<BooklistVO> selectRecentOrderList(MemberDTO loginMember) throws Exception {
+	public List<OrderBookVO> selectRecentOrderList(MemberDTO loginMember) throws Exception {
 		
 		return ses.selectList(NS+".selectRecentOrderList", loginMember);
 	}
@@ -169,10 +172,11 @@ public class OrderDAOImpl implements OrderDAO {
 
 //-----------------------------------------최미설-------------------------------------------------
 	@Override
-	public int updatePoint(String userId, OrderVO sinOrder) throws Exception {
+	public int updatePoint(String userId, int plannedPoint) throws Exception {
 		Map<String, Object> params = new HashMap<>();
 		params.put("userId", userId);
-		params.put("orderNo", sinOrder.getOrderNo());
+		params.put("plannedPoint", plannedPoint);
+
 		
 		return ses.update(NS + ".updatePoint", params);
 	}
@@ -183,11 +187,11 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 		
 	@Override
-	public int recordPointLog(String userId, OrderVO sinOrder) throws Exception {
+	public int recordPointLog(String userId, int plannedPoint, int orderNo) throws Exception {
 		Map<String, Object> params = new HashMap<>();
 		params.put("userId", userId);
-		params.put("pWhy", sinOrder.getOrderNo());
-		params.put("pScore", sinOrder.getPlannedPoint());
+		params.put("pWhy",orderNo);
+		params.put("pScore", plannedPoint);
 		
 		return ses.insert(NS + ".recordPointLog", params);
 	}	
@@ -202,6 +206,14 @@ public class OrderDAOImpl implements OrderDAO {
 	public List<OrderVO> checkRemainOrder(String deletedMember) throws Exception {
 		return ses.selectList(NS + ".checkRemainOrder", deletedMember);
 	}
-//-----------------------------------------최미설-------------------------------------------------
 
+	@Override
+	public List<DeliveryComplete> findDeliveriesCompleted(Timestamp time) {
+		return ses.selectList(NS + ".findDeliveriesCompleted", time);
+	}
+
+
+
+
+//-----------------------------------------최미설-------------------------------------------------
 }

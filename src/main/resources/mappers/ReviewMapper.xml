@@ -2,43 +2,79 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="com.tn.mapper.ReviewMapper">
-  <!-- ===================================== 최미설 ===================================== -->
-  <select id="getRecentReviewForAdmin" resultType="com.tn.review.model.VO.ReviewVO">
-	SELECT r.*, b.title, b.thumbNail 
-	FROM Review r 
-	LEFT JOIN BookList b ON b.bookNo = r.bookNo 
-	WHERE r.reviewWriter = #{userId} 
-	ORDER BY r.reviewDate DESC 
-	LIMIT 5;
+<mapper namespace="com.tn.mapper.ReviewMapper">
+	<!-- ===================================== 최미설 ===================================== -->
+	<select id="getRecentReviewForAdmin"
+		resultType="com.tn.review.model.VO.ReviewVO">
+		SELECT r.*, b.title, b.thumbNail
+		FROM Review r
+		LEFT JOIN BookList b ON b.bookNo = r.bookNo
+		WHERE r.reviewWriter = #{userId}
+		ORDER BY r.reviewDate DESC
+		LIMIT 5;
+	</select>
+	<!-- 회원탈퇴 시 작성한 리뷰를 지우는 쿼리문 -->
+	<delete id="removeUndefinedReview">
+		delete from Review where reviewWriter=#{deletedMember}
+	</delete>
+	<!-- ===================================== 최미설 ===================================== -->
+
+	<insert id="insertNewReview">
+		INSERT INTO Review (reviewWriter, reviewContent, reviewDate, reviewScore,
+		bookNo)
+		Values (#{reviewWriter}, #{reviewContent}, #{reviewDate}, #{reviewScore},
+		#{bookNo})
+	</insert>
+
+	<select id="starRatingAvg" resultType="float">
+		SELECT ROUND(AVG(reviewScore), 1)
+		from Review
+		where bookNo = #{bookNo}
+	</select>
+
+	<!-- 김가윤 -->
+
+	<!-- bookNo에 달린 리뷰 리스트를 가져오는 쿼리문 -->
+	<select id="getReviewWithBookNo"
+		resultType="com.tn.review.model.DTO.ReviewDTO">
+		select * from Review where bookNo = #{bookNo} order by reviewNo
+	</select>
+
+	<insert id="insertReviewDTO">
+		insert into Review (reviewWriter, reviewContent, reviewScore, bookNo)
+		value (#{reviewWriter}, #{reviewContent}, #{reviewScore}, #{bookNo})
+	</insert>
+
+	<update id="updateReview">
+		update Review set reviewContent = #{reviewContent}, reviewScore =
+		#{reviewScore} where reviewNo = #{reviewNo}
+	</update>
+
+	<delete id="deleteReview">
+		delete from Review where reviewNo = #{reviewNo}
+	</delete>
+
+	<select id="reviewCnt" resultType="int">
+		select count(*) from Review where bookNo = #{bookNo}
+	</select>
+
+	<select id="getAverageReviewScore" resultType="int">
+		SELECT FLOOR(AVG(reviewScore)) AS averageReviewScore
+		FROM Review
+		WHERE bookNo = #{bookNo};
+	</select>
+
+<!--  ====================== 이아림(start) ====================== -->
+  
+  <!-- 마이페이지에 내가 쓴 리뷰를 가져오는 쿼리문 -->
+  <select id="getMyReview" resultType = "com.tn.review.model.VO.ReviewVO">
+  	select reviewNo, reviewWriter, reviewContent, reviewDate, reviewScore, bookNo 
+  	from Review r left join Member m
+  	on r.reviewWriter = m.userId
+  	where userId = #{userId};
+  
   </select>
-  <!-- 회원탈퇴 시 작성한 리뷰를 지우는 쿼리문 -->
-  <delete id="removeUndefinedReview">
-  	delete from Review where reviewWriter=#{deletedMember}
-  </delete>
-  <!-- ===================================== 최미설 ===================================== -->
-  
-  <insert id="insertNewReview">
-  	INSERT INTO Review (reviewWriter, reviewContent, reviewDate, reviewScore, bookNo) 
-  	Values (#{reviewWriter}, #{reviewContent}, #{reviewDate}, #{reviewScore}, #{bookNo})
-  </insert>
-  
-  <select id="starRatingAvg" resultType="float">
-  	SELECT ROUND(AVG(reviewScore), 1)
-  	from Review 
-  	where bookNo = #{bookNo}
-  </select>
-  
-  <!-- 김가윤 -->
-    
-  <!-- bookNo에 달린 리뷰 리스트를 가져오는 쿼리문 -->
-  <select id="getReviewWithBookNo" resultType="com.tn.review.model.DTO.ReviewDTO">
-  	select * from Review where bookNo = #{bookNo}
-  </select>
-  
-  <insert id="insertReviewDTO">
-  	insert into Review (reviewWriter, reviewContent, reviewScore, bookNo) 
-  	value (#{reviewWriter}, #{reviewContent}, #{reviewScore}, #{bookNo})
-  </insert>
-  
-  </mapper>
+
+<!-- ====================== 이아림(end) ====================== -->
+
+</mapper>
