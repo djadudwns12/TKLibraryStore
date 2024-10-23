@@ -359,6 +359,7 @@ span.addressModalClose {
 <body>
 
 <!-- header -->
+	
    <!-- Page Preloder -->
    <div id="preloder">
       <div class="loader"></div>
@@ -1072,6 +1073,7 @@ async function requestPayment() {
 
 
 </script>
+
 </body>
 <!-- header, footer -->
 <!-- Js Plugins -->
