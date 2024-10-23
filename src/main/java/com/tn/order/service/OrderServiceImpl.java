@@ -64,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
 		
 		
 		for (AddressVO address : addressList) {
-			if(address.getIsDefault().equals("Y")) {
+			if(address.getIsDefault().equals("N")) {
 				defaultAddress = address;
 				break;
 			}

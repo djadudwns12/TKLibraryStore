@@ -29,7 +29,6 @@ public class ReviewController {
 	@PostMapping(value="/insertReview", produces = "application/text; charset=UTF-8;")
 	public ResponseEntity<String> insertReview(@RequestBody ReviewDTO reviewDTO, HttpSession session) {
 		MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
-		System.out.println("리뷰 작성한 유저 아이디 : " + loginMember.getUserId());
 		
 		reviewDTO.setReviewWriter(loginMember.getUserId());
 		

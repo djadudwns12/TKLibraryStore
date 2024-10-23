@@ -214,7 +214,6 @@ public class BookListController {
 		int expectedPointRate = 0;
 
 	         String ipAddr = GetClientIPAddr.getClientIP(request);	         
-	         System.out.println(ipAddr + "가 " + bookNo + "번 책 정보를 검색한다!!");
 	         
 	         if (request.getRequestURI().contains("/bookDetail")) {
 	        	 	

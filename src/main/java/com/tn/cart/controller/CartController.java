@@ -34,7 +34,6 @@ import com.tn.member.model.vo.MemberVO;
 @RequestMapping("/cart")
 public class CartController {
 	
-	// Log�� ���� �� �ֵ��� �ϴ� ��ü
 	private static Logger logger = LoggerFactory.getLogger(CartController.class);
 	
 	@Autowired
@@ -46,7 +45,6 @@ public class CartController {
 		ResponseEntity result = null;
 		
 		String userId = ((MemberVO)sess.getAttribute("loginMember")).getUserId();
-		System.out.println("현재 페이지에 들어온 유저의 아이디 : " + userId);
 		
 		try {
 			List<CartDTO> list = cService.getCartList(userId);
@@ -63,7 +61,6 @@ public class CartController {
 	@PostMapping("/deleteCart")
 	@ResponseBody
 	public Map<String, Object> deleteCart(@RequestParam("cartId") String cartId,HttpSession session) {
-	    System.out.println("���� ��û����: " + cartId); // �α� �߰�
 	    Map<String, Object> response = new HashMap<>();
 	    
 	    try {
@@ -73,7 +70,7 @@ public class CartController {
 	        response.put("CartCnt", cartCount);
 
 	    } catch (Exception e) {
-	        e.printStackTrace(); // ���� �α� �߰�
+	        e.printStackTrace();
 	        response.put("success", false);
 	    }
 	    return response;
@@ -84,16 +81,13 @@ public class CartController {
 	public ResponseEntity<Map<String, Object>> updateQuantity(@RequestParam int cartId, @RequestParam int qty) {
 	    Map<String, Object> response = new HashMap<>();
 	    
-	    // DB���� cartId�� �ش��ϴ� �׸��� ã�Ƽ� ���� ������Ʈ ������ �����մϴ�.
 	    boolean success = false; // �ʱⰪ ����
 	    try {
 	        success = cService.updateQuantity(cartId, qty); // ���� ȣ��
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        // ���� �߻� �� success�� false�� ����
 	    }
 
-	    // success �� Ȯ��
 	    if (success) {
 	        response.put("success", true);
 	    } else {

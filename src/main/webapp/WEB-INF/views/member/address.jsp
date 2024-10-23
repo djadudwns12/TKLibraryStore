@@ -142,7 +142,7 @@ body {
 
 	<div class="container">
     <div onclick="location.href='/member/insertAddress'"
-        style="display: flex; justify-content: flex-end; align-items: center;">
+        style="display: flex; justify-content: flex-end; align-items: center; cursor:pointer;">
         <img src="/resources/images/plus.png" style="width: 20px;" /> <span>배송지 추가하기</span>
     </div>
     <div class="addressList">
