@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -15,20 +15,21 @@
 <title>떡잎서점 상세페이지</title>
 <link rel="icon" href="/resources/images/TKlogo.png" type="image/png">
 <link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 
 
 
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+   src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
+   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+   rel="stylesheet">
 <script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <script>
+   
 	$(function() {
 		var modifyModal = $("#modifyModal");
 		var deleteModal = $("#deleteModal");
@@ -467,52 +468,52 @@
 			bookList.add(book);
 			// set를 객체로 저장하는 함수(JSON.stringify(Array.from(bookList)))
             localStorage.setItem(userId+"_localbook", JSON.stringify(Array.from(bookList)));
-		}else{
-			console.log(localStorage.getItem(userId+"_localbook"));
-			bookList =new Set(JSON.parse(localStorage.getItem(userId+"_localbook")));
-			
-			bookList.add(book);
-			localStorage.setItem(userId+"_localbook", JSON.stringify(Array.from(bookList)));
-			console.log(bookList)
-		}
+      }else{
+         console.log(localStorage.getItem(userId+"_localbook"));
+         bookList =new Set(JSON.parse(localStorage.getItem(userId+"_localbook")));
+         
+         bookList.add(book);
+         localStorage.setItem(userId+"_localbook", JSON.stringify(Array.from(bookList)));
+         console.log(bookList)
+      }
 
-	}
+   }
 </script>
 
 <style>
 .primary-btn {
-	justify-content: space-between;
-	color: #7FAD38;
-	border: 0;
+   justify-content: space-between;
+   color: #7FAD38;
+   border: 0;
 }
 
 .zzimHeart {
-	width: 40px; /* 가로 30px */
-	height: 40px; /* 세로 30px */
-	border: 1px solid black; /* 검은색 테두리 */
-	border-radius: 5px; /* 모서리를 둥글게 */
-	display: flex; /* 내부 요소를 가운데 정렬 */
-	align-items: center; /* 수직 가운데 정렬 */
-	justify-content: center; /* 수평 가운데 정렬 */
-	cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
+   width: 40px; /* 가로 30px */
+   height: 40px; /* 세로 30px */
+   border: 1px solid black; /* 검은색 테두리 */
+   border-radius: 5px; /* 모서리를 둥글게 */
+   display: flex; /* 내부 요소를 가운데 정렬 */
+   align-items: center; /* 수직 가운데 정렬 */
+   justify-content: center; /* 수평 가운데 정렬 */
+   cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
 }
 
 .zzimHeart img {
-	max-width: 65%; /* 이미지를 div 크기에 맞게 조정 */
-	max-height: 65%; /* 이미지를 div 크기에 맞게 조정 */
+   max-width: 65%; /* 이미지를 div 크기에 맞게 조정 */
+   max-height: 65%; /* 이미지를 div 크기에 맞게 조정 */
 }
 
 .zzimHeart:hover {
-	background-color: #f0f0f0; /* 마우스 오버 시 배경색을 밝은 회색으로 변경 */
+   background-color: #f0f0f0; /* 마우스 오버 시 배경색을 밝은 회색으로 변경 */
 }
 
 .rating {
-	width: 180px;
+   width: 180px;
 }
 
 .rating__star {
-	cursor: pointer;
-	color: #dabd18b2;
+   cursor: pointer;
+   color: #dabd18b2;
 }
 </style>
 
