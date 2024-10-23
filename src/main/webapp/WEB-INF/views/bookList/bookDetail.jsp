@@ -259,6 +259,76 @@
 		}
 	} 
 	
+	// 바로주문 버튼을 누르면 선택한 책과 수량, 가격, 포인트 정보를 '/order/payment'페이지로 보내고 이동 
+	function directOrder() {
+		
+		let userId = '${sessionScope.loginMember.userId}';
+        console.log("바로주문 버튼 클릭됨"); 
+        
+        let fd = new FormData();
+       
+        let	bookNo = '${param.bookNo}';
+        let	thumbNail = document.getElementById("thumbNail").src;
+        let title = document.getElementById("title").value;
+        let price = document.getElementById("price").value;
+        let salePrice = document.getElementById("salePrice").value;
+        let cartQty = document.getElementById("bqty").value;
+        let pointRate = document.getElementById("hiddenExpectePointRate").value;
+        let totalPrice = price * cartQty;
+        let totalSalePrice = salePrice * cartQty;
+        let totalPoint = pointRate * 0.01 * salePrice * cartQty;
+        let totalPay = totalSalePrice;
+        
+        fd.append("cardId", bookNo);
+        fd.append("thumbNail", thumbNail);
+        fd.append("title", title);
+        fd.append("price", price);
+        fd.append("salePrice", salePrice);
+        fd.append("cartQty", cartQty);
+        fd.append("totalPrice", totalPrice);
+        fd.append("totalSalePrice", totalSalePrice);
+        fd.append("totalPoint", totalPoint);
+        fd.append("totalPay", totalPay);
+        
+        console.log("바로주문 데이터 정보: ", {
+        	thumbNail: thumbNail,
+            title: title,
+            price: price,
+            salePrice: salePrice,
+            cartQty: cartQty,
+            cartId: bookNo,
+            totalPrice: totalPrice,
+            totalSalePrice: totalSalePrice,
+            totalPoint: totalPoint,
+            totalPay: totalPay
+        });
+        
+	        if (userId == '') {
+				confirm("로그인이 필요한 메뉴입니다. 로그인하시겠습니까?");
+				window.location.href='/member/loginPage';
+				
+			} else {
+				 $.ajax({
+			        url: '/order/payment',	// 데이터 보내는 곳 URL
+			        type: 'POST',
+			        data: fd,
+			        contentType: false,
+	                processData: false,
+	                cache: false,
+			        success: function(response) {
+			        	console.log("성공:", response);
+	                    window.location.href = "/order/payment";
+	                },
+	                error: function () {
+	                    console.error("바로주문 실패");
+	                    alert("바로주문에 실패했습니다. 다시 확인해주세요.");
+			        }
+			    }); 
+			
+		} 
+        
+	}  
+	
 	 
 	function executeRating(starGroups) {
 		  const starClassActive = "rating__star fas fa-star";
@@ -535,7 +605,7 @@
 
 									<c:forEach var="bookInfo" items="${bookDetailInfo}">
 										<img class="bookImagelarge" src="${bookInfo.thumbNail}"
-											style="width: 200px; height: 500px;" />
+											style="width: 200px; height: 500px;" id="thumbNail" />
 										<input type="hidden" value="${bookInfo.bookNo}" id="bs">
 								</div>
 
@@ -546,7 +616,8 @@
 
 
 								<span style="font-weight: 600; font-size: x-large;">${bookInfo.title}</span>
-								<div class="author">${bookInfo.author}지음</div>
+								<input type="hidden" id="title" value="${bookInfo.title}" >
+								<div class="author">${bookInfo.author} 지음</div>
 								<div class="product__details__rating">
 									<div class="showRating">
 										<c:forEach begin="1" end="${avgReviewScore}">
@@ -566,13 +637,15 @@
 													value="${bookInfo.salePrice}" type="currency" /></strong></span><span
 											style="text-decoration: line-through; margin-left: 10px;"><fmt:formatNumber
 												value="${bookInfo.price}" type="currency" /></span>
+												<input type="hidden" id="price" value="${bookInfo.price}" >
 									</p>
 									<p>
 										<b>배송예정일 </b> <span>: 주문일로부터 3일 이내</span>
 									</p>
 									<p>
-										<b>적립 </b> 
-											<span> : ${expectedPointRate}%</span>
+										<b>예상적립금 </b> 
+											<span id="expectePointRate"> : ${expectedPointRate}%</span>
+											<input type="hidden" id="hiddenExpectePointRate" value="${expectedPointRate}">
 									</p>
 
 
@@ -603,8 +676,7 @@
 
 								<div class="btns"
 									style="display: flex; align-items: center; gap: 5px;">
-									<button type="button" class="primary-btn"
-										onclick="directOrder();"
+									<button type="button" onclick="directOrder();" class="primary-btn"
 										style="background-color: #DA8359;">바로주문</button>
 									<button type="button" class="primary-btn"
 										onclick="addToCart();">장바구니 담기</button>
