@@ -44,11 +44,11 @@ public class UnregisterScheduler {
 	    @Scheduled(cron = "0 0 0 * * ?") // 매일 0시 0분 0초에 실행
 	    public void withdrawMember() {
 	    	
-	        System.out.println("============탈퇴요청 회원 삭제 스케줄러 작동================");
+	        // System.out.println("============탈퇴요청 회원 삭제 스케줄러 작동================");
 	        try {
 	    		List<String> delMem =  mService.findExpiredMember();
 	    		for(String deleteId : delMem) {
-	    			//System.out.println("삭제될 아이디 : " + deleteId);
+	    			//// System.out.println("삭제될 아이디 : " + deleteId);
 					// 리뷰삭제
 					rService.removeUndefinedReview(deleteId);
 					// 문의글 삭제

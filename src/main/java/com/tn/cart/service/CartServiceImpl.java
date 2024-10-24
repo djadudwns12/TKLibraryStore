@@ -100,7 +100,7 @@ public class CartServiceImpl implements CartService {
 		
 		// 1. 카트에 해당 책이 있는지 
 		int count = cDao.isExistInCart(bookNo, userId);
-		System.out.println(count + ": 카트에 담은 이 책의 수");
+		// System.out.println(count + ": 카트에 담은 이 책의 수");
 		// 2. 반환되는 값이 0보다 클 때 update
 		if(count > 0) {
 			if(cDao.updateCart(userId, bookNo, qty) > 0) {

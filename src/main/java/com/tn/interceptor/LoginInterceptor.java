@@ -51,7 +51,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		if(request.getMethod().toUpperCase().equals("GET")) {
 			// 이전에 접속하던 페이지 페이지가 있다면 페이지를 얻어오기 
 			
-			System.out.println(request.getHeader("referer"));
+			// System.out.println(request.getHeader("referer"));
 			// destPath가 없다면 이전페이지로 설정하는 코드
 			if(request.getSession().getAttribute("destPath") == null && !request.getHeader("referer").contains("member/register")) {				
 				request.getSession().setAttribute("destPath", request.getHeader("referer"));
@@ -67,7 +67,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 				isLoginPageShow = true;
 			}else {//이미 로그인 한경우 로그인 페이지를 보여주지 않는다.
 				isLoginPageShow = false;
-				System.out.println("이미 로그인 하셨습니다.");
+				// System.out.println("이미 로그인 하셨습니다.");
 			}
 		
 		}else if(request.getMethod().toUpperCase().equals("POST")){ // 로그인 페이지에서 로그인 버튼을 누른경우
@@ -83,7 +83,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		System.out.println("Login인터셉터 -postHandle 부른다.");
+		// System.out.println("Login인터셉터 -postHandle 부른다.");
 		
 		HttpSession sess = request.getSession();
 		if(request.getMethod().toUpperCase().equals("POST")) {
@@ -94,7 +94,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 				
 				Object tmp = sess.getAttribute("destPath");
 				
-				System.out.println((String) tmp);
+				// System.out.println((String) tmp);
 				
 				String viewName = ((tmp == null) ? "/" : (String) sess.getAttribute("destPath"));
 //				modelAndView.addObject("status", "loginSuccess");
@@ -105,7 +105,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 				
 				modelAndView.setViewName("redirect:"+viewName);
 				
-				System.out.println(modelAndView.getViewName());
+				// System.out.println(modelAndView.getViewName());
 			}else if(sess.getAttribute("loginMember") == null) {
 				//modelAndView.addObject("status", "loginFail");
 				modelAndView.setViewName("member/loginPage");

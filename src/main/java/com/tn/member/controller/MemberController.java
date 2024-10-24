@@ -136,7 +136,7 @@ public class MemberController {
 	public ResponseEntity<String> insertAddress(@RequestBody MyAddressDTO addressDTO, HttpSession session) {
 		// 세션에서 로그인된 사용자의 정보 가져오기
 	    MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
-	    System.out.println("배송지 목록을 수정하려는 유저의 아이디 : " + loginMember.getUserId());
+	    // System.out.println("배송지 목록을 수정하려는 유저의 아이디 : " + loginMember.getUserId());
 	    
 	    // addressDTO에 userId 설정
 	    addressDTO.setUserId(loginMember.getUserId());
@@ -144,7 +144,7 @@ public class MemberController {
 	    try {
 	        mService.insertAddress(addressDTO);
 
-	        System.out.println("추가할 주소 내용 : " + addressDTO.toString());
+	        // System.out.println("추가할 주소 내용 : " + addressDTO.toString());
 	        return ResponseEntity.ok("추가 완료.");
 	       
 	    } catch (Exception e) {
@@ -159,7 +159,7 @@ public class MemberController {
 		
 		// 세션에서 로그인된 사용자의 정보 가져오기
 	    MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
-	    System.out.println("배송지 목록을 수정하려는 유저의 아이디 : " + loginMember.getUserId());
+	    // System.out.println("배송지 목록을 수정하려는 유저의 아이디 : " + loginMember.getUserId());
 	    
 	    // addressDTO에 userId 설정
 	    addressDTO.setUserId(loginMember.getUserId());
@@ -167,7 +167,7 @@ public class MemberController {
 	    try {
 	        mService.modifyUpdateAddress(addressDTO);
 
-	        System.out.println("수정할 주소 내용 : " + addressDTO.toString());
+	        // System.out.println("수정할 주소 내용 : " + addressDTO.toString());
 	        return ResponseEntity.ok("수정되었습니다.");
 	       
 	    } catch (Exception e) {
@@ -211,7 +211,7 @@ public class MemberController {
 	 */
 	@RequestMapping("/loginPage")
 	public void loginPage() {
-		System.out.println("로그인 페이지로 이동");
+		// System.out.println("로그인 페이지로 이동");
 	}
 
 	/**
@@ -229,25 +229,25 @@ public class MemberController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public void login(@RequestParam("userId") String userId, @RequestParam("userPwd") String userPwd,
 			HttpSession session,Model model) {
-		System.out.println(userId + ": " + userPwd);
+		// System.out.println(userId + ": " + userPwd);
 		// 로그인 시키는 메서드
 		try {
 			MemberVO loginMember = mService.loginMember(userId, userPwd);
 
 			if (loginMember != null) {
-				System.out.println(loginMember);
+				// System.out.println(loginMember);
 				// 로그인 한 유저 세션에 저장하기
 				session.setAttribute("loginMember", loginMember);
 				model.addAttribute("status", "loginSuccess");
 				// 방문자 수에 추가하는 메서드
 				boolean addVisitHistory =  mService.addVisitHistory();
-				System.out.println("방문자 추가 성공여부 : "+ addVisitHistory);
+				// System.out.println("방문자 추가 성공여부 : "+ addVisitHistory);
 				
 				// 탈퇴요청 후에 30일 이내에 로그인을 시도할 경우 계정 유효화 - 최미설
 				mService.validateAccount(userId);
 				
 			} else { // 로그인 실패시
-				System.out.println("로그인 실패");
+				// System.out.println("로그인 실패");
 				model.addAttribute("status", "loginFail");
 			}
 		} catch (Exception e) {
@@ -271,7 +271,7 @@ public class MemberController {
 	 */
 	@RequestMapping(value = "/logout")
 	public String logout(HttpSession session) {
-		System.out.println("로그아웃 이전의 세션값 : " + session.getId());
+		// System.out.println("로그아웃 이전의 세션값 : " + session.getId());
 
 		if (session.getAttribute("loginMember") != null) {
 			// 세션에 저장했던 값들을 지우고,
@@ -280,7 +280,7 @@ public class MemberController {
 			session.invalidate();
 		}
 
-		System.out.println("로그아웃 이후의 세션값 : " + session.getId()); // 로그아웃 한다고 세션이 사라지지는 않는다. 세션의 값만 무효화
+		// System.out.println("로그아웃 이후의 세션값 : " + session.getId()); // 로그아웃 한다고 세션이 사라지지는 않는다. 세션의 값만 무효화
 
 		return "redirect:/";
 	}
@@ -309,7 +309,7 @@ public class MemberController {
 			// 회원이 주문한 목록을 불러오는 메서드
 			List<OrderVO> orderList =oService.getOrderList(MemberDTO.builder().userId(loginMember.getUserId()).build());
 			
-			System.out.println(orderList.toString());
+			// System.out.println(orderList.toString());
 			
 			model.addAttribute("orderList", orderList);
 			
@@ -352,8 +352,8 @@ public class MemberController {
 			
 			
 			
-			System.out.println(list);
-			System.out.println(zzimList);
+			// System.out.println(list);
+			// System.out.println(zzimList);
 			
 			//model.addAttribute("orderList", list);
 			model.addAttribute("orderList", list);
@@ -389,7 +389,11 @@ public class MemberController {
 		String userId = loginMember.getUserId();
 		try {
 			editMember = mService.getEditMemberInfo(userId);
+<<<<<<< HEAD
+			// System.out.println(editMember.toString());
+=======
 			//System.out.println(editMember.toString());
+>>>>>>> 3161945b091065c6f3d4aa6adae7747271bee210
 			model.addAttribute("loginMember", editMember);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -449,10 +453,17 @@ public class MemberController {
 	@ResponseBody
 //	public void savePwdChange (@RequestParam(value="userPwd")String userPwd, @RequestParam(value="userId")String userId){
 	public String savePwdChange (@RequestBody Map<String, String> userInfo){
+<<<<<<< HEAD
+		// System.out.println(userInfo);
+		String userPwd = userInfo.get("userPwd");
+		String userId = userInfo.get("userId");
+		// System.out.println("비번, 아이디 : " + userPwd + ", " + userId);
+=======
 		//System.out.println(userInfo);
 		String userPwd = userInfo.get("userPwd");
 		String userId = userInfo.get("userId");
 		//System.out.println("비번, 아이디 : " + userPwd + ", " + userId);
+>>>>>>> 3161945b091065c6f3d4aa6adae7747271bee210
 		try {
 			mService.saveEditPwd(userPwd, userId);
 		} catch (Exception e) {
@@ -477,7 +488,7 @@ public class MemberController {
 		try {
 			new SendMailService().sendMail(tmpEmail, authCode); // 이메일 전송 메서드 구현 완료... 
 			session.setAttribute("emailAuthCode", authCode);
-			System.out.println("인증코드 : " + authCode);
+			// System.out.println("인증코드 : " + authCode);
 			return new ResponseEntity<String>("emailAuthSend", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -545,10 +556,17 @@ public class MemberController {
         try {
             MemberVO memberVO = (MemberVO) ses.getAttribute("loginMember");
             String userId = memberVO.getUserId();
+<<<<<<< HEAD
+            // System.out.println("배송완료전인 주문건수 : " + oDao.checkRemainOrder(userId));
+
+            if (oService.checkRemainOrder(userId)) {
+                // System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제요청..");
+=======
             //System.out.println("배송완료전인 주문건수 : " + oDao.checkRemainOrder(userId));
 
             if (oService.checkRemainOrder(userId)) {
                 //System.out.println("MemberController deleteMember() : " + userId + "회원정보 삭제요청..");
+>>>>>>> 3161945b091065c6f3d4aa6adae7747271bee210
                 mService.deleteMember(userId);
                 logout(ses); // 로그아웃 및 세션에 저장된 회원정보 무효화
                 
@@ -610,7 +628,7 @@ public class MemberController {
 			
 		
 			
-			System.out.println("결과를 보냅니다 파일 저장 완료");
+			// System.out.println("결과를 보냅니다 파일 저장 완료");
 			
 		} catch (Exception e) {
 			
@@ -625,7 +643,7 @@ public class MemberController {
 	private ImgFileVODTO fileSave(MultipartFile imgFile, String userId, HttpServletRequest request) { // 파일의 기본정보 가져옴 
 		
 		String originalFileName = imgFile.getOriginalFilename();
-		System.out.println("여긴는" + originalFileName);
+		// System.out.println("여긴는" + originalFileName);
 		ImgFileVODTO fileInfo = null;
 		byte[] upfile;
 		try {
@@ -653,7 +671,7 @@ public class MemberController {
 	//박근영
 	@RequestMapping(value = "/coolsms", method = RequestMethod.POST)
 	public ResponseEntity<Integer> coolSms(@RequestParam("phone") String phone) {
-		System.out.println("컨트롤 확인");
+		// System.out.println("컨트롤 확인");
 		try {
 			return mService.sendOne(phone);
 		} catch (Exception e) {

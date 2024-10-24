@@ -80,7 +80,7 @@ public class OrderDeliveryServiceImpl implements OrderDeliveryService {
 		
 		
 	
-		System.out.println(orderInfo);
+		// System.out.println(orderInfo);
 	}
 	
 	@Override
@@ -107,7 +107,7 @@ public class OrderDeliveryServiceImpl implements OrderDeliveryService {
 
 	    resultMap.put("pagingInfo", pi);
 	    resultMap.put("orderList", list);
-	    System.out.println("리설트 맵 : "+resultMap);
+	    // System.out.println("리설트 맵 : "+resultMap);
 	    return resultMap;
 	}
 	
@@ -120,15 +120,15 @@ public class OrderDeliveryServiceImpl implements OrderDeliveryService {
 	        // 전체 데이터 수 세팅
 	    	List<OrderDeliveryVO> orderCount = odDao.getTotalOrderCount();
 	    	int orderWithoutSearchCount = orderCount.size();
-	    			System.out.println("총 페이지 수"+orderWithoutSearchCount);
+	    			// System.out.println("총 페이지 수"+orderWithoutSearchCount);
 	        pi.setTotalPostCnt(orderWithoutSearchCount);
 	    } else {
 	        // 검색어가 있을 때는 검색한 데이터 수를 얻어오는 것부터 페이징 시작
-	    	System.out.println(sc.getSearchType() + "   " + sc.getSearchWord());
+	    	// System.out.println(sc.getSearchType() + "   " + sc.getSearchWord());
 	    	List<OrderDeliveryVO> orderWithSearchCount = odDao.getTotalOrderSearchCount(sc);
 	    	
 	    	int orderSearchCount = orderWithSearchCount.size();
-	    	System.out.println("총 페이지 수"+orderSearchCount);
+	    	// System.out.println("총 페이지 수"+orderSearchCount);
 	        pi.setTotalPostCnt(orderSearchCount);
 	    }
 
@@ -138,7 +138,7 @@ public class OrderDeliveryServiceImpl implements OrderDeliveryService {
 	    pi.setPageBlockNoCurPage();  // 현재 페이지가 속한 페이지 블럭 설정
 	    pi.setStartPageNoCurBlock(); // 현재 블럭의 시작 페이지 번호 설정
 	    pi.setEndPageNoCurBlock();   // 현재 블럭의 끝 페이지 번호 설정
-	    System.out.println(pi);
+	    // System.out.println(pi);
 	    return pi;
 	}
 

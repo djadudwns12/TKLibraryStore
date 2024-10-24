@@ -87,7 +87,6 @@ public class OrderServiceImpl implements OrderService {
 	public void paymentInfoApply(PaymentInfoDTO paymentInfoDTO) throws Exception {
 		//카트테이블에서 삭제, 멤머 포인트 차감한값으로 update, 포인트 로그에 사용으로 기록 남기기, order 에 insert
     	// 멤버 테이블에 구매 금액 업데이트
-	
 		
 			oDao.insertPaymentInfo(paymentInfoDTO);
 			List<PaymentInfoVO> bookNo = null;
@@ -108,7 +107,6 @@ public class OrderServiceImpl implements OrderService {
 			oDao.updatePoint(paymentInfoDTO);
 			}
 			
-			System.out.println("포인트 로그 인서트 전 확인을 위한 시스:"+paymentInfoDTO.getOrderPK());
 			if (paymentInfoDTO.getFinalInputPoint() != null && Integer.parseInt(paymentInfoDTO.getFinalInputPoint()) > 0) {
 				oDao.insertUsePoint(paymentInfoDTO);
 			}
@@ -117,7 +115,7 @@ public class OrderServiceImpl implements OrderService {
 			oDao.deleteCart(paymentInfoDTO);
 			}
 			PaymentInfoVO totalPay = oDao.selectTotalPay(paymentInfoDTO);
-			System.out.println(totalPay.getUserTotalPay());
+			// System.out.println(totalPay.getUserTotalPay());
 			
 			int userTotalPay = totalPay.getUserTotalPay() + Integer.parseInt(paymentInfoDTO.getTotalAmount());
 			paymentInfoDTO.setUserTotalPay(userTotalPay);
@@ -171,7 +169,7 @@ public class OrderServiceImpl implements OrderService {
 		int delYN = oDao.updateOrderCancel(ckArr);
 		// 체크 한만큼 수정되었을경우 
 		if(delYN == ckArr.size()) {
-			System.out.println(delYN);
+			// System.out.println(delYN);
 			result = true;
 		}
 		
@@ -224,7 +222,7 @@ public boolean updateUnregisterInfo(String deletedMember) throws Exception {
 @Override
 public boolean checkRemainOrder(String deletedMember) throws Exception {
 	boolean result = true;
-	System.out.println("OrderSevice - 배송완료 전 주문 조회 : " + oDao.checkRemainOrder(deletedMember).size());
+	// System.out.println("OrderSevice - 배송완료 전 주문 조회 : " + oDao.checkRemainOrder(deletedMember).size());
 	if(oDao.checkRemainOrder(deletedMember).size() > 0 ) {
 		result=false;
 	}

@@ -629,12 +629,21 @@ a:visited {
                   </div>
                   <ul id="categoryList" style="display: none">
                      <c:if test="${loginMember != null}">
+<<<<<<< HEAD
+						<li><a href="/member/myPage">마이페이지</a></li>
+					</c:if>
+					<li id="bookList"><a href="/bookList/listAll">도서리스트 보기</a></li>
+					<!-- <li><a href="/member/myPage">마이페이지</a></li> -->
+					<li><a href="/qa/qaList">Q&A</a></li>
+					<li><a href="/cart/cartPage">장바구니</a></li>
+=======
                         <li><a href="/member/myPage">마이페이지</a></li>
                      </c:if>
                      <li id="bookList"><a href="/bookList/listAll">도서리스트 보기</a></li>
                      <!-- <li><a href="/member/myPage">마이페이지</a></li> -->
                      <li><a href="/qa/qaList">Q&A</a></li>
                      <li><a href="/cart/cartPage">장바구니</a></li>
+>>>>>>> 3161945b091065c6f3d4aa6adae7747271bee210
                   </ul>
                </div>
             </div>
@@ -1056,6 +1065,8 @@ function showHide(){
       $('.showInfo').toggle();
       $('.hideInfo').toggle();
    }
+<<<<<<< HEAD
+=======
    
    
 function restockBook(item) {
@@ -1231,15 +1242,26 @@ function restockBook(item) {
 
    
    
+>>>>>>> 3161945b091065c6f3d4aa6adae7747271bee210
 <!-- header, footer -->
 
 
 $(function(){
    
    <!-- header, footer -->
+<<<<<<< HEAD
+   $('#low_class').next().hide();
+   $('.showInfo').show();
+   $('.hideInfo').hide();
+   
+   
+      
+      if(userId){
+=======
       let userId = '${sessionScope.loginMember.userId}' 
          
          if(userId){
+>>>>>>> 3161945b091065c6f3d4aa6adae7747271bee210
             var heartCount = 0;
             $.ajax({
                  url: '/admin/zzimCount',
@@ -1259,6 +1281,93 @@ $(function(){
          } else {
             $('#heartCount').text(0);
          }
+<<<<<<< HEAD
+
+   
+   
+   <!-- header, footer -->
+   
+   
+   
+   
+   
+   totalPay = Number($('#totalPay').text().replace(/[^0-9]/g, ''));
+   totalAmount =Number($('#totalPay').text().replace(/[^0-9]/g, ''));
+   
+   $('.price').each(function(){ 
+      
+      let price = $(this).text();
+      let intPrice = price.replace(/[^0-9]/g, '')
+      let formattedPrice = new Intl.NumberFormat().format(intPrice); 
+      $(this).text(formattedPrice + "원");
+      
+   });
+   $('.discount').each(function(){ 
+      
+      let price = $(this).text();
+      let intPrice = price.replace(/[^0-9]/g, '')
+      let formattedPrice = new Intl.NumberFormat().format(intPrice); 
+      $(this).text("-" + formattedPrice + "원");
+      
+   });
+   
+   $('#userPointInput').on('blur keydown', function() {
+      if (event.type === 'blur' || (event.type === 'keydown' && (event.key === 'Enter' || event.keyCode === 13))) {
+     
+         let myPoints = Number($('#userPoint').text().replace(/[^0-9]/g, ''));
+             
+             
+         let inputValue = Number($(this).val().replace(/[^0-9]/g, ''));
+   
+         // 보유 포인트 초과
+         if (inputValue > myPoints) {
+            if(myPoints > totalPay){
+               alert(`보유 포인트(\${myPoints}원)를 초과할 수 없으며 결제 금액을 넘을 수 없습니다!`);
+               $(this).val(totalPay); 
+               pointPayment(totalPay);
+               deduct(totalPay);
+            }else{
+               alert(`보유 포인트(\${myPoints}원)를 초과할 수 없습니다!`);
+               $(this).val(myPoints); 
+               pointPayment(myPoints);
+               deduct(myPoints);
+            }
+         } else if(totalPay < inputValue){
+            if(totalPay < myPoints){
+            alert(`결제 금액(\${totalPay}원)를 초과할 수 없습니다!`);
+            $(this).val(totalPay); 
+            pointPayment(totalPay);
+            deduct(totalPay);
+            }
+            
+         }else{
+            $(this).val(inputValue); 
+            pointPayment(inputValue);
+            deduct(inputValue);
+         }
+
+         
+         
+      }
+   });
+
+   $('#useAllPoints').click(function() {
+      let myPoints = Number($('#userPoint').text().replace(/[^0-9]/g, ''));
+      if (myPoints < totalPay){
+         $('#userPointInput').val(myPoints);
+         pointPayment(myPoints);
+         deduct(myPoints);
+      }else{
+         $('#userPointInput').val(totalPay);
+         pointPayment(totalPay);
+         deduct(totalPay);
+         
+      }
+      
+      
+   });
+
+=======
          
          isSelect();
          $('.pagingSize')
@@ -1582,6 +1691,7 @@ $(function(){
       
    });
 
+>>>>>>> 3161945b091065c6f3d4aa6adae7747271bee210
    
    
    

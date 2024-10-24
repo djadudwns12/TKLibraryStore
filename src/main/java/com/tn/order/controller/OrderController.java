@@ -54,7 +54,7 @@ public class OrderController {
 	//박근영
 	@RequestMapping(value = "/payment", method = RequestMethod.POST)
 	public ResponseEntity<Void> payment(@ModelAttribute OrderInfo orderInfo, HttpSession session)  {
-		System.out.println(orderInfo.toString());
+		// System.out.println(orderInfo.toString());
 		
 		String userId = ((MemberVO)session.getAttribute("loginMember")).getUserId();
 		try {
@@ -64,7 +64,7 @@ public class OrderController {
 			e.printStackTrace();
 			return new ResponseEntity<Void>(HttpStatus.NOT_ACCEPTABLE);
 		}
-		System.out.println(orderInfo);
+		// System.out.println(orderInfo);
 		session.setAttribute("orderInfo", orderInfo);
 
 		return new ResponseEntity<Void>(HttpStatus.OK);
@@ -74,7 +74,7 @@ public class OrderController {
     public String showPaymentPage(HttpSession session, Model model) {
         // 세션에서 데이터 가져오기
         OrderInfo orderInfo = (OrderInfo) session.getAttribute("orderInfo");
-        System.out.println(orderInfo);
+        // System.out.println(orderInfo);
         if (orderInfo == null) {
             return "redirect:/cart/cartPage";
         }
@@ -85,7 +85,7 @@ public class OrderController {
     @PostMapping("/paymentInfo")
     public ResponseEntity<String> PaymentInfo(@RequestBody PaymentInfoDTO paymentInfoDTO, HttpSession session) {
     	String userId = ((MemberVO)session.getAttribute("loginMember")).getUserId();
-    	System.out.println("paymentInfo 인서트 전 확인" + paymentInfoDTO.toString());
+    	// System.out.println("paymentInfo 인서트 전 확인" + paymentInfoDTO.toString());
     	//카트테이블에서 삭제, 멤머 포인트 차감한값으로 update, 포인트 로그에 사용으로 기록 남기기, order 에 insert
     	// 멤버 테이블에 구매 금액 업데이트
     	ResponseEntity<String> result = null;
@@ -110,7 +110,7 @@ public class OrderController {
     @PostMapping(value = "/detailOrder",produces = "application/json; charset=utf-8;")
     @ResponseBody
     public List<OrderDetailVO> detailOrder(@RequestBody String orderNo) {
-    	System.out.println(orderNo);
+    	// System.out.println(orderNo);
     	List<OrderDetailVO> detailVOs = null;
     	try {
 			detailVOs = oService.getDetailOrder(orderNo);
@@ -125,7 +125,7 @@ public class OrderController {
     @PostMapping(value = "/orderCancel",produces = "application/json; charset=utf-8;")
     @ResponseBody
     public Map<String, Object> orderCancel(@RequestBody List<String> ckArr,HttpSession sess) {
-    	System.out.println(ckArr);    	
+    	// System.out.println(ckArr);    	
     	boolean result = false;
     	
     	MemberVO loginMember = (MemberVO) sess.getAttribute("loginMember");

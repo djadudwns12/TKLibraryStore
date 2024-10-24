@@ -33,8 +33,8 @@ public class OrderDeliveryDAOImpl implements OrderDeliveryDAO {
 	
 	@Override
 	public List<OrderDeliveryVO> selectOrderDeliveryInfo(PagingInfo pi) {
-		System.out.println("selectOrderDeliveryInfo전 확인"+pi);
-		System.out.println(ses.selectList(NS + ".selectOrderDeliveryInfo", pi));
+		// System.out.println("selectOrderDeliveryInfo전 확인"+pi);
+		// System.out.println(ses.selectList(NS + ".selectOrderDeliveryInfo", pi));
 		return ses.selectList(NS + ".selectOrderDeliveryInfo", pi);
 
 	}
@@ -69,7 +69,7 @@ public class OrderDeliveryDAOImpl implements OrderDeliveryDAO {
 	    Map<String, Object> paramMap = new HashMap<>();
 	    paramMap.put("pagingInfo", pi);
 	    paramMap.put("sortBy", sortBy);
-	    System.out.println(pi+"정렬 기준을 확인합니다."+sortBy);
+	    // System.out.println(pi+"정렬 기준을 확인합니다."+sortBy);
 	    return ses.selectList(NS + ".selectOrderDeliveryInfoWithSort", paramMap);
 	}
 	
@@ -78,7 +78,7 @@ public class OrderDeliveryDAOImpl implements OrderDeliveryDAO {
 	public List<OrderDeliveryVO> selectAllOrderDelivery(PagingInfo pi, SearchCriteriaDTO searchCriteria) {
 	    Map<String, Object> paramMap = new HashMap<>();
 	    paramMap.put("pagingInfo", pi);
-	    System.out.println("selectAllOrderDelivery 넘어가기전 pi 오류 확인을 위하여 :"+searchCriteria +pi);
+	    // System.out.println("selectAllOrderDelivery 넘어가기전 pi 오류 확인을 위하여 :"+searchCriteria +pi);
 	    paramMap.put("searchCriteria", searchCriteria);
 	    return ses.selectList(NS + ".selectAllOrderDelivery", paramMap);
 	}
@@ -121,7 +121,7 @@ public class OrderDeliveryDAOImpl implements OrderDeliveryDAO {
 
 		@Override
 		public void reStock(List<CancelBookInvenVO> cancelBookInfo) {
-			System.out.println("책재고를 다시 더합니다." + cancelBookInfo);
+			// System.out.println("책재고를 다시 더합니다." + cancelBookInfo);
 			ses.update("reStock", cancelBookInfo);
 			
 		}

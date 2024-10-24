@@ -120,7 +120,7 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public List<ReviewVO> getMyReview(MemberDTO loginMember) throws Exception {
 
-//		System.out.println(loginMember + "가 쓴 리뷰를 불러온다!!!!!!!!!!!!");
+//		// System.out.println(loginMember + "가 쓴 리뷰를 불러온다!!!!!!!!!!!!");
 
 		return reviewDao.getMyReview(loginMember);
 	}

@@ -44,7 +44,7 @@ public class SendMailService {
 				return new PasswordAuthentication(username, password);
 			}
 		}); 
-		System.out.println(mailSession.toString());
+		// System.out.println(mailSession.toString());
 		if(mailSession!=null) {
 			MimeMessage mime = new MimeMessage(mailSession);
 			mime.setFrom(new InternetAddress("miseol93@naver.com")); 

@@ -25,12 +25,12 @@ public class DBTest {
 		
 //			conn 객체에 접근하지 않는 경우 아래의 코드를 실행한다.
 			
-			System.out.println("asdasdasdasd");
+			// System.out.println("asdasdasdasd");
 			
 			try {
 //				데이터베이스에 접근하는 드라이브를 실행
 				Class.forName("org.mariadb.jdbc.Driver");
-				System.out.println("드라이버 로딩성공!");
+				// System.out.println("드라이버 로딩성공!");
 				
 				String url = "jdbc:mariadb://mbcac2024.cafe24.com:3306/mbcac2024";
 				String user = "mbcac2024";
@@ -41,7 +41,7 @@ public class DBTest {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}catch(SQLException sqle) {
-				System.out.println("실패");
+				// System.out.println("실패");
 			}
 			catch (Exception e) {
 				// TODO: handle exception

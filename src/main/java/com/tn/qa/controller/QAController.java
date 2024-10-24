@@ -47,7 +47,7 @@ public class QAController {
 	@RequestMapping(value = "/qaList", method = RequestMethod.GET)
 	public void qaHome(HttpSession sess,Model model) {
 		
-		System.out.println("qa start");
+		// System.out.println("qa start");
 		// 회원정보에서 사용자 id불러오기
 		String userId = ((MemberVO)sess.getAttribute("loginMember")).getUserId();
 //		logger.info("userId : "+userId);
@@ -89,7 +89,7 @@ public class QAController {
 	@RequestMapping(value = "/qaSave", method = RequestMethod.GET)
 	public String qaSave(HttpSession sess,QAVO qa,RedirectAttributes red) {
 		// 회원정보에서 사용자 id불러오기
-		System.out.println(qa.toString());
+		// System.out.println(qa.toString());
 		String userId = ((MemberVO)sess.getAttribute("loginMember")).getUserId();
 		
 		qa.setqWriter(userId);
@@ -98,7 +98,7 @@ public class QAController {
 		try {
 			int result = qaService.qaSave(qa);
 			if(result ==1) {
-				System.out.println("저장성공");
+				// System.out.println("저장성공");
 				red.addAttribute("status", "success");
 			}else {
 				red.addAttribute("status", "fail");

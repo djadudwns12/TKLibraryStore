@@ -68,10 +68,10 @@ public class QAServiceImpl implements QAService {
 			// 정렬조건이 없을때
 			if (sortBy.equals("default")) { 
 				list = qaDao.selectAllBoard(pi, searchCriteria);
-				System.out.println("sortby default 일때");
+				// System.out.println("sortby default 일때");
 			}else { //  정렬조건이 존재할때 
 				list = qaDao.selectAllBoard(pi, searchCriteria, sortBy);
-				System.out.println("sortby 가 있을때");
+				// System.out.println("sortby 가 있을때");
 			}
 		}
 		
@@ -93,7 +93,7 @@ public class QAServiceImpl implements QAService {
 			pi.setTotalPostCnt(qaDao.getTotalPostCnt()); // 전체 데이터 수 세팅
 		} else {
 			pi.setTotalPostCnt(qaDao.getTotalPostCnt(sc));
-			System.out.println(qaDao.getTotalPostCnt(sc));
+			// System.out.println(qaDao.getTotalPostCnt(sc));
 		}
 
 		pi.setTotalPageCnt(); // 전체 페이지 수 세팅
