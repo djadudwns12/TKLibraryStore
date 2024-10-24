@@ -1,5 +1,7 @@
 package com.tn.order.model.vo;
 
+import java.sql.Date;
+
 import com.tn.booklist.model.vo.BooklistVO;
 
 import lombok.AccessLevel;
@@ -21,6 +23,7 @@ public class OrderBookVO {
 	private String orderNo;
 	private int bookNo;
 	private int qty;
+	private Date orderDate;
 	
 	private BooklistVO booklistVO;
 	

@@ -372,12 +372,7 @@ td:hover .book-info-container {
 						<div class="searchBar" style="margin-right: 20px;">
 							<input type="text" class="searchWord" name="searchWord"
 								id="searchWord" placeholder="검색어를 입력하세요." autocomplete="off">
-							<div class="searchIcon">
-								<i class="fas fa-search"></i>
-							</div>
-							<div class="keyBoard">
-								<i class="fas fa-keyboard"></i>
-							</div>
+							
 
 
 						</div>

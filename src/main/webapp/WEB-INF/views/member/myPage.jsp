@@ -285,7 +285,7 @@ function recentViews() {
 						<!-- 주문 리스트 가져오기 -->
 						<c:forEach var="order" items="${orderList}">
 							<tr>
-								<td>${order.booklistVO.pubDate}</td>
+								<td>${order.orderDate}</td>
 								<td>${order.booklistVO.title}</td>
 								<td>${order.qty}</td>
 								<td>${order.booklistVO.salePrice * order.qty}</td>

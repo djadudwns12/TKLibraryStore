@@ -116,6 +116,7 @@
         <result property="orderBookPK" column="orderBookPK" />
         <result property="bookNo" column="bookNo" />
         <result property="qty" column="qty" />
+        <result property="orderDate" column="orderDate" />
         <!-- 중첩된 BooklistVO 매핑 -->
         <association property="booklistVO" resultMap="BooklistVOMap" />
     </resultMap>
@@ -127,14 +128,13 @@
 		inner join BookList b
 		on userOrder.bookNo = b.bookNo order by userOrder.orderPk desc limit
 		0,3; -->
-		select b.* , userOrder.qty from
-		(select o.orderPk , o.bookNo ,o.qty
-		from (select ob.bookNo , o.orderPK ,o.orderWho,ob.qty from mbcac2024.Order o inner join OrderBook ob on o.orderNo = ob.orderNo) o 
+		select b.* , userOrder.qty,userOrder.orderDate from
+		(select o.orderPk , o.bookNo ,o.qty ,o.orderDate
+		from (select ob.bookNo , o.orderPK ,o.orderWho, ob.qty ,o.orderDate from mbcac2024.Order o inner join OrderBook ob on o.orderNo = ob.orderNo) o 
 		inner Join Member m 
 		on o.orderWho = m.userId where o.orderWho = #{userId}) as userOrder
 		inner join BookList b
-		on userOrder.bookNo = b.bookNo order by userOrder.orderPk desc limit
-		0,3;
+		on userOrder.bookNo = b.bookNo order by userOrder.orderPk desc limit 0,5;;
 	</select>
 	<select id="selectMyPageOrderList" resultType="com.tn.order.model.vo.OrderVO">
 		SELECT * FROM mbcac2024.Order where orderWho = #{userId}

@@ -17,7 +17,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>장바구니</title>
-
+<link
+   href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap"
+   rel="stylesheet">
 <link
    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
    rel="stylesheet">
@@ -49,6 +51,12 @@
    rel="stylesheet">
 <style>
 /* 모든 td에 공통 스타일 적용 (cart.thumbNail 제외) */
+* {
+   font-family: "Gowun Batang", serif;
+   font-weight: 600;
+   font-style: normal;
+}
+
 .common-td {
    text-align: center !important;
    vertical-align: middle !important;

@@ -3,6 +3,7 @@ package com.tn.member.service;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -15,6 +16,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 
+import org.apache.ibatis.io.Resources;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 
@@ -61,7 +63,11 @@ public class SendMailService {
 	
 	private void getAccount() throws IOException {
 		Properties account = new Properties();
-		account.load(new FileReader("D:\\java_pro\\lecture\\Workspace\\tnbookstore\\src\\main\\resources\\mailpop.properties"));
+		//account.load(new FileReader("src/main/resources/mailpop.properties"));
+		Reader reader = Resources.getResourceAsReader("mailpop.properties");
+		
+		account.load(reader); //reader가 가리키는 파일을 읽어서 prop객체에 key, value를 구분하여 넣어준다.
+		
 		this.username = (String)account.get("username");
 		this.password = (String)account.get("password");
 	}

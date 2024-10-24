@@ -38,16 +38,7 @@
 					<section>
 						<div class="searchBar" style="margin-right: 20px;">
 							<input type="text" class="searchWord" name="searchWord" id="searchWord" placeholder="검색어를 입력하세요.">
-							<div class="searchIcon">
-								<i class="fas fa-search"></i>
-							</div>
-							<div class="keyBoard">
-								<i class="fas fa-keyboard"></i>
-							</div>
-							<div class="mic">
-								<i class="fas fa-microphone"></i>
-							</div>
-
+							
 						</div>
 						<input type="hidden" name="pageNo" value="${param.pageNo}" /> 
 						<input type="hidden" name="pagingSize" value="${param.pagingSize}" />

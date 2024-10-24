@@ -159,7 +159,7 @@ $(function() {
 				</div>
 				<div class="d-grid gap-2" style="text-align: right;"><!-- return isValid(); -->
 					<button type="submit" class="btn btn-primary saveEditInfo"
-						onclick="isValid()" 
+						onclick="return isValid()" 
 						style="border-color: #7fad38; background-color: #7fad38;">수정완료</button>
 					<button type="reset" class="btn btn-danger resetBtn">되돌리기</button>
 					<button type="button" class="btn btn-secondary"

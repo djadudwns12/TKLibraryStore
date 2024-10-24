@@ -25,8 +25,10 @@
 
 google.charts.load('current', {'packages':['corechart']});
 
+
+
 $(function() {
-	
+	//location.reload();
 	// Ajax로 데이터 요청
     $.ajax({
         url: '/admin/bookChart',
@@ -91,8 +93,9 @@ $(function() {
 
     // 엄영준
     getvisitHistory();
+    
 
-});
+})
 
 
 google.charts.load('current', { packages: ['corechart', 'bar'] });

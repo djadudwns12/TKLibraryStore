@@ -277,7 +277,8 @@
         let pointRate = document.getElementById("hiddenExpectePointRate").value;
         let totalPrice = price * cartQty;
         let totalSalePrice = salePrice * cartQty;
-        let totalPoint = pointRate * 0.01 * salePrice * cartQty;
+        /* let totalPoint = pointRate * 0.01 * salePrice * cartQty; */
+        let totalPoint = Math.floor(pointRate * 0.01 * salePrice * cartQty);
         let totalPay = totalSalePrice;
         
         fd.append("cardId", bookNo);
@@ -472,8 +473,8 @@
 		for(let i=1; i<=5-reviewScore;i++){
 			star+='<i class="rating__star far fa-star"></i>'
 		}
-		console.log(star);
-		$('#ratingModal').html(star);
+		console.log(별);
+		$('#ratingModal').html(별);
 		$('#reviewNo').val(reviewNo);
 
 	}
@@ -571,6 +572,7 @@
 .zzimHeart img {
    max-width: 65%; /* 이미지를 div 크기에 맞게 조정 */
    max-height: 65%; /* 이미지를 div 크기에 맞게 조정 */
+   margin: auto;
 }
 
 .zzimHeart:hover {
@@ -653,37 +655,49 @@
 
 								</div>
 
-								<div class="qtyControl"
-									style="display: flex; align-items: center; gap: 10px;">
-									<span><b>수량 </b></span> <span class="count">
-										<button type="button" class="minus" style="border: none; cursor:pointer;"
-											onclick="count('minus');">-</button> <span><input
-											type="text" id="bqty" name="bqty" value="1"
-											readonly="readonly"
-											style="text-align: center; width: 60px; border: none;"></span>
-										<button type="button" class="plus" style="border: none; cursor:pointer;"
-											onclick="count('plus');">+</button>
-									</span> <input type="hidden" value="${bookInfo.inven}" id="inven">
-
-									<!-- 선택 수량이 2개 이상일 때 가격을 표시하는 기능 -->
-									<input type="hidden" value="${bookInfo.salePrice}"
-										id="salePrice">
-									<div id="totalPrice" style="display: none;">
-										총 상품 금액: <span id="priceVal" style="color: red;"></span> 원
+								<div class="qtyControl" 
+									style="display: flex; flex-direction: column; gap: 10px;">
+									<c:choose>
+									<c:when test="${bookInfo.inven == 0}">
+										<div><b>품절된 도서입니다. 관리자에게 문의해주세요.</b></div>
+										<div style="display: flex; align-items: center; gap: 5px;">
+										<button type="button" class="plus" style="border: none; color: gray; width:70px; height: 40px;">품절</button><span class="zzimHeart" style="margin-left: 10px;"> <img src="/resources/images/emptyHeart.png">
+									</span></div>
+									</c:when>
+									<c:when test="${bookInfo.inven > 0}">
+									<div style="display: flex; align-items: center; gap: 5px;">
+										<span><b>수량 </b></span> <span class="count">
+											<button type="button" class="minus" style="border: none; cursor:pointer; margin-left: 10px;"
+												onclick="count('minus');">-</button> <span><input
+												type="text" id="bqty" name="bqty" value="1"
+												readonly="readonly"
+												style="text-align: center; width: 60px; border: none;"></span>
+											<button type="button" class="plus" style="border: none; cursor:pointer;"
+												onclick="count('plus');">+</button>
+										</span> <input type="hidden" value="${bookInfo.inven}" id="inven">
+	
+										<!-- 선택 수량이 2개 이상일 때 가격을 표시하는 기능 -->
+										<input type="hidden" value="${bookInfo.salePrice}"
+											id="salePrice">
+										<div id="totalPrice" style="display: none;">
+											총 상품 금액: <span id="priceVal" style="color: red;"></span> 원
+										</div>
+										</div> 
 									</div>
-									
-								</div>
-								<br>
-
-								<div class="btns"
-									style="display: flex; align-items: center; gap: 5px;">
-									<button type="button" onclick="directOrder();" class="primary-btn"
-										style="background-color: #DA8359;">바로주문</button>
-									<button type="button" class="primary-btn"
-										onclick="addToCart();">장바구니 담기</button>
-									<span class="zzimHeart"> <img
+									<br>
+	
+									<div class="btns"
+										style="display: flex; align-items: center; gap: 5px;">
+										<button type="button" onclick="directOrder();" class="primary-btn"
+											style="background-color: #DA8359;">바로주문</button>
+										<button type="button" class="primary-btn"
+											onclick="addToCart();">장바구니 담기</button>	
+											<span class="zzimHeart"> <img
 										src="/resources/images/emptyHeart.png">
-									</span>
+									</span></div>	
+									</c:when>
+									</c:choose>
+									
 
 								</div>
 							</div>
