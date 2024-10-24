@@ -44,6 +44,8 @@ public interface OrderDAO {
 	void updateOrdersToDelivered();
 	// 주문한 책 수량만큼 북리스트 업데이트
 	void updateBook(List<PaymentInfoVO> bookNo);
+	// 바로 주문시 책정보 가져오기 위한 메서드
+	List<PaymentInfoVO> selectBookNoWithoutCartId(PaymentInfoDTO paymentInfoDTO) throws Exception;
 	
 	// 주문한 책리스트 SELECT
 //	List<OrderBookListVO> selectBookList(List<String> bookNos);

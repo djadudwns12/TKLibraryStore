@@ -88,10 +88,13 @@ public class OrderServiceImpl implements OrderService {
 		//카트테이블에서 삭제, 멤머 포인트 차감한값으로 update, 포인트 로그에 사용으로 기록 남기기, order 에 insert
     	// 멤버 테이블에 구매 금액 업데이트
 		
-		System.out.println(paymentInfoDTO.getCartId().get(0));
-		
 			oDao.insertPaymentInfo(paymentInfoDTO);
-			List<PaymentInfoVO> bookNo = oDao.selectBookNo(paymentInfoDTO);
+			List<PaymentInfoVO> bookNo = null;
+			if(paymentInfoDTO.getCartId() != null && !paymentInfoDTO.getCartId().isEmpty()) {
+				bookNo = oDao.selectBookNo(paymentInfoDTO);
+			}else {
+				bookNo = oDao.selectBookNoWithoutCartId(paymentInfoDTO);
+			}
 			
 			for(int i = 0; i < bookNo.size() ; i ++) {
 				bookNo.get(i).setOrderNo(paymentInfoDTO.getPaymentId());
@@ -99,15 +102,20 @@ public class OrderServiceImpl implements OrderService {
 			}
 			oDao.insertBooks(bookNo);
 			oDao.updateBook(bookNo);
+			
+			if (paymentInfoDTO.getRemainingPoint() != null && Integer.parseInt(paymentInfoDTO.getRemainingPoint()) > 0) {
 			oDao.updatePoint(paymentInfoDTO);
-			System.out.println("포인트 로그 인서트 전 확인을 위한 시스:"+paymentInfoDTO.getOrderPK());
+			}
+			
 			if (paymentInfoDTO.getFinalInputPoint() != null && Integer.parseInt(paymentInfoDTO.getFinalInputPoint()) > 0) {
 				oDao.insertUsePoint(paymentInfoDTO);
 			}
+			if(paymentInfoDTO.getCartId() != null && !paymentInfoDTO.getCartId().isEmpty()) {
+				System.out.println("카트 삭제부분 진입 확인");
 			oDao.deleteCart(paymentInfoDTO);
-			
+			}
 			PaymentInfoVO totalPay = oDao.selectTotalPay(paymentInfoDTO);
-			System.out.println(totalPay.getUserTotalPay());
+			// System.out.println(totalPay.getUserTotalPay());
 			
 			int userTotalPay = totalPay.getUserTotalPay() + Integer.parseInt(paymentInfoDTO.getTotalAmount());
 			paymentInfoDTO.setUserTotalPay(userTotalPay);
